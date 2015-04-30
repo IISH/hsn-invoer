@@ -1,0 +1,8 @@
+application:
+  version: 5.00
+  date: 2 januari 2015
+
+spring:
+  mvc:
+    locale: nl_NL
+    date-format: dd-MM-yyyy

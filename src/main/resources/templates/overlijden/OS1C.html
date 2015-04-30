@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="overlijden/OSTITEL :: OSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend th:if="${akte.isLevnloos()} == false">OVERLIJDENS-DATUM en -TIJD</legend>
+    <legend th:if="${akte.isLevnloos()}">GEBOORTE-DATUM en -TIJD levenloos aangegevene</legend>
+
+    <div class="form-group">
+      <div class="col-xs-12 checkDateTimeOvl"
+           data:geb-day="${akte.refGbh} ? ${akte.refGbh.dayOfBirth}"
+           data:geb-month="${akte.refGbh} ? ${akte.refGbh.monthOfBirth}"
+           data:geb-year="${akte.refGbh} ? ${akte.refGbh.yearOfBirth}">
+        <div class="col-xs-2">
+          <label class="control-label">Dag:</label>
+          <input type="text" class="form-control day" th:field="*{ovlknd.ovldag}" hsn:field="ovlknd.ovldag"/>
+        </div>
+
+        <div class="col-xs-2">
+          <label class="control-label">Maand:</label>
+          <input type="text" class="form-control month" th:field="*{ovlknd.ovlmnd}" hsn:field="ovlknd.ovlmnd"/>
+        </div>
+
+        <div class="col-xs-2">
+          <label class="control-label">Jaar:</label>
+          <input type="text" class="form-control year" th:field="*{ovlknd.ovljr}" hsn:field="ovlknd.ovljr"/>
+        </div>
+
+        <div class="col-xs-2 col-xs-push-1">
+          <label class="control-label">Uur:</label>
+          <input type="text" class="form-control hour" th:field="*{ovlknd.ovluur}" hsn:field="ovlknd.ovluur"/>
+        </div>
+
+        <div class="col-xs-2 col-xs-push-1">
+          <label class="control-label">Min:</label>
+          <input type="text" class="form-control minute" th:field="*{ovlknd.ovlmin}" hsn:field="ovlknd.ovlmin"/>
+        </div>
+      </div>
+    </div>
+
+    <div data-show-when=".checkDateTimeOvl" data-has-no-errors="" style="display:none;">
+      <div class="form-group extra-top-margin" th:if="${akte.isLevnloos()}">
+        <label class="col-xs-4 control-label">Aantal uren geleefd:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit" data-replace=":0"
+                 th:field="*{ovlknd.laaug}" hsn:field="ovlknd.laaug"/>
+        </div>
+      </div>
+
+      <div class="ageContainer" style="display: none;">
+        <div class="alert alert-warning extra-top-margin age" role="alert" th:if="${akte.isLevnloos()} == false">
+          <div th:if="${akte.isCorrection()} == false">
+            <div>De berekende leeftijd in dagen, maanden of jaren:</div>
+            <div class="text-center">(corrigeer deze EXACT volgens gegevens akte!):</div>
+          </div>
+
+          <div th:if="${akte.isCorrection()}">De leeftijd in dagen, weken, maanden of jaren:</div>
+
+          <div class="row text-center">
+            <div class="col-xs-3">
+              <label class="control-label">Dagen:</label>
+              <input type="text" class="form-control" th:field="*{ovlknd.lftdovl}" hsn:field="ovlknd.lftdovl"/>
+            </div>
+
+            <div class="col-xs-3">
+              <label class="control-label">Weken:</label>
+              <input type="text" class="form-control" th:field="*{ovlknd.lftwovl}" hsn:field="ovlknd.lftwovl"/>
+            </div>
+
+            <div class="col-xs-3">
+              <label class="control-label">Maanden:</label>
+              <input type="text" class="form-control" th:field="*{ovlknd.lftmovl}" hsn:field="ovlknd.lftmovl"/>
+            </div>
+
+            <div class="col-xs-3">
+              <label class="control-label">Jaren:</label>
+              <input type="text" class="form-control" th:field="*{ovlknd.lftjovl}" hsn:field="ovlknd.lftjovl"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group extra-top-margin age-manual" style="display:none;" th:if="${akte.isLevnloos()} == false">
+          <label class="col-xs-10 control-label">De leeftijd in uren, indien gegeven:</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control form-control-digit"
+                   th:field="*{ovlknd.lftuovl}" hsn:field="ovlknd.lftuovl" data-replace=":-1;0:-1"/>
+          </div>
+        </div>
+
+        <div class="form-group extra-top-margin">
+          <label class="col-xs-3 control-label" th:if="${akte.isLevnloos()} == false">GESLACHT overledene:</label>
+          <label class="col-xs-5 control-label" th:if="${akte.isLevnloos()}">GESLACHT levenloos aangegevene:</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control form-control-digit required" maxlength="1"
+                   data:valid-chars="(${akte.isLevnloos()}) ? 'm;v;o' : 'm;v'"
+                   th:field="*{ovlknd.ovlsex}" hsn:field="ovlknd.ovlsex"/>
+          </div>
+        </div>
+
+        <div class="form-group"
+             th:replace="fragments/complete-fields :: plaats ('ovlknd.ggmovl', 'Geboorteplaats:')"></div>
+      </div>
+    </div>
+
+    <div class="alert alert-info extra-top-margin" role="alert"
+         data-show-when="#ovlknd\.ovldag" data:has-values-in="${akte.ovlknd.oaktedag}" style="display:none;">
+      Waarschuwing: Dagnr overlijden is identiek aan dagnr akte!! ( het kan wel goed zijn )
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/overlijden/OS1C.js" th:src="@{/js/overlijden/OS1C.js}"></script>
+</th:block>
+</body>
+</html>

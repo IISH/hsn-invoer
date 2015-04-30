@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head></head>
+<body>
+<header layout:fragment="header" th:include="layoutFragments :: header"></header>
+
+<fieldset layout:fragment="main">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Kode type Akte</th>
+      <th>Gemeentenaam</th>
+      <th>Jaar</th>
+      <th>Nummer Akte</th>
+      <th>Ident. Nummer</th>
+      <th>Subtotaal</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="curGeb,stat : ${overview}">
+      <td th:utext="${curGeb.gebkode}"></td>
+      <td th:utext="${curGeb.gemnaam}"></td>
+      <td th:utext="${curGeb.jaar}"></td>
+      <td th:utext="${curGeb.aktenr}"></td>
+      <td th:utext="${curGeb.idnr}"></td>
+      <td th:utext="${stat.index + 1}"></td>
+    </tr>
+    </tbody>
+  </table>
+</fieldset>
+
+<footer layout:fragment="footer" th:include="layoutFragments :: footer"></footer>
+</body>
+</html>

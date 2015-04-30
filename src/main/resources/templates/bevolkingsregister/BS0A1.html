@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html layout:decorator="formTableLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="bevolkingsregister/BSTITEL :: BSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="table">
+    <div class="fixed-left-column">
+      <div class="fixed">
+        <table class="table table-condensed table-form">
+          <thead>
+          <tr>
+            <th>&nbsp;</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr th:each="person,stat : *{b2}">
+            <td>
+              <span></span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="free">
+        <table class="table table-condensed table-form">
+          <thead>
+          <tr>
+            <th>Oud</th>
+            <th>Nieuw</th>
+            <th>Achternaam</th>
+            <th>Voornamen</th>
+            <th>Geb datum</th>
+            <th>m/v</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr th:each="person,stat : *{b2}">
+            <td>
+              <span class="line" th:utext="${akte.b2[__${stat.index}__].keyToRegistrationPersons}"></span>
+            </td>
+            <td>
+              <input type="text" class="form-control form-control-digit new-key" data-min="0"
+                     th:name="'b2[' + __${stat.index}__ + '].keyToRegistrationPersons'"
+                     th:id="'b2' + __${stat.index}__ + '.keyToRegistrationPersons'"
+                     hsn:field="b2[__${stat.index}__].keyToRegistrationPersons"
+                     th:classappend="${akte.volgnrOP == (stat.index + 1)} ? 'is-rp'"
+                     th:value="${akte.volgnrOP == (stat.index + 1)} ? ${@bevolkingsregisterHelper.findKeyOfRp(akte)}"/>
+            </td>
+            <td>
+              <span th:utext="${akte.b2[__${stat.index}__].familyName}"></span>
+            </td>
+            <td>
+              <span th:utext="${akte.b2[__${stat.index}__].firstName}"></span>
+            </td>
+            <td>
+              <span th:utext="${akte.b2[__${stat.index}__].dayOfBirth}"></span>
+              /
+              <span th:utext="${akte.b2[__${stat.index}__].monthOfBirth}"></span>
+              /
+              <span th:utext="${akte.b2[__${stat.index}__].yearOfBirth}"></span>
+            </td>
+            <td>
+              <span th:utext="${akte.b2[__${stat.index}__].sex}"></span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
+          th:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
+  <script src="../../static/js/bevolkingsregister/BS0A1.js" th:src="@{/js/bevolkingsregister/BS0A1.js}"></script>
+</th:block>
+</body>
+</html>

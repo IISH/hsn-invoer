@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <th:block th:if="${(akte.huwknd.bsthm == '1') and (akte.huweerGroom.size() > 0)}">
+      <div class="alert alert-info" role="alert">
+        Voor bruidegom eerder(e) huwelijk(en) aanwezig!!! <br/>
+        Volgens de nieuwe opgave is de bruidegom ongehuwd, daarom worden al zijn eerdere huwelijken verwijderd.
+      </div>
+    </th:block>
+
+    <th:block th:if="${(akte.huwknd.bsthv == '1') and (akte.huweerBride.size() > 0)}">
+      <div class="alert alert-info" role="alert" th:classappend="${akte.huweerGroom.size() > 0} ? 'extra-top-margin'">
+        Voor bruid eerder(e) huwelijk(en) aanwezig!!! <br/>
+        Volgens de nieuwe opgave is de bruid ongehuwd, daarom worden al haar eerdere huwelijken verwijderd.
+      </div>
+    </th:block>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

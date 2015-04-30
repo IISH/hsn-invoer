@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- GS0C: AKTE IDENTIFICATIE -->
+  <view-state id="GS0C" view="geboorte/GS0C" model="akte">
+    <on-entry>
+      <evaluate expression="geboorteAkteService.createNewAkteForCorrection()" result="flowScope.akte"/>
+    </on-entry>
+
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="GCOR">
+      <evaluate expression="geboorteAkteService.editOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- GCOR: CORRECTIE SCHERM -->
+  <view-state id="GCOR" view="geboorte/GCOR" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="firstCorrectionCodeCheck"/>
+  </view-state>
+
+  <action-state id="firstCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="1" to="GS1"/>
+    <transition on="2" to="GS1"/>
+    <transition on="3" to="secondCorrectionCodeCheck"/>
+    <transition on="4" to="secondCorrectionCodeCheck"/>
+    <transition on="5" to="secondCorrectionCodeCheck"/>
+    <transition on="6" to="secondCorrectionCodeCheck"/>
+    <transition on="7" to="secondCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- GS1: AANGEVER -->
+  <view-state id="GS1" view="geboorte/GS1" model="akte">
+    <transition on="next" to="secondCorrectionCodeCheck">
+      <evaluate expression="geboorteAkteService.registerAangever(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="secondCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="1" to="GS2"/>
+    <transition on="2" to="thirdCorrectionCodeCheck"/>
+    <transition on="3" to="GS2"/>
+    <transition on="4" to="thirdCorrectionCodeCheck"/>
+    <transition on="5" to="thirdCorrectionCodeCheck"/>
+    <transition on="6" to="thirdCorrectionCodeCheck"/>
+    <transition on="7" to="thirdCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- GS2: GEBOORTE EN MOEDER -->
+  <view-state id="GS2" view="geboorte/GS2" model="akte">
+    <transition on="next" to="thirdCorrectionCodeCheck">
+      <evaluate expression="geboorteAkteService.registerGeboorteAndMoeder(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="thirdCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="1" to="GS3"/>
+    <transition on="2" to="fourthCorrectionCodeCheck"/>
+    <transition on="3" to="fourthCorrectionCodeCheck"/>
+    <transition on="4" to="GS3"/>
+    <transition on="5" to="fourthCorrectionCodeCheck"/>
+    <transition on="6" to="fourthCorrectionCodeCheck"/>
+    <transition on="7" to="fourthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- GS3: MOEDER EN KIND -->
+  <view-state id="GS3" view="geboorte/GS3" model="akte">
+    <transition on="next" to="aangeverVaderCheck">
+      <evaluate expression="geboorteAkteService.registerMoederAndKind(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="aangeverVaderCheck">
+    <evaluate expression="{5,7,8}.contains(new Integer(flowScope.akte.gebknd.brgstmr))"/>
+
+    <transition on="yes" to="fifthCorrectionCodeCheck"/>
+    <transition on="no" to="GS4"/>
+  </action-state>
+
+  <!-- GS4: VADER -->
+  <view-state id="GS4" view="geboorte/GS4" model="akte">
+    <transition on="next" to="fifthCorrectionCodeCheck">
+      <evaluate expression="geboorteAkteService.registerVader(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="fourthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="1" to="getuigeInvoerenCheck"/>
+    <transition on="2" to="fifthCorrectionCodeCheck"/>
+    <transition on="3" to="fifthCorrectionCodeCheck"/>
+    <transition on="4" to="fifthCorrectionCodeCheck"/>
+    <transition on="5" to="getuigeInvoerenCheck"/>
+    <transition on="6" to="fifthCorrectionCodeCheck"/>
+    <transition on="7" to="fifthCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="getuigeInvoerenCheck">
+    <evaluate expression="flowScope.akte.gebknd.invbeper == 'j'"/>
+
+    <transition on="yes" to="fifthCorrectionCodeCheck"/>
+    <transition on="no" to="GS5"/>
+  </action-state>
+
+  <!-- GS5: 1e EN 2e GETUIGE -->
+  <view-state id="GS5" view="geboorte/GS5" model="akte">
+    <transition on="next" to="getuigeCheck">
+      <evaluate expression="geboorteAkteService.registerGetuige(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="getuigeCheck">
+    <evaluate expression="flowScope.akte.curGebgtgIndex lt (flowScope.akte.gebgtg.length - 1)"/>
+
+    <transition on="yes" to="GS5">
+      <evaluate expression="flowScope.akte.setCurGebgtgIndex(flowScope.akte.curGebgtgIndex + 1)"/>
+    </transition>
+
+    <transition on="no" to="fifthCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="fifthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="1" to="GS6"/>
+    <transition on="2" to="sixthCorrectionCodeCheck"/>
+    <transition on="3" to="sixthCorrectionCodeCheck"/>
+    <transition on="4" to="sixthCorrectionCodeCheck"/>
+    <transition on="5" to="sixthCorrectionCodeCheck"/>
+    <transition on="6" to="GS6"/>
+    <transition on="7" to="sixthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- GS6: OVERIGE KANTMELDINGEN -->
+  <view-state id="GS6" view="geboorte/GS6" model="akte">
+    <transition on="next" to="hasKantmeldingCheck">
+      <evaluate expression="geboorteAkteService.registerKanttype(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="hasKantmeldingCheck">
+    <evaluate expression="flowScope.akte.gebknd.kant == 'j' and ({1,2,3,4}).contains(flowScope.akte.gebkant.kanttype)"/>
+
+    <transition on="yes" to="kantmeldingCheck"/>
+
+    <transition on="no" to="sixthCorrectionCodeCheck">
+      <evaluate expression="geboorteAkteService.registerKantmeldingen(flowScope.akte)"/>
+    </transition>
+  </action-state>
+
+  <action-state id="kantmeldingCheck">
+    <evaluate expression="flowScope.akte.gebkant.kanttype.toString()"/>
+
+    <transition on="1" to="GS7a"/>
+    <transition on="2" to="GS7b"/>
+    <transition on="3" to="GS7c"/>
+    <transition on="4" to="GS7d"/>
+  </action-state>
+
+  <!-- G7a: NAAMSWIJZIGING DOOR ERKENNING BIJ HUWELIJK -->
+  <view-state id="GS7a" view="geboorte/GS7a" model="akte">
+    <transition on="next" to="sixthCorrectionCodeCheck">
+      <evaluate expression="geboorteAkteService.registerKantmeldingen(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- G7b: WIJZIGING DOOR K.B. -->
+  <view-state id="GS7b" view="geboorte/GS7b" model="akte">
+    <transition on="next" to="sixthCorrectionCodeCheck">
+      <evaluate expression="geboorteAkteService.registerKantmeldingen(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- G7c: WIJZIGING DOOR RECHTBANKBESLUIT -->
+  <view-state id="GS7c" view="geboorte/GS7c" model="akte">
+    <transition on="next" to="sixthCorrectionCodeCheck">
+      <evaluate expression="geboorteAkteService.registerKantmeldingen(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- G7d: ERKENNING DOOR MOEDER -->
+  <view-state id="GS7d" view="geboorte/GS7d" model="akte">
+    <transition on="next" to="sixthCorrectionCodeCheck">
+      <evaluate expression="geboorteAkteService.registerKantmeldingen(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="sixthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="1" to="byzCheck"/>
+    <transition on="2" to="GSNIEUW"/>
+    <transition on="3" to="GSNIEUW"/>
+    <transition on="4" to="GSNIEUW"/>
+    <transition on="5" to="GSNIEUW"/>
+    <transition on="6" to="GSNIEUW"/>
+    <transition on="7" to="byzCheck"/>
+  </action-state>
+
+  <action-state id="byzCheck">
+    <evaluate expression="flowScope.akte.nrOfByzEntered == 0"/>
+
+    <transition on="yes" to="GS8COR"/>
+    <transition on="no" to="byzcCheck"/>
+  </action-state>
+
+  <!-- GS8COR: BIJZONDERHEDEN CHECK -->
+  <view-state id="GS8COR" view="geboorte/GS8COR" model="akte">
+    <transition on="next" to="byziCheck">
+      <evaluate expression="geboorteAkteService.registerByzCheck(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="byziCheck">
+    <evaluate expression="flowScope.akte.gebknd.problm == 'j'"/>
+
+    <transition on="yes" to="GSBYZ"/>
+    <transition on="no" to="GSNIEUW"/>
+  </action-state>
+
+  <!-- GSBYZ: BIJZONDERHEDEN INVOER -->
+  <view-state id="GSBYZ" view="geboorte/GSBYZ" model="akte">
+    <on-entry>
+      <evaluate expression="geboorteAkteService.prepareByz(flowScope.akte)"/>
+    </on-entry>
+
+    <transition on="more" to="GSBYZ">
+      <evaluate expression="geboorteAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="GSNIEUW">
+      <evaluate expression="geboorteAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="byzcCheck">
+    <evaluate expression="flowScope.akte.nrOfByzEntered > 0"/>
+
+    <transition on="yes" to="GSBYZC"/>
+    <transition on="no" to="GSNIEUW"/>
+  </action-state>
+
+  <!-- GSBYZC: BIJZONDERHEDEN CORRECTIE -->
+  <view-state id="GSBYZC" view="geboorte/GSBYZC" model="akte">
+    <on-entry>
+      <evaluate expression="geboorteAkteService.prepareByzForCorrection(flowScope.akte)"/>
+    </on-entry>
+
+    <transition on="more" to="GSBYZC">
+      <evaluate expression="geboorteAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="GSNIEUW">
+      <evaluate expression="geboorteAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- GSNIEUW: ANOTHER GEBOORTE AKTE CORRECTION? -->
+  <view-state id="GSNIEUW" view="geboorte/GSNIEUW" model="akte">
+    <transition on="next" to="nieuwCheck"/>
+  </view-state>
+
+  <action-state id="nieuwCheck">
+    <evaluate expression="requestParameters.anotherFlow == 'j'"/>
+
+    <transition on="yes" to="GS0C"/>
+    <transition on="no" to="finishEnd"/>
+  </action-state>
+
+  <end-state id="stopEnd" view="redirect:/geboorte/hoofdmenu"/>
+
+  <end-state id="finishEnd" view="redirect:/geboorte/hoofdmenu"/>
+</flow>

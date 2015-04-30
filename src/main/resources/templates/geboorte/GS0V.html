@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <div class="text-center">
+    VERWIJDER PROGRAMMA GEBOORTE-AKTEN
+  </div>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <label class="col-xs-4 control-label">Identificatienummer:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control stpb-idnr required" th:field="*{gebakte.idnr}" hsn:field="gebakte.idnr"/>
+      </div>
+    </div>
+
+    <p class="fail text-danger text-center" style="display: none;"></p>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/geboorte/GS0IC.js" th:src="@{/js/geboorte/GS0IC.js}"></script>
+</th:block>
+</body>
+</html>

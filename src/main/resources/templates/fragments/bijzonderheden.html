@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/html">
+<head>
+</head>
+<body>
+<div th:fragment="bijzonderheden">
+  <p>
+    Tik de bijzonderheden van het object regel voor regel in, aan het eind kunt u via de meer-keuze het geheel
+    overzien en eventueel verbeteren voor een maximaal van steeds vijf regels per ronde.
+    <br/>
+    N.B. 100 % lege regels worden niet ingevoerd, dus gebruik deze ook niet voor lay-out doeleinden
+  </p>
+
+  <div class="form-group extra-top-margin">
+    <div class="col-xs-10 col-xs-offset-1">
+      <div class="bijzonderheden form-control">
+        <input type="text" class="form-control" th:field="*{byz[0].byz}"/>
+        <input type="text" class="form-control" th:field="*{byz[1].byz}"/>
+        <input type="text" class="form-control" th:field="*{byz[2].byz}"/>
+        <input type="text" class="form-control" th:field="*{byz[3].byz}"/>
+        <input type="text" class="form-control" th:field="*{byz[4].byz}"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:fragment="bijzonderhedenCorrectie">
+  <p>
+    Totaal aantal opgenomen regels bij deze akte:
+    <th:block th:utext="${akte.nrOfByzEntered}">0</th:block>
+  </p>
+
+  <p>
+    Corrigeer de bijzonderheden regel voor regel!!!
+    <br/>
+    Verwijderen gebeurt door middel van het overschijven met blanks!!
+    <br/>
+    N.B. 100 % lege regels worden niet ingevoerd, dus gebruik deze ook niet voor lay-out doeleinden!!
+  </p>
+
+  <div class="form-group extra-top-margin">
+    <div class="col-xs-10 col-xs-offset-1">
+      <div class="bijzonderheden form-control">
+        <input type="text" class="form-control" th:field="*{byz[0].byz}"/>
+        <input type="text" class="form-control" th:field="*{byz[1].byz}"/>
+        <input type="text" class="form-control" th:field="*{byz[2].byz}"/>
+        <input type="text" class="form-control" th:field="*{byz[3].byz}"/>
+        <input type="text" class="form-control" th:field="*{byz[4].byz}"/>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

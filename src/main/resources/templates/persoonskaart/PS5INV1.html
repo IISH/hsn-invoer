@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="alert alert-info" role="alert">
+      In geval van een overlijdensbericht (PK-type 6) staat het adres standaard op "CBR" en wordt het adressenscherm
+      overgeslagen.
+    </div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-8 control-label">
+        Wilt u toch adressen invoeren?  j / n
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+               id="addAddresses" name="addAddresses"/>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, false)"></fieldset>
+</body>
+</html>

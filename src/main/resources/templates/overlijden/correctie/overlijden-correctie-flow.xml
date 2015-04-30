@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- OS0C: IDENTIFICATIE OVL AKTE -->
+  <view-state id="OS0C" view="overlijden/OS0C" model="akte">
+    <on-entry>
+      <evaluate expression="overlijdensAkteService.createNewAkteForCorrection()" result="flowScope.akte"/>
+    </on-entry>
+
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="OCOR">
+      <evaluate expression="overlijdensAkteService.editOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- OCOR: CORRECTIE SCHERM -->
+  <view-state id="OCOR" view="overlijden/OCOR" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="firstCorrectionCodeCheck"/>
+  </view-state>
+
+  <action-state id="firstCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="1" to="OS1A"/>
+    <transition on="2" to="OS1A"/>
+    <transition on="3" to="secondCorrectionCodeCheck"/>
+    <transition on="4" to="secondCorrectionCodeCheck"/>
+    <transition on="5" to="OS1A"/>
+    <transition on="6" to="secondCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- OS1A: IDENTIFICATIE OVERLEDENE TODO: LEVNLOOS CHECK -->
+  <view-state id="OS1A" view="overlijden/OS1A" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="OS1B"/>
+  </view-state>
+
+  <!-- OS1B: AKTE GEGEVENS -->
+  <view-state id="OS1B" view="overlijden/OS1B" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="OS1C">
+      <evaluate expression="overlijdensAkteService.registerDate(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- OS1C: OVERLIJDENSDATUM EN TIJD -->
+  <view-state id="OS1C" view="overlijden/OS1C" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="OS2A"/>
+  </view-state>
+
+  <!-- OS2A: VADER -->
+  <view-state id="OS2A" view="overlijden/OS2A" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="OS2B"/>
+  </view-state>
+
+  <!-- OS2B: MOEDER -->
+  <view-state id="OS2B" view="overlijden/OS2B" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="fatherDeadOrAliveCheck">
+      <evaluate expression="overlijdensAkteService.registerFirstDetails(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="fatherDeadOrAliveCheck">
+    <evaluate expression="overlijdensAkteHelper.isFatherAangeverButDeath(flowScope.akte.ovlknd) or
+                          overlijdensAkteHelper.isFatherNotAangeverButAlive(flowScope.akte.ovlknd)"/>
+
+    <transition on="yes" to="OS3COR"/>
+    <transition on="no" to="levnloosCheck"/>
+  </action-state>
+
+  <view-state id="OS3COR" view="overlijden/OS3COR" model="akte">
+    <transition on="next" to="levnloosCheck"/>
+    <transition on="stop" to="stopEnd"/>
+  </view-state>
+
+  <action-state id="levnloosCheck">
+    <evaluate expression="flowScope.akte.isLevnloos()"/>
+
+    <transition on="yes" to="secondCorrectionCodeCheck"/>
+    <transition on="no" to="OS4"/>
+  </action-state>
+
+  <!-- OS4: OVERIGE GEGEVENS OVL AKTE  -->
+  <view-state id="OS4" view="overlijden/OS4" model="akte">
+    <transition on="next" to="secondCorrectionCodeCheck">
+      <evaluate expression="overlijdensAkteService.registerOtherDetails(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="secondCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="1" to="firstEchtgenootCheck"/>
+    <transition on="2" to="thirdCorrectionCodeCheck"/>
+    <transition on="3" to="firstEchtgenootCheck"/>
+    <transition on="4" to="thirdCorrectionCodeCheck"/>
+    <transition on="5" to="firstEchtgenootCheck"/>
+    <transition on="6" to="thirdCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="firstEchtgenootCheck">
+    <evaluate expression="({1,6}).contains(new Integer(flowScope.akte.ovlknd.brgovl))"/>
+
+    <transition on="yes" to="OS5COR1"/>
+    <transition on="no" to="addEchtgenootCheck"/>
+  </action-state>
+
+  <view-state id="OS5COR1" view="overlijden/OS5COR1" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="secondEchtgenootCheck">
+      <evaluate expression="overlijdensAkteService.registerNewBurgelijkeStaat(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="secondEchtgenootCheck">
+    <evaluate expression="({1,6}).contains(new Integer(flowScope.akte.ovlknd.brgovl)) and
+                          (flowScope.akte.ovlknd.mreovl > 0)"/>
+
+    <transition on="yes" to="OS5COR2"/>
+    <transition on="no" to="addEchtgenootCheck"/>
+  </action-state>
+
+  <view-state id="OS5COR2" view="overlijden/OS5COR2" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="addEchtgenootCheck">
+      <evaluate expression="overlijdensAkteService.registerConfirmedNewBurgelijkeStaat(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="addEchtgenootCheck">
+    <evaluate
+        expression="({2,3,5}).contains(new Integer(flowScope.akte.ovlknd.brgovl)) and
+                    (flowScope.akte.isLevnloos() == false)"/>
+
+    <transition on="yes" to="OS5"/>
+    <transition on="no" to="thirdCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- OS5: ECHTGENO(O)T(E) OVERLEDENE -->
+  <view-state id="OS5" view="overlijden/OS5" model="akte">
+    <transition on="next" to="echtgenootCheck">
+      <evaluate expression="overlijdensAkteService.registerEchtgenoot(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="echtgenootCheck">
+    <evaluate
+        expression="flowScope.akte.curOvlechIndex lt (flowScope.akte.ovlech.length - 1)"/>
+
+    <transition on="yes" to="OS5">
+      <evaluate expression="flowScope.akte.setCurOvlechIndex(flowScope.akte.curOvlechIndex + 1)"/>
+    </transition>
+
+    <transition on="no" to="thirdCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="thirdCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="1" to="OS3A"/>
+    <transition on="2" to="doNotCorrectAangeverCheck"/>
+    <transition on="3" to="doNotCorrectAangeverCheck"/>
+    <transition on="4" to="OS3A"/>
+    <transition on="5" to="OS3A"/>
+    <transition on="6" to="doNotCorrectAangeverCheck"/>
+  </action-state>
+
+  <action-state id="doNotCorrectAangeverCheck">
+    <evaluate expression="flowScope.akte.doNotCorrectAangever == 'n'"/>
+
+    <transition on="yes" to="OS3A"/>
+    <transition on="no" to="fourthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- OS3A: AANTAL AANGEVERS -->
+  <view-state id="OS3A" view="overlijden/OS3A" model="akte">
+    <transition on="next" to="skipAangeverCheck">
+      <evaluate expression="overlijdensAkteService.registerCorrectedAangeversInfo(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="skipAangeverCheck">
+    <evaluate
+        expression="(flowScope.akte.ovlknd.extract == 'n') and
+                    (flowScope.akte.curOvlagvIndex lt flowScope.akte.ovlknd.nagvr)"/>
+
+    <transition on="yes" to="OS3B"/>
+    <transition on="no" to="fourthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- OS3B: AANGEVER -->
+  <view-state id="OS3B" view="overlijden/OS3B" model="akte">
+    <transition on="next" to="aangeverCheck">
+      <evaluate expression="overlijdensAkteService.registerAangever(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="aangeverCheck">
+    <evaluate
+        expression="((flowScope.akte.curOvlagvIndex + 1) lt flowScope.akte.ovlknd.nagvr) and
+                    (flowScope.akte.ovlknd.oaktejr lt 1935)"/>
+
+    <transition on="yes" to="OS3B">
+      <evaluate expression="flowScope.akte.setCurOvlagvIndex(flowScope.akte.curOvlagvIndex + 1)"/>
+    </transition>
+
+    <transition on="no" to="fourthCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="fourthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="1" to="byzCheck"/>
+    <transition on="2" to="OSNIEUW"/>
+    <transition on="3" to="OSNIEUW"/>
+    <transition on="4" to="OSNIEUW"/>
+    <transition on="5" to="OSNIEUW"/>
+    <transition on="6" to="byzCheck"/>
+  </action-state>
+
+  <action-state id="byzCheck">
+    <evaluate expression="flowScope.akte.nrOfByzEntered == 0"/>
+
+    <transition on="yes" to="OS6COR"/>
+    <transition on="no" to="byzcCheck"/>
+  </action-state>
+
+  <!-- OS6COR: BIJZONDERHEDEN CHECK -->
+  <view-state id="OS6COR" view="overlijden/OS6COR" model="akte">
+    <transition on="next" to="byziCheck">
+      <evaluate expression="overlijdensAkteService.registerByzCheck(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="byziCheck">
+    <evaluate expression="flowScope.akte.ovlknd.problm == 'j'"/>
+
+    <transition on="yes" to="OSBYZ"/>
+    <transition on="no" to="OSNIEUW"/>
+  </action-state>
+
+  <!-- OSBYZ: BIJZONDERHEDEN INVOER -->
+  <view-state id="OSBYZ" view="overlijden/OSBYZ" model="akte">
+    <on-entry>
+      <evaluate expression="overlijdensAkteService.prepareByz(flowScope.akte)"/>
+    </on-entry>
+
+    <transition on="more" to="OSBYZ">
+      <evaluate expression="overlijdensAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="OSNIEUW">
+      <evaluate expression="overlijdensAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="byzcCheck">
+    <evaluate expression="flowScope.akte.nrOfByzEntered > 0"/>
+
+    <transition on="yes" to="OSBYZC"/>
+    <transition on="no" to="OSNIEUW"/>
+  </action-state>
+
+  <!-- OSBYZC: BIJZONDERHEDEN CORRECTIE -->
+  <view-state id="OSBYZC" view="overlijden/OSBYZC" model="akte">
+    <on-entry>
+      <evaluate expression="overlijdensAkteService.prepareByzForCorrection(flowScope.akte)"/>
+    </on-entry>
+
+    <transition on="more" to="OSBYZC">
+      <evaluate expression="overlijdensAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="OSNIEUW">
+      <evaluate expression="overlijdensAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- OSNIEUW: ANOTHER OVERLIJDENS AKTE CORRECTION? -->
+  <view-state id="OSNIEUW" view="overlijden/OSNIEUW" model="akte">
+    <transition on="next" to="nieuwCheck"/>
+  </view-state>
+
+  <action-state id="nieuwCheck">
+    <evaluate expression="requestParameters.anotherFlow == 'j'"/>
+
+    <transition on="yes" to="OS0C"/>
+    <transition on="no" to="finishEnd"/>
+  </action-state>
+
+  <end-state id="stopEnd" view="redirect:/overlijden/hoofdmenu"/>
+
+  <end-state id="finishEnd" view="redirect:/overlijden/hoofdmenu"/>
+</flow>

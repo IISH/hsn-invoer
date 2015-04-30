@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- HS0C: IDENTIFICATIE -->
+  <view-state id="HS0C" view="huwelijk/HS0C" model="akte">
+    <on-entry>
+      <evaluate expression="huwelijksAkteService.createNewAkteForCorrection()" result="flowScope.akte"/>
+      <evaluate expression="flowScope.akte.setCorrectionDelete()"/>
+    </on-entry>
+
+    <transition on="stop" to="end"/>
+
+    <transition on="next" to="HVERW">
+      <evaluate expression="huwelijksAkteService.editOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- HVERW: VERWIJDEREN -->
+  <view-state id="HVERW" view="huwelijk/HVERW" model="akte">
+    <transition on="stop" to="end"/>
+
+    <transition on="next" to="end">
+      <evaluate expression="huwelijksAkteService.deleteAkte(flowScope.akte, requestParameters.bewust)"/>
+    </transition>
+  </view-state>
+
+  <end-state id="end" view="redirect:/huwelijk/hoofdmenu"/>
+</flow>

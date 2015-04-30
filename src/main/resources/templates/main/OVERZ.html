@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head></head>
+<body>
+<header layout:fragment="header" th:include="layoutFragments :: header"></header>
+
+<fieldset class="content-spacing" layout:fragment="main">
+  <div class="form-group">
+    <label class="col-xs-7 control-label">Wilt u een overzicht van alle ingevoerde akten? j / n</label>
+
+    <div class="col-xs-2">
+      <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+             name="alleAkten" id="alleAkten"/>
+    </div>
+  </div>
+
+  <div class="form-group" data-show-when="#alleAkten" data-has-values-in="n" style="display: none;">
+    <label class="col-xs-7 control-label">Wilt u een overzicht van meer dan een akte? j / n</label>
+
+    <div class="col-xs-2">
+      <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+             name="meerdereAkten" id="meerdereAkten"/>
+    </div>
+  </div>
+
+  <div class="form-group" data-show-when="#meerdereAkten" data-has-values-in="j" style="display: none;"
+       th:if="${isBirthOverview}">
+    <div class="row">
+      <label class="col-xs-3 control-label">Selecteer op</label>
+
+      <div class="col-xs-4">
+        <label class="control-label">1. Bepaalde identificatie-nummers</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-4 col-xs-offset-3">
+        <label class="control-label">2. Een bepaalde geboorte-gemeente</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-4 col-xs-offset-3">
+        <label class="control-label">3. Een bepaald geboorte-cohort</label>
+      </div>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="1;2;3"
+               name="typeAkteFilter" id="typeAkteFilter"/>
+      </div>
+    </div>
+  </div>
+
+  <div data:show-when="${isBirthOverview ? '#typeAkteFilter' : '#meerdereAkten'}"
+       data:has-values-in="${isBirthOverview ? '1' : 'j'}" style="display: none;">
+    <div class="form-group">
+      <label class="col-xs-7 control-label">Geef laagste identificatienummer:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-small required integer-field"
+               name="laagsteIdnr" id="laagsteIdnr"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-7 control-label">Geef hoogste identificatienummer:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-small required integer-field"
+               name="hoogsteIdnr" id="hoogsteIdnr"/>
+      </div>
+    </div>
+  </div>
+
+  <th:block th:if="${isBirthOverview}">
+    <div class="form-group" data-show-when="#typeAkteFilter" data-has-values-in="2" style="display:none;">
+      <label class="col-xs-5 control-label">Geboorte-gemeente:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control required plaats" name="gemeente" id="gemeente"/>
+      </div>
+    </div>
+
+    <div class="form-group" data-show-when="#typeAkteFilter" data-has-values-in="3" style="display:none;">
+      <label class="col-xs-7 control-label">Geef nummer van het cohort:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control form-control-digit integer-field required"
+               name="cohort" id="cohort"/>
+      </div>
+    </div>
+  </th:block>
+
+  <div class="form-group" data-show-when="#meerdereAkten" data-has-values-in="n" style="display:none;">
+    <label class="col-xs-7 control-label">Geef identificatienummer:</label>
+
+    <div class="col-xs-5">
+      <input type="text" class="form-control form-control-small integer-field required"
+             name="idnr" id="idnr"/>
+    </div>
+  </div>
+
+  <div class="pull-right">
+    <button type="submit" name="zoek" class="btn btn-default btn-right-spacing btn-zoek">
+      Zoeken
+    </button>
+  </div>
+</fieldset>
+
+<footer layout:fragment="footer" th:include="layoutFragments :: footer"></footer>
+</body>
+</html>

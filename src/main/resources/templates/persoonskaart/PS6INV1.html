@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <label class="col-xs-9 control-label">
+        Worden van de PK-houder een of meerdere kinderen vermeld? j / n
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+               id="anotherChild" name="anotherChild"/>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, false)"></fieldset>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <div class="sub-form-group">
+        <label class="col-xs-3 control-label">Aantal voorkinderen:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" id="noOfVoorkinderen"
+                 name="noOfVoorkinderen"
+                 data-min-value="1" th:if="${akte.curHuwvrknd.vlgnrvk} == 1"/>
+
+          <p class="form-control-static" th:if="${akte.curHuwvrknd.vlgnrvk} gt 1" th:utext="${akte.huwvrknd.length}">
+            1</p>
+        </div>
+      </div>
+
+      <div class="sub-form-group">
+        <label class="col-xs-2 control-label" th:if="${akte.isCorrection()} == false">Invoer:</label>
+        <label class="col-xs-2 control-label" th:if="${akte.isCorrection()}">Correctie:</label>
+
+        <div class="col-xs-3">
+          <p class="form-control-static" th:utext="${akte.curHuwvrknd.vlgnrvk} + 'e VOORKIND'">1e VOORKIND</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="extra-top-margin"
+         th:include="fragments/groups-of-fields :: namen ('curHuwvrknd.anmvk', 'curHuwvrknd.vrn1vk', 'curHuwvrknd.vrn2vk', 'curHuwvrknd.vrn3vk', false)">
+    </div>
+
+    <div class="form-group">
+      <div class="sub-form-group checkDateDefault">
+        <label class="col-xs-3 control-label">Datum geboorte:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('curHuwvrknd.gbdgvk', 'curHuwvrknd.gbmdvk', 'curHuwvrknd.gbjrvk')"></div>
+      </div>
+
+      <div class="sub-form-group">
+        <label class="col-xs-3 control-label">Geslacht: m / v / o</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="m;v;o"
+                 th:field="*{curHuwvrknd.geslvk}" hsn:field="curHuwvrknd.geslvk"/>
+        </div>
+      </div>
+    </div>
+
+    <div th:replace="fragments/complete-fields :: plaats ('curHuwvrknd.gbplvk', 'Plaats geboorte:')"></div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-5 control-label">Is dit voorkind al eerder erkend? j / n / o</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n;o"
+               th:field="*{curHuwvrknd.ervk}" hsn:field="curHuwvrknd.ervk"/>
+      </div>
+    </div>
+
+    <div class="form-group extra-top-margin" data-show-when="#curHuwvrknd\.ervk" data-has-values-in="j">
+      <label class="col-xs-8 control-label">
+        Kode (1=moeder, 2=vader, 3 = vr&amp;mr tegelijk, 4 = vr&amp;mr elk apart)
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="1;2;3;4"
+               th:field="*{curHuwvrknd.ervkwie}" hsn:field="curHuwvrknd.ervkwie"/>
+      </div>
+    </div>
+
+    <div data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="1;3;4">
+      <div class="form-group extra-top-margin checkDateDefault">
+        <label class="col-xs-3 control-label"
+               data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="1;4">
+          Datum erkenning moeder:
+        </label>
+
+        <label class="col-xs-3 control-label"
+               data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="3">
+          Datum erkenning vr&amp;mr:
+        </label>
+
+        <div
+            th:replace="fragments/fields :: datum ('curHuwvrknd.mekdgvk', 'curHuwvrknd.mekmdvk', 'curHuwvrknd.mekjrvk')"></div>
+      </div>
+
+      <div th:replace="fragments/complete-fields :: plaats ('curHuwvrknd.mekplvk', 'Plaats erkenning:')"></div>
+    </div>
+
+    <div data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="2;4">
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-3 control-label checkDateDefault">Datum erkenning vader:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('curHuwvrknd.vekdgvk', 'curHuwvrknd.vekmdvk', 'curHuwvrknd.vekjrvk')"></div>
+      </div>
+
+      <div th:replace="fragments/complete-fields :: plaats ('curHuwvrknd.vekplvk', 'Plaats erkenning:')"></div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

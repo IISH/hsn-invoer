@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <label class="col-xs-7 control-label">Aantal addressen:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit" id="noAddresses" name="noAddresses"
+               data-min-value="0" data-ajax-update="#addresses"
+               th:value="${(akte.pkadres.size() > 0) ? akte.pkadres.size() : 0}"/>
+      </div>
+    </div>
+
+    <div id="addresses" class="extra-top-margin" th:fragment="addresses" th:object="${akte}">
+      <th:block th:each="curPkadres,stat : *{pkadres}">
+        <div class="pk-adres" th:with="vgnradp=${akte.pkadres[__${stat.index}__].vgnradp}"
+             th:classappend="${vgnradp > 1} ? 'extra-top-margin'">
+          <div class="form-header" th:utext="${vgnradp + 'e ADRES:'}">1e ADRES:</div>
+
+          <div class="form-group">
+            <div class="sub-form-group checkDateDefault">
+              <label class="col-xs-3 control-label">Aangiftedatum:</label>
+
+              <div class="col-xs-3 form-inline"
+                   th:include="fragments/fields :: datum ('pkadres[__${stat.index}__].dgadrp', 'pkadres[__${stat.index}__].mdadrp', 'pkadres[__${stat.index}__].jradrp')"></div>
+            </div>
+
+            <div class="sub-form-group" th:if="${vgnradp > 1}">
+              <label class="col-xs-4 control-label">vernum/annex/niet rel v / a / n</label>
+
+              <div class="col-xs-2">
+                <input type="text" class="form-control form-control-digit required adresRenumbering" maxlength="1"
+                       data-valid-chars="v;a;n" th:field="*{pkadres[__${stat.index}__].vernum}"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group"
+               th:replace="fragments/complete-fields :: plaats ('pkadres[__${stat.index}__].pladrp', 'GEMEENTE:')"></div>
+
+          <div class="form-group">
+            <label class="col-xs-3 control-label">STRAAT:</label>
+
+            <div class="col-xs-5">
+              <input type="text" class="form-control" th:field="*{pkadres[__${stat.index}__].stradrp}"/>
+            </div>
+          </div>
+
+          <div class="form-group" data:show-when="${vgnradp > 1} ? '#pkadres__${stat.index}__\.vernum'"
+               data:has-values-in="${vgnradp > 1} ? 'n'">
+            <label class="col-xs-3 control-label">LAND:</label>
+
+            <div class="col-xs-5">
+              <input type="text" class="form-control" th:field="*{pkadres[__${stat.index}__].lndadrp}"/>
+            </div>
+          </div>
+        </div>
+      </th:block>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/persoonskaart/PS5.js" th:src="@{/js/persoonskaart/PS5.js}"></script>
+</th:block>
+</body>
+</html>

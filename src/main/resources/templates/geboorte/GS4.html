@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="geboorte/GSTITEL :: GSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend th:if="${#arrays.contains({2,3}, new Integer(akte.gebknd.brgstmr))} == false">VADER</legend>
+    <legend th:if="${#arrays.contains({2,3}, new Integer(akte.gebknd.brgstmr))}">VROEGERE ECHTGENOOT</legend>
+
+    <div class="form-group">
+      <label class="col-xs-8 control-label"
+             th:if="${#arrays.contains({2,3}, new Integer(akte.gebknd.brgstmr))} == false">
+        Gegevens vader ook in de akte opgenomen? j / n
+      </label>
+
+      <label class="col-xs-8 control-label" th:if="${#arrays.contains({2,3}, new Integer(akte.gebknd.brgstmr))}">
+        Gegevens vroegere echtgenoot ook in de akte opgenomen? j / n
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+               th:field="*{gebvdr.gegvr}" hsn:field="gebvdr.gegvr"/>
+      </div>
+    </div>
+
+    <div data-show-when="#gebvdr\.gegvr" data-has-values-in="j" style="display: none;">
+      <th:block
+          th:include="fragments/groups-of-fields :: namen ('gebvdr.anmvr', 'gebvdr.vrn1vr', 'gebvdr.vrn2vr', 'gebvdr.vrn3vr', 'gebvdr.lftvr')">
+      </th:block>
+
+      <div class="form-group extra-top-margin"
+           th:include="fragments/complete-fields :: beroep ('gebvdr.brpvr', 'Beroep:')"></div>
+
+      <div class="form-group" th:replace="fragments/complete-fields :: adres ('gebvdr.adrvr')"></div>
+
+      <div class="form-group extra-top-margin checkDateDefault" th:if="${new Integer(akte.gebknd.brgstmr)} == 2">
+        <label class="col-xs-3 control-label">Datum overlijden:</label>
+
+        <div th:replace="fragments/fields :: datum ('gebvdr.g5vood', 'gebvdr.g5voom', 'gebvdr.g5vooj')"></div>
+      </div>
+
+      <div class="form-group extra-top-margin checkDateDefault" th:if="${new Integer(akte.gebknd.brgstmr)} == 3">
+        <label class="col-xs-3 control-label">Datum scheiding:</label>
+
+        <div th:replace="fragments/fields :: datum ('gebvdr.g5oosd', 'gebvdr.g5oosm', 'gebvdr.g5oosj')"></div>
+      </div>
+
+      <div class="form-group" th:if="${new Integer(akte.gebknd.brgstmr)} == 2"
+           th:include="fragments/complete-fields :: plaats ('gebvdr.g5vogo', 'Plaats overlijden:')"></div>
+      <div class="form-group" th:if="${new Integer(akte.gebknd.brgstmr)} == 3"
+           th:include="fragments/complete-fields :: plaats ('gebvdr.g5oogs', 'Plaats scheiding:')"></div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="geboorte/GSTITEL :: GSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend th:if="${akte.isCorrection()} == false">KANTMELDING MENU</legend>
+    <legend th:if="${akte.isCorrection()}">KANTMELDING MENU CORRECTIE-VARIANT</legend>
+
+    <div class="form-group" th:if="${akte.isCorrection() and (akte.gebknd.kant == 'j')}">
+      <label class="col-xs-6 control-label">Reeds ingevoerde kantmelding is type:</label>
+
+      <div class="col-xs-2">
+        <p class="form-control-static" th:utext="${akte.gebkant.kanttype}"></p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-6 control-label" th:if="${(akte.isCorrection() == false) or (akte.gebknd.kant == 'n')}">
+        Kantmelding in de marge? j / n
+      </label>
+      <label class="col-xs-6 control-label" th:if="${akte.isCorrection() and (akte.gebknd.kant == 'j')}">
+        Nog steeds een kantmelding invoeren? j / n
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+               name="gebknd.kant" id="gebknd.kant"/>
+      </div>
+    </div>
+
+    <div data-show-when="#gebknd\.kant" data-has-values-in="j" style="display:none;">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-xs-8 col-xs-offset-1">
+            <label class="control-label">Betreft het een:</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-8 col-xs-offset-1">
+            <label class="control-label">1. Naamsverandering als gevolg van erkenning via een
+              huwelijk</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-8 col-xs-offset-1">
+            <label class="control-label">2. Naams- of andere gegevensverandering vanwege een K.B.</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-8 col-xs-offset-1">
+            <label class="control-label">3. Naams- of andere gegevensverandering vanwege een
+              rechtbankbesluit</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-8 col-xs-offset-1">
+            <label class="control-label">4. Erkenning door moeder (van onwettig kind)</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-8 col-xs-offset-1">
+            <label class="control-label">5. Overige kantmeldingen (-> bijzonderheden)</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-2 col-xs-offset-8">
+            <label class="control-label">Tik uw keuze in:</label>
+          </div>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control form-control-digit required" maxlength="1"
+                   data-valid-chars="1;2;3;4;5" data-byz="5" name="gebkant.kanttype" id="gebkant.kanttype"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info extra-top-margin" role="alert"
+           data-show-when="#gebkant\.kanttype" data-has-values-not-in="1;2;3;4;5" style="display:none;">
+        Een AMBTELIJKE CORRECTIE is geen kantmelding en kan dus gewoon bij de INVOER worden verwerkt tenzij de
+        correctie
+        LATER en EXPLICIET is aangebracht!!
+        <br/><br/>
+        Een eventuele TWEEDE kantmelding kunt u bij de bijzonderheden verwerken. Type kantmelding 1 heeft
+        voorrang
+        boven
+        2; 2 boven 3 en 3 boven 4.
+      </div>
+
+      <div class="alert alert-info extra-top-margin" role="alert"
+           data-show-when="#gebkant\.kanttype" data-has-values-in="1;2;3;4" style="display:none;">
+        In het volgende scherm volgen eerst enkele vragen of opmerkingen over de kantmelding, vervolgens kunt u
+        bijzonderheden invoeren.
+      </div>
+
+      <div class="alert alert-info extra-top-margin" role="alert" data-show-when="#gebkant\.kanttype"
+           data-has-values-in="5"
+           style="display:none;" th:if="${akte.isCorrection()}">
+        Vergeet a.u.b. niet om in het geval van overige kantmeldingen ook de bijzonderheden te corrigeren!!!
+      </div>
+    </div>
+
+    <input type="hidden" name="show-byz-btn" class="show-byz-btn"
+           data-set-value-when="#gebkant\.kanttype" data-has-values-in="5" data-then-value="j" data-else-value="n"/>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/geboorte/GS6.js" th:src="@{/js/geboorte/GS6.js}"></script>
+</th:block>
+</body>
+</html>

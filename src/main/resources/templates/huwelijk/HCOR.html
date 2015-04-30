@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-xs-8 col-xs-offset-1">
+          <label class="control-label">Welke gegevens wilt u corrigeren?</label>
+        </div>
+      </div>
+
+      <div class="row extra-top-margin">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">0. Alle gegevens</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">1. Akte gegevens (incl. scheiding)</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">2. Voorkinderen</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">3. Bruid/bruidegom</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">4. Huwelijksafkondigingen</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">5. Eerdere huwelijken bruid/bruidegom</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">6. Ouders huwenden</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">7. Getuigen</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">8. Bijlagen bij de akte</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">9. Bijzonderheden</label>
+        </div>
+      </div>
+
+      <div class="row extra-top-margin">
+        <div class="col-xs-3 col-xs-offset-2">
+          <label class="control-label">Maak hier uw keuze:</label>
+        </div>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required zero-allowed"
+                 maxlength="1" data-valid-chars="0;1;2;3;4;5;6;7;8;9" id="correctionCode" name="correctionCode"/>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+</body>
+</html>

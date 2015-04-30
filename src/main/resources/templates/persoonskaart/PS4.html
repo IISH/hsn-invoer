@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend th:utext="${akte.curPkhuw.vnrhuwp + 'e HUWELIJK'}">1e HUWELIJK</legend>
+
+    <div class="form-header">Gegevens echtgenoot/-ote:</div>
+
+    <th:block
+        th:include="fragments/groups-of-fields :: namen ('curPkhuw.anmhuwp', 'curPkhuw.vn1huwp', 'curPkhuw.vn2huwp', 'curPkhuw.vn3huwp', false)">
+    </th:block>
+
+    <div class="form-group checkDateDefault">
+      <label class="col-xs-3 control-label">GEB dat/plts:</label>
+
+      <div class="col-xs-9 form-inline">
+        <th:block
+            th:include="fragments/fields :: datum ('curPkhuw.gdghuwp', 'curPkhuw.gmdhuwp', 'curPkhuw.gjrhuwp')">
+        </th:block>
+
+        <input type="text" class="form-control spacing plaats" th:field="*{curPkhuw.gplhuwp}" hsn:field="curPkhuw.gplhuwp"/>
+      </div>
+    </div>
+
+    <div class="form-group" th:if="${akte.pkknd.pktype == 7}"
+         th:include="fragments/complete-fields :: beroep ('curPkhuw.brphuwp', 'Beroep:')"></div>
+
+    <div class="form-header extra-top-margin">Gegevens huwelijk:</div>
+
+    <div class="form-group checkDateDefault">
+      <label class="col-xs-3 control-label">Huwelijksdatum:</label>
+
+      <div th:replace="fragments/fields :: datum ('curPkhuw.hdghuwp', 'curPkhuw.hmdhuwp', 'curPkhuw.hjrhuwp')"></div>
+    </div>
+
+    <div class="form-group"
+         th:include="fragments/complete-fields :: plaats ('curPkhuw.hplhuwp', 'Huwelijksplaats:')">
+    </div>
+
+    <div class="form-group checkDateDefault">
+      <label class="col-xs-3 control-label">Ontbindingsdatum:</label>
+
+      <div th:replace="fragments/fields :: datum ('curPkhuw.odghuwp', 'curPkhuw.omdhuwp', 'curPkhuw.ojrhuwp')"></div>
+    </div>
+
+    <div class="form-group"
+         th:include="fragments/complete-fields :: plaats ('curPkhuw.oplhuwp', 'Plaats van ontbinding:')">
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-7 control-label">
+        Reden ontbinding (1=overl, 2=sch, 3=ovrg, 4=bigamie, 9=n.g.)
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="1;2;3;4;9"
+               th:field="*{curPkhuw.ordhuwp}" hsn:field="curPkhuw.ordhuwp"/>
+      </div>
+    </div>
+
+    <th:block th:if="${akte.pkknd.pktype != 8}">
+      <div class="form-group checkDateDefault">
+        <label class="col-xs-3 control-label">Afvoerdatum:</label>
+
+        <div th:replace="fragments/fields :: datum ('curPkhuw.adghuwp', 'curPkhuw.amdhuwp', 'curPkhuw.ajrhuwp')"></div>
+      </div>
+
+      <div class="form-group"
+           th:include="fragments/complete-fields :: plaats ('curPkhuw.aplhuwp', 'Plaats van afvoer:')">
+      </div>
+    </th:block>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-10 control-label">Nog een huwelijk invoeren ? j / n</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+               name="anotherMarriage" id="anotherMarriage"/>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

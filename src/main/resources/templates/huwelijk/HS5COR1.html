@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <label class="col-xs-5 control-label">
+        Oorspronkelijk aantal getuigen:
+      </label>
+
+      <div class="col-xs-4">
+        <p class="form-control-static" th:utext="${akte.huwgtg.length}">0</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-5 control-label">
+        Veranderen? j / n
+      </label>
+
+      <div class="col-xs-4">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+               name="changeNumber" id="changeNumber"/>
+      </div>
+    </div>
+
+    <div class="form-group" data-show-when="#changeNumber" data-has-values-in="j">
+      <label class="col-xs-5 control-label">
+        Geef nieuw aantal: (Geen getuigen = -5)
+      </label>
+
+      <div class="col-xs-4">
+        <input type="text" class="form-control form-control-digit" th:field="*{huwknd.ngtg}" hsn:field="huwknd.ngtg"/>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/huwelijk/HS0A1.js" th:src="@{/js/huwelijk/HS0A1.js}"></script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <legend align="center">CORRECTIE VAN GEBOORTE-AKTEN</legend>
+
+  <div class="text-center">
+    N.B. U kunt niet de type-kode van de akte veranderen!!
+  </div>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <label class="col-xs-4 control-label">Identificatienummer:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control stpb-idnr required" th:field="*{gebakte.idnr}" hsn:field="gebakte.idnr"/>
+      </div>
+    </div>
+
+    <p class="fail text-danger text-center" style="display: none;"></p>
+
+    <div class="with-op-state extra-top-margin" style="display: none;">
+      <div class="form-title">GEBOORTEAKTE PRESENTATIE</div>
+
+      <div class="row">
+        <div class="col-xs-6 col-xs-offset-2">
+          Het gaat om de volgende akte:
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-3 col-xs-offset-2">
+          Plaats:
+        </div>
+
+        <div class="col-xs-3 gemeente"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-3 col-xs-offset-2">
+          Jaar:
+        </div>
+
+        <div class="col-xs-3 jaar"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-3 col-xs-offset-2">
+          Akte-nummer:
+        </div>
+
+        <div class="col-xs-3 aktenr"></div>
+      </div>
+
+      <div class="form-group extra-top-margin">
+        <label class="control-label col-xs-4">Tijd en dagtekening van de akte:</label>
+
+        <div class="col-xs-12 checkDateTime">
+          <div class="col-xs-3">
+            <label class="control-label">Dag:</label>
+            <input type="text" class="form-control day" th:field="*{gebknd.aktedag}" hsn:field="gebknd.aktedag"/>
+          </div>
+
+          <div class="col-xs-3">
+            <label class="control-label">Maand:</label>
+            <input type="text" class="form-control month" th:field="*{gebknd.aktemnd}" hsn:field="gebknd.aktemnd"/>
+          </div>
+
+          <div class="col-xs-3">
+            <label class="control-label">Jaar:</label>
+
+            <p class="form-control-static jaar year" th:utext="*{gebknd.jaar}"></p>
+          </div>
+
+          <div class="col-xs-3">
+            <label class="control-label">Uur:</label>
+            <input type="text" class="form-control hour" th:field="*{gebknd.akteuur}" hsn:field="gebknd.akteuur"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-danger extra-top-margin" role="alert">
+        Indien de door u gevonden kombinatie niet klopt met die van de akte, stop dan en vernietig deze invoer!!!
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/geboorte/GS0IC.js" th:src="@{/js/geboorte/GS0IC.js}"></script>
+</th:block>
+</body>
+</html>

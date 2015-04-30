@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="geboorte/GSTITEL :: GSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend>ERKENNING DOOR MOEDER</legend>
+
+    <div class="form-header">KANTMELDING</div>
+
+    <div class="form-group">
+      <label class="col-xs-6 control-label">Datum van de kantmelding gegeven? j / n</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit datum-kantmelding required" data-valid-chars="j;n"
+               th:value="${@geboorteAkteHelper.getKantmeldingDatum(akte.gebkant)}"/>
+      </div>
+    </div>
+
+    <div class="form-group checkDate kantmeldingDateCheck" style="display:none;"
+         data-show-when=".datum-kantmelding" data-has-values-in="j">
+      <label class="col-xs-3 control-label">Datum:</label>
+
+      <div th:replace="fragments/fields :: datum ('gebkant.kantdag', 'gebkant.kantmnd', 'gebkant.kantjr')"></div>
+    </div>
+
+    <div class="form-header extra-top-margin">ERKENNING DOOR MOEDER</div>
+
+    <div class="form-group">
+      <label class="col-xs-6 control-label">Datum erkenning gegeven? j / n</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit datum-erkenning required" data-valid-chars="j;n"
+               th:value="${@geboorteAkteHelper.getKantmeldingBesluitDatum(akte.gebkant)}"/>
+      </div>
+    </div>
+
+    <div data-show-when=".datum-erkenning" data-has-values-in="j" style="display:none;">
+      <div class="form-group checkDate kantmeldingDateCheck">
+        <label class="col-xs-3 control-label">Datum:</label>
+
+        <div th:replace="fragments/fields :: datum ('gebkant.kwyzdag', 'gebkant.kwyzmnd', 'gebkant.kwyzjr')"></div>
+      </div>
+
+      <div class="form-group extra-top-margin"
+           th:replace="fragments/complete-fields :: plaats ('gebkant.kgmerk', 'Plaats erkenning:')"></div>
+
+      <div class="form-group"
+           th:replace="fragments/complete-fields :: plaats ('gebkant.kwgmmr', 'Woonplaats moeder:')"></div>
+
+      <div class="form-group"
+           th:include="fragments/complete-fields :: beroep ('gebkant.kbrpmr', 'Beroep moeder:')"></div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/geboorte/GS7.js" th:src="@{/js/geboorte/GS7.js}"></script>
+</th:block>
+</body>
+</html>

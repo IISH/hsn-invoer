@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div th:if="${akte.huwknd.erken} == 'j'">
+      <div class="alert alert-info" role="alert">
+        Er zijn reeds voorkinderen ingevoerd
+      </div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-7 control-label">1 Correctie en evt. aanvullen 2 Verwijderen</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="1;2"
+                 name="voorkinderenAction"/>
+        </div>
+      </div>
+    </div>
+
+    <div th:if="${akte.huwknd.erken} != 'j'">
+      <div class="alert alert-info" role="alert">
+        Er zijn nog geen voorkinderen ingevoerd
+      </div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-7 control-label">1 Invoeren voorkinderen 2 Geen actie</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="1;2"
+                 name="voorkinderenAction"/>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

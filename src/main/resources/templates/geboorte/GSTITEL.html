@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<fieldset class="title" th:fragment="GSTITEL">
+  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER GEBOORTE AKTEN</legend>
+  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE GEBOORTE AKTEN</legend>
+
+  <div class="row with-op" th:style="${akte.stpb} == null ? 'display:none;'">
+    <div class="col-xs-3">
+      <span class="gemeente" th:utext="${@geboorteAkteHelper.getGemeente(akte.stpb)}"></span>
+    </div>
+
+    <div class="col-xs-3" th:if="${akte.gebknd.oversamp} != 'j'">
+      jaar:
+      <span class="jaar" th:utext="${akte.stpb} ? ${akte.stpb.jaar}"></span>
+    </div>
+
+    <div class="col-xs-3" th:if="${akte.gebknd.oversamp} == 'j'">
+      <span class="jaar" th:utext="${@geboorteAkteHelper(akte.gebknd}"></span>
+    </div>
+
+    <div class="col-xs-3">
+      Aktenr:
+      <span class="aktenr" th:utext="${akte.stpb} ? ${akte.stpb.aktenr}"></span>
+    </div>
+
+    <div class="col-xs-3">
+      Idnr:
+      <span class="idnr" th:utext="${akte.stpb} ? ${akte.stpb.idnr}"></span>
+    </div>
+  </div>
+
+  <div class="text-center without-op" th:style="${akte.stpb} != null ? 'display:none;'">
+    Opzoeken identificatie via bestand met trekkingslijsten
+  </div>
+</fieldset>
+</body>
+</html>

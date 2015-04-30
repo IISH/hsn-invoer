@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div class="col-xs-4 form-inline" th:fragment="datum (dag, maand, jaar)">
+  <input type="text" class="form-control form-control-digit day" th:field="*{__${dag}__}" hsn:field="dag"/>
+  /
+  <input type="text" class="form-control form-control-digit month" th:field="*{__${maand}__}" hsn:field="maand"/>
+  /
+  <input type="text" class="form-control form-control-small year" th:field="*{__${jaar}__}" hsn:field="jaar"/>
+</div>
+
+<div class="col-xs-3 form-inline" th:fragment="tijd (uur, minuut)">
+  <input type="text" class="form-control form-control-digit hour" th:field="*{__${uur}__}" hsn:field="uur"/>
+  :
+  <input type="text" class="form-control form-control-digit minute" th:field="*{__${minuut}__}" hsn:field="minuut"/>
+</div>
+
+<div class="col-xs-5" th:fragment="relatie (relatie, relatieId, onId)" th:classappend="${onId} ? 'form-inline'">
+  <th:block th:if="${onId == false}">
+    <input type="hidden" th:if="${relatieId != null}" th:field="*{__${relatieId}__}"/>
+
+    <input type="text" class="form-control relatie" th:field="*{__${relatie}__}" hsn:field="relatie"/>
+  </th:block>
+
+  <th:block th:if="${onId}" th:with="relId=*{__${relatieId}__},rel=${@relatieRepository.findByRelkode(relId)}">
+    <input type="text" class="form-control form-control-digit relatie required is-id"
+           data:selected="${relId}" th:field="*{__${relatieId}__}"/>
+
+    <p class="form-control-static picklist-label spacing" th:utext="${rel != null} ? ${rel.relatie} : '&nbsp;'">
+      &nbsp;
+    </p>
+  </th:block>
+</div>
+
+<div class="col-xs-5" th:fragment="beroep (beroep)">
+  <input type="text" class="form-control beroep" th:field="*{__${beroep}__}" hsn:field="beroep"/>
+</div>
+
+<div class="col-xs-5 form-inline" th:fragment="burgelijke-stand (burgelijkeStand)" th:with="brgId=*{__${burgelijkeStand}__}">
+  <input type="text" class="form-control form-control-digit burgstand required is-id"
+         data:selected="${brgId}" th:field="*{__${burgelijkeStand}__}"/>
+
+  <p class="form-control-static picklist-label spacing" th:if="${#arrays.contains({1,2,3,5,6,9}, brgId) == false}">
+    &nbsp;
+  </p>
+
+  <p class="form-control-static picklist-label spacing" th:if="${brgId == 1}">
+    Ongehuwd
+  </p>
+
+  <p class="form-control-static picklist-label spacing" th:if="${brgId == 2}">
+    Verweduwd
+  </p>
+
+  <p class="form-control-static picklist-label spacing" th:if="${brgId == 3}">
+    Gescheiden
+  </p>
+
+  <p class="form-control-static picklist-label spacing" th:if="${brgId == 5}">
+    Gehuwd
+  </p>
+
+  <p class="form-control-static picklist-label spacing" th:if="${brgId == 6}">
+    Onbekend
+  </p>
+
+  <p class="form-control-static picklist-label spacing" th:if="${brgId == 9}">
+    Onb -> huwelijk
+  </p>
+</div>
+
+<div class="col-xs-5" th:fragment="kerkgenootschap (kerkgenootschap)">
+  <input type="text" class="form-control kg" th:field="*{__${kerkgenootschap}__}" hsn:field="kerkgenootschap"/>
+</div>
+</body>
+</html>

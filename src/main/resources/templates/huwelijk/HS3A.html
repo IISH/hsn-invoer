@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend class="text-center">Overige gegevens <span class="form-main-header">HUWELIJKSAKTE:</span></legend>
+
+    <div class="form-header">BRUIDEGOM</div>
+
+    <th:block th:if="${!akte.isCorrection() or (akte.correctionCode != 5)}">
+      <div class="form-group" th:replace="fragments/complete-fields :: plaats ('huwknd.adrhm', 'Woonplaats:')"></div>
+
+      <div class="form-group"
+           th:replace="fragments/complete-fields :: plaats ('huwknd.oadrhm', 'Evt. vorige woonplaats:')"></div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label">Overige vorige woonpl.:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control" th:field="*{huwknd.oadrehm}" hsn:field="huwknd.oadrehm"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:replace="fragments/complete-fields :: beroep ('huwknd.brphm', 'Beroep:')"></div>
+    </th:block>
+
+    <th:block th:if="${!akte.isCorrection() or (akte.correctionCode != 3)}">
+      <input type="hidden" data-set-value-when="#eerder-gehuwd-bruidegom" data-has-values-in="n"
+             data-then-value="1" data-else-value-of="#eerder-gehuwd-code-bruidegom" th:field="*{huwknd.bsthm}" hsn:field="huwknd.bsthm"/>
+
+      <div class="form-group">
+        <label for="eerder-gehuwd-bruidegom" class="col-xs-7 control-label">
+          Is de bruidegom eerder gehuwd geweest? j / n
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 name="eerder-gehuwd-bruidegom" id="eerder-gehuwd-bruidegom"
+                 th:value="${(akte.huwknd.bsthm == '1') || (akte.huwknd.bsthm == null)} ? 'n' : 'j'"/>
+        </div>
+      </div>
+
+      <div class="form-group" data-show-when="#eerder-gehuwd-bruidegom" data-has-values-in="j">
+        <label for="eerder-gehuwd-code-bruidegom" class="col-xs-7 control-label">
+          Huidige staat: 2 = weduwnaar, 3 = gescheiden, 6 = onbekend
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="2;3;6"
+                 name="eerder-gehuwd-code-bruidegom" id="eerder-gehuwd-code-bruidegom" th:value="${akte.huwknd.bsthm}"/>
+        </div>
+      </div>
+    </th:block>
+
+    <div class="form-header extra-top-margin">BRUID</div>
+
+    <th:block th:if="${!akte.isCorrection() or (akte.correctionCode != 5)}">
+      <div class="form-group" th:replace="fragments/complete-fields :: plaats ('huwknd.adrhv', 'Woonplaats:')"></div>
+
+      <div class="form-group"
+           th:replace="fragments/complete-fields :: plaats ('huwknd.oadrhv', 'Evt. vorige woonplaats:')"></div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label">Overige vorige woonpl.:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control" th:field="*{huwknd.oadrehv}" hsn:field="huwknd.oadrehv"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:replace="fragments/complete-fields :: beroep ('huwknd.brphv', 'Beroep:')"></div>
+    </th:block>
+
+    <th:block th:if="${!akte.isCorrection() or (akte.correctionCode != 3)}">
+      <input type="hidden" data-set-value-when="#eerder-gehuwd-bruid" data-has-values-in="n"
+             data-then-value="1" data-else-value-of="#eerder-gehuwd-code-bruid" th:field="*{huwknd.bsthv}" hsn:field="huwknd.bsthv"/>
+
+      <div class="form-group">
+        <label for="eerder-gehuwd-bruid" class="col-xs-7 control-label">
+          Is de bruid eerder gehuwd geweest? j / n
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 name="eerder-gehuwd-bruid" id="eerder-gehuwd-bruid"
+                 th:value="${(akte.huwknd.bsthv == '1') || (akte.huwknd.bsthv == null)} ? 'n' : 'j'"/>
+        </div>
+      </div>
+
+      <div class="form-group" data-show-when="#eerder-gehuwd-bruid" data-has-values-in="j">
+        <label for="eerder-gehuwd-code-bruid" class="col-xs-7 control-label">
+          Huidige staat: 2 = weduwnaar, 3 = gescheiden, 6 = onbekend
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="2;3;6"
+                 name="eerder-gehuwd-code-bruid" id="eerder-gehuwd-code-bruid" th:value="${akte.huwknd.bsthv}"/>
+        </div>
+      </div>
+    </th:block>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

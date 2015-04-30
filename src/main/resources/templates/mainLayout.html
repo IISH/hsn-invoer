@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html layout:decorator="layout">
+<head></head>
+<body>
+<th:block layout:fragment="content">
+  <form method="post" class="form-horizontal" autocomplete="off">
+    <header class="content-spacing" layout:fragment="header"></header>
+
+    <fieldset layout:fragment="main"></fieldset>
+
+    <footer class="content-spacing" layout:fragment="footer"></footer>
+  </form>
+</th:block>
+</body>
+</html>

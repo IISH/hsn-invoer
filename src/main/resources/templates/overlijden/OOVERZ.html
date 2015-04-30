@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head></head>
+<body>
+<header layout:fragment="header" th:include="layoutFragments :: header"></header>
+
+<fieldset layout:fragment="main">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Ident. Nummer</th>
+      <th>Achternaam</th>
+      <th>Voornamen</th>
+      <th>Leeftijd</th>
+      <th>Subtotaal</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="curOvl,stat : ${overview}">
+      <td th:utext="${curOvl.idnr}"></td>
+      <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteLastName(curOvl.anmovl, curOvl.tusovl)}"></td>
+      <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getFirstNames(curOvl.vrn1ovl, curOvl.vrn2ovl, curOvl.vrn3ovl)}"></td>
+      <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getAgeAsString(curOvl.lftdovl, curOvl.lftwovl, curOvl.lftmovl, curOvl.lftjovl)}"></td>
+      <td th:utext="${stat.index + 1}"></td>
+    </tr>
+    </tbody>
+  </table>
+</fieldset>
+
+<footer layout:fragment="footer" th:include="layoutFragments :: footer"></footer>
+</body>
+</html>

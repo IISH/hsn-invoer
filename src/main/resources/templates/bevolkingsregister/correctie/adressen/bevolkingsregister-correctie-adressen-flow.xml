@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- BS0C: IDENTIFICATIE BRON EN ONDERZOEKSPERSOON -->
+  <view-state id="BS0C" view="bevolkingsregister/BS0IC" model="akte">
+    <on-entry>
+      <evaluate expression="bevolkingsregisterService.createNewAkteForCorrection()" result="flowScope.akte"/>
+      <evaluate expression="flowScope.akte.setCorrectionCode(7)"/>
+    </on-entry>
+
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="BS2">
+      <evaluate expression="bevolkingsregisterService.editOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- BS1: ADRESSEN -->
+  <view-state id="BS2" view="bevolkingsregister/BS2" model="akte">
+    <transition on="registration-address-update">
+      <evaluate
+          expression="bevolkingsregisterService.updateRegistrationAddress(flowScope.akte, requestParameters.person, requestParameters.seqNr, requestParameters.asMap())"/>
+      <render fragments="registrationAddresses"/>
+    </transition>
+
+    <transition on="registration-address-add">
+      <evaluate
+          expression="bevolkingsregisterService.addNewRegistrationAddress(flowScope.akte, requestParameters.person, requestParameters.seqNr, requestParameters.asMap())"/>
+      <render fragments="registrationAddresses"/>
+    </transition>
+
+    <transition on="registration-address-remove">
+      <evaluate
+          expression="bevolkingsregisterService.removeRegistrationAddress(flowScope.akte, requestParameters.person,  requestParameters.seqNr)"/>
+      <render fragments="registrationAddresses"/>
+    </transition>
+
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="finishEnd">
+      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistrationAddresses(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <end-state id="stopEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
+
+  <end-state id="finishEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
+</flow>

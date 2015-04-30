@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="overlijden/OSTITEL :: OSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="alert alert-info" role="alert">
+      Bij eerste invoer zijn er wel echtgenoten ingevoerd!!! Aantal:
+      <th:block th:utext="${akte.ovlknd.mreovl}">0</th:block>
+      <br/>
+      Deze worden nu verwijderd! <br/>
+      Indien u ze opnieuw wilt invoeren, geef dan nu een correcte kode voor de burgerlijke staat:
+    </div>
+
+    <div class="form-group form-inline extra-top-margin">
+      <label class="control-label">Burgerlijke staat:</label>
+
+      <input type="text" class="form-control form-control-digit required spacing" data-valid-chars="1;2;3;5;6"
+             name="ovlknd.brgovl"/>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

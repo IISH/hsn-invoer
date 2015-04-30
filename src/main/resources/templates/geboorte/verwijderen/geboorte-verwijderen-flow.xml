@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- GS0V: AKTE IDENTIFICATIE -->
+  <view-state id="GS0V" view="geboorte/GS0V" model="akte">
+    <on-entry>
+      <evaluate expression="geboorteAkteService.createNewAkteForCorrection()" result="flowScope.akte"/>
+      <evaluate expression="flowScope.akte.setCorrectionDelete()"/>
+    </on-entry>
+
+    <transition on="stop" to="end"/>
+
+    <transition on="next" to="GVERW">
+      <evaluate expression="geboorteAkteService.editOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- GVERW: VERWIJDEREN -->
+  <view-state id="GVERW" view="geboorte/GVERW" model="akte">
+    <transition on="stop" to="end"/>
+
+    <transition on="next" to="end">
+      <evaluate expression="geboorteAkteService.deleteAkte(flowScope.akte, requestParameters.bewust)"/>
+    </transition>
+  </view-state>
+
+  <end-state id="end" view="redirect:/geboorte/hoofdmenu"/>
+</flow>

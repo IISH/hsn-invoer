@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- OS0I: CONTROLE IDENTIFICATIE OVL AKTE -->
+  <view-state id="OS0I" view="overlijden/OS0I" model="akte">
+    <on-entry>
+      <evaluate expression="overlijdensAkteService.createNewAkteForNewInput()" result="flowScope.akte"/>
+    </on-entry>
+
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="levnloosCheck">
+      <evaluate expression="overlijdensAkteService.registerOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="levnloosCheck">
+    <evaluate expression="flowScope.akte.isLevnloos()"/>
+
+    <transition on="yes" to="OS1B"/>
+    <transition on="no" to="OS1A"/>
+  </action-state>
+
+  <!-- OS1A: IDENTIFICATIE OVERLEDENE -->
+  <view-state id="OS1A" view="overlijden/OS1A" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="OS1B"/>
+
+    <transition on="byz" to="OSBYZ"/>
+  </view-state>
+
+  <!-- OS1B: AKTE GEGEVENS -->
+  <view-state id="OS1B" view="overlijden/OS1B" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="OS1C">
+      <evaluate expression="overlijdensAkteService.registerDate(flowScope.akte)"/>
+    </transition>
+
+    <transition on="byz" to="OSBYZ">
+      <evaluate expression="overlijdensAkteService.registerDate(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- OS1C: OVERLIJDENSDATUM EN TIJD -->
+  <view-state id="OS1C" view="overlijden/OS1C" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="OS2A">
+      <evaluate expression="overlijdensAkteService.registerDateAndTime(flowScope.akte)"/>
+    </transition>
+
+    <transition on="byz" to="OSBYZ">
+      <evaluate expression="overlijdensAkteService.registerDateAndTime(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- OS2A: VADER -->
+  <view-state id="OS2A" view="overlijden/OS2A" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="OS2B"/>
+
+    <transition on="byz" to="OSBYZ"/>
+  </view-state>
+
+  <!-- OS2B: MOEDER -->
+  <view-state id="OS2B" view="overlijden/OS2B" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="OS3A">
+      <evaluate expression="overlijdensAkteService.registerFirstDetails(flowScope.akte)"/>
+    </transition>
+
+    <transition on="byz" to="OSBYZ">
+      <evaluate expression="overlijdensAkteService.registerFirstDetails(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- OS3A: AANTAL AANGEVERS -->
+  <view-state id="OS3A" view="overlijden/OS3A" model="akte">
+    <transition on="next" to="skipAangeverCheck">
+      <evaluate expression="overlijdensAkteService.registerAangeversInfo(flowScope.akte)"/>
+    </transition>
+
+    <transition on="byz" to="OSBYZ">
+      <evaluate expression="overlijdensAkteService.registerAangeversInfo(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="skipAangeverCheck">
+    <evaluate
+        expression="(flowScope.akte.ovlknd.extract == 'n') and
+                    (flowScope.akte.curOvlagvIndex lt flowScope.akte.ovlknd.nagvr)"/>
+
+    <transition on="yes" to="OS3B"/>
+    <transition on="no" to="levnloos2Check"/>
+  </action-state>
+
+  <!-- OS3B: AANGEVER -->
+  <view-state id="OS3B" view="overlijden/OS3B" model="akte">
+    <transition on="next" to="aangeverCheck">
+      <evaluate expression="overlijdensAkteService.registerAangever(flowScope.akte)"/>
+    </transition>
+
+    <transition on="byz" to="OSBYZ">
+      <evaluate expression="overlijdensAkteService.registerAangever(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="aangeverCheck">
+    <evaluate
+        expression="((flowScope.akte.curOvlagvIndex + 1) lt flowScope.akte.ovlknd.nagvr) and
+                    (flowScope.akte.ovlknd.oaktejr lt 1935)"/>
+
+    <transition on="yes" to="OS3B">
+      <evaluate expression="flowScope.akte.setCurOvlagvIndex(flowScope.akte.curOvlagvIndex + 1)"/>
+    </transition>
+
+    <transition on="no" to="levnloos2Check"/>
+  </action-state>
+
+  <action-state id="levnloos2Check">
+    <evaluate expression="flowScope.akte.isLevnloos()"/>
+
+    <transition on="yes" to="echtgenootCheck"/>
+    <transition on="no" to="OS4"/>
+  </action-state>
+
+  <!-- OS4: OVERIGE GEGEVENS OVL AKTE  -->
+  <view-state id="OS4" view="overlijden/OS4" model="akte">
+    <transition on="next" to="addEchtgenootCheck">
+      <evaluate expression="overlijdensAkteService.registerOtherDetails(flowScope.akte)"/>
+    </transition>
+
+    <transition on="byz" to="OSBYZ">
+      <evaluate expression="overlijdensAkteService.registerOtherDetails(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="addEchtgenootCheck">
+    <evaluate
+        expression="({2,3,5}).contains(new Integer(flowScope.akte.ovlknd.brgovl)) and
+                    (flowScope.akte.isLevnloos() == false)"/>
+
+    <transition on="yes" to="OS5"/>
+    <transition on="no" to="OS6"/>
+  </action-state>
+
+  <!-- OS5: ECHTGENO(O)T(E) OVERLEDENE -->
+  <view-state id="OS5" view="overlijden/OS5" model="akte">
+    <transition on="next" to="echtgenootCheck">
+      <evaluate expression="overlijdensAkteService.registerEchtgenoot(flowScope.akte)"/>
+    </transition>
+
+    <transition on="byz" to="OSBYZ">
+      <evaluate expression="overlijdensAkteService.registerEchtgenoot(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="echtgenootCheck">
+    <evaluate
+        expression="flowScope.akte.curOvlechIndex lt (flowScope.akte.ovlech.length - 1)"/>
+
+    <transition on="yes" to="OS5">
+      <evaluate expression="flowScope.akte.setCurOvlechIndex(flowScope.akte.curOvlechIndex + 1)"/>
+    </transition>
+
+    <transition on="no" to="OS6"/>
+  </action-state>
+
+  <!-- OS6: OVERIGE BIJZONDERHEDEN -->
+  <view-state id="OS6" view="overlijden/OS6" model="akte">
+    <transition on="next" to="byzCheck">
+      <evaluate expression="overlijdensAkteService.registerByzCheck(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="byzCheck">
+    <!-- Only go to OSBYZ if indicated by user in OS6, if the last known view state is OS6 -->
+    <evaluate
+        expression="(flowScope.akte.ovlknd.problm == 'j')
+                and (flowScope.akte.viewStateHistory.curViewStateId == 'OS6')"/>
+
+    <transition on="yes" to="OSBYZ">
+      <!-- The flow is nearly finished, so now multiple pages of bijzonderheden may be added by the user -->
+      <evaluate expression="flowScope.akte.setAllowMoreByz(true)"/>
+    </transition>
+
+    <transition on="no" to="OSNIEUW"/>
+  </action-state>
+
+  <!-- OSBYZ: BIJZONDERHEDEN -->
+  <view-state id="OSBYZ" view="overlijden/OSBYZ" model="akte">
+    <on-entry>
+      <evaluate expression="overlijdensAkteService.prepareByz(flowScope.akte)"/>
+    </on-entry>
+
+    <transition on="more" to="OSBYZ">
+      <evaluate expression="overlijdensAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="#{flowScope.akte.viewStateHistory.nextStateIdForPrevViewState}">
+      <evaluate expression="flowScope.akte.setAllowMoreByz(false)"/>
+      <evaluate expression="overlijdensAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- OSNIEUW: ANOTHER OVERLIJDENS AKTE? -->
+  <view-state id="OSNIEUW" view="overlijden/OSNIEUW" model="akte">
+    <transition on="next" to="nieuwCheck"/>
+  </view-state>
+
+  <action-state id="nieuwCheck">
+    <evaluate expression="requestParameters.anotherFlow == 'j'"/>
+
+    <transition on="yes" to="OS0I"/>
+    <transition on="no" to="finishEnd"/>
+  </action-state>
+
+  <end-state id="stopEnd" view="redirect:/overlijden/hoofdmenu">
+    <on-entry>
+      <evaluate expression="overlijdensAkteService.deleteAkte(flowScope.akte)"/>
+    </on-entry>
+  </end-state>
+
+  <end-state id="finishEnd" view="redirect:/overlijden/hoofdmenu"/>
+</flow>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="geboorte/GSTITEL :: GSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend>GEBOORTE en MOEDER</legend>
+
+    <div class="form-header">GEBOORTE</div>
+
+    <div class="form-group checkDateAndTime" data:aktedag="${akte.gebknd.aktedag}" data:aktemnd="${akte.gebknd.aktemnd}">
+      <div class="sub-form-group">
+        <label class="col-xs-3 control-label">Geboortedatum:</label>
+
+        <div th:replace="fragments/fields :: datum ('gebknd.gebdag', 'gebknd.gebmnd', 'gebknd.gebjr')"></div>
+      </div>
+
+      <div class="sub-form-group">
+        <label class="col-xs-2 control-label">Tijd:</label>
+
+        <div th:replace="fragments/fields :: tijd ('gebknd.gebuur', 'gebknd.gebmin')"></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-3 control-label">Adres:</label>
+
+      <div class="col-xs-4">
+        <input type="text" class="form-control" th:field="*{gebknd.gebadr}" hsn:field="gebknd.gebadr"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-3 control-label">Geslacht: m / v</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="m;v"
+               th:field="*{gebknd.gebsex}" hsn:field="gebknd.gebsex"/>
+      </div>
+    </div>
+
+    <div class="form-header extra-top-margin">MOEDER</div>
+
+    <th:block
+        th:include="fragments/groups-of-fields :: namen ('gebknd.anmmr', 'gebknd.vrn1mr', 'gebknd.vrn2mr', 'gebknd.vrn3mr', 'gebknd.lftmr')">
+    </th:block>
+
+    <div class="alert alert-info extra-top-margin" role="alert"
+         data-show-when="#gebknd\.gebmnd" data-has-values-in="12" style="display:none;"
+         th:if="${akte.gebknd.aktemnd} == 1">
+      Opletten: <br/>
+      Het geboortejaar is waarschijnlijk een jaar te laag!! <br/>
+      Dit moet u -indien nodig- zelf corrigeren!!!
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/geboorte/GS2.js" th:src="@{/js/geboorte/GS2.js}"></script>
+</th:block>
+</body>
+</html>

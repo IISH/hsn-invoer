@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER BEVOLKINGSREGISTER</legend>
+  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE BEVOLKINGSREGISTER</legend>
+
+  <div class="form-main-header">
+    IDENTIFICATIE BRON EN ONDERZOEKSPERSOON
+  </div>
+</fieldset>
+
+<fieldset>
+<th:block layout:fragment="fields">
+<div class="row">
+  <label class="col-xs-3 text-control-label">Type register:</label>
+
+  <div class="col-xs-4">
+    <span class="data-bron"></span>
+  </div>
+</div>
+
+<div class="row">
+  <label class="col-xs-3 text-control-label">Gemeentenaam:</label>
+
+  <div class="col-xs-4">
+    <span class="data-municipality"></span>
+  </div>
+</div>
+
+<div class="row">
+  <label class="col-xs-3 text-control-label">Beginjaar register:</label>
+
+  <div class="col-xs-4">
+    <span class="data-startYearRegister"></span>
+  </div>
+</div>
+
+<div class="row">
+  <label class="col-xs-3 text-control-label">Eindjaar register:</label>
+
+  <div class="col-xs-4">
+    <span class="data-endYearRegister"></span>
+  </div>
+</div>
+
+<div class="row">
+  <label class="col-xs-3 text-control-label">Gehucht / wijk:</label>
+
+  <div class="col-xs-4">
+    <span class="data-b1gwbg"></span>
+  </div>
+</div>
+
+<div class="row">
+  <label class="col-xs-3 text-control-label">Inventarisnummer:</label>
+
+  <div class="col-xs-4">
+    <span class="data-b1ivbg"></span>
+  </div>
+</div>
+
+<div class="row extra-top-margin">
+  <label class="col-xs-3 text-control-label">Achternaam:</label>
+
+  <div class="col-xs-4">
+    <span class="data-lastName"></span>
+  </div>
+</div>
+
+<div class="row">
+  <label class="col-xs-3 text-control-label">Voornamen:</label>
+
+  <div class="col-xs-4">
+    <span class="form-control-static">
+      <span class="data-firstName1"></span>
+      <span class="data-firstName2"></span>
+      <span class="data-firstName3"></span>
+    </span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="sub-row">
+    <label class="col-xs-3 text-control-label">Geslacht:</label>
+
+    <div class="col-xs-2">
+      <span class="data-sex"></span>
+    </div>
+  </div>
+
+  <div class="sub-row">
+    <label class="col-xs-3 text-control-label">Geboortedatum:</label>
+
+    <div class="col-xs-3">
+      <span class="form-control-static">
+        <span class="data-dayOfBirth"></span>
+        /
+        <span class="data-monthOfBirth"></span>
+        /
+        <span class="data-yearOfBirth"></span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <label class="col-xs-3 text-control-label">Geboorteplaats:</label>
+
+  <div class="col-xs-4">
+    <span class="data-nameMunicipality"></span>
+  </div>
+</div>
+
+<div class="extra-top-margin">
+  <p class="fail text-danger text-center op" style="display: none;"></p>
+
+  <p class="fail text-danger text-center bron" style="display: none;"></p>
+
+  <p class="fail text-danger text-center registration" style="display: none;"></p>
+
+  <p class="fail text-danger text-center op-registration" style="display: none;"></p>
+</div>
+
+<div class="form-group extra-top-margin">
+  <label class="col-xs-3 control-label">Idnr:</label>
+
+  <div class="col-xs-4">
+    <input type="text" class="form-control form-control-small required"
+           th:field="*{b4.registrationId.keyToRP}" hsn:field="b4.registrationId.keyToRP"/>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-xs-3 control-label">Bron:</label>
+
+  <div class="col-xs-4">
+    <input type="text" class="form-control form-control-small required"
+           th:field="*{b4.registrationId.keyToSourceRegister}" hsn:field="b4.registrationId.keyToSourceRegister"/>
+  </div>
+</div>
+
+<div class="form-group checkDateHfd">
+  <label class="col-xs-3 control-label">Hoofddatum:</label>
+
+  <div
+      th:replace="fragments/fields :: datum ('b4.registrationId.dayEntryHead', 'b4.registrationId.monthEntryHead', 'b4.registrationId.yearEntryHead')"></div>
+</div>
+
+<th:block th:if="${akte.isCorrection()} == false">
+  <div class="form-group checkDateOP">
+    <label class="col-xs-3 control-label">OP-datum:</label>
+
+    <div th:replace="fragments/fields :: datum ('b4.dayEntryRP', 'b4.monthEntryRP', 'b4.yearEntryRP')"></div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-xs-3 control-label">Volgnummer OP:</label>
+
+    <div class="col-xs-4">
+      <input type="text" class="form-control form-control-digit required"
+             maxlength="1" data-min-value="0" name="volgnrOP" id="volgnrOP"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-xs-3 control-label">Speciale codes j / n:</label>
+
+    <div class="col-xs-9 form-inline">
+      <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+             name="speciale-codes" id="speciale-codes" value="n"/>
+
+      <input type="text" class="form-control spacing" data-show-when="#speciale-codes" data-has-values-in="j"
+             th:field="*{b4.specialDataEntryCodes}" hsn:field="b4.specialDataEntryCodes"/>
+    </div>
+  </div>
+
+  <div class="form-group" th:if="${akte.isOneLineEach()} == false">
+    <label class="col-xs-3 control-label">Aantal regels:</label>
+
+    <div class="col-xs-4">
+      <input type="text" class="form-control form-control-digit required"
+             maxlength="1" data-min-value="1" name="noRegels" id="noRegels"/>
+    </div>
+  </div>
+
+  <div class="form-group typeIG" style="display:none">
+    <label class="col-xs-3 control-label">Zoekidentificatie GK:</label>
+
+    <div class="col-xs-5">
+      <input type="text" class="form-control" th:field="*{b4.infoFamilyCardsSystem}"
+             hsn:field="b4.infoFamilyCardsSystem"/>
+    </div>
+  </div>
+
+  <div class="form-group typeNotIG" style="display:none">
+    <div class="sub-form-group">
+      <label class="col-xs-3 control-label">Pagina:</label>
+
+      <div class="col-xs-3">
+        <input type="text" class="form-control form-control-small" th:field="*{b4.pageNumberOfSource}"
+               hsn:field="b4.pageNumberOfSource"/>
+      </div>
+    </div>
+
+    <div class="sub-form-group">
+      <label class="col-xs-3 control-label">Regel:</label>
+
+      <div class="col-xs-3">
+        <input type="text" class="form-control form-control-digit" th:field="*{b4.numberOfHousehold}"
+               hsn:field="b4.numberOfHousehold"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group group-vorige-inschrijving" style="display:none;">
+    <label class="col-xs-3 control-label vorige-inschrijving-label">Met vorige inschrijving? j / n</label>
+
+    <div class="col-xs-9 form-inline">
+      <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+             name="vorige-inschrijving" id="vorige-inschrijving"/>
+
+    <span data-show-when="#vorige-inschrijving" data-has-values-in="j">
+      <input type="text" class="form-control form-control-small spacing"
+             th:field="*{prevRegistration.keyToSourceRegister}" hsn:field="prevRegistration.keyToSourceRegister"/>
+
+      <input type="text" class="form-control form-control-digit spacing day"
+             th:field="*{prevRegistration.dayEntryHead}" hsn:field="prevRegistration.dayEntryHead"/>
+      /
+      <input type="text" class="form-control form-control-digit month"
+             th:field="*{prevRegistration.monthEntryHead}" hsn:field="prevRegistration.monthEntryHead"/>
+      /
+      <input type="text" class="form-control form-control-small year"
+             th:field="*{prevRegistration.yearEntryHead}" hsn:field="prevRegistration.yearEntryHead"/>
+    </span>
+    </div>
+  </div>
+</th:block>
+
+<th:block th:if="${akte.isCorrection()}">
+  <div class="form-group typeIG" style="display:none">
+    <label class="col-xs-3 control-label">Zoekidentificatie GK:</label>
+
+    <div class="col-xs-5">
+      <span class="data-infoFamilyCardsSystem"></span>
+    </div>
+  </div>
+
+  <div class="form-group typeNotIG" style="display:none">
+    <div class="sub-form-group">
+      <label class="col-xs-3 control-label">Pagina:</label>
+
+      <div class="col-xs-3">
+        <span class="data-pageNumberOfSource"></span>
+      </div>
+    </div>
+
+    <div class="sub-form-group">
+      <label class="col-xs-3 control-label">Regel:</label>
+
+      <div class="col-xs-3">
+        <span class="data-numberOfHousehold"></span>
+      </div>
+    </div>
+  </div>
+</th:block>
+</th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
+          th:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
+  <script src="../../static/js/bevolkingsregister/BS0IC.js" th:src="@{/js/bevolkingsregister/BS0IC.js}"></script>
+</th:block>
+</body>
+</html>

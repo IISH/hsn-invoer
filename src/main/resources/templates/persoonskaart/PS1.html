@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend class="letter-spacing text-center" align="center">GEGEVENS PK-HOUDER</legend>
+
+    <th:block
+        th:replace="fragments/groups-of-fields :: namen ('pkknd.anmperp', 'pkknd.vnm1perp', 'pkknd.vnm2perp', 'pkknd.vnm3perp', false)">
+    </th:block>
+
+    <div class="form-group checkDateDefault">
+      <label class="col-xs-3 control-label">Geboortedatum:</label>
+
+      <div th:replace="fragments/fields :: datum ('pkknd.gdgperp', 'pkknd.gmdperp', 'pkknd.gjrperp')"></div>
+    </div>
+
+    <div class="form-group"
+         th:replace="fragments/complete-fields :: plaats ('pkknd.gplperp', 'Geboorteplaats:')"></div>
+
+    <div class="form-group">
+      <div class="sub-form-group">
+        <label class="col-xs-3 control-label">Vrmde/mrdr nation.? j / n</label>
+
+        <div class="col-xs-1">
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+                 name="vrmdNation" id="vrmdNation"
+                 th:value="${(akte.pkknd.natperp == null) || (akte.pkknd.natperp.trim() == 'Nederlandse') || akte.pkknd.natperp.trim().isEmpty()} ? 'n' : 'j'"/>
+        </div>
+      </div>
+
+      <div class="sub-form-group" data-show-when="#vrmdNation" data-has-values-in="j">
+        <label class="col-xs-1 control-label">Welke?</label>
+
+        <div class="col-xs-4">
+          <input type="text" class="form-control" th:field="*{pkknd.natperp}" hsn:field="pkknd.natperp"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="sub-form-group" th:if="${#arrays.contains({1,2,3,4,10}, akte.pkknd.pktype)}">
+        <label class="col-xs-3 control-label">Godsdienst:</label>
+
+        <div class="col-xs-4">
+          <input type="text" class="form-control" th:field="*{pkknd.gdsperp}" hsn:field="pkknd.gdsperp"/>
+        </div>
+      </div>
+
+      <div class="sub-form-group">
+        <label class="col-xs-3 control-label">Geslacht: m / v / o</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="m;v;o"
+                 th:field="*{pkknd.gslperp}" hsn:field="pkknd.gslperp"/>
+        </div>
+      </div>
+    </div>
+
+    <fieldset class="extra-top-margin content-spacing">
+      <legend>Overlijdensgegevens:</legend>
+
+      <div class="form-group"
+           th:replace="fragments/complete-fields :: plaats ('pkknd.oplperp', 'Plaats:')"></div>
+
+      <div class="form-group">
+        <div class="sub-form-group checkDateDefault">
+          <label class="col-xs-3 control-label">Datum:</label>
+
+          <div th:replace="fragments/fields :: datum ('pkknd.odgperp', 'pkknd.omdperp', 'pkknd.ojrperp')"></div>
+        </div>
+
+        <div class="sub-form-group" th:if="${#arrays.contains({1,10}, akte.pkknd.pktype)}">
+          <label class="col-xs-3 control-label">Aktenummer:</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control form-control-small" th:field="*{pkknd.oakperp}" hsn:field="pkknd.oakperp"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${#arrays.contains({1,6}, akte.pkknd.pktype)}"
+           th:classappend="${akte.pkknd.pktype == 1} ? 'checkYear'">
+        <label class="col-xs-3 control-label">Oorzaak:</label>
+
+        <div class="col-xs-4">
+          <input type="text" class="form-control" th:field="*{pkknd.odoperp}" hsn:field="pkknd.odoperp"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${#arrays.contains({8,10}, akte.pkknd.pktype)}">
+        <div class="sub-form-group">
+          <label class="col-xs-3 control-label">PK-gemeente:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control" th:field="*{p7.p7oppg}" hsn:field="p7.p7oppg"/>
+          </div>
+        </div>
+
+        <div class="sub-form-group">
+          <input type="hidden" th:field="*{p7.p7oppc}" hsn:field="p7.p7oppc" data-set-value-when="#pk-voll-geconv" data-has-values-in="j"
+                 data-then-value="PK-gegevens volledig meegeconverteerd" data-else-value=""/>
+
+          <label class="col-xs-3 control-label">PK voll. geconv.? j / n</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+                   name="pk-voll-geconv" id="pk-voll-geconv"
+                   th:val="${akte.p7.p7oppc.trim() == 'PK-gegevens volledig meegeconverteerd'} ? 'j' : 'n'"/>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="alert alert-warning extra-top-margin" role="alert">
+      Let op!! De gegevens moeten exact overeenkomen met die op de persoonskaart.
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/persoonskaart/PS1.js" th:src="@{/js/persoonskaart/PS1.js}"></script>
+</th:block>
+</body>
+</html>

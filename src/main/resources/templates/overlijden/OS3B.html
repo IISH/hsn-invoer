@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="overlijden/OSTITEL :: OSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend th:utext="'Gegevens ' + ${akte.curOvlagv.vlgnrag} + 'e AANGEVER van het overlijden'">Gegevens 1e AANGEVER
+      van het overlijden
+    </legend>
+
+    <div th:replace="fragments/complete-fields :: anaam ('curOvlagv.anmagv')"></div>
+
+    <div class="form-header extra-top-margin">VOORNAMEN</div>
+
+    <th:block
+        th:replace="fragments/groups-of-fields :: voornamen ('curOvlagv.vrn1agv', 'curOvlagv.vrn2agv', 'curOvlagv.vrn3agv', 'curOvlagv.lftagv')">
+    </th:block>
+
+    <div class="form-group extra-top-margin"
+         th:include="fragments/complete-fields :: beroep ('curOvlagv.brpagv', 'Beroep:')"></div>
+
+    <div class="form-group"
+         th:replace="fragments/complete-fields :: relatie ('curOvlagv.ragvovl', 'Relatie aangever tot overledene:', null, false)"></div>
+
+    <div class="form-group" th:replace="fragments/complete-fields :: adres ('curOvlagv.adragv')"></div>
+
+    <div class="extra-top-margin text-center"
+         th:include="fragments/complete-fields :: handtekening ('curOvlagv.hndagv')">
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+</body>
+</html>

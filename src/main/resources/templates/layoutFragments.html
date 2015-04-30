@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<header th:fragment="header">
+  <fieldset class="content-spacing">
+    <h1>HSN-Invoerprogramma</h1>
+
+    <h2>HISTORISCHE STEEKPROEF NEDERLANDSE BEVOLKING</h2>
+  </fieldset>
+</header>
+
+<footer th:fragment="footer">
+  <fieldset class="content-spacing">
+    <div class="row">
+      <div class="col-xs-12">
+        Copyright stichting Historische Steekproef Nederlandse bevolking
+      </div>
+    </div>
+    <div class="row extra-top-margin-sm">
+      <div class="col-xs-2">
+        HSN
+      </div>
+      <div class="col-xs-3" th:utext="'versie ' + ${@environment.getProperty('application.version')}">
+        versie 0.00
+      </div>
+      <div class="col-xs-4 col-xs-offset-3" th:utext="'d.d. ' + ${@environment.getProperty('application.date')}">
+        d.d. 1 januari 2015
+      </div>
+    </div>
+  </fieldset>
+</footer>
+</body>
+</html>

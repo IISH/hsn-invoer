@@ -1,0 +1,7 @@
+debug: true
+
+spring:
+  jpa:
+    show-sql: false # Debug already shows SQL, if debug = false, you might want to set this back to true
+  thymeleaf:
+    cache: false

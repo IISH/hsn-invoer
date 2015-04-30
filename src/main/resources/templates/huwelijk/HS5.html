@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <label class="col-xs-4 control-label">Aantal getuigen is volgens opgave:</label>
+
+      <div class="col-xs-2">
+        <p class="form-control-static" th:utext="${akte.huwknd.ngtg}">1</p>
+      </div>
+
+      <label class="col-xs-2 control-label" th:if="${akte.isCorrection()} == false">Invoer:</label>
+      <label class="col-xs-2 control-label" th:if="${akte.isCorrection()}">Correctie:</label>
+
+      <div class="col-xs-2">
+        <p class="form-control-static" th:utext="${akte.curHuwgtg.vlgnrgt} + 'e GETUIGE'">1e GETUIGE</p>
+      </div>
+    </div>
+
+    <div class="extra-top-margin"
+         th:include="fragments/groups-of-fields :: namen ('curHuwgtg.anmgt', 'curHuwgtg.vrn1gt', 'curHuwgtg.vrn2gt', 'curHuwgtg.vrn3gt', false)">
+    </div>
+
+    <div class="form-group extra-top-margin"
+         th:include="fragments/complete-fields :: beroep ('curHuwgtg.brpgt', 'Beroep:')"></div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-3 control-label">Leeftijd:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control" data-replace=":-1;0:-1" th:field="*{curHuwgtg.lftjgt}" hsn:field="curHuwgtg.lftjgt"/>
+      </div>
+    </div>
+
+    <div th:replace="fragments/complete-fields :: plaats ('curHuwgtg.adrgt', 'Woonplaats:')"></div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-7 control-label">
+        Relatie van (m = brdgm, v = bruid, b = beide, o = onbekend):
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="m;v;b;o"
+               th:field="*{curHuwgtg.relwie}" hsn:field="curHuwgtg.relwie"/>
+      </div>
+    </div>
+
+    <div th:replace="fragments/complete-fields :: relatie ('curHuwgtg.relgt', 'Kode relatie:', null, false)"></div>
+
+    <div class="extra-top-margin text-center"
+         th:include="fragments/complete-fields :: handtekening ('curHuwgtg.hndgt')">
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/huwelijk/HS5.js" th:src="@{/js/huwelijk/HS5.js}"></script>
+</th:block>
+</body>
+</html>

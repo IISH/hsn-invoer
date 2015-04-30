@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div class="form-group" th:fragment="anaam (anaam)">
+  <label class="col-xs-3 control-label">Achternaam:</label>
+
+  <div class="col-xs-4">
+    <input type="text" class="form-control" th:field="*{__${anaam}__}" hsn:field="anaam"/>
+  </div>
+</div>
+
+<div class="form-group" th:fragment="adres (adres)">
+  <label class="col-xs-3 control-label">Adres:</label>
+
+  <div class="col-xs-5">
+    <input type="text" class="form-control" th:field="*{__${adres}__}" hsn:field="adres"/>
+  </div>
+</div>
+
+<div class="form-group" th:fragment="beroep (beroep, label)">
+  <label class="col-xs-3 control-label" th:utext="${label}">Beroep:</label>
+
+  <div th:replace="fragments/fields :: beroep (__${beroep}__)"></div>
+</div>
+
+<div class="form-group" th:fragment="relatie (relatie, label, relatieId, onId)">
+  <label class="col-xs-3 control-label" th:utext="${label}">Relatie:</label>
+
+  <div th:replace="fragments/fields :: relatie (__${relatie}__, __${relatieId}__, __${onId}__)"></div>
+</div>
+
+<div th:fragment="handtekening (hndag)">
+  <th:block th:with="hndagVal=${__${'akte.' + hndag}__}">
+    <input type="hidden" data-set-value-when="#handtekening-zetten" data-has-values-in="j"
+           data-then-value-of="#handtekening-kode" data-else-value-of="#handtekening-zetten"
+           th:field="*{__${hndag}__}"/>
+
+    <div class="form-group form-inline">
+      <div class="form-group">
+        <label for="handtekening-zetten" class="control-label">Verklaart deze persoon GEEN handtekening te kunnen
+          zetten?
+          j / n / o</label>
+        <input type="text" id="handtekening-zetten" name="handtekening"
+               class="form-control form-control-digit spacing required" maxlength="1" data-valid-chars="j;n;o"
+               th:value="${#arrays.contains({'a', 'b', 'c', 'd', 'e'}, hndagVal)} ? 'j' : ${hndagVal}"/>
+      </div>
+    </div>
+
+    <div class="form-group form-inline" style="display: none;"
+         data-show-when="#handtekening-zetten" data-has-values-in="j">
+      <div class="form-group">
+        <label for="handtekening-kode" class="control-label">KODE: a Analfabeet b Sabbath c Zenuwen d Invalide e Overige
+          (d,e -> bijz)</label>
+        <input type="text" id="handtekening-kode" name="handtekening-kode"
+               class="form-control form-control-digit spacing required" data-valid-chars="a;b;c;d;e" data-byz="d;e"
+               maxlength="1" th:value="${hndagVal}"/>
+      </div>
+    </div>
+
+    <p style="display: none;"
+       data-show-when="#handtekening-zetten" data-has-values-in="n">PERSOON ZET HANDTEKENING</p>
+
+    <p style="display: none;"
+       data-show-when="#handtekening-zetten" data-has-values-in="o">HANDTEKENING PERSOON ONBEKEND</p>
+  </th:block>
+</div>
+
+<div class="form-group" th:fragment="plaats (plaats, label)">
+  <label class="col-xs-3 control-label" th:utext="${label}">Plaats:</label>
+
+  <div class="col-xs-5">
+    <input type="text" class="form-control plaats" th:field="*{__${plaats}__}" hsn:field="plaats"/>
+  </div>
+</div>
+</body>
+</html>

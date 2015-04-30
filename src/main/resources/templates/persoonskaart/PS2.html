@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">GEGEVENS VADER:</div>
+
+    <div class="extra-top-margin"
+         th:include="fragments/groups-of-fields :: namen ('pkknd.anmvdrp', 'pkknd.vnm1vdrp', 'pkknd.vnm2vdrp', 'pkknd.vnm3vdrp', false)">
+    </div>
+
+    <div class="form-group extra-top-margin checkDateDefault">
+      <label class="col-xs-3 control-label">Geboortedatum:</label>
+
+      <div th:replace="fragments/fields :: datum ('pkknd.gdgvdrp', 'pkknd.gmdvdrp', 'pkknd.gjrvdrp')"></div>
+    </div>
+
+    <div class="form-group"
+         th:replace="fragments/complete-fields :: plaats ('pkknd.gplvdrp', 'Geboorteplaats:')"></div>
+
+    <div class="form-header letter-spacing extra-top-margin">GEGEVENS MOEDER:</div>
+
+    <div class="extra-top-margin"
+         th:include="fragments/groups-of-fields :: namen ('pkknd.anmmdrp', 'pkknd.vnm1mdrp', 'pkknd.vnm2mdrp', 'pkknd.vnm3mdrp', false)">
+    </div>
+
+    <div class="form-group extra-top-margin checkDateDefault">
+      <label class="col-xs-3 control-label">Geboortedatum:</label>
+
+      <div th:replace="fragments/fields :: datum ('pkknd.gdgmdrp', 'pkknd.gmdmdrp', 'pkknd.gjrmdrp')"></div>
+    </div>
+
+    <div class="form-group"
+         th:replace="fragments/complete-fields :: plaats ('pkknd.gplmdrp', 'Geboorteplaats:')"></div>
+
+    <div class="alert alert-warning extra-top-margin" role="alert">
+      Let op !! De gegevens moeten exact overeenkomen met die op de persoonskaart.
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+</body>
+</html>

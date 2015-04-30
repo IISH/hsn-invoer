@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- OS0C: IDENTIFICATIE -->
+  <view-state id="OS0C" view="overlijden/OS0C" model="akte">
+    <on-entry>
+      <evaluate expression="overlijdensAkteService.createNewAkteForCorrection()" result="flowScope.akte"/>
+      <evaluate expression="flowScope.akte.setCorrectionDelete()"/>
+    </on-entry>
+
+    <transition on="stop" to="end"/>
+
+    <transition on="next" to="OVERW">
+      <evaluate expression="overlijdensAkteService.editOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- OVERW: VERWIJDEREN -->
+  <view-state id="OVERW" view="overlijden/OVERW" model="akte">
+    <transition on="stop" to="end"/>
+
+    <transition on="next" to="end">
+      <evaluate expression="overlijdensAkteService.deleteAkte(flowScope.akte, requestParameters.bewust)"/>
+    </transition>
+  </view-state>
+
+  <end-state id="end" view="redirect:/overlijden/hoofdmenu"/>
+</flow>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="geboorte/GSTITEL :: GSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <p class="text-center">Er zijn nog geen bijzonderheden ingevoerd!</p>
+
+    <div class="form-group form-inline text-center">
+      <label class="control-label">Moet dit alsnog gebeuren? j / n</label>
+
+      <input type="text" class="form-control form-control-digit required spacing" data-valid-chars="j;n" maxlength="1"
+             id="gebknd.problm" name="gebknd.problm"/>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, false)"></fieldset>
+</body>
+</html>

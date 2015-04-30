@@ -1,0 +1,268 @@
+@import "bootstrap/bootstrap.less";
+
+#main {
+  position: relative;
+  width: 900px;
+  margin-top: 10px;
+}
+
+header,
+footer {
+  text-align: center;
+}
+
+header {
+  h1,
+  h2 {
+    font-size: 100%;
+    font-weight: bold;
+  }
+
+  h1 {
+    text-align: left;
+    margin: 0 0 0 15%;
+  }
+
+  h2 {
+    text-align: center;
+    margin: 20px 0 0 0;
+  }
+}
+
+fieldset {
+  border: 1px solid #adadad;
+  margin-bottom: 20px;
+
+  fieldset {
+    margin: 0;
+  }
+
+  legend {
+    width: auto;
+    margin: 0;
+    padding: 0 10px;
+    border: none;
+    font-size: 100%;
+    font-weight: bold;
+  }
+
+  &, div {
+    &.content-spacing {
+      padding: 20px;
+    }
+  }
+
+  &.title {
+    text-align: center;
+
+    legend {
+      margin: 0 auto;
+      letter-spacing: 10px;
+    }
+  }
+}
+
+.btn-right-spacing {
+  margin-right: 100px;
+}
+
+.form-inline {
+  .form-group {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .control-label {
+    padding: 0;
+    text-align: left;
+  }
+}
+
+.form-inline,
+.table {
+  .spacing {
+    margin-left: 10px;
+  }
+}
+
+.default-label {
+  font-weight: bold;
+}
+
+.extra-top-margin {
+  margin-top: 40px;
+}
+
+.extra-top-margin-sm {
+  margin-top: 10px;
+}
+
+.letter-spacing {
+  letter-spacing: 10px;
+
+  span& {
+    padding-left: 5px;
+  }
+}
+
+.no-bottom-margin {
+  margin-bottom: 0;
+}
+
+form {
+  .alert {
+    margin-bottom: 0;
+
+    .modalMessages {
+      margin: 20px;
+    }
+  }
+
+  .form-header {
+    font-weight: bold;
+  }
+
+  .form-main-header {
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 10px;
+  }
+
+  .form-table {
+    .control-label {
+      text-align: left;
+    }
+  }
+}
+
+.control-label.left {
+  text-align: left;
+}
+
+.text-control-label {
+  text-align: right;
+  font-weight: bold;
+}
+
+.form-control {
+  .input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-base; @line-height-small; @input-border-radius-small);
+}
+
+.form-control {
+  &.form-control-digit {
+    width: 40px;
+  }
+
+  &.form-control-small {
+    width: 70px;
+  }
+
+  &.form-control-medium {
+    width: 200px;
+  }
+
+  &.form-control-large {
+    width: 300px;
+  }
+}
+
+.bijzonderheden.form-control {
+  padding: 0;
+  height: auto;
+
+  input.form-control {
+    border: none;
+    box-shadow: none;
+  }
+}
+
+p.scherm {
+  margin: 7px 0;
+}
+
+.ind {
+  margin-left: 10px;
+  color: blue;
+
+  td & {
+    margin: 0;
+  }
+}
+
+.popover {
+  max-width: inherit;
+}
+
+.fixed-left-column {
+  clear: both;
+
+  .fixed {
+    width: 30px;
+    float: left;
+  }
+
+  .free {
+    margin-left: 30px;
+  }
+
+  table {
+    &.table-data {
+      th, td {
+        height: 37px;
+      }
+    }
+
+    &.table-form {
+      th, td {
+        height: 47px;
+      }
+    }
+
+    th.btn-column, td.btn-column {
+      width: 100px;
+    }
+  }
+}
+
+.scrollable {
+  overflow: auto;
+
+  table {
+    td, th {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}
+
+.table {
+  margin: 0;
+
+  & > thead,
+  & > tbody,
+  & > tfoot {
+    > tr {
+      & > th,
+      & > td {
+        min-width: 25px;
+        vertical-align: middle;
+
+        &:not(.person-byz) {
+          & p,
+          & div,
+          & input {
+            display: inline-block;
+          }
+        }
+
+        .popover div {
+          display: block;
+        }
+      }
+    }
+  }
+
+  & > tbody > tr:last-child > td {
+    border-bottom: 1px solid @table-border-color;
+  }
+}

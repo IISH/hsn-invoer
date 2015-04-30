@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title"
+          th:include="bevolkingsregister/BSTITEL :: registration-personBSTITEL (${akte.curB2.rp})"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <input type="hidden" id="curPerson" name="curPerson" th:value="${akte.curB2.rp}"/>
+
+    <div id="currentPerson" th:fragment="currentPerson">
+      <div class="form-group">
+        <div class="sub-form-group">
+          <label class="col-xs-3 control-label">HSN-volgnummer:</label>
+
+          <div class="col-xs-1">
+            <p class="form-control-static" th:utext="${akte.curB2.keyToRegistrationPersons}"></p>
+          </div>
+        </div>
+
+        <div data-show-when="#curB2\.familyName" data-has-values-not-in="GEEN OP">
+          <div class="sub-form-group">
+            <label class="col-xs-3 control-label">Datum inschrijving? j / n</label>
+
+            <div class="col-xs-1">
+              <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+                     name="datum-inschrijving" id="datum-inschrijving"
+                     th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister) == false}"/>
+
+              <p class="form-control-static" th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister)}">
+                n
+              </p>
+            </div>
+          </div>
+
+          <div class="sub-form-group datum-inschrijving" data-show-when="#datum-inschrijving" data-has-values-in="j"
+               style="display:none;">
+            <label class="col-xs-1 control-label">Datum:</label>
+
+            <div class="col-xs-3 form-inline"
+                 th:include="fragments/fields :: datum ('curB2.dayOfRegistration', 'curB2.monthOfRegistration', 'curB2.yearOfRegistration')">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-show-when="#curB2\.familyName" data-has-values-not-in="GEEN OP">
+        <div class="form-group" th:if="${akte.isCorrection()}"
+             data-show-when="#datum-inschrijving" data-has-values-in="j" style="display:none;">
+          <label class="col-xs-1 col-xs-offset-4 control-label">INTERPR:</label>
+
+          <div class="col-xs-3 form-inline"
+               th:include="fragments/fields :: datum ('curB2.dayOfRegistrationAfterInterpretation', 'curB2.monthOfRegistrationAfterInterpretation', 'curB2.yearOfRegistrationAfterInterpretation')">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group extra-top-margin">
+        <div class="sub-form-group">
+          <label class="col-xs-2 control-label">Achternaam:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control required" th:field="*{curB2.familyName}"
+                   hsn:field="curB2.familyName"/>
+          </div>
+        </div>
+
+        <div class="sub-form-group" data-show-when="#curB2\.familyName" data-has-values-not-in="GEEN OP">
+          <label class="col-xs-2 control-label">Voornamen:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control required" th:field="*{curB2.firstName}" hsn:field="curB2.firstName"/>
+          </div>
+        </div>
+      </div>
+
+      <div data-show-when="#curB2\.familyName" data-has-values-not-in="GEEN OP">
+        <div id="RELATIE_TOV_HOOFD_CONTAINER" class="relatieElems personDynamic" data-type="RELATIE_TOV_HOOFD"
+             th:fragment="RELATIE_TOV_HOOFD_CONTAINER" th:object="${akte}">
+          <div class="form-group">
+            <div class="sub-form-group">
+              <label class="col-xs-2 control-label">Geslacht: m/v/o</label>
+
+              <div class="col-xs-1">
+                <input type="text" class="form-control form-control-digit required sex" data-valid-chars="m;v;o"
+                       th:field="*{curB2.sex}" hsn:field="curB2.sex"/>
+              </div>
+            </div>
+
+            <div class="sub-form-group" data:rp="${akte.curB2.rp}">
+              <label class="col-xs-4 control-label">
+                Relatie tov hoofd:
+
+          <span class="ind"
+                th:style="${akte.b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson le 0} ? 'display:none;'">
+              *
+          </span>
+              </label>
+
+              <div
+                  th:replace="fragments/fields :: relatie (null, 'b3Rel[__${akte.curB2.rp}__][0].contentOfDynamicData', true)"></div>
+
+              <input type="hidden" class="relatie-regel"
+                     th:field="*{b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson}"/>
+
+              <div class="relatieRegelPopup" style="display:none;">
+                <div class="form-group">
+                  <label class="control-label">Regelnr. relatie:</label>
+
+                  <input type="text" class="form-control form-control-digit spacing"
+                         hsn:field="b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group dateHoofd" style="display:none;">
+            <label class="col-xs-4 col-xs-offset-3 control-label">
+              Datum expliciet hoofd:
+            </label>
+
+            <input type="hidden" th:field="*{b3Rel[__${akte.curB2.rp}__][0].dynamicData2}"/>
+
+            <div class="col-xs-4 form-inline datum-expliciet-hoofd">
+              <input type="text" class="form-control form-control-digit day"
+                     th:value="${@bevolkingsregisterHelper.getDayFromDateExplicietHoofd(akte.b3Rel[__${akte.curB2.rp}__][0])}"/>
+              /
+              <input type="text" class="form-control form-control-digit month"
+                     th:value="${@bevolkingsregisterHelper.getMonthFromDateExplicietHoofd(akte.b3Rel[__${akte.curB2.rp}__][0])}"/>
+              /
+              <input type="text" class="form-control form-control-small year"
+                     th:value="${@bevolkingsregisterHelper.getYearFromDateExplicietHoofd(akte.b3Rel[__${akte.curB2.rp}__][0])}"/>
+            </div>
+          </div>
+
+          <div class="regelInterpr" style="display:none;">
+            <div class="form-group">
+              <label class="col-xs-4 col-xs-offset-3 control-label">
+                Regelnummer vader/moeder:
+              </label>
+
+              <div class="col-xs-2">
+                <input type="text" class="form-control form-control-digit required relatie-regel-2" data-min-value="-3"
+                       th:field="*{b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson}"
+                       hsn:field="b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-4 col-xs-offset-3 control-label">
+                Basis/aard interpretatie, kode:
+              </label>
+
+              <div class="col-xs-2">
+                <input type="text" class="form-control form-control-digit required" maxlength="1"
+                       th:field="*{b3Rel[__${akte.curB2.rp}__][0].dynamicData2}"
+                       hsn:field="b3Rel[__${akte.curB2.rp}__][0].dynamicData2"
+                       data:set-value-when="${'#b3Rel' + akte.curB2.rp + '0\.valueOfRelatedPerson'}"
+                       data-has-values-in="-3" data-then-value="9"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group extra-top-margin geb-date-person"
+             data:is-op="${akte.curB2.rp == akte.volgnrOP}"
+             data:op-geb-day="${akte.op != null and akte.curB2.rp != akte.volgnrOP} ? ${akte.op.dayOfBirth}"
+             data:op-geb-month="${akte.op != null and akte.curB2.rp != akte.volgnrOP} ? ${akte.op.monthOfBirth}"
+             data:op-geb-year="${akte.op != null and akte.curB2.rp != akte.volgnrOP} ? ${akte.op.yearOfBirth}">
+          <label class="col-xs-2 control-label">Geb.datum/-plaats:</label>
+
+          <div class="col-xs-10 form-inline">
+            <th:block
+                th:include="fragments/fields :: datum ('curB2.dayOfBirth', 'curB2.monthOfBirth', 'curB2.yearOfBirth')">
+            </th:block>
+
+            <input type="hidden" class="volgende-inschrijving" th:field="*{curB2.natureOfPerson}"/>
+
+            <div class="volgendeInschrijvingOpPopup" style="display:none;">
+              <div class="form-group">
+                <label class="control-label">Betreft het hier een volgende inschrijving van de OP? j / n:</label>
+
+                <input type="text" class="form-control form-control-digit spacing" maxlength="1" data-valid-chars="j;n"
+                       data:person="${akte.curB2.rp}"/>
+              </div>
+            </div>
+
+            <input type="text" class="form-control form-control-large spacing plaats required"
+                   th:field="*{curB2.placeOfBirth}" hsn:field="curB2.placeOfBirth"/>
+          </div>
+        </div>
+
+        <div class="form-group" th:if="${akte.isCorrection()}">
+          <label class="col-xs-2 control-label">INTERPR:</label>
+
+          <div class="col-xs-3 form-inline"
+               th:include="fragments/fields :: datum ('curB2.dayOfBirthAfterInterpretation', 'curB2.monthOfBirthAfterInterpretation', 'curB2.yearOfBirthAfterInterpretation')">
+          </div>
+        </div>
+
+        <div id="BURGELIJKE_STAND_CONTAINER" class="personDynamic" data-type="BURGELIJKE_STAND"
+             th:fragment="BURGELIJKE_STAND_CONTAINER" th:object="${akte}">
+          <div class="form-group extra-top-margin">
+            <label class="col-xs-2 control-label">Burg. staat:</label>
+
+            <div
+                th:replace="fragments/fields :: burgelijke-stand ('b3Brg[__${akte.curB2.rp}__][0].contentOfDynamicData')">
+            </div>
+          </div>
+
+          <div data:show-when="'#b3Brg'+__${akte.curB2.rp}__+'0\.contentOfDynamicData'" data-has-values-in="2;3;5;9">
+            <div class="form-group">
+              <div class="sub-form-group">
+                <label class="col-xs-2 col-xs-offset-2 control-label">Regelnr. relatie:</label>
+
+                <div class="col-xs-1">
+                  <input type="text" class="form-control form-control-digit required" data-min-value="-2"
+                         data:max-value="${akte.isCorrection()} ? ${akte.b2.size()}"
+                         th:field="*{b3Brg[__${akte.curB2.rp}__][0].valueOfRelatedPerson}"
+                         hsn:field="b3Brg[__${akte.curB2.rp}__][0].valueOfRelatedPerson"/>
+                </div>
+              </div>
+
+              <div class="sub-form-group">
+                <label class="col-xs-1 control-label">Datum:</label>
+
+                <div
+                    th:replace="fragments/fields :: datum ('b3Brg[__${akte.curB2.rp}__][0].dayOfMutation', 'b3Brg[__${akte.curB2.rp}__][0].monthOfMutation', 'b3Brg[__${akte.curB2.rp}__][0].yearOfMutation')">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-2 col-xs-offset-2 control-label">Plaats:</label>
+
+              <div class="col-xs-5">
+                <input type="text" class="form-control spacing plaats"
+                       th:field="*{b3Brg[__${akte.curB2.rp}__][0].dynamicData2}"
+                       hsn:field="b3Brg[__${akte.curB2.rp}__][0].dynamicData2"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group extra-top-margin personDynamic" id="KERKGENOOTSCHAP_CONTAINER"
+             data-type="KERKGENOOTSCHAP"
+             th:fragment="KERKGENOOTSCHAP_CONTAINER" th:object="${akte}">
+          <label class="col-xs-2 control-label">Kerkgenootschap:</label>
+
+          <div th:replace="fragments/fields :: kerkgenootschap ('b3Kg[__${akte.curB2.rp}__][0].dynamicData2')"></div>
+        </div>
+
+        <div class="form-group personDynamic" id="BEROEP_CONTAINER" data-type="BEROEP"
+             th:fragment="BEROEP_CONTAINER" th:object="${akte}">
+          <div class="sub-form-group">
+            <label class="col-xs-2 control-label">Beroep:</label>
+
+            <div th:replace="fragments/fields :: beroep ('b3Brp[__${akte.curB2.rp}__][0].dynamicData2')"></div>
+          </div>
+
+          <div class="sub-form-group">
+            <label class="col-xs-2 control-label">Positie:</label>
+
+            <div class="col-xs-3">
+              <input type="hidden" th:id="'b3Brp'+__${akte.curB2.rp}__+'0.contentOfDynamicData'"
+                     th:name="'b3Brp['+__${akte.curB2.rp}__+'][0].contentOfDynamicData'"/>
+
+              <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="h;o;n"
+                     data:replace-in-field="'#b3Brp'+__${akte.curB2.rp}__+'0\.contentOfDynamicData'"
+                     data-for-values="h:1;o:2;n:3;:0"
+                     th:value="${@bevolkingsregisterHelper.getPositieFromCode(akte.b3Brp[__${akte.curB2.rp}__][0])}"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group extra-top-margin personDynamic" id="HERKOMST_CONTAINER" data-type="HERKOMST"
+             th:fragment="HERKOMST_CONTAINER" th:object="${akte}">
+          <div class="sub-form-group">
+            <label class="col-xs-2 control-label">Herkomst? j/n</label>
+
+            <div class="col-xs-1">
+              <input type="text" class="form-control form-control-digit required" id="herkomst"
+                     maxlength="1" data-valid-chars="j;n"
+                     th:value="${@bevolkingsregisterHelper.hasHerkomstData(akte, akte.curB2)}"/>
+            </div>
+          </div>
+
+          <div data-show-when="#herkomst" data-has-values-in="j" style="display:none;">
+            <div class="sub-form-group">
+              <label class="col-xs-1 control-label">Datum:</label>
+
+              <div class="col-xs-3 form-inline"
+                   th:include="fragments/fields :: datum ('firstB3Her[__${akte.curB2.rp}__].dayOfMutation', 'firstB3Her[__${akte.curB2.rp}__].monthOfMutation', 'firstB3Her[__${akte.curB2.rp}__].yearOfMutation')">
+              </div>
+            </div>
+
+            <div class="sub-form-group">
+              <label class="col-xs-1 control-label">Plaats:</label>
+
+              <div class="col-xs-4">
+                <input type="text" class="form-control spacing plaats"
+                       th:field="*{firstB3Her[__${akte.curB2.rp}__].dynamicData2}"
+                       hsn:field="firstB3Her[__${akte.curB2.rp}__].dynamicData2"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group personDynamic" id="VERTREK_CONTAINER" data-type="VERTREK"
+             th:fragment="VERTREK_CONTAINER" th:object="${akte}">
+          <div class="sub-form-group">
+            <label class="col-xs-2 control-label">Vertrek? j/n</label>
+
+            <div class="col-xs-1">
+              <input type="text" class="form-control form-control-digit required" id="vertrek"
+                     maxlength="1" data-valid-chars="j;n"
+                     th:value="${@bevolkingsregisterHelper.hasVertrekData(akte, akte.curB2)}"/>
+            </div>
+          </div>
+
+          <div data-show-when="#vertrek" data-has-values-in="j" style="display:none;">
+            <div class="sub-form-group">
+              <label class="col-xs-1 control-label">Datum:</label>
+
+              <div class="col-xs-3 form-inline"
+                   th:include="fragments/fields :: datum ('firstB3Ver[__${akte.curB2.rp}__].dayOfMutation', 'firstB3Ver[__${akte.curB2.rp}__].monthOfMutation', 'firstB3Ver[__${akte.curB2.rp}__].yearOfMutation')">
+              </div>
+            </div>
+
+            <div class="sub-form-group">
+              <label class="col-xs-1 control-label">Plaats:</label>
+
+              <div class="col-xs-4">
+                <input type="text" class="form-control spacing plaats"
+                       th:field="*{firstB3Ver[__${akte.curB2.rp}__].dynamicData2}"
+                       hsn:field="firstB3Ver[__${akte.curB2.rp}__].dynamicData2"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="sub-form-group">
+            <label class="col-xs-2 control-label">Overlijden? j/n</label>
+
+            <div class="col-xs-1">
+              <input type="text" class="form-control form-control-digit required" id="overlijden"
+                     maxlength="1" data-valid-chars="j;n"/>
+            </div>
+          </div>
+
+          <div data-show-when="#overlijden" data-has-values-in="j" style="display:none;">
+            <div class="sub-form-group">
+              <label class="col-xs-1 control-label">Datum:</label>
+
+              <div class="col-xs-3 form-inline"
+                   th:include="fragments/fields :: datum ('curB2.dayOfDecease', 'curB2.monthOfDecease', 'curB2.yearOfDecease')">
+              </div>
+            </div>
+
+            <div class="sub-form-group">
+              <label class="col-xs-1 control-label">Plaats:</label>
+
+              <div class="col-xs-4">
+                <input type="text" class="form-control spacing plaats"
+                       th:field="*{curB2.placeOfDecease}" hsn:field="curB2.placeOfDecease"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" th:if="${akte.isCorrection()}"
+             data-show-when="#overlijden" data-has-values-in="j" style="display:none;">
+          <label class="col-xs-2 col-xs-offset-2 control-label">INTERPR:</label>
+
+          <div class="col-xs-3 form-inline"
+               th:include="fragments/fields :: datum ('curB2.dayOfDeceaseAfterInterpretation', 'curB2.monthOfDeceaseAfterInterpretation', 'curB2.yearOfDeceaseAfterInterpretation')">
+          </div>
+        </div>
+
+        <div class="form-group extra-top-margin">
+          <div class="sub-form-group">
+            <label class="col-xs-2 control-label">Nationaliteit:</label>
+
+            <div class="col-xs-3">
+              <input type="text" class="form-control" th:field="*{curB2.nationality}" hsn:field="curB2.nationality"/>
+            </div>
+          </div>
+
+          <div class="sub-form-group">
+            <label class="col-xs-3 control-label">Wettig domicilie:</label>
+
+            <div class="col-xs-3">
+              <input type="text" class="form-control" th:field="*{curB2.legalPlaceOfLiving}"
+                     hsn:field="curB2.legalPlaceOfLiving"
+                     th:if="${akte.refAinb.typeRegister != 'C'}"/>
+
+              <input type="text" class="form-control" th:field="*{curB2.legalPlaceOfLivingInCodes}"
+                     hsn:field="curB2.legalPlaceOfLivingInCodes" th:if="${akte.refAinb.typeRegister == 'C'}"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-2 control-label">Aanmerkingen:</label>
+
+          <div class="col-xs-10">
+            <input type="text" class="form-control" th:field="*{curB2.remarks}" hsn:field="curB2.remarks"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div th:replace="bevolkingsregister/byz-fragments :: registrationByz"></div>
+    <div th:replace="bevolkingsregister/byz-fragments :: personByz (${akte.curB2.rp})"></div>
+
+    <!-- PERSON DYNAMIC MODALS -->
+
+    <th:block layout:include="bevolkingsregister/person-dynamic-fragments :: modal (relModal, RELATIE_TOV_HOOFD, true)">
+      <th:block layout:fragment="modal-content">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: relModalContent"
+             th:fragment="b3ContentRELATIE_TOV_HOOFD"></div>
+      </th:block>
+      <th:block layout:fragment="modal-form">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: relModalForm"></div>
+      </th:block>
+    </th:block>
+
+    <th:block layout:include="bevolkingsregister/person-dynamic-fragments :: modal (brgModal, BURGELIJKE_STAND, true)">
+      <th:block layout:fragment="modal-content">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: brgModalContent"
+             th:fragment="b3ContentBURGELIJKE_STAND"></div>
+      </th:block>
+      <th:block layout:fragment="modal-form">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: brgModalForm"></div>
+      </th:block>
+    </th:block>
+
+    <th:block layout:include="bevolkingsregister/person-dynamic-fragments :: modal (kgModal, KERKGENOOTSCHAP, true)">
+      <th:block layout:fragment="modal-content">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: kgModalContent"
+             th:fragment="b3ContentKERKGENOOTSCHAP"></div>
+      </th:block>
+      <th:block layout:fragment="modal-form">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: kgModalForm"></div>
+      </th:block>
+    </th:block>
+
+    <th:block layout:include="bevolkingsregister/person-dynamic-fragments :: modal (brpModal, BEROEP, true)">
+      <th:block layout:fragment="modal-content">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: brpModalContent"
+             th:fragment="b3ContentBEROEP"></div>
+      </th:block>
+      <th:block layout:fragment="modal-form">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: brpModalForm"></div>
+      </th:block>
+    </th:block>
+
+    <th:block layout:include="bevolkingsregister/person-dynamic-fragments :: modal (herModal, HERKOMST, false)">
+      <th:block layout:fragment="modal-content">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: herModalContent"
+             th:fragment="b3ContentHERKOMST"></div>
+      </th:block>
+      <th:block layout:fragment="modal-form">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: herModalForm"></div>
+      </th:block>
+    </th:block>
+
+    <th:block layout:include="bevolkingsregister/person-dynamic-fragments :: modal (verModal, VERTREK, false)">
+      <th:block layout:fragment="modal-content">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: verModalContent"
+             th:fragment="b3ContentVERTREK"></div>
+      </th:block>
+      <th:block layout:fragment="modal-form">
+        <div th:replace="bevolkingsregister/person-dynamic-fragments :: verModalForm"></div>
+      </th:block>
+    </th:block>
+
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
+          th:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
+  <script src="../../static/js/bevolkingsregister/BS1.js" th:src="@{/js/bevolkingsregister/BS1.js}"></script>
+  <script src="../../static/js/bevolkingsregister/crud-table.js"
+          th:src="@{/js/bevolkingsregister/crud-table.js}"></script>
+  <script src="../../static/js/bevolkingsregister/person-dynamic.js"
+          th:src="@{/js/bevolkingsregister/person-dynamic.js}"></script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<fieldset class="title" th:fragment="PSTITEL">
+  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER PERSOONSKAART VAN:</legend>
+  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE PERSOONSKAART VAN:</legend>
+
+  <div class="row">
+    <div class="col-xs-offset-1 col-xs-2 text-left">
+      Idnr: <br/>
+      <span th:utext="${akte.pkknd.idnr} ? ${akte.pkknd.idnr}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Achternaam: <br/>
+      <span th:utext="${akte.pkknd.anmperp} ? ${akte.pkknd.anmperp}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Voornamen 1 en 2: <br/>
+      <span th:utext="${akte.pkknd.vnm1perp} ? ${akte.pkknd.vnm1perp}"></span>
+      <span th:utext="${akte.pkknd.vnm2perp} ? ${akte.pkknd.vnm2perp}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Geboortejaar: <br/>
+      <span th:utext="${akte.pkknd.gjrperp} ? ${akte.pkknd.gjrperp}"></span>
+    </div>
+  </div>
+</fieldset>
+</body>
+</html>

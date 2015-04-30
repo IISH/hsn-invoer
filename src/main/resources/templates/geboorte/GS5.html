@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="geboorte/GSTITEL :: GSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend th:utext="${akte.curGebgtg.vlgnrgt} + 'e GETUIGE'">1e GETUIGE</legend>
+
+    <th:block
+        th:include="fragments/groups-of-fields :: namen ('curGebgtg.anmgt', 'curGebgtg.vrn1gt', 'curGebgtg.vrn2gt', 'curGebgtg.vrn3gt', 'curGebgtg.lftgt')">
+    </th:block>
+
+    <div class="form-group extra-top-margin"
+         th:include="fragments/complete-fields :: beroep ('curGebgtg.brpgt', 'Beroep:')"></div>
+
+    <div class="form-group" th:replace="fragments/complete-fields :: adres ('curGebgtg.adrgt')"></div>
+
+    <div class="extra-top-margin text-center"
+         th:include="fragments/complete-fields :: handtekening ('curGebgtg.hndgt')"></div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

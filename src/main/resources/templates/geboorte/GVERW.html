@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <div class="form-main-header">
+    VERWIJDER PROGRAMMA GEBOORTE-AKTEN
+  </div>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="alert alert-info" role="alert">
+      <div>Het gaat hier om de volgende akte:</div>
+      <div>
+        <span th:utext="${akte.gebknd.gemnaam}"></span>,
+        <span th:utext="${akte.gebknd.jaar}"></span>,
+        <span th:utext="${akte.gebknd.aktenr}"></span>
+      </div>
+      <div>
+        <span
+            th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.gebknd.anmgeb , akte.gebknd.tusgeb, akte.gebknd.vrn1geb, akte.gebknd.vrn2geb, akte.gebknd.vrn3geb)}"></span>
+      </div>
+    </div>
+
+    <div class="form-group form-inline text-center extra-top-margin">
+      <label class="control-label">Alles van de akte of kaart verdwijnt dus!! Bevestig met 'bewust':</label>
+
+      <input type="text" class="form-control form-control-small required spacing" id="bewust" name="bewust"/>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+</body>
+</html>

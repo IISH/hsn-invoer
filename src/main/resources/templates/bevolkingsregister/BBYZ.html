@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="bevolkingsregister/BSTITEL :: registrationBSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <textarea class="form-control" rows="8" th:field="*{b4.remarks}" hsn:field="b4.remarks">
+    </textarea>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend>
+      <span th:if="${akte.isCorrection()} == false" data-show-when="#bijlagen" data-has-values-in="n">
+        GEEN
+      </span>
+
+      BIJLAGEN bij de huwelijksakten
+    </legend>
+
+    <div class="form-group" th:if="${akte.isCorrection()} == false">
+      <label class="col-xs-8 control-label">Worden er bijlagen of voogdijschappen gespecificeerd? j / n</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+               id="bijlagen" name="bijlagen"/>
+      </div>
+    </div>
+
+    <div data:show-when="${akte.isCorrection() == false} ? '#bijlagen'"
+         data:has-values-in="${akte.isCorrection() == false} ? 'j'">
+      <div class="form-group">
+        <label class="col-xs-8 control-label">Uitreksels geboorteakten/doopcedullen beide huwers genoemd? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 th:field="*{huwknd.ugebhuw}" hsn:field="huwknd.ugebhuw"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-8 control-label">Uitreksels overlijdensakten één of meerdere ouders genoemd? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 th:field="*{huwknd.uovloud}" hsn:field="huwknd.uovloud"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-8 control-label">Uitreksels overlijdensakten eerdere echtgenoten genoemd? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 th:field="*{huwknd.uovlech}" hsn:field="huwknd.uovlech"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-8 control-label">Certificaat nationale militie genoemd? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 th:field="*{huwknd.certnatm}" hsn:field="huwknd.certnatm"/>
+        </div>
+      </div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-8 control-label">Notariële toestemming genoemd? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 th:field="*{huwknd.toestnot}" hsn:field="huwknd.toestnot"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-8 control-label">Akte van bekendheid genoemd? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 th:field="*{huwknd.aktebek}" hsn:field="huwknd.aktebek"/>
+        </div>
+      </div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-8 control-label">Bewijs van onvermogen genoemd? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 th:field="*{huwknd.onvermgn}" hsn:field="huwknd.onvermgn"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-8 control-label">Toestemming van de legercommandant genoemd? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 th:field="*{huwknd.command}" hsn:field="huwknd.command"/>
+        </div>
+      </div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-8 control-label">Toestemming van de voogd(en) genoemd? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                 th:field="*{huwknd.toestvgd}" hsn:field="huwknd.toestvgd"/>
+        </div>
+      </div>
+
+      <p class="extra-top-margin text-center">INDIEN NOG MEER BIJLAGEN, verwerken bij bijzonderheden!!!</p>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

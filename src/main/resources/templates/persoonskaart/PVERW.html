@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <div class="form-main-header">
+    VERWIJDER PROGRAMMA PERSOONSKAARTEN
+  </div>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="alert alert-info" role="alert">
+      <div>Het gaat om <span
+          th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.pkknd.anmperp , akte.pkknd.tusperp, akte.pkknd.vnm1perp, akte.pkknd.vnm2perp, akte.pkknd.vnm3perp)}"></span>
+      </div>
+    </div>
+
+    <div class="form-group form-inline text-center extra-top-margin">
+      <label class="control-label">Alles van de akte of kaart verdwijnt dus!! Bevestig met 'bewust':</label>
+
+      <input type="text" class="form-control form-control-small required spacing" id="bewust" name="bewust"/>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+</body>
+</html>

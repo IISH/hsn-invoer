@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<th:block layout:fragment="modal (modalId, b3Type, oneRecordRequired)">
+  <div th:id="${modalId}" data:type="${b3Type}" data:one-record-required="${oneRecordRequired}"
+       class="modal personDynamicModal crud-table-container" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <strong class="modal-title">Dynamische gegevens</strong>
+        </div>
+        <div class="crud-table">
+          <th:block layout:fragment="modal-content">
+          </th:block>
+        </div>
+        <th:block layout:fragment="modal-form">
+        </th:block>
+        <div class="alert alert-warning modalMessages" role="alert" style="display: none;">
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>
+
+<!-- RELATIE TOV HOOFD -->
+
+<div class="scrollable ajax-updated" id="b3ContentRELATIE_TOV_HOOFD" th:fragment="relModalContent" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="fixed-left-column">
+    <div class="fixed">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="b3Rel,stat : *{b3Rel[__${rp}__]}">
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th class="col-xs-1">Volg</th>
+          <th class="col-xs-2">Code</th>
+          <th class="col-xs-2">Naam</th>
+          <th class="col-xs-3">Datum</th>
+          <th class="col-xs-3" th:if="${akte.isCorrection()}">INTERPR</th>
+          <th class="col-xs-2">Rel</th>
+          <th class="col-xs-2" th:utext="'rp = ' + ${rp}">&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="b3Rel,stat : *{b3Rel[__${rp}__]}">
+          <td>
+            <!-- Volg -->
+              <span class="seqNr dynamicDataSequenceNumber"
+                    th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
+              </span>
+          </td>
+          <td>
+            <!-- Code -->
+              <span class="contentOfDynamicData"
+                    th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].contentOfDynamicData}">
+              </span>
+
+              <span class="dynamicData2 hidden"
+                    th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].dynamicData2}">
+              </span>
+          </td>
+          <td>
+            <!-- Naam -->
+              <span class="contentOfDynamicDataName"
+                    th:with="relId=${akte.b3Rel[__${rp}__][__${stat.index}__].contentOfDynamicData},rel=${@relatieRepository.findByRelkode(relId)}"
+                    th:utext="${rel != null} ? ${rel.relatie}">
+              </span>
+          </td>
+          <td>
+            <!-- Datum -->
+                <span class="dayOfMutation"
+                      th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].dayOfMutation}">
+                </span>
+            /
+                <span class="monthOfMutation"
+                      th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].monthOfMutation}">
+                </span>
+            /
+                <span class="yearOfMutation"
+                      th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].yearOfMutation}">
+                </span>
+
+            <span class="dayHoofd hidden"
+                  th:utext="${@bevolkingsregisterHelper.getDayFromDateExplicietHoofd(akte.b3Rel[__${rp}__][__${stat.index}__])}">
+            </span>
+
+            <span class="monthHoofd hidden"
+                  th:utext="${@bevolkingsregisterHelper.getMonthFromDateExplicietHoofd(akte.b3Rel[__${rp}__][__${stat.index}__])}">
+            </span>
+
+            <span class="yearHoofd hidden"
+                  th:utext="${@bevolkingsregisterHelper.getYearFromDateExplicietHoofd(akte.b3Rel[__${rp}__][__${stat.index}__])}">
+            </span>
+          </td>
+          <td th:if="${akte.isCorrection()}">
+            <!-- INTERPR -->
+                <span class="dayOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].dayOfMutationAfterInterpretation}">
+                </span>
+            /
+                <span class="monthOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].monthOfMutationAfterInterpretation}">
+                </span>
+            /
+                <span class="yearOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].yearOfMutationAfterInterpretation}">
+                </span>
+          </td>
+          <td>
+            <!-- Rel -->
+              <span class="ind"
+                    th:style="${akte.b3Rel[__${rp}__][__${stat.index}__].valueOfRelatedPerson le 0} ? 'display:none;'">
+              </span>
+
+            <span class="valueOfRelatedPerson hidden"
+                  th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].valueOfRelatedPerson}">
+            </span>
+          </td>
+          <td>
+            <!-- Update -->
+            <button type="button" class="btn btn-default btn-xs btn-update" data:person="${rp}"
+                    data-type="RELATIE_TOV_HOOFD">
+              Correctie
+            </button>
+
+            <!-- Remove -->
+            <button type="button" class="btn btn-default btn-xs btn-delete" data:person="${rp}"
+                    data-type="RELATIE_TOV_HOOFD">
+              Vervallen
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="fixed-left-column extra-top-margin" th:fragment="relModalForm" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="on-no-edit">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td class="col-xs-1">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            &nbsp;
+          </td>
+          <td class="col-xs-3">
+            &nbsp;
+          </td>
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            <button type="button" class="btn btn-default btn-xs btn-new" data:person="${rp}"
+                    data-type="RELATIE_TOV_HOOFD">
+              Nieuw
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="on-edit relatieElems" style="display:none;">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td class="col-xs-1">
+            <!-- Volg -->
+            <input type="text" disabled="disabled" name="dynamicDataSequenceNumber"
+                   class="form-control form-control-digit"/>
+          </td>
+          <!-- TODO: On open modal, Create sex elem -->
+          <td colspan="2" class="col-xs-4">
+            <!-- Code + Naam -->
+            <div class="form-inline">
+              <input type="text" class="form-control form-control-digit relatie is-id" name="contentOfDynamicData"
+                     data-selected="0"/>
+
+              <p class="form-control-static picklist-label spacing">
+                &nbsp;
+              </p>
+            </div>
+
+            <input type="hidden" class="relatie-regel" name="valueOfRelatedPerson"/>
+
+            <div class="relatieRegelPopup" style="display:none;">
+              <div class="form-group">
+                <label class="control-label">Regelnr. relatie:</label>
+
+                <input type="text" class="integer-field form-control form-control-digit spacing"/>
+              </div>
+            </div>
+          </td>
+          <td class="col-xs-3">
+            <div class="form-inline"
+                 data-show-when="#relModal [name=dynamicDataSequenceNumber]" data-has-values-not-in="1">
+              <!-- Datum -->
+              <input type="text" name="dayOfMutation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="monthOfMutation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="yearOfMutation" class="form-control form-control-small"/>
+            </div>
+          </td>
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            <div class="form-inline">
+              <!-- INTERPR -->
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+            </div>
+          </td>
+          <td class="col-xs-2">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}"
+                    data-type="RELATIE_TOV_HOOFD">
+              Annuleren
+            </button>
+
+            <!-- Save -->
+            <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}"
+                    data-type="RELATIE_TOV_HOOFD">
+              Opslaan
+            </button>
+
+            <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}"
+                    data-type="RELATIE_TOV_HOOFD">
+              Opslaan
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Set data-rp on modal open -->
+    <div class="form-group dateHoofd" style="display:none;" data-rp="2">
+      <label class="col-xs-4 col-xs-offset-3 control-label">
+        Datum expliciet hoofd:
+      </label>
+
+      <input type="hidden" name="dynamicData2"/> <!-- TODO: Hidden not working -->
+
+      <div class="col-xs-4 form-inline datum-expliciet-hoofd">
+        <input type="text" class="form-control form-control-digit day" name="dayHoofd"/>
+        /
+        <input type="text" class="form-control form-control-digit month" name="monthHoofd"/>
+        /
+        <input type="text" class="form-control form-control-small year" name="yearHoofd"/>
+      </div>
+    </div>
+
+    <div data-show-when="#relModal [name=contentOfDynamicData]" data-has-values-in="30;40;51;52" style="display:none;">
+      <div class="form-group">
+        <label class="col-xs-4 col-xs-offset-3 control-label">
+          Regelnummer vader/moeder:
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required relatie-regel-2" data-min-value="-3"
+                 name="valueOfRelatedPerson"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 col-xs-offset-3 control-label">
+          Basis/aard interpretatie, kode:
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" name="dynamicData2"
+                 data-set-value-when="#relModal [name=valueOfRelatedPerson]"
+                 data-has-values-in="-3" data-then-value="9"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BURGELIJKE STAND -->
+
+<div class="ajax-updated" id="b3ContentBURGELIJKE_STAND" th:fragment="brgModalContent" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="fixed-left-column">
+    <div class="fixed">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="b3Brg,stat : *{b3Brg[__${rp}__]}">
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free scrollable">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th style="min-width:60px;max-width:60px;">Volg</th>
+          <th style="min-width:60px;max-width:60px;">Code</th>
+          <th style="min-width:120px;max-width:120px;">Burg. staat</th>
+          <th style="min-width:60px;max-width:60px;">Rel</th>
+          <th style="min-width:200px;max-width:200px;">Datum</th>
+          <th style="min-width:200px;max-width:200px;">INTERPR</th>
+          <!--th:if="${akte.isCorrection()}"-->
+          <th style="min-width:300px;max-width:300px;">Plaats</th>
+          <th style="min-width:150px;max-width:150px;">&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="b3Brg,stat : *{b3Brg[__${rp}__]}">
+          <td>
+            <!-- Volg -->
+              <span class="seqNr dynamicDataSequenceNumber"
+                    th:utext="${akte.b3Brg[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
+              </span>
+          </td>
+          <td>
+            <!-- Code -->
+              <span class="contentOfDynamicData"
+                    th:utext="${akte.b3Brg[__${rp}__][__${stat.index}__].contentOfDynamicData}">
+              </span>
+          </td>
+          <td th:with="brgId=${akte.b3Brg[__${rp}__][__${stat.index}__].contentOfDynamicData}">
+            <!-- Naam -->
+            <span class="contentOfDynamicDataName" th:if="${#arrays.contains({1,2,3,5,6,9}, brgId) == false}">
+              &nbsp;
+            </span>
+
+            <span class="contentOfDynamicDataName" th:if="${brgId == 1}">
+              Ongehuwd
+            </span>
+
+            <span class="contentOfDynamicDataName" th:if="${brgId == 2}">
+              Verweduwd
+            </span>
+
+            <span class="contentOfDynamicDataName" th:if="${brgId == 3}">
+              Gescheiden
+            </span>
+
+            <span class="contentOfDynamicDataName" th:if="${brgId == 5}">
+              Gehuwd
+            </span>
+
+            <span class="contentOfDynamicDataName" th:if="${brgId == 6}">
+              Onbekend
+            </span>
+
+            <span class="contentOfDynamicDataName" th:if="${brgId == 9}">
+              Onb -> huwelijk
+            </span>
+          </td>
+          <td>
+            <span class="valueOfRelatedPerson"
+                  th:utext="${akte.b3Brg[__${rp}__][__${stat.index}__].valueOfRelatedPerson}">
+            </span>
+          </td>
+          <td>
+            <!-- Datum -->
+                <span class="dayOfMutation"
+                      th:utext="${akte.b3Brg[__${rp}__][__${stat.index}__].dayOfMutation}">
+                </span>
+            /
+                <span class="monthOfMutation"
+                      th:utext="${akte.b3Brg[__${rp}__][__${stat.index}__].monthOfMutation}">
+                </span>
+            /
+                <span class="yearOfMutation"
+                      th:utext="${akte.b3Brg[__${rp}__][__${stat.index}__].yearOfMutation}">
+                </span>
+          </td>
+          <td> <!--th:if="${akte.isCorrection()}"-->
+            <!-- INTERPR -->
+                <span class="dayOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Brg[__${rp}__][__${stat.index}__].dayOfMutationAfterInterpretation}">
+                </span>
+            /
+                <span class="monthOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Brg[__${rp}__][__${stat.index}__].monthOfMutationAfterInterpretation}">
+                </span>
+            /
+                <span class="yearOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Brg[__${rp}__][__${stat.index}__].yearOfMutationAfterInterpretation}">
+                </span>
+          </td>
+          <td>
+            <!-- Plaats -->
+              <span class="dynamicData2"
+                    th:utext="${akte.b3Brg[__${rp}__][__${stat.index}__].dynamicData2}">
+              </span>
+          </td>
+          <td>
+            <!-- Update -->
+            <button type="button" class="btn btn-default btn-xs btn-update" data:person="${rp}"
+                    data-type="BURGELIJKE_STAND">
+              Correctie
+            </button>
+
+            <!-- Remove -->
+            <button type="button" class="btn btn-default btn-xs btn-delete" data:person="${rp}"
+                    data-type="BURGELIJKE_STAND">
+              Vervallen
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div th:fragment="brgModalForm" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="on-no-edit clearfix">
+    <div class="pull-right content-spacing">
+      <button type="button" class="btn btn-default btn-xs btn-new" data:person="${rp}"
+              data-type="BURGELIJKE_STAND">
+        Nieuw
+      </button>
+    </div>
+  </div>
+
+  <div class="on-edit extra-top-margin fixed-left-column" style="display:none;">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free scrollable">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td style="min-width:60px;max-width:60px;">
+            <!-- Volg -->
+            <input type="text" disabled="disabled" name="dynamicDataSequenceNumber"
+                   class="form-control form-control-digit"/>
+          </td>
+          <td colspan="2" style="min-width:180px;max-width:180px;">
+            <!-- Code + Naam -->
+            <div class="form-inline">
+              <input type="text" class="form-control form-control-digit burgstand is-id" name="contentOfDynamicData"
+                     data-selected="0"/>
+
+              <p class="form-control-static picklist-label spacing">
+                &nbsp;
+              </p>
+            </div>
+          </td>
+          <td style="min-width:60px;max-width:60px;">
+            <!-- Rel -->
+            <input type="text" class="form-control form-control-digit" name="valueOfRelatedPerson" data-min-value="-2"
+                   data:max-value="${akte.isCorrection()} ? ${akte.b2.size()}"
+                   data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9"/>
+          </td>
+          <td style="min-width:200px;max-width:200px;">
+            <div class="form-inline"
+                 data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9">
+              <!-- Datum -->
+              <input type="text" name="dayOfMutation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="monthOfMutation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="yearOfMutation" class="form-control form-control-small"/>
+            </div>
+          </td>
+          <td style="min-width:200px;max-width:200px;"> <!--th:if="${akte.isCorrection()}"-->
+            <div class="form-inline"
+                 data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9">
+              <!-- INTERPR -->
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+            </div>
+          </td>
+          <td style="min-width:300px;max-width:300px;">
+            <!-- Plaats -->
+            <input type="text" class="form-control plaats" name="dynamicData2"
+                   data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9"/>
+          </td>
+          <td style="min-width:150px;max-width:150px;">
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}"
+                    data-type="BURGELIJKE_STAND">
+              Annuleren
+            </button>
+
+            <!-- Save -->
+            <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}"
+                    data-type="BURGELIJKE_STAND">
+              Opslaan
+            </button>
+
+            <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}"
+                    data-type="BURGELIJKE_STAND">
+              Opslaan
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- KERKGENOOTSCHAP -->
+
+<div class="scrollable ajax-updated" id="b3ContentKERKGENOOTSCHAP" th:fragment="kgModalContent" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="fixed-left-column">
+    <div class="fixed">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="b3Kg,stat : *{b3Kg[__${rp}__]}">
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th class="col-xs-2">VolgNr</th>
+          <th class="col-xs-8">Godsdienst</th>
+          <th class="col-xs-2">&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="b3Kg,stat : *{b3Kg[__${rp}__]}">
+          <td>
+            <!-- VolgNr -->
+              <span class="seqNr dynamicDataSequenceNumber"
+                    th:utext="${akte.b3Kg[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
+              </span>
+          </td>
+          <td>
+            <!-- Godsdienst -->
+              <span class="dynamicData2"
+                    th:utext="${akte.b3Kg[__${rp}__][__${stat.index}__].dynamicData2}">
+              </span>
+          </td>
+          <td>
+            <!-- Update -->
+            <button type="button" class="btn btn-default btn-xs btn-update" data:person="${rp}"
+                    data-type="KERKGENOOTSCHAP">
+              Correctie
+            </button>
+
+            <!-- Remove -->
+            <button type="button" class="btn btn-default btn-xs btn-delete" data:person="${rp}"
+                    data-type="KERKGENOOTSCHAP">
+              Vervallen
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="fixed-left-column extra-top-margin" th:fragment="kgModalForm" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="on-no-edit">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td class="col-xs-2">
+            &nbsp;
+          </td>
+          <td class="col-xs-8">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            <button type="button" class="btn btn-default btn-xs btn-new" data:person="${rp}"
+                    data-type="KERKGENOOTSCHAP">
+              Nieuw
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="on-edit" style="display:none;">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td class="col-xs-2">
+            <!-- VolgNr -->
+            <input type="text" disabled="disabled" name="dynamicDataSequenceNumber"
+                   class="form-control form-control-digit"/>
+          </td>
+          <td class="col-xs-8">
+            <!-- Godsdienst -->
+            <input type="text" class="form-control kg" name="dynamicData2"/>
+          </td>
+          <td class="col-xs-2">
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}"
+                    data-type="KERKGENOOTSCHAP">
+              Annuleren
+            </button>
+
+            <!-- Save -->
+            <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}"
+                    data-type="KERKGENOOTSCHAP">
+              Opslaan
+            </button>
+
+            <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}"
+                    data-type="KERKGENOOTSCHAP">
+              Opslaan
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- BEROEP -->
+
+<div class="scrollable ajax-updated" id="b3ContentBEROEP" th:fragment="brpModalContent" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="fixed-left-column">
+    <div class="fixed">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="curB3Brp,stat : *{b3Brp[__${rp}__]}">
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th class="col-xs-1">Volgnr</th>
+          <th class="col-xs-2">Beroep</th>
+          <th class="col-xs-2">Positie</th>
+          <th class="col-xs-3" th:if="${akte.isCorrection()}">INTERPR</th>
+          <th class="col-xs-2">&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="curB3Brp,stat : *{b3Brp[__${rp}__]}">
+          <td>
+            <!-- Volgnr -->
+              <span class="seqNr dynamicDataSequenceNumber"
+                    th:utext="${akte.b3Brp[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
+              </span>
+          </td>
+          <td>
+            <!-- Beroep -->
+              <span class="dynamicData2" th:utext="${akte.b3Brp[__${rp}__][__${stat.index}__].dynamicData2}">
+              </span>
+          </td>
+          <td>
+            <!-- Positie -->
+              <span class="contentOfDynamicData hidden"
+                    th:utext="akte.b3Brp[__${rp}__][__${stat.index}__].contentOfDynamicData"></span>
+
+              <span class="contentOfDynamicDataCode"
+                    th:utext="${@bevolkingsregisterHelper.getPositieFromCode(akte.b3Brp[__${rp}__][__${stat.index}__])}">
+              </span>
+          </td>
+          <td th:if="${akte.isCorrection()}">
+            <!-- INTERPR -->
+                <span class="dayOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Brp[__${rp}__][__${stat.index}__].dayOfMutationAfterInterpretation}">
+                </span>
+            /
+                <span class="monthOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Brp[__${rp}__][__${stat.index}__].monthOfMutationAfterInterpretation}">
+                </span>
+            /
+                <span class="yearOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Brp[__${rp}__][__${stat.index}__].yearOfMutationAfterInterpretation}">
+                </span>
+          </td>
+          <td>
+            <!-- Update -->
+            <button type="button" class="btn btn-default btn-xs btn-update" data:person="${rp}" data-type="BEROEP">
+              Correctie
+            </button>
+
+            <!-- Remove -->
+            <button type="button" class="btn btn-default btn-xs btn-delete" data:person="${rp}" data-type="BEROEP">
+              Vervallen
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="fixed-left-column extra-top-margin" th:fragment="brpModalForm" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="on-no-edit">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td class="col-xs-1">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            &nbsp;
+          </td>
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            <button type="button" class="btn btn-default btn-xs btn-new" data:person="${rp}" data-type="BEROEP">
+              Nieuw
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="on-edit" style="display:none;">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td class="col-xs-1">
+            <!-- Volgnr -->
+            <input type="text" disabled="disabled" name="dynamicDataSequenceNumber"
+                   class="form-control form-control-digit"/>
+          </td>
+          <td class="col-xs-2">
+            <!-- Beroep -->
+            <input type="text" name="dynamicData2" class="form-control beroep"/>
+          </td>
+          <td class="col-xs-2">
+            <!-- Positie -->
+            <div class="form-inline">
+              <input type="hidden" name="contentOfDynamicData" class="modalContentOfDynamicData"/>
+
+              <input type="text" class="form-control form-control-digit" maxlength="1" name="contentOfDynamicDataCode"
+                     data-replace-in-field=".modalContentOfDynamicData" data-for-values="h:1;o:2;n:3;:"
+                     data-valid-chars="h;o;n"/>
+
+              <p class="form-control-static spacing">h / o / n</p>
+            </div>
+          </td>
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            <div class="form-inline">
+              <!-- INTERPR -->
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+            </div>
+          </td>
+          <td class="col-xs-2">
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}" data-type="BEROEP">
+              Annuleren
+            </button>
+
+            <!-- Save -->
+            <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}" data-type="BEROEP">
+              Opslaan
+            </button>
+
+            <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}" data-type="BEROEP">
+              Opslaan
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- HERKOMST -->
+
+<div class="scrollable ajax-updated" id="b3ContentHERKOMST" th:fragment="herModalContent" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="fixed-left-column">
+    <div class="fixed">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="curB3Her,stat : *{b3Her[__${rp}__]}">
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th class="col-xs-1">Volgnr</th>
+          <th class="col-xs-3">Datum aankomst</th>
+          <th class="col-xs-3" th:if="${akte.isCorrection()}">INTERPR</th>
+          <th class="col-xs-3">Plaats herkomst</th>
+          <th class="col-xs-2">&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="curB3Her,stat : *{b3Her[__${rp}__]}">
+          <td>
+            <span class="seqNr" th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
+            </span>
+          </td>
+          <td>
+            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dayOfMutation}"></span>
+            /
+            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].monthOfMutation}"></span>
+            /
+            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].yearOfMutation}"></span>
+          </td>
+          <td th:if="${akte.isCorrection()}">
+            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dayOfMutationAfterInterpretation}"></span>
+            /
+            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].monthOfMutationAfterInterpretation}"></span>
+            /
+            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].yearOfMutationAfterInterpretation}"></span>
+          </td>
+          <td>
+            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dynamicData2}">
+            </span>
+          </td>
+          <td>
+            <button type="button" class="btn btn-default btn-xs btn-update" data:person="${rp}" data-type="HERKOMST">
+              Correctie
+            </button>
+
+            <button type="button" class="btn btn-default btn-xs btn-delete" data:person="${rp}" data-type="HERKOMST">
+              Vervallen
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="fixed-left-column extra-top-margin" th:fragment="herModalForm" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="on-no-edit">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td class="col-xs-1">
+            &nbsp;
+          </td>
+          <td class="col-xs-3">
+            &nbsp;
+          </td>
+          <td class="col-xs-3">
+            &nbsp;
+          </td>
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            <button type="button" class="btn btn-default btn-xs btn-new" data:person="${rp}" data-type="HERKOMST">
+              Nieuw
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="on-edit" style="display:none;">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td class="col-xs-1">
+            <input type="text" disabled="disabled" name="dynamicDataSequenceNumber"
+                   class="form-control form-control-digit"/>
+          </td>
+          <td class="col-xs-3">
+            <div class="form-inline">
+              <input type="text" name="dayOfMutation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="monthOfMutation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="yearOfMutation" class="form-control form-control-small"/>
+            </div>
+          </td>
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            <div class="form-inline">
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+            </div>
+          </td>
+          <td class="col-xs-3">
+            <input type="text" name="dynamicData2" class="form-control plaats"/>
+          </td>
+          <td class="col-xs-2">
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}" data-type="HERKOMST">
+              Annuleren
+            </button>
+
+            <!-- Save -->
+            <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}" data-type="HERKOMST">
+              Opslaan
+            </button>
+
+            <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}"
+                    data-type="HERKOMST">
+              Opslaan
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- VERTREK -->
+
+<div class="scrollable ajax-updated" id="b3ContentVERTREK" th:fragment="verModalContent" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="fixed-left-column">
+    <div class="fixed">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="curB3Ver,stat : *{b3Ver[__${rp}__]}">
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th class="col-xs-1">Volgnr</th>
+          <th class="col-xs-3">Datum vertrek</th>
+          <th class="col-xs-3" th:if="${akte.isCorrection()}">INTERPR</th>
+          <th class="col-xs-3">Plaats vertrek</th>
+          <th class="col-xs-2">&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="curB3Ver,stat : *{b3Ver[__${rp}__]}">
+          <td>
+            <span class="seqNr" th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
+            </span>
+          </td>
+          <td>
+            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dayOfMutation}"></span>
+            /
+            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].monthOfMutation}"></span>
+            /
+            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].yearOfMutation}"></span>
+          </td>
+          <td th:if="${akte.isCorrection()}">
+            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dayOfMutationAfterInterpretation}"></span>
+            /
+            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].monthOfMutationAfterInterpretation}"></span>
+            /
+            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].yearOfMutationAfterInterpretation}"></span>
+          </td>
+          <td>
+            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dynamicData2}">
+            </span>
+          </td>
+          <td>
+            <button type="button" class="btn btn-default btn-xs btn-update" data:person="${rp}" data-type="VERTREK">
+              Correctie
+            </button>
+
+            <button type="button" class="btn btn-default btn-xs btn-delete" data:person="${rp}" data-type="VERTREK">
+              Vervallen
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="fixed-left-column extra-top-margin" th:fragment="verModalForm" th:object="${akte}"
+     th:with="rp=${akte.curB2.rp}">
+  <div class="on-no-edit">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td class="col-xs-1">
+            &nbsp;
+          </td>
+          <td class="col-xs-3">
+            &nbsp;
+          </td>
+          <td class="col-xs-3">
+            &nbsp;
+          </td>
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            &nbsp;
+          </td>
+          <td class="col-xs-2">
+            <button type="button" class="btn btn-default btn-xs btn-new" data:person="${rp}" data-type="VERTREK">
+              Nieuw
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="on-edit" style="display:none;">
+    <div class="fixed">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td>
+            <span></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="free">
+      <table class="table table-condensed table-form">
+        <tbody>
+        <tr>
+          <td class="col-xs-1">
+            <input type="text" disabled="disabled" name="dynamicDataSequenceNumber"
+                   class="form-control form-control-digit"/>
+          </td>
+          <td class="col-xs-3">
+            <div class="form-inline">
+              <input type="text" name="dayOfMutation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="monthOfMutation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="yearOfMutation" class="form-control form-control-small"/>
+            </div>
+          </td>
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            <div class="form-inline">
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+            </div>
+          </td>
+          <td class="col-xs-3">
+            <input type="text" name="dynamicData2" class="form-control plaats"/>
+          </td>
+          <td class="col-xs-2">
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}" data-type="VERTREK">
+              Annuleren
+            </button>
+
+            <!-- Save -->
+            <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}" data-type="VERTREK">
+              Opslaan
+            </button>
+
+            <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}"
+                    data-type="VERTREK">
+              Opslaan
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

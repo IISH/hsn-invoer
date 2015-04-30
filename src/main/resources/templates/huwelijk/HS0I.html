@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <legend align="center">INVOER VAN HUWELIJKSAKTEN</legend>
+
+  <div class="form-main-header">
+    eerst volledige identificatie
+  </div>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <label class="col-xs-7 control-label">HSN-identificatienummer huwende onderzoekspersoon:</label>
+
+      <div class="col-xs-4">
+        <input type="text" class="form-control gbh-idnr only-gbh-lookup required" th:field="*{huwttl.idnr}" hsn:field="huwttl.idnr"/>
+      </div>
+    </div>
+
+    <div class="form-group with-op-state" style="display:none;">
+      <label class="col-xs-4 control-label">HUWELIJKSDATUM en -TIJDSTIP:</label>
+
+      <div class="col-xs-12 checkDateTimeHuw">
+        <div class="col-xs-3">
+          <label class="control-label">Dag:</label>
+          <input type="text" class="form-control required day focus-on-success" th:field="*{huwttl.huw.hdag}" hsn:field="huwttl.huw.hdag"/>
+        </div>
+        <div class="col-xs-3">
+          <label class="control-label">Maand:</label>
+          <input type="text" class="form-control required month" th:field="*{huwttl.huw.hmaand}" hsn:field="huwttl.huw.hmaand"/>
+        </div>
+        <div class="col-xs-3">
+          <label class="control-label">Jaar:</label>
+          <input type="text" class="form-control required year" th:field="*{huwttl.huw.hjaar}" hsn:field="huwttl.huw.hjaar"/>
+        </div>
+        <div class="col-xs-3">
+          <label class="control-label">Uur:</label>
+          <input type="text" class="form-control required hour huw-check" th:field="*{huwttl.huur}" hsn:field="huwttl.huur"/>
+        </div>
+      </div>
+    </div>
+
+    <p class="fail text-danger text-center" style="display: none;"></p>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/huwelijk/HS0I.js" th:src="@{/js/huwelijk/HS0I.js}"></script>
+</th:block>
+</body>
+</html>

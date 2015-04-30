@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- PS0C: IDENTIFICATIE VIA CORRECTIE -->
+  <view-state id="PS0C" view="persoonskaart/PS0C" model="akte">
+    <on-entry>
+      <evaluate expression="persoonskaartService.createNewAkteForCorrection()" result="flowScope.akte"/>
+    </on-entry>
+
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="PCOR">
+      <evaluate expression="persoonskaartService.editOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- PCOR: CORRECTIE SCHERM -->
+  <view-state id="PCOR" view="persoonskaart/PCOR" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="firstCorrectionCodeCheck"/>
+  </view-state>
+
+  <action-state id="firstCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="PS0A"/>
+    <transition on="1" to="PS0A"/>
+    <transition on="2" to="secondCorrectionCodeCheck"/>
+    <transition on="3" to="PS0A"/>
+    <transition on="4" to="secondCorrectionCodeCheck"/>
+    <transition on="5" to="secondCorrectionCodeCheck"/>
+    <transition on="6" to="secondCorrectionCodeCheck"/>
+    <transition on="7" to="PS0A"/>
+    <transition on="8" to="secondCorrectionCodeCheck"/>
+    <transition on="9" to="secondCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- PS0A: ALGEMENE GEGEVENS PK -->
+  <view-state id="PS0A" view="persoonskaart/PS0A" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="secondCorrectionCodeCheck">
+      <evaluate expression="persoonskaartService.registerGeneralInformation(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="secondCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="PS1"/>
+    <transition on="1" to="thirdCorrectionCodeCheck"/>
+    <transition on="2" to="PS1"/>
+    <transition on="3" to="PS1"/>
+    <transition on="4" to="thirdCorrectionCodeCheck"/>
+    <transition on="5" to="thirdCorrectionCodeCheck"/>
+    <transition on="6" to="thirdCorrectionCodeCheck"/>
+    <transition on="7" to="PS1"/>
+    <transition on="8" to="thirdCorrectionCodeCheck"/>
+    <transition on="9" to="thirdCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- PS1: GEGEVENS PK-HOUDER -->
+  <view-state id="PS1" view="persoonskaart/PS1" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="firstPkTypeCheck">
+      <evaluate expression="persoonskaartService.registerPkInformation(flowScope.akte)"/>
+      <evaluate expression="persoonskaartService.registerPersoonskaart(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="firstPkTypeCheck">
+    <evaluate expression="flowScope.akte.pkknd.pktype != 7"/>
+
+    <transition on="yes" to="PS2"/>
+    <transition on="no" to="thirdCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- PS2: OUDERS -->
+  <view-state id="PS2" view="persoonskaart/PS2" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="thirdCorrectionCodeCheck">
+      <evaluate expression="persoonskaartService.registerOuders(flowScope.akte)"/>
+      <evaluate expression="persoonskaartService.registerPersoonskaart(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="thirdCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="secondPkTypeCheck"/>
+    <transition on="1" to="fourthCorrectionCodeCheck"/>
+    <transition on="2" to="fourthCorrectionCodeCheck"/>
+    <transition on="3" to="fourthCorrectionCodeCheck"/>
+    <transition on="4" to="secondPkTypeCheck"/>
+    <transition on="5" to="fourthCorrectionCodeCheck"/>
+    <transition on="6" to="fourthCorrectionCodeCheck"/>
+    <transition on="7" to="secondPkTypeCheck"/>
+    <transition on="8" to="fourthCorrectionCodeCheck"/>
+    <transition on="9" to="fourthCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="secondPkTypeCheck">
+    <evaluate expression="flowScope.akte.pkknd.pktype != 8"/>
+
+    <transition on="yes" to="PS3"/>
+    <transition on="no" to="fourthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- PS3: BEROEPEN -->
+  <view-state id="PS3" view="persoonskaart/PS3" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="ajax">
+      <evaluate expression="persoonskaartService.updateBeroepen(flowScope.akte, requestParameters.noBrp)"/>
+      <render fragments="brp"/>
+    </transition>
+
+    <transition on="next" to="fourthCorrectionCodeCheck">
+      <evaluate expression="persoonskaartService.registerBeroepen(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="fourthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="PS4INV1"/>
+    <transition on="1" to="fifthCorrectionCodeCheck"/>
+    <transition on="2" to="fifthCorrectionCodeCheck"/>
+    <transition on="3" to="fifthCorrectionCodeCheck"/>
+    <transition on="4" to="fifthCorrectionCodeCheck"/>
+    <transition on="5" to="PS4INV1"/>
+    <transition on="6" to="fifthCorrectionCodeCheck"/>
+    <transition on="7" to="PS4INV1"/>
+    <transition on="8" to="fifthCorrectionCodeCheck"/>
+    <transition on="9" to="fifthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- PS4INV1: HUWELIJK TOEVOEGEN? -->
+  <view-state id="PS4INV1" view="persoonskaart/PS4INV1" model="akte">
+    <transition on="next" to="marriageCorrectionCheck"/>
+  </view-state>
+
+  <action-state id="marriageCorrectionCheck">
+    <evaluate expression="(flowScope.akte.anotherMarriage == 'n') and
+                          (flowScope.akte.pkhuw.size() > 0)"/>
+
+    <transition on="yes" to="PS4COR1"/>
+    <transition on="no" to="marriageCheck"/>
+  </action-state>
+
+  <!-- PS4COR1: HUWELIJKEN VERWIJDERD, TOCH TOEVOEGEN? -->
+  <view-state id="PS4COR1" view="persoonskaart/PS4COR1" model="akte">
+    <transition on="next" to="marriageCheck">
+      <evaluate expression="persoonskaartService.deleteMarriages(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="marriageCheck">
+    <evaluate expression="flowScope.akte.anotherMarriage == 'j'"/>
+
+    <transition on="yes" to="PS4">
+      <evaluate expression="persoonskaartService.createHuwelijk(flowScope.akte)"/>
+    </transition>
+
+    <transition on="no" to="fifthCorrectionCodeCheck">
+      <evaluate expression="persoonskaartService.registerHuwelijken(flowScope.akte)"/>
+    </transition>
+  </action-state>
+
+  <!-- PS4; HUWELIJK -->
+  <view-state id="PS4" view="persoonskaart/PS4" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="marriageCheck">
+      <evaluate expression="persoonskaartService.registerHuwelijk(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="fifthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="thirdPkTypeCheck"/>
+    <transition on="1" to="sixthCorrectionCodeCheck"/>
+    <transition on="2" to="sixthCorrectionCodeCheck"/>
+    <transition on="3" to="sixthCorrectionCodeCheck"/>
+    <transition on="4" to="sixthCorrectionCodeCheck"/>
+    <transition on="5" to="sixthCorrectionCodeCheck"/>
+    <transition on="6" to="thirdPkTypeCheck"/>
+    <transition on="7" to="thirdPkTypeCheck"/>
+    <transition on="8" to="sixthCorrectionCodeCheck"/>
+    <transition on="9" to="sixthCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="thirdPkTypeCheck">
+    <evaluate expression="flowScope.akte.pkknd.pktype == 6"/>
+
+    <transition on="yes" to="PS5INV1"/>
+    <transition on="no" to="fourthPkTypeCheck"/>
+  </action-state>
+
+  <!-- PS5INV1: ADRESSEN TOEVOEGEN? -->
+  <view-state id="PS5INV1" view="persoonskaart/PS5INV1" model="akte">
+    <transition on="next" to="addAddressCheck"/>
+  </view-state>
+
+  <action-state id="addAddressCheck">
+    <evaluate expression="flowScope.akte.addAddresses == 'j'"/>
+
+    <transition on="yes" to="PS5"/>
+    <transition on="no" to="sixthCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="fourthPkTypeCheck">
+    <evaluate expression="({8,10}).contains(flowScope.akte.pkknd.pktype)"/>
+
+    <transition on="yes" to="PS5PL"/>
+    <transition on="no" to="PS5">
+
+    </transition>
+  </action-state>
+
+  <!-- PS5PL: ADRESSEN (PL VERSIE) -->
+  <view-state id="PS5PL" view="persoonskaart/PS5PL" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="fifthPkTypeCheck">
+      <evaluate expression="persoonskaartService.registerPlAdressen(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="fifthPkTypeCheck">
+    <evaluate expression="flowScope.akte.pkknd.pktype == 10"/>
+
+    <transition on="yes" to="PS5"/>
+    <transition on="no" to="sixthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- PS5: ADRESSEN -->
+  <view-state id="PS5" view="persoonskaart/PS5" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="ajax">
+      <evaluate expression="persoonskaartService.updateAdressen(flowScope.akte, requestParameters.noAddresses)"/>
+      <render fragments="addresses"/>
+    </transition>
+
+    <transition on="next" to="sixthCorrectionCodeCheck">
+      <evaluate expression="persoonskaartService.registerAdressen(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="sixthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="PS6INV1"/>
+    <transition on="1" to="seventhCorrectionCodeCheck"/>
+    <transition on="2" to="seventhCorrectionCodeCheck"/>
+    <transition on="3" to="seventhCorrectionCodeCheck"/>
+    <transition on="4" to="seventhCorrectionCodeCheck"/>
+    <transition on="5" to="seventhCorrectionCodeCheck"/>
+    <transition on="6" to="seventhCorrectionCodeCheck"/>
+    <transition on="7" to="seventhCorrectionCodeCheck"/>
+    <transition on="8" to="PS6INV1"/>
+    <transition on="9" to="seventhCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- PS6INV1: KIND TOEVOEGEN? -->
+  <view-state id="PS6INV1" view="persoonskaart/PS6INV1" model="akte">
+    <transition on="next" to="childCorrectionCheck"/>
+  </view-state>
+
+  <action-state id="childCorrectionCheck">
+    <evaluate expression="(flowScope.akte.anotherChild == 'n') and
+                          (flowScope.akte.pkeigknd.size() > 0)"/>
+
+    <transition on="yes" to="PS6COR1"/>
+    <transition on="no" to="childCheck"/>
+  </action-state>
+
+  <!-- PS6COR1: KINDEREN VERWIJDERD, TOCH TOEVOEGEN? -->
+  <view-state id="PS6COR1" view="persoonskaart/PS6COR1" model="akte">
+    <transition on="next" to="childCheck">
+      <evaluate expression="persoonskaartService.deleteKinderen(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="childCheck">
+    <evaluate expression="flowScope.akte.anotherChild == 'j'"/>
+
+    <transition on="yes" to="PS6">
+      <evaluate expression="persoonskaartService.createKind(flowScope.akte)"/>
+    </transition>
+
+    <transition on="no" to="seventhCorrectionCodeCheck">
+      <evaluate expression="persoonskaartService.registerKinderen(flowScope.akte)"/>
+    </transition>
+  </action-state>
+
+  <!-- PS6: KINDEREN -->
+  <view-state id="PS6" view="persoonskaart/PS6" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="childCheck">
+      <evaluate expression="persoonskaartService.registerKind(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="seventhCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="byzCheck"/>
+    <transition on="1" to="PSNIEUW"/>
+    <transition on="2" to="PSNIEUW"/>
+    <transition on="3" to="PSNIEUW"/>
+    <transition on="4" to="PSNIEUW"/>
+    <transition on="5" to="PSNIEUW"/>
+    <transition on="6" to="PSNIEUW"/>
+    <transition on="7" to="PSNIEUW"/>
+    <transition on="8" to="PSNIEUW"/>
+    <transition on="9" to="byzCheck"/>
+  </action-state>
+
+  <action-state id="byzCheck">
+    <evaluate expression="flowScope.akte.nrOfByzEntered == 0"/>
+
+    <transition on="yes" to="PS7COR"/>
+    <transition on="no" to="byzcCheck"/>
+  </action-state>
+
+  <!-- PS7COR: BIJZONDERHEDEN CHECK -->
+  <view-state id="PS7COR" view="persoonskaart/PS7COR" model="akte">
+    <transition on="next" to="byziCheck">
+      <evaluate expression="persoonskaartService.registerByzCheck(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="byziCheck">
+    <evaluate expression="flowScope.akte.pkknd.problmp == 'j'"/>
+
+    <transition on="yes" to="PSBYZ"/>
+    <transition on="no" to="PSNIEUW"/>
+  </action-state>
+
+  <!-- PSBYZ: BIJZONDERHEDEN -->
+  <view-state id="PSBYZ" view="persoonskaart/PSBYZ" model="akte">
+    <on-entry>
+      <evaluate expression="persoonskaartService.prepareByz(flowScope.akte)"/>
+    </on-entry>
+
+    <transition on="more" to="PSBYZ">
+      <evaluate expression="persoonskaartService.saveByz(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="PSNIEUW">
+      <evaluate expression="persoonskaartService.saveByz(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="byzcCheck">
+    <evaluate expression="flowScope.akte.nrOfByzEntered > 0"/>
+
+    <transition on="yes" to="PSBYZC"/>
+    <transition on="no" to="PSNIEUW"/>
+  </action-state>
+
+  <!-- PSBYZC: BIJZONDERHEDEN CORRECTIE -->
+  <view-state id="PSBYZC" view="persoonskaart/PSBYZC" model="akte">
+    <on-entry>
+      <evaluate expression="persoonskaartService.prepareByzForCorrection(flowScope.akte)"/>
+    </on-entry>
+
+    <transition on="more" to="PSBYZC">
+      <evaluate expression="persoonskaartService.saveByz(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="PSNIEUW">
+      <evaluate expression="persoonskaartService.saveByz(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- PSNIEUW: ANOTHER PERSOONSKAART CORRECTION? -->
+  <view-state id="PSNIEUW" view="persoonskaart/PSNIEUW" model="akte">
+    <transition on="next" to="nieuwCheck"/>
+  </view-state>
+
+  <action-state id="nieuwCheck">
+    <evaluate expression="requestParameters.anotherFlow == 'j'"/>
+
+    <transition on="yes" to="PS0C"/>
+    <transition on="no" to="finishEnd"/>
+  </action-state>
+
+  <end-state id="stopEnd" view="redirect:/persoonskaart/hoofdmenu"/>
+
+  <end-state id="finishEnd" view="redirect:/persoonskaart/hoofdmenu"/>
+</flow>

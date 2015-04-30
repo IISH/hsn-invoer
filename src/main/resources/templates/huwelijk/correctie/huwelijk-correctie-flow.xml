@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- HS0C: IDENTIFICATIE -->
+  <view-state id="HS0C" view="huwelijk/HS0C" model="akte">
+    <on-entry>
+      <evaluate expression="huwelijksAkteService.createNewAkteForCorrection()" result="flowScope.akte"/>
+    </on-entry>
+
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="HCOR">
+      <evaluate expression="huwelijksAkteService.editOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- HCOR: CORRECTIE SCHERM -->
+  <view-state id="HCOR" view="huwelijk/HCOR" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="firstCorrectionCodeCheck"/>
+  </view-state>
+
+  <action-state id="firstCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="HS0A1"/>
+    <transition on="1" to="HS0A1"/>
+    <transition on="2" to="secondCorrectionCodeCheck"/>
+    <transition on="3" to="secondCorrectionCodeCheck"/>
+    <transition on="4" to="secondCorrectionCodeCheck"/>
+    <transition on="5" to="secondCorrectionCodeCheck"/>
+    <transition on="6" to="secondCorrectionCodeCheck"/>
+    <transition on="7" to="secondCorrectionCodeCheck"/>
+    <transition on="8" to="secondCorrectionCodeCheck"/>
+    <transition on="9" to="secondCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- HS0A1: IDENTIFICATIE -->
+  <view-state id="HS0A1" view="huwelijk/HS0A1" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="echtschedingCheck"/>
+  </view-state>
+
+  <action-state id="echtschedingCheck">
+    <evaluate expression="flowScope.akte.huwknd.scheidng == 'j'"/>
+
+    <transition on="yes" to="HS0A2"/>
+    <transition on="no" to="registerFirstDetails"/>
+  </action-state>
+
+  <!-- HS0A2: ECHTSCHEIDING -->
+  <view-state id="HS0A2" view="huwelijk/HS0A2" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="registerFirstDetails"/>
+  </view-state>
+
+  <action-state id="registerFirstDetails">
+    <evaluate expression="huwelijksAkteService.registerFirstDetails(flowScope.akte)"/>
+    <transition to="secondCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="secondCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="HS4BCOR1"/>
+    <transition on="1" to="thirdCorrectionCodeCheck"/>
+    <transition on="2" to="HS4BCOR1"/>
+    <transition on="3" to="thirdCorrectionCodeCheck"/>
+    <transition on="4" to="thirdCorrectionCodeCheck"/>
+    <transition on="5" to="thirdCorrectionCodeCheck"/>
+    <transition on="6" to="thirdCorrectionCodeCheck"/>
+    <transition on="7" to="thirdCorrectionCodeCheck"/>
+    <transition on="8" to="thirdCorrectionCodeCheck"/>
+    <transition on="9" to="thirdCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- HS4BCOR1: VOORKINDEREN CHECK -->
+  <view-state id="HS4BCOR1" view="huwelijk/HS4BCOR1" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="deleteVoorkinderenCheck">
+      <evaluate
+          expression="huwelijksAkteService.registerVoorkinderen(flowScope.akte, requestParameters.voorkinderenAction)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="deleteVoorkinderenCheck">
+    <evaluate expression="(flowScope.akte.huwknd.erken == 'n') and (flowScope.akte.huwvrknd.length gt 0)"/>
+
+    <transition on="yes" to="HS4BCOR2"/>
+    <transition on="no" to="addVoorkinderenCheck"/>
+  </action-state>
+
+  <!-- HS4BCOR2: VOORKINDEREN VERWIJDEREN CHECK -->
+  <view-state id="HS4BCOR2" view="huwelijk/HS4BCOR2" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="addVoorkinderenCheck">
+      <evaluate
+          expression="huwelijksAkteService.deleteVoorkinderen(flowScope.akte, requestParameters.deleteVoorkinderen)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="addVoorkinderenCheck">
+    <evaluate expression="flowScope.akte.huwknd.erken == 'j'"/>
+
+    <transition on="yes" to="HS4B"/>
+    <transition on="no" to="thirdCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- HS4B: VOORKINDEREN -->
+  <view-state id="HS4B" view="huwelijk/HS4B" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="voorkinderenCheck">
+      <evaluate expression="huwelijksAkteService.registerVoorkind(flowScope.akte, requestParameters.noOfVoorkinderen)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="voorkinderenCheck">
+    <evaluate
+        expression="flowScope.akte.curHuwvrkndIndex lt (flowScope.akte.huwvrknd.length - 1)"/>
+
+    <transition on="yes" to="HS4B">
+      <evaluate expression="flowScope.akte.setCurHuwvrkndIndex(flowScope.akte.curHuwvrkndIndex + 1)"/>
+    </transition>
+
+    <transition on="no" to="thirdCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="thirdCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="HS1M"/>
+    <transition on="1" to="fourthCorrectionCodeCheck"/>
+    <transition on="2" to="fourthCorrectionCodeCheck"/>
+    <transition on="3" to="HS1M"/>
+    <transition on="4" to="fourthCorrectionCodeCheck"/>
+    <transition on="5" to="fourthCorrectionCodeCheck"/>
+    <transition on="6" to="fourthCorrectionCodeCheck"/>
+    <transition on="7" to="fourthCorrectionCodeCheck"/>
+    <transition on="8" to="fourthCorrectionCodeCheck"/>
+    <transition on="9" to="fourthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- HS1M: GEGEVENS BRUIDEGOM -->
+  <view-state id="HS1M" view="huwelijk/HS1M" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="HS1V"/>
+  </view-state>
+
+  <!-- HS1V: GEGEVENS BRUID -->
+  <view-state id="HS1V" view="huwelijk/HS1V" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="HS3A">
+      <evaluate expression="huwelijksAkteService.registerBruidAndBruidegom(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- HS3A: OVERIGE GEGEVENS HUWELIJKSAKTE -->
+  <view-state id="HS3A" view="huwelijk/HS3A" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="HS3ACorrectionCodeCheck">
+      <evaluate expression="huwelijksAkteService.registerOverigeGegevens(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="HS3ACorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode == 5"/>
+
+    <transition on="yes" to="verwijderEerdereHuwelijkenCheck"/>
+    <transition on="no" to="fourthCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="fourthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="HS2Mv"/>
+    <transition on="1" to="fifthCorrectionCodeCheck"/>
+    <transition on="2" to="fifthCorrectionCodeCheck"/>
+    <transition on="3" to="fifthCorrectionCodeCheck"/>
+    <transition on="4" to="fifthCorrectionCodeCheck"/>
+    <transition on="5" to="fifthCorrectionCodeCheck"/>
+    <transition on="6" to="HS2Mv"/>
+    <transition on="7" to="fifthCorrectionCodeCheck"/>
+    <transition on="8" to="fifthCorrectionCodeCheck"/>
+    <transition on="9" to="fifthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- HS2Mv: GEGEVENS VADER BRUIDEGOM -->
+  <view-state id="HS2Mv" view="huwelijk/HS2Mv" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="HS2Mm">
+      <evaluate expression="huwelijksAkteService.registerBruidBruidegomAndParents(flowScope.akte, 'HS2Mv')"/>
+    </transition>
+  </view-state>
+
+  <!-- HS2Mm: GEGEVENS MOEDER BRUIDEGOM -->
+  <view-state id="HS2Mm" view="huwelijk/HS2Mm" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="HS2Vv">
+      <evaluate expression="huwelijksAkteService.registerBruidBruidegomAndParents(flowScope.akte, 'HS2Mm')"/>
+    </transition>
+  </view-state>
+
+  <!-- HS2Vv: GEGEVENS VADER BRUID -->
+  <view-state id="HS2Vv" view="huwelijk/HS2Vv" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="HS2Vm">
+      <evaluate expression="huwelijksAkteService.registerBruidBruidegomAndParents(flowScope.akte, 'HS2Vv')"/>
+    </transition>
+  </view-state>
+
+  <!-- HS2Vm: GEGEVENS MOEDER BRUID -->
+  <view-state id="HS2Vm" view="huwelijk/HS2Vm" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="fifthCorrectionCodeCheck">
+      <evaluate expression="huwelijksAkteService.registerBruidBruidegomAndParents(flowScope.akte, 'HS2Vm')"/>
+    </transition>
+  </view-state>
+
+  <action-state id="fifthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="HS3B"/>
+    <transition on="1" to="sixthCorrectionCodeCheck"/>
+    <transition on="2" to="sixthCorrectionCodeCheck"/>
+    <transition on="3" to="sixthCorrectionCodeCheck"/>
+    <transition on="4" to="HS3B"/>
+    <transition on="5" to="sixthCorrectionCodeCheck"/>
+    <transition on="6" to="sixthCorrectionCodeCheck"/>
+    <transition on="7" to="sixthCorrectionCodeCheck"/>
+    <transition on="8" to="sixthCorrectionCodeCheck"/>
+    <transition on="9" to="sixthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- HS3B: HUWELIJKSAFKONDIGINGEN -->
+  <view-state id="HS3B" view="huwelijk/HS3B" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="ajax">
+      <evaluate
+          expression="huwelijksAkteService.updateHuwelijksAfkondigingen(flowScope.akte, requestParameters.noHuwAfk)"/>
+      <render fragments="huwAfk"/>
+    </transition>
+
+    <transition on="next" to="sixthCorrectionCodeCheck">
+      <evaluate expression="huwelijksAkteService.registerHuwelijksAfkondigingen(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="sixthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="verwijderEerdereHuwelijkenCheck"/>
+    <transition on="1" to="seventhCorrectionCodeCheck"/>
+    <transition on="2" to="seventhCorrectionCodeCheck"/>
+    <transition on="3" to="seventhCorrectionCodeCheck"/>
+    <transition on="4" to="seventhCorrectionCodeCheck"/>
+    <transition on="5" to="HS3A"/>
+    <transition on="6" to="seventhCorrectionCodeCheck"/>
+    <transition on="7" to="seventhCorrectionCodeCheck"/>
+    <transition on="8" to="seventhCorrectionCodeCheck"/>
+    <transition on="9" to="seventhCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="verwijderEerdereHuwelijkenCheck">
+    <evaluate expression="(flowScope.akte.huwknd.bsthm == '1' and flowScope.akte.huweerGroom.size() > 0) or
+                          (flowScope.akte.huwknd.bsthv == '1' and flowScope.akte.huweerBride.size() > 0)"/>
+
+    <transition on="yes" to="HS4ACOR1"/>
+    <transition on="no" to="prevMarriageGroomCheck"/>
+  </action-state>
+
+  <!-- HS4ACOR1: EERDERE HUWELIJKEN VERWIJDEREN -->
+  <view-state id="HS4ACOR1" view="huwelijk/HS4ACOR1" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="prevMarriageGroomCheck">
+      <evaluate expression="huwelijksAkteService.registeEerdereHuwelijken(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="prevMarriageGroomCheck">
+    <evaluate expression="(new Integer(flowScope.akte.huwknd.bsthm) != 1) and
+                          (flowScope.akte.moreOfGroom == 'j')"/>
+
+    <transition on="yes" to="HS4A">
+      <evaluate expression="huwelijksAkteService.createEerderHuwelijk(flowScope.akte, 'm')"/>
+    </transition>
+
+    <transition on="no" to="prevMarriageBrideCheck"/>
+  </action-state>
+
+  <action-state id="prevMarriageBrideCheck">
+    <evaluate expression="(new Integer(flowScope.akte.huwknd.bsthv) != 1) and
+                          (flowScope.akte.moreOfBride == 'j')"/>
+
+    <transition on="yes" to="HS4A">
+      <evaluate expression="huwelijksAkteService.createEerderHuwelijk(flowScope.akte, 'v')"/>
+    </transition>
+
+    <transition on="no" to="seventhCorrectionCodeCheck">
+      <evaluate expression="huwelijksAkteService.registeEerdereHuwelijken(flowScope.akte)"/>
+    </transition>
+  </action-state>
+
+  <!-- HS4A: GEGEVENS EERDERE HUWELIJKEN -->
+  <view-state id="HS4A" view="huwelijk/HS4A" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="prevMarriageGroomCheck">
+      <evaluate expression="huwelijksAkteService.registerEerderHuwelijk(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="seventhCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="HS5COR1"/>
+    <transition on="1" to="eightCorrectionCodeCheck"/>
+    <transition on="2" to="eightCorrectionCodeCheck"/>
+    <transition on="3" to="eightCorrectionCodeCheck"/>
+    <transition on="4" to="eightCorrectionCodeCheck"/>
+    <transition on="5" to="eightCorrectionCodeCheck"/>
+    <transition on="6" to="eightCorrectionCodeCheck"/>
+    <transition on="7" to="HS5COR1"/>
+    <transition on="8" to="eightCorrectionCodeCheck"/>
+    <transition on="9" to="eightCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- HS5COR1: AANTAL GETUIGEN -->
+  <view-state id="HS5COR1" view="huwelijk/HS5COR1" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="addGetuigenCheck">
+      <evaluate expression="huwelijksAkteService.registerGetuigen(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="addGetuigenCheck">
+    <evaluate expression="flowScope.akte.huwknd.ngtg > 0"/>
+
+    <transition on="yes" to="HS5"/>
+    <transition on="no" to="eightCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- HS5: GETUIGEN -->
+  <view-state id="HS5" view="huwelijk/HS5" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="getuigenCheck">
+      <evaluate expression="huwelijksAkteService.registerGetuige(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="getuigenCheck">
+    <evaluate
+        expression="flowScope.akte.curHuwgtgIndex lt (flowScope.akte.huwgtg.length - 1)"/>
+
+    <transition on="yes" to="HS5">
+      <evaluate expression="flowScope.akte.setCurHuwgtgIndex(flowScope.akte.curHuwgtgIndex + 1)"/>
+    </transition>
+
+    <transition on="no" to="eightCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="eightCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="HS6"/>
+    <transition on="1" to="ninthCorrectionCodeCheck"/>
+    <transition on="2" to="ninthCorrectionCodeCheck"/>
+    <transition on="3" to="ninthCorrectionCodeCheck"/>
+    <transition on="4" to="ninthCorrectionCodeCheck"/>
+    <transition on="5" to="ninthCorrectionCodeCheck"/>
+    <transition on="6" to="ninthCorrectionCodeCheck"/>
+    <transition on="7" to="ninthCorrectionCodeCheck"/>
+    <transition on="8" to="HS6"/>
+    <transition on="9" to="ninthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- HS6: BIJLAGEN -->
+  <view-state id="HS6" view="huwelijk/HS6" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="ninthCorrectionCodeCheck">
+      <evaluate expression="huwelijksAkteService.registerBijlagen(flowScope.akte, 'j')"/>
+    </transition>
+  </view-state>
+
+  <action-state id="ninthCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="byzCheck"/>
+    <transition on="1" to="HSNIEUW"/>
+    <transition on="2" to="HSNIEUW"/>
+    <transition on="3" to="HSNIEUW"/>
+    <transition on="4" to="HSNIEUW"/>
+    <transition on="5" to="HSNIEUW"/>
+    <transition on="6" to="HSNIEUW"/>
+    <transition on="7" to="HSNIEUW"/>
+    <transition on="8" to="HSNIEUW"/>
+    <transition on="9" to="byzCheck"/>
+  </action-state>
+
+  <action-state id="byzCheck">
+    <evaluate expression="flowScope.akte.nrOfByzEntered == 0"/>
+
+    <transition on="yes" to="HS7COR"/>
+    <transition on="no" to="byzcCheck"/>
+  </action-state>
+
+  <!-- HS7COR: BIJZONDERHEDEN CHECK -->
+  <view-state id="HS7COR" view="huwelijk/HS7COR" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="byziCheck">
+      <evaluate expression="huwelijksAkteService.registerByzCheck(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="byziCheck">
+    <evaluate expression="flowScope.akte.huwknd.problm == 'j'"/>
+
+    <transition on="yes" to="HSBYZ"/>
+    <transition on="no" to="HSNIEUW"/>
+  </action-state>
+
+  <!-- HSBYZ: BIJZONDERHEDEN -->
+  <view-state id="HSBYZ" view="huwelijk/HSBYZ" model="akte">
+    <on-entry>
+      <evaluate expression="huwelijksAkteService.prepareByz(flowScope.akte)"/>
+    </on-entry>
+
+    <transition on="more" to="HSBYZ">
+      <evaluate expression="huwelijksAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="HSNIEUW">
+      <evaluate expression="huwelijksAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="byzcCheck">
+    <evaluate expression="flowScope.akte.nrOfByzEntered > 0"/>
+
+    <transition on="yes" to="HSBYZC"/>
+    <transition on="no" to="HSNIEUW"/>
+  </action-state>
+
+  <!-- HSBYZC: BIJZONDERHEDEN CORRECTIE -->
+  <view-state id="HSBYZC" view="huwelijk/HSBYZC" model="akte">
+    <on-entry>
+      <evaluate expression="huwelijksAkteService.prepareByzForCorrection(flowScope.akte)"/>
+    </on-entry>
+
+    <transition on="more" to="HSBYZC">
+      <evaluate expression="huwelijksAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="HSNIEUW">
+      <evaluate expression="huwelijksAkteService.saveByz(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- HSNIEUW: ANOTHER HUWELIJKS AKTE? -->
+  <view-state id="HSNIEUW" view="huwelijk/HSNIEUW" model="akte">
+    <transition on="next" to="nieuwCheck"/>
+  </view-state>
+
+  <action-state id="nieuwCheck">
+    <evaluate expression="requestParameters.anotherFlow == 'j'"/>
+
+    <transition on="yes" to="HS0C"/>
+    <transition on="no" to="finishEnd"/>
+  </action-state>
+
+  <end-state id="stopEnd" view="redirect:/huwelijk/hoofdmenu"/>
+
+  <end-state id="finishEnd" view="redirect:/huwelijk/hoofdmenu"/>
+</flow>

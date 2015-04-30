@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<fieldset class="title" th:fragment="HSTITEL">
+  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER HUWELIJKSAKTE VAN:</legend>
+  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE HUWELIJKSAKTE VAN:</legend>
+
+  <div class="row">
+    <div class="col-xs-8 text-left" th:if="${akte.huwknd.gebsex} == 'm'">
+      Naam:
+      <span th:utext="${akte.huwknd.anmhm} ? ${akte.huwknd.anmhm}"></span>
+      <span th:utext="${akte.huwknd.vrn1hm} ? ${akte.huwknd.vrn1hm}"></span>
+      <span th:utext="${akte.huwknd.vrn2hm} ? ${akte.huwknd.vrn2hm}"></span>
+      <span th:utext="${akte.huwknd.vrn3hm} ? ${akte.huwknd.vrn3hm}"></span>
+    </div>
+
+    <div class="col-xs-8 text-left" th:if="${akte.huwknd.gebsex} == 'v'">
+      Naam:
+      <span th:utext="${akte.huwknd.anmhv} ? ${akte.huwknd.anmhv}"></span>,
+      <span th:utext="${akte.huwknd.vrn1hv} ? ${akte.huwknd.vrn1hv}"></span>
+      <span th:utext="${akte.huwknd.vrn2hv} ? ${akte.huwknd.vrn2hv}"></span>
+      <span th:utext="${akte.huwknd.vrn3hv} ? ${akte.huwknd.vrn3hv}"></span>
+    </div>
+
+    <div class="col-xs-4 text-right">
+      Idnr:
+      <span th:utext="${akte.huwknd.idnr} ? ${akte.huwknd.idnr}"></span>
+
+      <br/>
+
+      Datum huwelijk:
+      <span th:utext="${akte.huwknd.huw.hdag} ? ${akte.huwknd.huw.hdag}"></span> /
+      <span th:utext="${akte.huwknd.huw.hmaand} ? ${akte.huwknd.huw.hmaand}"></span> /
+      <span th:utext="${akte.huwknd.huw.hjaar} ? ${akte.huwknd.huw.hjaar}"></span>
+    </div>
+  </div>
+</fieldset>
+</body>
+</html>

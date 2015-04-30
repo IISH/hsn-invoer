@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend>
+      Gegevens eerdere huwelijken van de
+      <span class="letter-spacing" th:if="${akte.curHuweer.huwer} == 'm'">BRUIDEGOM:</span>
+      <span class="letter-spacing" th:if="${akte.curHuweer.huwer} == 'v'">BRUID:</span>
+    </legend>
+
+    <p th:if="${akte.isCorrection() and (akte.curHuweer.vlgnreh == 1)}">
+      Aantal eerdere huwelijken
+
+      <span th:if="${akte.curHuweer.huwer} == 'm'">bruidegom:</span>
+      <span th:if="${akte.curHuweer.huwer} == 'v'">bruid:</span>
+
+      <span th:if="${akte.curHuweer.huwer} == 'm'" th:utext="${akte.huweerGroom.size()}">0</span>
+      <span th:if="${akte.curHuweer.huwer} == 'v'" th:utext="${akte.huweerBride.size()}">0</span>
+    </p>
+
+    <div class="form-header" th:utext="${akte.curHuweer.vlgnreh} + 'e huwelijk'">1e huwelijk:</div>
+
+    <div class="form-group" th:include="fragments/complete-fields :: anaam ('curHuweer.anmeh')"></div>
+
+    <div class="form-header extra-top-margin">VOORNAMEN:</div>
+
+    <th:block
+        th:include="fragments/groups-of-fields :: voornamen ('curHuweer.vrn1eh', 'curHuweer.vrn2eh', 'curHuweer.vrn3eh', false)">
+    </th:block>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-10 control-label">
+        Reden beeindiging huwelijk: 1 = Overlijden 2 = Scheiding 3 = Overig (-> bijzonderheden)
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="1;2;3"
+               data-byz="3" th:field="*{curHuweer.eindeh}" hsn:field="curHuweer.eindeh"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-10 control-label">
+        Nog meer huwelijken
+
+        <span class="letter-spacing" th:if="${akte.curHuweer.huwer} == 'm'">BRUIDEGOM?</span>
+        <span class="letter-spacing" th:if="${akte.curHuweer.huwer} == 'v'">BRUID?</span>
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+               name="moreOfGroom" id="moreOfGroom" th:if="${akte.curHuweer.huwer} == 'm'"/>
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+               name="moreOfBride" id="moreOfBride" th:if="${akte.curHuweer.huwer} == 'v'"/>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

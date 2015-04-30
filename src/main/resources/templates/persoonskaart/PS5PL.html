@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <p>Invoer adresgegevens handmatig in te voeren PL (pktype=8)</p>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-3 control-label">Eventueel herkomstland:</label>
+
+      <div class="col-xs-4">
+        <input type="text" class="form-control" th:field="*{p8Origin.p8opil}" hsn:field="p8Origin.p8opil"/>
+      </div>
+    </div>
+
+    <div class="form-group checkDateDefault">
+      <label class="col-xs-3 control-label">Datum vestiging:</label>
+
+      <div th:replace="fragments/fields :: datum ('p8Origin.p8opid', 'p8Origin.p8opim', 'p8Origin.p8opij')"></div>
+    </div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-3 control-label">Actuele verblijfplaats:</label>
+
+      <div class="col-xs-4">
+        <input type="text" class="form-control" th:field="*{p8CurWhereabouts.pladrp}" hsn:field="p8CurWhereabouts.pladrp"/>
+      </div>
+    </div>
+
+    <div class="form-group checkDateDefault">
+      <label class="col-xs-3 control-label">Datum inschrijving:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('p8CurWhereabouts.p8oppd', 'p8CurWhereabouts.p8oppm', 'p8CurWhereabouts.p8oppj')"></div>
+    </div>
+
+    <div class="form-group checkDateDefault">
+      <label class="col-xs-3 control-label">Ingangsdatum geldigheid:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('p8CurWhereabouts.dgadrp', 'p8CurWhereabouts.mdadrp', 'p8CurWhereabouts.jradrp')"></div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+</body>
+</html>

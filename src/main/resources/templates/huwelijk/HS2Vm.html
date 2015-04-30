@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend class="form-main-header">GEGEVENS MOEDER VAN DE BRUID:</legend>
+
+    <div class="form-group">
+      <label class="col-xs-5 control-label">Leeft deze nog? j/n/o</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n;o"
+               th:field="*{huwknd.levmrhv}" hsn:field="huwknd.levmrhv"/>
+      </div>
+    </div>
+
+    <input type="hidden" data-set-value-when="#toestemming-geven" data-has-values-in="j"
+           data-then-value-of="#toestemming-kode" data-else-value-of="#toestemming-geven"
+           th:field="*{huwknd.toemrhv}" hsn:field="huwknd.toemrhv" style="display:none;"/>
+
+    <div class="form-group" data-show-when="#huwknd\.levmrhv" data-has-values-in="j">
+      <div class="form-group">
+        <label for="toestemming-geven" class="col-xs-10 control-label">
+          Geeft deze toestemming tot het huwelijk? j (ja) / n (nee) / i (jur. irrelevant) / g (geen antw)
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required"
+                 id="toestemming-geven" name="toestemming-geven"
+                 maxlength="1" data-valid-chars="j;n;g;i" data-byz="n;g"
+                 th:value="${#arrays.contains({'s', 'm', 'a', 'k'}, akte.huwknd.toemrhv)} ? 'j' : ${akte.huwknd.toemrhv}"/>
+        </div>
+      </div>
+
+      <div class="form-group" data-show-when="#toestemming-geven" data-has-values-in="j" style="display: none;">
+        <div class="form-group">
+          <label for="toestemming-kode" class="col-xs-7 control-label">
+            Aard toestemming? s (schrift.) /m (mond.) /a (anders) /k (notar.akte)
+          </label>
+
+          <div class="col-xs-2">
+            <input type="text" id="toestemming-kode" name="toestemming-kode" maxlength="1"
+                   class="form-control form-control-digit required" data-valid-chars="s;m;a;k" data-byz="a"
+                   th:value="${akte.huwknd.toemrhv}"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <th:block
+        th:include="fragments/groups-of-fields :: namen ('huwknd.anmmrhv', 'huwknd.vrn1mrhv', 'huwknd.vrn2mrhv', 'huwknd.vrn3mrhv', false)">
+    </th:block>
+
+    <div data-show-when="#huwknd\.levmrhv" data-has-values-in="j">
+      <div class="form-group extra-top-margin"
+           th:include="fragments/complete-fields :: beroep ('huwknd.brpmrhv', 'Beroep:')"></div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-3 control-label">Leeftijd:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control" data-replace=":-1;0:-1" th:field="*{huwknd.lftjmrhv}" hsn:field="huwknd.lftjmrhv"/>
+        </div>
+      </div>
+
+      <div class="form-group"
+           th:replace="fragments/complete-fields :: plaats ('huwknd.adrmrhv', 'Woonplaats:')"></div>
+
+      <div class="extra-top-margin text-center" data-show-when="#huwknd\.toemrhv" data-has-values-in="m"
+           th:include="fragments/complete-fields :: handtekening ('huwknd.hndmrhv')">
+      </div>
+    </div>
+
+    <div class="form-group extra-top-margin" data-show-when="#huwknd\.levmrhv" data-has-values-in="n"
+         th:include="fragments/complete-fields :: plaats ('huwknd.plovmrhv', 'Plaats overlijden:')"></div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/huwelijk/HS2.js" th:src="@{/js/huwelijk/HS2.js}"></script>
+</th:block>
+</body>
+</html>

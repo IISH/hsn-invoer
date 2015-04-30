@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="overlijden/OSTITEL :: OSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div th:if="${@overlijdensAkteHelper.isFatherAangeverButDeath(akte.ovlknd)}">
+      <div class="alert alert-info" role="alert">
+        De vader leeft niet meer (of dit gegeven is onbekend). <br/>
+        Indertijd is deze wel als aangever opgevoerd, daarom komt u automatisch op het scherm dat de aangevers
+        corrigeert!
+      </div>
+
+      <input type="hidden" name="doNotCorrectAangever" value="n"/>
+    </div>
+
+    <div th:if="${@overlijdensAkteHelper.isFatherNotAangeverButAlive(akte.ovlknd)}">
+      <div class="alert alert-info" role="alert">
+        Hoewel de vader leeft, werd deze in eerste instantie niet als aangever opgevoerd. <br/>
+        Klopt dit? Indien nee, dan kom je automatisch op het scherm dat de aangevers corrigeert.
+      </div>
+
+      <div class="form-group form-inline extra-top-margin">
+        <label class="control-label">Klopt dit? j / n</label>
+
+        <input type="text" class="form-control form-control-digit required spacing" data-valid-chars="j;n"
+               name="doNotCorrectAangever"/>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+</body>
+</html>

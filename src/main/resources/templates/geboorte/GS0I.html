@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="geboorte/GSTITEL :: GSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <label class="col-xs-4 control-label">Identificatienummer:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control required stpb-idnr" name="gebakte.idnr" id="gebakte.idnr"/>
+      </div>
+    </div>
+
+    <p class="fail text-danger text-center" style="display: none;"></p>
+
+    <div class="with-op-state" style="display: none;">
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Code type geboorteakte:</label>
+
+        <div class="col-xs-8">
+          <input type="text" class="form-control form-control-digit required focus-on-success"
+                 th:field="*{gebakte.gebkode}" hsn:field="gebakte.gebkode"
+                 maxlength="1" data-valid-chars="1;2;3;4;5;6;7;9" data-byz="9"/>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-10 col-xs-offset-2">
+            <label class="control-label">1 = Geboorteakte (wordt ingevoerd)</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-10 col-xs-offset-2">
+            <label class="control-label">2 = Op dit nummer geen akte aanwezig</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-10 col-xs-offset-2">
+            <label class="control-label">3 = Akte betreft een erkenning</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-10 col-xs-offset-2">
+            <label class="control-label">4 = Akte betreft naamsverandering</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-10 col-xs-offset-2">
+            <label class="control-label">5 = Akte betreft levenloos aangegeven</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-10 col-xs-offset-2">
+            <label class="control-label">6 = Akte niet nodig voor oversampling</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-10 col-xs-offset-2">
+            <label class="control-label">7 = Akte is opgemaakt n.a.v. een geboorte in het buitenland</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-10 col-xs-offset-2">
+            <label class="control-label">9 = Overige reden om niet in te voeren (-> bijzonderheden)</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" data-show-when="#gebakte\.gebkode" data-has-values-in="1"
+           th:if="${akte.gebknd.invbeper == 'n'}">
+        <label class="control-label col-xs-4">Tijd en dagtekening van de akte:</label>
+
+        <div class="col-xs-12 checkDateTime">
+          <div class="col-xs-3">
+            <label class="control-label">Dag:</label>
+            <input type="text" class="form-control day" th:field="*{gebknd.aktedag}" hsn:field="gebknd.aktedag"/>
+          </div>
+
+          <div class="col-xs-3">
+            <label class="control-label">Maand:</label>
+            <input type="text" class="form-control month" th:field="*{gebknd.aktemnd}" hsn:field="gebknd.aktemnd"/>
+          </div>
+
+          <div class="col-xs-3">
+            <label class="control-label">Jaar:</label>
+
+            <p class="form-control-static jaar year" th:utext="*{gebknd.jaar}"></p>
+          </div>
+
+          <div class="col-xs-3">
+            <label class="control-label">Uur:</label>
+            <input type="text" class="form-control hour" th:field="*{gebknd.akteuur}" hsn:field="gebknd.akteuur"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/geboorte/GS0IC.js" th:src="@{/js/geboorte/GS0IC.js}"></script>
+</th:block>
+</body>
+</html>

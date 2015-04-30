@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="overlijden/OSTITEL :: OSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-main-header">GEGEVENS OVERLEDENE:</div>
+
+    <div class="form-group extra-top-margin" th:include="fragments/complete-fields :: anaam ('ovlknd.anmovl')"></div>
+
+    <div class="form-header extra-top-margin">VOORNAMEN:</div>
+
+    <th:block
+        th:include="fragments/groups-of-fields :: voornamen ('ovlknd.vrn1ovl', 'ovlknd.vrn2ovl', 'ovlknd.vrn3ovl', false)">
+    </th:block>
+
+    <div class="alert alert-danger extra-top-margin" role="alert">
+      De gegevens moeten overeenkomen met die in de overlijdensakte !! Zo niet, dan corrigeren of stoppen.
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+</body>
+</html>

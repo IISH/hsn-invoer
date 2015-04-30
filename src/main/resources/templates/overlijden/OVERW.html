@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <div class="form-main-header">
+    VERWIJDER PROGRAMMA OVERLIJDENS-AKTEN
+  </div>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="alert alert-info" role="alert">
+      <div>Het gaat om <span
+          th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.ovlknd.anmovl , akte.ovlknd.tusovl, akte.ovlknd.vrn1ovl, akte.ovlknd.vrn2ovl, akte.ovlknd.vrn3ovl)}"></span>
+      </div>
+    </div>
+
+    <div class="form-group form-inline text-center extra-top-margin">
+      <label class="control-label">Alles van de akte of kaart verdwijnt dus!! Bevestig met 'bewust':</label>
+
+      <input type="text" class="form-control form-control-small required spacing" id="bewust" name="bewust"/>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+</body>
+</html>

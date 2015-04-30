@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<fieldset class="title" th:fragment="registrationBSTITEL">
+  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER GEGEVENS BEVOLKINGSREGISTER VAN:</legend>
+  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE GEGEVENS BEVOLKINGSREGISTER VAN:</legend>
+
+  <th:block th:include="bevolkingsregister/BSTITEL :: registration (${akte.b4}, ${akte.refAinb})"></th:block>
+</fieldset>
+
+<fieldset class="title" th:fragment="registration-personBSTITEL (person)">
+  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER GEGEVENS BEVOLKINGSREGISTER VAN:</legend>
+  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE GEGEVENS BEVOLKINGSREGISTER VAN:</legend>
+
+  <th:block th:include="bevolkingsregister/BSTITEL :: registration-person (${person})"></th:block>
+</fieldset>
+
+<div th:fragment="registration (reg, ainb)">
+  <div class="row text-left">
+    <div class="col-xs-2">
+      Idnr: &nbsp;
+      <span th:utext="${reg.registrationId.keyToRP} ? ${reg.registrationId.keyToRP}"></span>
+    </div>
+
+    <div class="col-xs-3">
+      Hfddatum: &nbsp;
+      <span th:utext="${reg.registrationId.dayEntryHead} ? ${reg.registrationId.dayEntryHead}"></span> /
+      <span th:utext="${reg.registrationId.monthEntryHead} ? ${reg.registrationId.monthEntryHead}"></span> /
+      <span th:utext="${reg.registrationId.yearEntryHead} ? ${reg.registrationId.yearEntryHead}"></span>
+    </div>
+
+    <div class="col-xs-7">
+      Aard reg: &nbsp;
+      <span th:utext="${ainb.getBron()} ? ${ainb.getBron()}"></span>
+    </div>
+  </div>
+
+  <div class="row text-left">
+    <div class="col-xs-2">
+      Bron: &nbsp;
+      <span
+          th:utext="${reg.registrationId.keyToSourceRegister} ? ${reg.registrationId.keyToSourceRegister}"></span>
+    </div>
+
+    <div class="col-xs-3">
+      OPdatum: &nbsp;
+      <span th:utext="${reg.dayEntryRP} ? ${reg.dayEntryRP}"></span> /
+      <span th:utext="${reg.monthEntryRP} ? ${reg.monthEntryRP}"></span> /
+      <span th:utext="${reg.yearEntryRP} ? ${reg.yearEntryRP}"></span>
+    </div>
+
+    <div class="col-xs-7" th:if="${@bevolkingsregisterHelper.isKaartSysteem(ainb)}">
+      GK systeem: &nbsp;
+      <span th:utext="${reg.infoFamilyCardsSystem} ? ${reg.infoFamilyCardsSystem}"></span>
+    </div>
+
+    <div class="col-xs-7" th:if="${@bevolkingsregisterHelper.isKaartSysteem(ainb)} == false">
+      Pg-nummer: &nbsp;
+      <span th:utext="${reg.pageNumberOfSource} ? ${reg.pageNumberOfSource}"></span> /
+      <span th:utext="${reg.numberOfHousehold} ? ${reg.numberOfHousehold}"></span>
+    </div>
+  </div>
+</div>
+
+<div th:fragment="person (person)">
+  <div class="row text-left">
+    <div class="col-xs-8">
+      HSN-volgnummer: &nbsp;
+      <span th:utext="${person}"></span>
+    </div>
+
+    <div class="col-xs-4">
+      Idnr: &nbsp;
+      <span th:utext="${akte.b4.registrationId.keyToRP} ? ${akte.b4.registrationId.keyToRP}"></span>
+    </div>
+  </div>
+
+  <div class="row text-left">
+    <div class="col-xs-8">
+      Naam persoon: &nbsp;
+      <span class="data-firstName"
+            th:utext="${akte.b2[__${person - 1}__].firstName} ? ${akte.b2[__${person - 1}__].firstName}"></span>
+      <span class="data-familyName"
+            th:utext="${akte.b2[__${person - 1}__].familyName} ? ${akte.b2[__${person - 1}__].familyName}"></span>
+    </div>
+
+    <div class="col-xs-4">
+      Bron: &nbsp;
+      <span
+          th:utext="${akte.b4.registrationId.keyToSourceRegister} ? ${akte.b4.registrationId.keyToSourceRegister}"></span>
+    </div>
+  </div>
+
+  <div class="row text-left">
+    <div class="col-xs-4">
+      Geboortedatum: &nbsp;
+      <span class="data-dayOfBirth"
+            th:utext="${akte.b2[__${person - 1}__].dayOfBirth} ? ${akte.b2[__${person - 1}__].dayOfBirth}"></span> /
+      <span class="data-monthOfBirth"
+            th:utext="${akte.b2[__${person - 1}__].monthOfBirth} ? ${akte.b2[__${person - 1}__].monthOfBirth}"></span>
+      /
+      <span class="data-yearOfBirth"
+            th:utext="${akte.b2[__${person - 1}__].yearOfBirth} ? ${akte.b2[__${person - 1}__].yearOfBirth}"></span>
+    </div>
+
+    <div class="col-xs-8">
+      Geboorteplaats: &nbsp;
+      <span class="data-placeOfBirth"
+            th:utext="${akte.b2[__${person - 1}__].placeOfBirth} ? ${akte.b2[__${person - 1}__].placeOfBirth}"></span>
+    </div>
+  </div>
+</div>
+
+<div th:fragment="registration-person (person)">
+  <div class="row text-left">
+    <div class="col-xs-8">
+      Naam persoon: &nbsp;
+      <span class="data-firstName"
+            th:utext="${akte.b2[__${person - 1}__].firstName} ? ${akte.b2[__${person - 1}__].firstName}"></span>
+      <span class="data-familyName"
+            th:utext="${akte.b2[__${person - 1}__].familyName} ? ${akte.b2[__${person - 1}__].familyName}"></span>
+    </div>
+
+    <div class="col-xs-4">
+      Idnr: &nbsp;
+      <span class="data-keyToRP"
+            th:utext="${akte.b4.registrationId.keyToRP} ? ${akte.b4.registrationId.keyToRP}"></span>
+    </div>
+  </div>
+
+  <div class="row text-left">
+    <div class="col-xs-4">
+      Geboortedatum: &nbsp;
+      <span class="data-dayOfBirth"
+            th:utext="${akte.b2[__${person - 1}__].dayOfBirth} ? ${akte.b2[__${person - 1}__].dayOfBirth}"></span> /
+      <span class="data-monthOfBirth"
+            th:utext="${akte.b2[__${person - 1}__].monthOfBirth} ? ${akte.b2[__${person - 1}__].monthOfBirth}"></span>
+      /
+      <span class="data-yearOfBirth"
+            th:utext="${akte.b2[__${person - 1}__].yearOfBirth} ? ${akte.b2[__${person - 1}__].yearOfBirth}"></span>
+    </div>
+
+    <div class="col-xs-4">
+      Geboorteplaats: &nbsp;
+      <span class="data-placeOfBirth"
+            th:utext="${akte.b2[__${person - 1}__].placeOfBirth} ? ${akte.b2[__${person - 1}__].placeOfBirth}"></span>
+    </div>
+
+    <div class="col-xs-4">
+      Bron: &nbsp;
+      <span class="data-keyToSourceRegister"
+            th:utext="${akte.b4.registrationId.keyToSourceRegister} ? ${akte.b4.registrationId.keyToSourceRegister}"></span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

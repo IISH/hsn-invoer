@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<th:block th:fragment="registrationByz" th:object="${akte}">
+  <div class="modal registrationModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <strong class="modal-title">Invoer / correctie bijzonderheden inschrijving</strong>
+        </div>
+
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body" th:include="bevolkingsregister/BSTITEL :: registration (${akte.b4}, ${akte.refAinb})">
+            </div>
+          </div>
+
+          <textarea class="form-control" rows="8" th:field="*{b4.remarks}" hsn:field="b4.remarks">
+          </textarea>
+        </div>
+
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xs-5 col-xs-offset-4">
+              ESC - annuleren aangebrachte wijzigingen
+            </div>
+
+            <div class="col-xs-2">
+              F6 - opslaan
+            </div>
+
+            <button type="button" class="btn btn-default btn-xs btn-new" data:person="${rp}"
+                    data-type="RELATIE_TOV_HOOFD">
+              Nieuw
+            </button>
+
+            <button type="button" class="btn btn-default btn-xs btn-new" data:person="${rp}"
+                    data-type="RELATIE_TOV_HOOFD">
+              Nieuw
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>
+
+<th:block th:fragment="personByz (person)" th:object="${akte}">
+  <div class="modal personModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <strong class="modal-title">Invoer / correctie bijzonderheden personen</strong>
+        </div>
+
+        <div class="modal-body">
+          <div class="panel panel-default">
+            <div class="panel-body" th:include="bevolkingsregister/BSTITEL :: person (${person})">
+            </div>
+          </div>
+
+          <textarea class="form-control" rows="8"
+                    th:field="*{b2[__${person - 1}__].remarks2}" hsn:field="b2[__${person - 1}__].remarks2">
+          </textarea>
+        </div>
+
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xs-5 col-xs-offset-4">
+              ESC - annuleren aangebrachte wijzigingen
+            </div>
+
+            <div class="col-xs-2">
+              F5 - opslaan
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>
+</body>
+</html>

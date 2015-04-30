@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="geboorte/GSTITEL :: GSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend>MOEDER</legend>
+
+    <div class="form-group">
+      <input type="hidden" th:field="*{gebknd.brgstmr}"
+             data-set-value-when="#is-echtgenoot-aangever" data-has-values-in="j"
+             data-then-value="5" data-else-value-of="#keuze-echtgenoot"/>
+
+      <label for="is-echtgenoot-aangever" class="col-xs-7 control-label">Is de moeder de echtgenote van de aangever: j
+        / n</label>
+
+      <div class="col-xs-5">
+        <input type="text" id="is-echtgenoot-aangever" class="form-control form-control-digit required"
+               maxlength="1" data-valid-chars="j;n"
+               th:value="${@geboorteAkteHelper.getMoederEchtgenoteAangever(akte.gebknd)}"/>
+      </div>
+
+      <div data-show-when="#is-echtgenoot-aangever" data-has-values-in="n" style="display: none;">
+        <div class="row">
+          <div class="col-xs-5 col-xs-offset-2">
+            <label class="control-label">1 = ongehuwd</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-5 col-xs-offset-2">
+            <label class="control-label">2 = weduwe</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-5 col-xs-offset-2">
+            <label class="control-label">3 = gescheiden</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-5 col-xs-offset-2">
+            <label class="control-label">4 = gehuwd, echtgenoot is niet de aangever</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-5 col-xs-offset-2">
+            <label class="control-label">6 = onbekend</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-5 col-xs-offset-2">
+            <label class="control-label">7 = onbekend, aangever is de vader</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-5 col-xs-offset-2">
+            <label class="control-label">8 = ongehuwd, aangever is de vader</label>
+          </div>
+
+          <div class="form-inline col-xs-3 col-xs-offset-1">
+            <label for="keuze-echtgenoot" class="control-label">Uw keuze:</label>
+            <input type="text" id="keuze-echtgenoot" class="form-control form-control-digit spacing required"
+                   maxlength="1" data-valid-chars="1;2;3;4;6;7;8" th:value="${akte.gebknd.brgstmr}"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" th:replace="fragments/complete-fields :: beroep ('gebknd.brpmr', 'Beroep:')"></div>
+
+    <div class="form-group" th:replace="fragments/complete-fields :: adres ('gebknd.adrmr')"></div>
+
+    <div class="form-header extra-top-margin">KIND</div>
+
+    <div data:anaam-ag="${T(org.iish.hsn.invoer.util.Utils).getCleanedLastName(akte.gebknd.anmag)}"
+         data:anaam-mr="${T(org.iish.hsn.invoer.util.Utils).getCleanedLastName(akte.gebknd.anmmr)}"
+         th:include="fragments/groups-of-fields :: namen ('gebknd.anmgeb', 'gebknd.vrn1geb', 'gebknd.vrn2geb', 'gebknd.vrn3geb', false)">
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/geboorte/GS3.js" th:src="@{/js/geboorte/GS3.js}"></script>
+</th:block>
+</body>
+</html>

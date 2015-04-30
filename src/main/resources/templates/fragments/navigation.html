@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head></head>
+<body>
+<fieldset th:fragment="navigation (mayStop, mayAddByz)">
+  <span class="pull-left">
+    <span class="scherm" th:utext="${flowRequestContext.currentState.id}"></span>
+  </span>
+
+  <span class="pull-right">
+    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop" th:if="${mayStop}">
+      Stoppen
+    </button>
+
+    <button type="submit" name="_eventId_byz" class="btn btn-default btn-byz"
+            th:if="${mayAddByz} and (${akte.isCorrection()} == false)">
+      Bijzonderheden
+    </button>
+
+    <button type="submit" name="_eventId_next" class="btn btn-default btn-next">
+      Volgende
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </button>
+  </span>
+</fieldset>
+
+<fieldset th:fragment="byz-navigation">
+  <span class="pull-right">
+    <button type="submit" name="_eventId_more" class="btn btn-default btn-more" th:if="${akte.allowMoreByz}">
+      Nog meer bijzonderheden toevoegen
+    </button>
+
+    <button type="submit" name="_eventId_next" class="btn btn-default btn-next">
+      Volgende
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </button>
+  </span>
+</fieldset>
+</body>
+</html>

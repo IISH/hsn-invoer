@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="alert alert-warning" role="alert">
+      Let op!! <br/>
+      Geen regels overslaan <br/>
+      Beroepen zoveel mogelijk op originele volgorde invoeren <br/>
+      Dubbele beroepen vermelden als één beroep
+    </div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-7 control-label">Aantal beroepen:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit" id="noBrp" name="noBrp"
+               data-min-value="0" data-ajax-update="#brp"
+               th:value="${(akte.pkbrp.size() > 0) ? akte.pkbrp.size() : 0}"/>
+      </div>
+    </div>
+
+    <fieldset id="brp" class="content-spacing" th:fragment="brp" th:object="${akte}">
+      <th:block th:each="curPkbrp,stat : *{pkbrp}">
+        <div class="pk-beroep" th:with="vgnrbrp=${akte.pkbrp[__${stat.index}__].vgnrbrp}">
+          <div class="form-group"
+               th:replace="fragments/complete-fields :: beroep ('pkbrp[__${stat.index}__].beroepp', ${vgnrbrp + 'e beroep:'})"></div>
+
+          <div class="form-group">
+            <div class="sub-form-group">
+              <label class="col-xs-3 control-label">Positie: h / o / n</label>
+
+              <div class="col-xs-1">
+                <input type="text" class="form-control form-control-digit required" data-valid-chars="h;o;n"
+                       th:field="*{pkbrp[__${stat.index}__].brpposp}"/>
+              </div>
+            </div>
+
+            <div class="sub-form-group">
+              <label class="col-xs-3 control-label">Doorgehaald? j / n</label>
+
+              <div class="col-xs-1">
+                <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+                       th:field="*{pkbrp[__${stat.index}__].dhbrppp}"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </th:block>
+    </fieldset>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+</body>
+</html>

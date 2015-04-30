@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <th:block th:if="${akte.isCorrectionDelete()}">
+    <div class="form-main-header">
+      VERWIJDER PROGRAMMA PERSOONSKAARTEN
+    </div>
+  </th:block>
+
+  <th:block th:if="${akte.isCorrectionDelete()} == false">
+    <legend align="center">CORRECTIE VAN PERSOONSKAARTEN</legend>
+  </th:block>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend class="text-center" align="center">Allereerst wordt de akte of kaart geindentificeerd!</legend>
+
+    <div class="form-group">
+      <label class="col-xs-6 control-label">Identificatienummer:</label>
+
+      <div class="col-xs-4">
+        <input type="text" data-lookup="pkknd" class="form-control gbh-idnr required"
+               th:field="*{pkknd.idnr}" hsn:field="pkknd.idnr"/>
+      </div>
+    </div>
+
+    <p class="fail text-danger text-center" style="display: none;"></p>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+</body>
+</html>

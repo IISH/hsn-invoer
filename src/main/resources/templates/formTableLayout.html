@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html layout:decorator="layout">
+<head></head>
+<body>
+<th:block layout:fragment="content">
+  <form th:object="${akte}" method="post" class="form-horizontal" autocomplete="off" data:is-correction="${akte.isCorrection()}">
+    <fieldset class="title content-spacing" layout:fragment="title"></fieldset>
+
+    <fieldset>
+      <th:block layout:fragment="table"></th:block>
+
+      <div class="messages content-spacing" style="display:none;">
+        <div class="alert alert-warning" role="alert">
+          <div class="byz" style="display:none;">
+            U dient bijzonderheden in te voeren! Indien niet relevant, dit a.u.b bij bijzonderheden expliciet vermelden.
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="content-spacing" layout:fragment="navigation"></fieldset>
+  </form>
+</th:block>
+</body>
+</html>

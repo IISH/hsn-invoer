@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div th:fragment="namen (anaam, vnaam1, vnaam2, vnaam3, leeftijd)">
+  <th:block th:replace="fragments/complete-fields :: anaam (${anaam})"></th:block>
+  <th:block th:replace="fragments/groups-of-fields :: voornamen (${vnaam1}, ${vnaam2}, ${vnaam3}, ${leeftijd})"></th:block>
+</div>
+
+<div th:fragment="voornamen (vnaam1, vnaam2, vnaam3, leeftijd)">
+  <div class="form-group">
+    <label class="col-xs-3 control-label">Eerste voornaam:</label>
+
+    <div class="col-xs-4">
+      <input type="text" class="form-control" th:field="*{__${vnaam1}__}" hsn:field="vnaam1"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-xs-3 control-label">Tweede voornaam:</label>
+
+    <div class="col-xs-4">
+      <input type="text" class="form-control" th:field="*{__${vnaam2}__}" hsn:field="vnaam2"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="sub-form-group">
+      <label class="col-xs-3 control-label">Derde &amp; volgende:</label>
+
+      <div class="col-xs-4">
+        <input type="text" class="form-control" th:field="*{__${vnaam3}__}" hsn:field="vnaam3"/>
+      </div>
+    </div>
+
+    <div class="sub-form-group" th:if="${leeftijd} != false">
+      <label class="col-xs-2 control-label">Leeftijd:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control" data-replace=":-1;0:-1" th:field="*{__${leeftijd}__}"
+               hsn:field="leeftijd"/>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

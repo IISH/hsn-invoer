@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <legend class="form-main-header">GEGEGEVENS BRUID:</legend>
+
+    <div th:replace="fragments/complete-fields :: anaam ('huwknd.anmhv')"></div>
+
+    <div class="form-header extra-top-margin">VOORNAMEN:</div>
+
+    <th:block
+        th:include="fragments/groups-of-fields :: voornamen ('huwknd.vrn1hv', 'huwknd.vrn2hv', 'huwknd.vrn3hv', false)">
+    </th:block>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-3 control-label">LEEFTIJD:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control" data-replace=":-1;0:-1" th:field="*{huwknd.lftjhv}" hsn:field="huwknd.lftjhv"/>
+      </div>
+    </div>
+
+    <div class="form-group extra-top-margin"
+         th:include="fragments/complete-fields :: plaats ('huwknd.gebplhv', 'Geboorteplaats:')"></div>
+
+    <div class="extra-top-margin text-center"
+         th:include="fragments/complete-fields :: handtekening ('huwknd.hndhv')">
+    </div>
+
+    <div class="alert alert-warning extra-top-margin" role="alert">
+      Overnemen zoals in huw. akte.
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/huwelijk/HS1.js" th:src="@{/js/huwelijk/HS1.js}"></script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head></head>
+<body>
+<header layout:fragment="header" th:include="layoutFragments :: header"></header>
+
+<fieldset class="content-spacing" layout:fragment="main">
+  <div class="form-group">
+    <label class="col-xs-5 control-label">Tik hier uw initialen:</label>
+
+    <div class="col-xs-2">
+      <input type="text" class="form-control form-control-small" id="init" name="init" maxlength="3"
+             style="text-transform:uppercase;"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-xs-5 control-label">Afkorting onderzoek:</label>
+
+    <div class="col-xs-2">
+      <input type="text" class="form-control form-control-small" id="ondrzk" name="ondrzk" maxlength="3"
+             style="text-transform:uppercase;"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-xs-5 control-label">Opdrachtnummer:</label>
+
+    <div class="col-xs-2">
+      <input type="text" class="form-control form-control-small" id="opdrnr" name="opdrnr" maxlength="3"
+             style="text-transform:uppercase;"/>
+    </div>
+  </div>
+
+  <div class="pull-right">
+    <button type="submit" name="next" class="btn btn-default btn-right-spacing btn-sm btn-next">
+      Volgende
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </button>
+  </div>
+</fieldset>
+
+<footer layout:fragment="footer" th:include="layoutFragments :: footer"></footer>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/main/metadata.js" th:src="@{/js/main/metadata.js}"></script>
+</th:block>
+</body>
+</html>

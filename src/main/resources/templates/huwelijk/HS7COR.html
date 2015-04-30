@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="huwelijk/HSTITEL :: HSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <p class="text-center">Er zijn nog geen bijzonderheden ingevoerd!</p>
+
+    <div class="form-group">
+      <label class="col-xs-7 control-label">Moet dit alsnog gebeuren? j / n</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n" maxlength="1"
+               id="huwknd.problm" name="huwknd.problm"/>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, false)"></fieldset>
+</body>
+</html>

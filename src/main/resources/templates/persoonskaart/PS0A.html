@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <th:block th:include="persoonskaart/PSTITEL :: PSTITEL" th:if="${akte.pkknd.idnr} lt 500000">
+  </th:block>
+
+  <th:block th:if="${akte.pkknd.idnr} ge 500000">
+    <legend align="center" th:if="${akte.isCorrection()} == false">INVOER PERSOONSKAART VAN:</legend>
+    <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE PERSOONSKAART VAN:</legend>
+
+    <div class="row">
+      <div class="col-xs-offset-1 col-xs-2 text-left">
+        Idnr: <br/>
+        <span th:utext="${akte.pkknd.idnr} ? ${akte.pkknd.idnr}"></span>
+      </div>
+
+      <div class="col-xs-9 form-inline">
+        <div class="form-group">
+          <label class="control-label">IDENTIFICATIE nummer van de oorspronkelijke steekproefpersoon:</label>
+
+          <input type="text" class="form-control form-control-small spacing" th:field="*{pkknd.idnrp}" hsn:field="pkknd.idnrp"/>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <fieldset class="content-spacing">
+      <legend class="letter-spacing" align="center">ALGEMENE GEGEVENS P.K.</legend>
+
+      <div class="form-group">
+        <div class="row">
+          <label class="col-xs-2 control-label">
+            Type PK:
+          </label>
+
+          <label class="col-xs-1 control-label left">
+            1=CBG
+          </label>
+
+          <label class="col-xs-1 control-label left">
+            2=PK94
+          </label>
+
+          <label class="col-xs-1 control-label left">
+            3=Archbl
+          </label>
+
+          <label class="col-xs-1 control-label left">
+            4=Emigr
+          </label>
+
+          <label class="col-xs-2 control-label left">
+            5=Geminfo
+          </label>
+
+          <label class="col-xs-1 control-label left">
+            6=CBS
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="col-xs-3 col-xs-offset-2 control-label left">
+            7=Geminfo speciaal
+          </label>
+
+          <label class="col-xs-1 control-label left">
+            8=PL
+          </label>
+
+          <label class="col-xs-2 control-label left">
+            10=PK94+PL
+          </label>
+
+          <label class="col-xs-1 control-label left">
+            :
+          </label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control form-control-digit" maxlength="2"
+                   th:field="*{pkknd.pktype}" hsn:field="pkknd.pktype"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group checkDateDefault" data-show-when="#pkknd\.pktype" data-has-values-in="3;5;7">
+        <label class="col-xs-4 control-label">Datum einde PK:</label>
+
+        <div th:replace="fragments/fields :: datum ('pkknd.eindagpk', 'pkknd.einmndpk', 'pkknd.einjarpk')"></div>
+      </div>
+
+      <div data-show-when="#pkknd\.pktype" data-has-values-in="1;2;3;4;10">
+        <div class="form-header extra-top-margin">Vergelijking geboorteakte:</div>
+
+        <div class="form-group">
+          <label class="col-xs-4 control-label">Nummer geboorteakte:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control form-control-small" th:field="*{pkknd.gaktnrp}" hsn:field="pkknd.gaktnrp"/>
+          </div>
+        </div>
+
+        <div class="form-group checkDateDefault controle">
+          <label class="col-xs-4 control-label">Datum controle:</label>
+
+          <div th:replace="fragments/fields :: datum ('pkknd.ctrdgp', 'pkknd.ctrmdp', 'pkknd.ctrjrp')"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-4 control-label">Controle-paraaf aanwezig? j / n</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                   th:field="*{pkknd.ctrparp}" hsn:field="pkknd.ctrparp"/>
+          </div>
+        </div>
+
+        <div class="form-group extra-top-margin">
+          <label class="col-xs-4 control-label">Gezinsverband:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control" th:field="*{pkknd.gznvrmp}" hsn:field="pkknd.gznvrmp"/>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="extra-top-margin content-spacing" data-show-when="#pkknd\.pktype" data-has-values-in="1;2;3;4;10">
+      <div class="form-group checkDateDefault persoonsbewijs">
+        <label class="col-xs-4 control-label">Datum persoonsbewijs:</label>
+
+        <div th:replace="fragments/fields :: datum ('pkknd.psbdgp', 'pkknd.psbmdp', 'pkknd.psbjrp')"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Nummer persoonsbewijs:</label>
+
+        <div class="col-xs-4">
+          <input type="text" class="form-control form-control-small" th:field="*{pkknd.psbnrp}" hsn:field="pkknd.psbnrp"/>
+        </div>
+      </div>
+    </fieldset>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/persoonskaart/PS0A.js" th:src="@{/js/persoonskaart/PS0A.js}"></script>
+</th:block>
+</body>
+</html>

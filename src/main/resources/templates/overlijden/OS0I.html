@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <legend align="center">INVOER VAN OVERLIJDENS-AKTEN</legend>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <label class="col-xs-6 control-label">IDENTIFICATIE nummer overledene:</label>
+
+      <div class="col-xs-4">
+        <input type="text" data-lookup="ovlknd" class="form-control gbh-idnr required"
+               th:classappend="${akte.isLevnloos()} ? no-gbh-lookup" th:field="*{ovlknd.idnr}" hsn:field="ovlknd.idnr"/>
+      </div>
+    </div>
+
+    <p class="fail text-danger text-center" style="display: none;"></p>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+</body>
+</html>

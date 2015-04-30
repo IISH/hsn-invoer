@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- BS0C: IDENTIFICATIE BRON EN ONDERZOEKSPERSOON -->
+  <view-state id="BS0C" view="bevolkingsregister/BS0IC" model="akte">
+    <on-entry>
+      <evaluate expression="bevolkingsregisterService.createNewAkteForCorrection()" result="flowScope.akte"/>
+      <evaluate expression="flowScope.akte.setCorrectionCode(8)"/>
+    </on-entry>
+
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="BBYZ">
+      <evaluate expression="bevolkingsregisterService.editOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- BBYZ: BYZONDERHEDEN -->
+  <view-state id="BBYZ" view="bevolkingsregister/BBYZ" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="finishEnd">
+      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistration(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <end-state id="stopEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
+
+  <end-state id="finishEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
+</flow>
