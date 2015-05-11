@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/ajax/lookup")
-public class AjaxLookupController extends AbstractMainController {
+public class AjaxLookupController {
     @Autowired
     private LookupService lookupService;
 

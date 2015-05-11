@@ -1,6 +1,7 @@
 (function ($) {
     var onNew = function (self, elems) {
         var seqNr = elems.parent.find('.seqNr:last').getIntegerText() + 1;
+        seqNr = isNaN(seqNr) ? 1 : seqNr;
         elems.onEdit.find('input[name=dynamicDataSequenceNumber]').val(seqNr);
     };
 

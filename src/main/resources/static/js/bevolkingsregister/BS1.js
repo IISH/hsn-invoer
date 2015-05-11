@@ -62,6 +62,7 @@
 
     /* BS1 specific operations */
 
+    // TODO: eDayInsValidate
     var registerDateOfRegistration = function (elem) {
         elem.find('.datum-inschrijving').each(function () {
             var self = $(this);
@@ -105,6 +106,7 @@
         });
     };
 
+    // TODO: eDayInsValidate
     var onDatumExplicietHoofd = function (date, dayVal, monthVal, yearVal) {
         if (!isNaN(dayVal) && !isNaN(monthVal) && !isNaN(yearVal)) {
             date.val('###$' + ('0' + dayVal).slice(-2) + '/' + ('0' + monthVal).slice(-2) + '/' + yearVal);
@@ -113,6 +115,7 @@
             date.val('');
         }
     };
+
     var registerRelatieRegelPopup = function (elem) {
         var elems = elem;
         if (!elem.is('tr')) {

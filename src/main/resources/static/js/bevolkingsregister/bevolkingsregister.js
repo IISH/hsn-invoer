@@ -27,8 +27,9 @@
 
     /* Date checks */
 
-    $.checkDateBevReg = function (hsnDate) {
+    $.checkDateBevReg = function (hsnDate, elem) {
         var error = false;
+        var parent = elem.getParentOfFormElement();
 
         var dayVal = hsnDate.day.getValue();
         var monthVal = hsnDate.month.getValue();
@@ -43,13 +44,22 @@
         if (yearVal === 0 || yearVal < -3 || yearVal > 1960 || (yearVal > 0 && yearVal < 1750)) {
             error = true;
         }
+        if (parent.hasClass('noNeg') && (dayVal <= 0 || monthVal <= 0 || yearVal <= 0)) {
+            error = true;
+        }
+        if (parent.hasClass('fullCheck') && (dayVal > 0 && monthVal > 0 && yearVal > 0)) {
+            var date = new Date(yearVal, monthVal - 1, dayVal);
+            if (date.getDate() !== dayVal || date.getMonth() !== (monthVal - 1) || date.getFullYear() !== yearVal) {
+                error = true;
+            }
+        }
 
-        // TODO: Validate date (leap years etc...)
+        // TODO: hasClass DAT0: 0 and ENTER or ENTER on blank day ==> -1/-1/-1 and jump to next control
 
         return error;
     };
 
-    $.initCheckDate('.checkDateBevReg', null, $.checkDateBevReg);
+    $.initCheckDate('.checkDateBevReg', $.prepareDate, $.checkDateBevReg);
 
     /* Bijzonderheden modals */
 

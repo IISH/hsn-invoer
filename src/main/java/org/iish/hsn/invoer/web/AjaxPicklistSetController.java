@@ -14,14 +14,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @Controller
 @RequestMapping(value = "/ajax/picklist/set")
-public class AjaxPicklistSetController extends AbstractMainController {
+public class AjaxPicklistSetController {
     @Autowired private PicklistService picklistService;
 
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/plaats", method = RequestMethod.POST)
     public void setPlaats(@RequestParam String value) {
         picklistService.setPlaats(value);
-
     }
 
     @ResponseStatus(value = HttpStatus.OK)

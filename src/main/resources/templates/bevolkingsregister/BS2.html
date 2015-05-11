@@ -148,7 +148,7 @@
             <!-- Volg -->
             <input type="text" name="sequenceNumberToAddresses" class="seqNr form-control form-control-digit required"/>
           </td>
-          <td class="dateOrder" style="min-width:200px;max-width:200px;">
+          <td class="dateOrder checkDateBevReg fullCheck" style="min-width:200px;max-width:200px;">
             <!-- Datum -->
             <input type="text" name="dayOfAddress" class="form-control form-control-digit day"/>
             /
@@ -156,7 +156,7 @@
             /
             <input type="text" name="yearOfAddress" class="form-control form-control-small year"/>
           </td>
-          <td style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
+          <td class="checkDateBevReg fullCheck" style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
             <!-- INTERPR -->
             <input type="text" name="dayOfAddressAfterInterpretation" class="form-control form-control-digit day"/>
             /
@@ -223,7 +223,7 @@
 </th:block>
 </fieldset>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: bev-reg-navigation (false)"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"

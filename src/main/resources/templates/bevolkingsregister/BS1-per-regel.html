@@ -34,8 +34,8 @@
             </div>
           </div>
 
-          <div class="sub-form-group datum-inschrijving" data-show-when="#datum-inschrijving" data-has-values-in="j"
-               style="display:none;">
+          <div class="sub-form-group datum-inschrijving checkDateBevReg fullCheck"
+               data-show-when="#datum-inschrijving" data-has-values-in="j" style="display:none;">
             <label class="col-xs-1 control-label">Datum:</label>
 
             <div class="col-xs-3 form-inline"
@@ -88,14 +88,15 @@
               </div>
             </div>
 
-            <div class="sub-form-group" data:rp="${akte.curB2.rp}">
+            <div class="sub-form-group" data:rp="${akte.curB2.rp}"
+                 th:classappend="${akte.b3Rel[__${akte.curB2.rp}__].size() > 1} ? 'multiple-person-dynamic'">
               <label class="col-xs-4 control-label">
                 Relatie tov hoofd:
 
-          <span class="ind"
-                th:style="${akte.b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson le 0} ? 'display:none;'">
-              *
-          </span>
+                <span class="ind"
+                      th:style="${akte.b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson le 0} ? 'display:none;'">
+                    *
+                </span>
               </label>
 
               <div
@@ -115,7 +116,7 @@
             </div>
           </div>
 
-          <div class="form-group dateHoofd" style="display:none;">
+          <div class="form-group dateHoofd checkDateBevReg noNeg fullCheck" style="display:none;">
             <label class="col-xs-4 col-xs-offset-3 control-label">
               Datum expliciet hoofd:
             </label>
@@ -163,7 +164,7 @@
           </div>
         </div>
 
-        <div class="form-group extra-top-margin geb-date-person"
+        <div class="form-group extra-top-margin geb-date-person checkDateBevReg fullCheck "
              data:is-op="${akte.curB2.rp == akte.volgnrOP}"
              data:op-geb-day="${akte.op != null and akte.curB2.rp != akte.volgnrOP} ? ${akte.op.dayOfBirth}"
              data:op-geb-month="${akte.op != null and akte.curB2.rp != akte.volgnrOP} ? ${akte.op.monthOfBirth}"
@@ -200,7 +201,8 @@
         </div>
 
         <div id="BURGELIJKE_STAND_CONTAINER" class="personDynamic" data-type="BURGELIJKE_STAND"
-             th:fragment="BURGELIJKE_STAND_CONTAINER" th:object="${akte}">
+             th:fragment="BURGELIJKE_STAND_CONTAINER" th:object="${akte}"
+             th:classappend="${akte.b3Brg[__${akte.curB2.rp}__].size() > 1} ? 'multiple-person-dynamic'">
           <div class="form-group extra-top-margin">
             <label class="col-xs-2 control-label">Burg. staat:</label>
 
@@ -222,7 +224,7 @@
                 </div>
               </div>
 
-              <div class="sub-form-group">
+              <div class="sub-form-group checkDateBevReg fullCheck">
                 <label class="col-xs-1 control-label">Datum:</label>
 
                 <div
@@ -245,14 +247,16 @@
 
         <div class="form-group extra-top-margin personDynamic" id="KERKGENOOTSCHAP_CONTAINER"
              data-type="KERKGENOOTSCHAP"
-             th:fragment="KERKGENOOTSCHAP_CONTAINER" th:object="${akte}">
+             th:fragment="KERKGENOOTSCHAP_CONTAINER" th:object="${akte}"
+             th:classappend="${akte.b3Kg[__${akte.curB2.rp}__].size() > 1} ? 'multiple-person-dynamic'">
           <label class="col-xs-2 control-label">Kerkgenootschap:</label>
 
           <div th:replace="fragments/fields :: kerkgenootschap ('b3Kg[__${akte.curB2.rp}__][0].dynamicData2')"></div>
         </div>
 
         <div class="form-group personDynamic" id="BEROEP_CONTAINER" data-type="BEROEP"
-             th:fragment="BEROEP_CONTAINER" th:object="${akte}">
+             th:fragment="BEROEP_CONTAINER" th:object="${akte}"
+             th:classappend="${akte.b3Brp[__${akte.curB2.rp}__].size() > 1} ? 'multiple-person-dynamic'">
           <div class="sub-form-group">
             <label class="col-xs-2 control-label">Beroep:</label>
 
@@ -275,7 +279,8 @@
         </div>
 
         <div class="form-group extra-top-margin personDynamic" id="HERKOMST_CONTAINER" data-type="HERKOMST"
-             th:fragment="HERKOMST_CONTAINER" th:object="${akte}">
+             th:fragment="HERKOMST_CONTAINER" th:object="${akte}"
+             th:classappend="${akte.b3Her[__${akte.curB2.rp}__].size() > 1} ? 'multiple-person-dynamic'">
           <div class="sub-form-group">
             <label class="col-xs-2 control-label">Herkomst? j/n</label>
 
@@ -287,7 +292,7 @@
           </div>
 
           <div data-show-when="#herkomst" data-has-values-in="j" style="display:none;">
-            <div class="sub-form-group">
+            <div class="sub-form-group checkDateBevReg fullCheck">
               <label class="col-xs-1 control-label">Datum:</label>
 
               <div class="col-xs-3 form-inline"
@@ -308,7 +313,8 @@
         </div>
 
         <div class="form-group personDynamic" id="VERTREK_CONTAINER" data-type="VERTREK"
-             th:fragment="VERTREK_CONTAINER" th:object="${akte}">
+             th:fragment="VERTREK_CONTAINER" th:object="${akte}"
+             th:classappend="${akte.b3Ver[__${akte.curB2.rp}__].size() > 1} ? 'multiple-person-dynamic'">
           <div class="sub-form-group">
             <label class="col-xs-2 control-label">Vertrek? j/n</label>
 
@@ -320,7 +326,7 @@
           </div>
 
           <div data-show-when="#vertrek" data-has-values-in="j" style="display:none;">
-            <div class="sub-form-group">
+            <div class="sub-form-group checkDateBevReg fullCheck">
               <label class="col-xs-1 control-label">Datum:</label>
 
               <div class="col-xs-3 form-inline"
@@ -351,7 +357,7 @@
           </div>
 
           <div data-show-when="#overlijden" data-has-values-in="j" style="display:none;">
-            <div class="sub-form-group">
+            <div class="sub-form-group checkDateBevReg fullCheck">
               <label class="col-xs-1 control-label">Datum:</label>
 
               <div class="col-xs-3 form-inline"
@@ -480,7 +486,7 @@
   </th:block>
 </fieldset>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: bev-reg-navigation (true)"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"

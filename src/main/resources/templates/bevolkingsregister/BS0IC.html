@@ -141,7 +141,7 @@
   </div>
 </div>
 
-<div class="form-group checkDateHfd">
+<div class="form-group checkDateHfd noNeg">
   <label class="col-xs-3 control-label">Hoofddatum:</label>
 
   <div
@@ -149,7 +149,7 @@
 </div>
 
 <th:block th:if="${akte.isCorrection()} == false">
-  <div class="form-group checkDateOP">
+  <div class="form-group checkDateOP noNeg">
     <label class="col-xs-3 control-label">OP-datum:</label>
 
     <div th:replace="fragments/fields :: datum ('b4.dayEntryRP', 'b4.monthEntryRP', 'b4.yearEntryRP')"></div>
@@ -268,7 +268,7 @@
 </th:block>
 </fieldset>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: bev-reg-navigation (false)"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"

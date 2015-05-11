@@ -218,8 +218,8 @@
         }
     };
 
-    var checkDateHfd = function (hsnDate) {
-        var error = $.checkDateBevReg(hsnDate);
+    var checkDateHfd = function (hsnDate, elem) {
+        var error = $.checkDateBevReg(hsnDate, elem);
 
         var opHsnDate = $('.checkDateOP').getHsnDate();
 
@@ -229,10 +229,6 @@
 
         var opDate = new Date(opHsnDate.year.getValue(), opHsnDate.month.getValue() - 1, opHsnDate.day.getValue());
         var hfdDate = new Date(yearVal, monthVal - 1, dayVal);
-
-        if (dayVal <= 0 || monthVal <= 0 || yearVal <= 0) {
-            error = true;
-        }
 
         if (!error && opHsnDate.year.getValue() > 0 && opHsnDate.month.getValue() > 0 && opHsnDate.day.getValue() > 0) {
             $.setError(
@@ -245,8 +241,8 @@
         return error;
     };
 
-    var checkDateOP = function (hsnDate) {
-        var error = $.checkDateBevReg(hsnDate);
+    var checkDateOP = function (hsnDate, elem) {
+        var error = $.checkDateBevReg(hsnDate, elem);
 
         var hfdHsnDate = $('.checkDateHfd').getHsnDate();
 
@@ -256,10 +252,6 @@
 
         var opDate = new Date(yearVal, monthVal - 1, dayVal);
         var hfdDate = new Date(hfdHsnDate.year.getValue(), hfdHsnDate.month.getValue() - 1, hfdHsnDate.day.getValue());
-
-        if (dayVal <= 0 || monthVal <= 0 || yearVal <= 0) {
-            error = true;
-        }
 
         if (!error) {
             $.setError(
@@ -315,8 +307,8 @@
         }
     };
 
-    $.initCheckDate('.checkDateHfd', null, checkDateHfd);
-    $.initCheckDate('.checkDateOP', null, checkDateOP);
+    $.initCheckDate('.checkDateHfd', $.prepareDate, checkDateHfd);
+    $.initCheckDate('.checkDateOP', $.prepareDate, checkDateOP);
 
     $(document).ready(function () {
         $('#b4\\.registrationId\\.keyToRP').blur(checkIdnr);

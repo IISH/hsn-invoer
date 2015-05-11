@@ -30,6 +30,7 @@ header {
 }
 
 fieldset {
+  display: table-column; // Fixes scrollbar issues within a fieldset in Firefox
   border: 1px solid #adadad;
   margin-bottom: 20px;
 
@@ -187,6 +188,10 @@ p.scherm {
   td & {
     margin: 0;
   }
+}
+
+.multiple-person-dynamic {
+  color: darkblue;
 }
 
 .popover {

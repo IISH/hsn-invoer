@@ -2,6 +2,24 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head></head>
 <body>
+<fieldset th:fragment="bev-reg-navigation (singlePersonScreen)">
+  <span class="pull-right">
+    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop">
+      Stoppen
+    </button>
+
+    <button type="submit" name="_eventId_nextPerson" class="btn btn-default btn-next" th:if="${singlePersonScreen}">
+      Volgende persoon
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </button>
+
+    <button type="submit" name="_eventId_next" class="btn btn-default btn-next">
+      Volgende
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </button>
+  </span>
+</fieldset>
+
 <fieldset th:fragment="navigation (mayStop, mayAddByz)">
   <span class="pull-left">
     <span class="scherm" th:utext="${flowRequestContext.currentState.id}"></span>

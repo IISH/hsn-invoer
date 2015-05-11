@@ -76,7 +76,7 @@
   </div>
 
   <div class="sub-form-group">
-    <span class="datum-inschrijving spacing" data:show-when="${'#datum-inschrijving-' + rp}" data-has-values-in="j"
+    <span class="datum-inschrijving spacing checkDateBevReg fullCheck" data:show-when="${'#datum-inschrijving-' + rp}" data-has-values-in="j"
           style="display:none;"
           th:include="fragments/fields :: datum ('b2[__${stat.index}__].dayOfRegistration', 'b2[__${stat.index}__].monthOfRegistration', 'b2[__${stat.index}__].yearOfRegistration')">
     </span>
@@ -136,7 +136,7 @@
   <div class="relatieDateHoofdPopup" style="display:none;">
     <div class="relatieDateHoofdPopupContent">
       <div class="form-inline">
-        <div class="form-group">
+        <div class="form-group checkDateBevReg fullCheck noNeg">
           <label class="control-label">Datum expliciet hoofd:</label>
 
           <input type="text" class="form-control form-control-digit day spacing"
@@ -188,7 +188,7 @@
     data:op-geb-month="${akte.op != null and rp != akte.volgnrOP} ? ${akte.op.monthOfBirth}"
     data:op-geb-year="${akte.op != null and rp != akte.volgnrOP} ? ${akte.op.yearOfBirth}">
   <!-- Geb dat -->
-  <div class="sub-form-group"
+  <div class="sub-form-group checkDateBevReg fullCheck"
        th:include="fragments/fields :: datum ('b2[__${stat.index}__].dayOfBirth', 'b2[__${stat.index}__].monthOfBirth', 'b2[__${stat.index}__].yearOfBirth')">
   </div>
 
@@ -223,7 +223,7 @@
          th:field="*{b3Brg[__${rp}__][0].valueOfRelatedPerson}"
          hsn:field="b3Brg[__${rp}__][0].valueOfRelatedPerson"/>
 </td>
-<td class="personDynamic" data-type="BURGELIJKE_STAND">
+<td class="personDynamic checkDateBevReg fullCheck" data-type="BURGELIJKE_STAND">
   <!-- Datum -->
   <div data:show-when="'#b3Brg'+__${rp}__+'0\.contentOfDynamicData'" data-has-values-in="2;3;5;9"
        th:include="fragments/fields :: datum ('b3Brg[__${rp}__][0].dayOfMutation', 'b3Brg[__${rp}__][0].monthOfMutation', 'b3Brg[__${rp}__][0].yearOfMutation')">
@@ -265,8 +265,8 @@
            th:value="${@bevolkingsregisterHelper.hasHerkomstData(akte, akte.b2[__${stat.index}__])}"/>
   </div>
 
-  <div class="sub-form-group spacing" data:show-when="${'#herkomst-' + rp}" data-has-values-in="j"
-       style="display:none;"
+  <div class="sub-form-group spacing checkDateBevReg fullCheck"
+       data:show-when="${'#herkomst-' + rp}" data-has-values-in="j" style="display:none;"
        th:include="fragments/fields :: datum ('firstB3Her[__${rp}__].dayOfMutation', 'firstB3Her[__${rp}__].monthOfMutation', 'firstB3Her[__${rp}__].yearOfMutation')">
   </div>
 </td>
@@ -284,8 +284,8 @@
            th:value="${@bevolkingsregisterHelper.hasVertrekData(akte, akte.b2[__${stat.index}__])}"/>
   </div>
 
-  <div class="sub-form-group spacing" data:show-when="${'#vertrek-' + rp}" data-has-values-in="j"
-       style="display:none;"
+  <div class="sub-form-group spacing checkDateBevReg fullCheck"
+       data:show-when="${'#vertrek-' + rp}" data-has-values-in="j" style="display:none;"
        th:include="fragments/fields :: datum ('firstB3Ver[__${rp}__].dayOfMutation', 'firstB3Ver[__${rp}__].monthOfMutation', 'firstB3Ver[__${rp}__].yearOfMutation')">
   </div>
 </td>
@@ -302,8 +302,8 @@
            maxlength="1" data-valid-chars="j;n"/>
   </div>
 
-  <div class="sub-form-group spacing" data:show-when="${'#overlijden-' + rp}" data-has-values-in="j"
-       style="display:none;"
+  <div class="sub-form-group spacing checkDateBevReg fullCheck"
+       data:show-when="${'#overlijden-' + rp}" data-has-values-in="j" style="display:none;"
        th:include="fragments/fields :: datum ('b2[__${stat.index}__].dayOfDecease', 'b2[__${stat.index}__].monthOfDecease', 'b2[__${stat.index}__].yearOfDecease')">
   </div>
 </td>
@@ -413,7 +413,7 @@
 </th:block>
 </fieldset>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, false)"></fieldset>
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: bev-reg-navigation (false)"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"

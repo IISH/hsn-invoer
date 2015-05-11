@@ -70,18 +70,29 @@
       <render fragments="currentPerson"/>
     </transition>
 
-    <transition on="next" to="anotherPersonCheck">
+    <transition on="nextPerson" to="anotherPersonCheck1">
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="anotherPersonCheck2">
       <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
     </transition>
   </view-state>
 
-  <action-state id="anotherPersonCheck">
+  <action-state id="anotherPersonCheck1">
     <evaluate expression="({'A','I'}).contains(flowScope.akte.refAinb.typeRegister)"/>
 
     <transition on="yes" to="BS2"/>
     <transition on="no" to="BS1">
       <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
     </transition>
+  </action-state>
+
+  <action-state id="anotherPersonCheck2">
+    <evaluate expression="(true)"/> <!-- TODO: If more persons have to be added -->
+
+    <transition on="yes" to="BS2"/>
+    <transition on="no" to="anotherPersonCheck1"/>
   </action-state>
 
   <!-- BS1: ADRESSEN -->

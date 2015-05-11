@@ -90,12 +90,6 @@
             $(document).trigger('changeOfState');
         };
 
-        /*$.registerInit(function (elem) {
-            elem.find($.createDateSelector(selector)).each(function () {
-                doCheckDate($(this), prepare, dateCheck);
-            });
-        });*/
-
         $(document).on('blur', $.createDateSelector(selector), function (e) {
             doCheckDate($(e.target), prepare, dateCheck);
         });
