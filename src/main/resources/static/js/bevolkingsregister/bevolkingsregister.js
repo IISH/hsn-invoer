@@ -44,7 +44,7 @@
         if (yearVal === 0 || yearVal < -3 || yearVal > 1960 || (yearVal > 0 && yearVal < 1750)) {
             error = true;
         }
-        if (parent.hasClass('noNeg') && (dayVal <= 0 || monthVal <= 0 || yearVal <= 0)) {
+        if (parent.hasClass('noNeg') && (dayVal <= 0 || monthVal <= 0 || yearVal <= 0)) { // basically 'required'
             error = true;
         }
         if (parent.hasClass('fullCheck') && (dayVal > 0 && monthVal > 0 && yearVal > 0)) {

@@ -7,7 +7,10 @@ import org.iish.hsn.invoer.domain.reference.Ref_AINB;
 import org.iish.hsn.invoer.flow.state.BevolkingsregisterFlowState;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,6 +61,20 @@ public class BevolkingsregisterHelper {
         return date[2];
     }
 
+    public String hasInschrijfDatum(Person person) {
+        int day = person.getDayOfRegistration();
+        int month = person.getMonthOfRegistration();
+        int year = person.getYearOfRegistration();
+
+        if ((day == -2) && (month == -2) && (year == -2)) {
+            return "j";
+        }
+        if ((day < 0) && (month < 0) && (year < 0)) {
+            return "n";
+        }
+        return "j";
+    }
+
     public String hasHerkomstData(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
         int personKey = person.getKeyToRegistrationPersons();
         List<PersonDynamic> b3Her = bevolkingsregisterFlow.getB3Her().get(personKey);
@@ -76,6 +93,13 @@ public class BevolkingsregisterHelper {
         return "n";
     }
 
+    public String hasOverlijdensData(Person person) {
+        if ((person.getDayOfDecease() == 0) && (person.getMonthOfDecease() == 0) && (person.getYearOfDecease() == 0)) {
+            return "n";
+        }
+        return "j";
+    }
+
     public RegistrationAddress getRegistrationAddressFor(List<RegistrationAddress> registrationAddresses, int person,
                                                          int seqNr) {
         for (RegistrationAddress registrationAddress : registrationAddresses) {
@@ -85,6 +109,27 @@ public class BevolkingsregisterHelper {
             }
         }
         return null;
+    }
+
+    public List<PersonDynamic> getWhereRelatedPerson(BevolkingsregisterFlowState bevolkingsregisterFlow, int person) {
+        List<PersonDynamic> relatedPersonDynamics = new ArrayList<>();
+        for (PersonDynamic personDynamic : bevolkingsregisterFlow.getAllB3()) {
+            if (personDynamic.getValueOfRelatedPerson() == person) {
+                relatedPersonDynamics.add(personDynamic);
+            }
+        }
+        return relatedPersonDynamics;
+    }
+
+    public List<PersonDynamic> getWhereRelatedPerson(BevolkingsregisterFlowState bevolkingsregisterFlow, int person,
+                                                    PersonDynamic.Type type) {
+        List<PersonDynamic> relatedPersonDynamics = new ArrayList<>();
+        for (PersonDynamic personDynamic : getWhereRelatedPerson(bevolkingsregisterFlow, person)) {
+            if (personDynamic.getDynamicDataType() == type.getType()) {
+                relatedPersonDynamics.add(personDynamic);
+            }
+        }
+        return relatedPersonDynamics;
     }
 
     private int[] getDateExplicietHoofd(PersonDynamic b3) {

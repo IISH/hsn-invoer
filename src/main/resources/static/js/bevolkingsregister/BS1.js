@@ -467,6 +467,48 @@
         });
     };
 
+    var copyFromPrevLine = function () {
+        var row = getActiveRow();
+        if (!$.isCorrection() && (row.data('copy-prev-person') !== 'copy-prev-person')) {
+            var prevRow = row.prev();
+            if (prevRow.is('tr')) {
+                row.find('.has-inschrijving').val(prevRow.find('.has-inschrijving').val());
+                row.find('.datum-inschrijving .day').val(prevRow.find('.datum-inschrijving .day').val());
+                row.find('.datum-inschrijving .month').val(prevRow.find('.datum-inschrijving .month').val());
+                row.find('.datum-inschrijving .year').val(prevRow.find('.datum-inschrijving .year').val());
+
+                var familyName = row.find('.lastName');
+                if (familyName.val().trim().length === 0) {
+                    familyName.val(prevRow.find('.lastName').val());
+                }
+
+                var placeOfBirth = row.find('.placeOfBirth');
+                if (placeOfBirth.val().trim().length === 0) {
+                    placeOfBirth.val(prevRow.find('.placeOfBirth').val());
+                }
+
+                row.find('.nationality').val(prevRow.find('.nationality').val());
+                row.find('.legalPlaceOfLiving').val(prevRow.find('.legalPlaceOfLiving').val());
+
+                row.find('.kg').val(prevRow.find('.kg').val());
+                
+                row.find('.has-herkomst').val(prevRow.find('.has-herkomst').val());
+                row.find('.herkomst-datum .day').val(prevRow.find('.herkomst-datum .day').val());
+                row.find('.herkomst-datum .month').val(prevRow.find('.herkomst-datum .month').val());
+                row.find('.herkomst-datum .year').val(prevRow.find('.herkomst-datum .year').val());
+                row.find('.herkomst-plaats').val(prevRow.find('.herkomst-plaats').val());
+
+                row.find('.has-vertrek').val(prevRow.find('.has-vertrek').val());
+                row.find('.vertrek-datum .day').val(prevRow.find('.vertrek-datum .day').val());
+                row.find('.vertrek-datum .month').val(prevRow.find('.vertrek-datum .month').val());
+                row.find('.vertrek-datum .year').val(prevRow.find('.vertrek-datum .year').val());
+                row.find('.vertrek-plaats').val(prevRow.find('.vertrek-plaats').val());
+
+                row.data('copy-prev-person', 'copy-prev-person');
+            }
+        }
+    };
+
     $(document).keydown(function (e) {
         switch (e.which) {
             case 114: // F3
@@ -478,6 +520,10 @@
                 e.preventDefault();
                 break;
         }
+    });
+
+    $(document).on('focus', '#registrationAllLines input', function () {
+        copyFromPrevLine();
     });
 
     $.registerInit(function (elem) {

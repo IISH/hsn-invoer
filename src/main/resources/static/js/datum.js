@@ -80,18 +80,25 @@
     };
 
     $.initCheckDate = function (selector, prepare, dateCheck) {
-        var doCheckDate = function (elem, prepare, dateCheck) {
+        var doCheckDate = function (elem, prepare, dateCheck, runPrepare) {
             var parent = elem.closest(selector);
             var hsnDate = parent.getHsnDate();
-            if ($.isFunction(prepare)) {
+            if (runPrepare && $.isFunction(prepare)) {
                 prepare(hsnDate, elem);
             }
             elem.hasErrorWhen(dateCheck(hsnDate, elem), parent);
             $(document).trigger('changeOfState');
         };
 
+        $(document).ready(function () {
+            $(selector).each(function () {
+                var elem = $(this).find('.day, .month, .year, .minute, .hour').first();
+                doCheckDate(elem, prepare, dateCheck, false);
+            });
+        });
+
         $(document).on('blur', $.createDateSelector(selector), function (e) {
-            doCheckDate($(e.target), prepare, dateCheck);
+            doCheckDate($(e.target), prepare, dateCheck, true);
         });
     };
 

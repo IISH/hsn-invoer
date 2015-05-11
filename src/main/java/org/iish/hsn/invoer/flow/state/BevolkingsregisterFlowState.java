@@ -87,8 +87,8 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
         return b3;
     }
 
-    public Set<PersonDynamic> getAllB3() {
-        Set<PersonDynamic> b3 = new HashSet<>();
+    public List<PersonDynamic> getAllB3() {
+        List<PersonDynamic> b3 = new ArrayList<>();
         for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
             for (List<PersonDynamic> personDynamics : getB3ForType(type).values()) {
                 b3.addAll(personDynamics);

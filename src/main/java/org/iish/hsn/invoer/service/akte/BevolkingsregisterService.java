@@ -194,6 +194,9 @@ public class BevolkingsregisterService {
             int newPersonKey = bevolkingsregisterFlow.getCurPersonKey() + 1;
             bevolkingsregisterFlow.setCurB2Index(newPersonKey - 1);
             bevolkingsregisterFlow.setCurPersonKey(newPersonKey);
+
+            // Update the person with data from the previous person
+            updatePersonData(bevolkingsregisterFlow, bevolkingsregisterFlow.getCurB2());
         }
         else {
             Person person = new Person(b2.size() + 1);
@@ -248,6 +251,62 @@ public class BevolkingsregisterService {
 
             // Create initial dynamic values for this person
             createNewPersonDynamics(bevolkingsregisterFlow, person);
+
+            // Update the person with data from the previous person
+            // In case all persons are edited at once, let JavaScript take care of that
+            if (bevolkingsregisterFlow.isOneLineEach()) {
+                updatePersonData(bevolkingsregisterFlow, person);
+            }
+
+            // Find out whether this person was referenced before for the burgelijke stand
+            List<PersonDynamic> relatedPersonDynamics = bevolkingsregisterHelper
+                    .getWhereRelatedPerson(bevolkingsregisterFlow, person.getRp(), PersonDynamic.Type.BURGELIJKE_STAND);
+            for (PersonDynamic relatedPersonDynamic : relatedPersonDynamics) {
+                int type = relatedPersonDynamic.getContentOfDynamicData();
+                Person relatedPerson = b2.get(relatedPersonDynamic.getKeyToRegistrationPersons() - 1);
+                PersonDynamic personDynamic =
+                        bevolkingsregisterFlow.getB3ForType(PersonDynamic.Type.BURGELIJKE_STAND).get(person.getRp())
+                                              .get(0);
+
+                // Related person is a widow, so this person must have been married to the related person and died
+                if (type == 2) {
+                    personDynamic.setContentOfDynamicData(5);
+                    personDynamic.setValueOfRelatedPerson(relatedPerson.getRp());
+
+                    person.setDayOfDecease(relatedPersonDynamic.getDayOfMutation());
+                    person.setMonthOfDecease(relatedPersonDynamic.getMonthOfMutation());
+                    person.setYearOfDecease(relatedPersonDynamic.getYearOfMutation());
+                }
+                // Related person is married
+                else if (type == 3) {
+                    // Related person is married and dead, so this person must be a widow
+                    if (bevolkingsregisterHelper.hasOverlijdensData(relatedPerson).equals("j")) {
+                        personDynamic.setContentOfDynamicData(2);
+                        personDynamic.setValueOfRelatedPerson(relatedPerson.getRp());
+
+                        personDynamic.setDayOfMutation(relatedPerson.getDayOfDecease());
+                        personDynamic.setMonthOfMutation(relatedPerson.getMonthOfDecease());
+                        personDynamic.setYearOfMutation(relatedPerson.getYearOfDecease());
+                    }
+                    // Otherwise the related person is still married to this person
+                    else {
+                        personDynamic.setContentOfDynamicData(5);
+                        personDynamic.setValueOfRelatedPerson(relatedPerson.getRp());
+
+                        personDynamic.setDayOfMutation(relatedPersonDynamic.getDayOfMutation());
+                        personDynamic.setMonthOfMutation(relatedPersonDynamic.getMonthOfMutation());
+                        personDynamic.setYearOfMutation(relatedPersonDynamic.getYearOfMutation());
+                    }
+                }
+                else {
+                    personDynamic.setContentOfDynamicData(type);
+                    personDynamic.setValueOfRelatedPerson(relatedPerson.getRp());
+
+                    personDynamic.setDayOfMutation(relatedPersonDynamic.getDayOfMutation());
+                    personDynamic.setMonthOfMutation(relatedPersonDynamic.getMonthOfMutation());
+                    personDynamic.setYearOfMutation(relatedPersonDynamic.getYearOfMutation());
+                }
+            }
 
             b2.add(person.getKeyToRegistrationPersons() - 1, person);
             bevolkingsregisterFlow.setCurB2Index(person.getRp() - 1);
@@ -906,6 +965,74 @@ public class BevolkingsregisterService {
                     Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
                     PersonDynamic personDynamic = createPersonDynamic(bevolkingsregisterFlow, person, type, 1);
                     b3.put(keyToPerson, new ArrayList<>(Arrays.asList(personDynamic)));
+            }
+        }
+    }
+
+    private void updatePersonData(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
+        Ref_AINB refAinb = bevolkingsregisterFlow.getRefAinb();
+        List<Person> b2 = bevolkingsregisterFlow.getB2();
+
+        PersonDynamic kg =
+                bevolkingsregisterFlow.getB3ForType(PersonDynamic.Type.KERKGENOOTSCHAP).get(person.getRp()).get(0);
+        PersonDynamic her =
+                bevolkingsregisterFlow.getB3ForType(PersonDynamic.Type.KERKGENOOTSCHAP).get(person.getRp()).get(0);
+        PersonDynamic ver =
+                bevolkingsregisterFlow.getB3ForType(PersonDynamic.Type.KERKGENOOTSCHAP).get(person.getRp()).get(0);
+
+        // Copy information from the prev person (if there is a prev person)
+        int prevPerson = person.getKeyToRegistrationPersons() - 1;
+        if (prevPerson > 0) {
+            Person lastPerson = b2.get(prevPerson - 1);
+
+            person.setDayOfRegistration(lastPerson.getDayOfRegistration());
+            person.setMonthOfRegistration(lastPerson.getMonthOfRegistration());
+            person.setYearOfRegistration(lastPerson.getYearOfRegistration());
+
+            if ((person.getFamilyName() == null) || person.getFamilyName().trim().isEmpty()) {
+                person.setFamilyName(lastPerson.getFamilyName());
+            }
+            if ((person.getPlaceOfBirth() == null) || person.getPlaceOfBirth().trim().isEmpty()) {
+                person.setPlaceOfBirth(lastPerson.getPlaceOfBirth());
+            }
+
+            person.setNationality(lastPerson.getNationality());
+            if (refAinb.getTypeRegister().equals("C")) {
+                person.setLegalPlaceOfLivingInCodes(lastPerson.getLegalPlaceOfLivingInCodes());
+            }
+            else {
+                person.setLegalPlaceOfLiving(lastPerson.getLegalPlaceOfLiving());
+            }
+
+            // Do the same for dynamic data of type kerkgenootschap, herkomst en vertrek
+            Map<Integer, List<PersonDynamic>> prevB3Kg = bevolkingsregisterFlow.getB3ForType(PersonDynamic.Type.KERKGENOOTSCHAP);
+            if (prevB3Kg.containsKey(prevPerson)) {
+                PersonDynamic prevKg = prevB3Kg.get(prevPerson).get(0);
+                kg.setDynamicData2(prevKg.getDynamicData2());
+            }
+
+            Map<Integer, PersonDynamic> prevB3Her = bevolkingsregisterFlow.getFirstB3Her();
+            if (prevB3Her.containsKey(prevPerson)) {
+                PersonDynamic prevHerkomst = prevB3Her.get(prevPerson);
+
+                her.setDynamicData2(prevHerkomst.getDynamicData2());
+                her.setDayOfMutation(prevHerkomst.getDayOfMutation());
+                her.setMonthOfMutation(prevHerkomst.getMonthOfMutation());
+                her.setYearOfMutation(prevHerkomst.getYearOfMutation());
+
+                updateHerkomst(bevolkingsregisterFlow, person);
+            }
+
+            Map<Integer, PersonDynamic> prevB3Ver = bevolkingsregisterFlow.getFirstB3Ver();
+            if (prevB3Ver.containsKey(prevPerson)) {
+                PersonDynamic prevVertrek = prevB3Ver.get(prevPerson);
+
+                ver.setDynamicData2(prevVertrek.getDynamicData2());
+                ver.setDayOfMutation(prevVertrek.getDayOfMutation());
+                ver.setMonthOfMutation(prevVertrek.getMonthOfMutation());
+                ver.setYearOfMutation(prevVertrek.getYearOfMutation());
+
+                updateVertrek(bevolkingsregisterFlow, person);
             }
         }
     }

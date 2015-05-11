@@ -66,9 +66,11 @@
 <td>
   <!-- Ins Dat -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+    <input type="text" class="form-control form-control-digit has-inschrijving required"
+           maxlength="1" data-valid-chars="j;n"
            th:name="${'datum-inschrijving-' + rp}" th:id="${'datum-inschrijving-' + rp}"
-           th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister) == false}"/>
+           th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister) == false}"
+           th:value="${@bevolkingsregisterHelper.hasInschrijfDatum(akte.b2[__${stat.index}__])}"/>
 
     <p class="form-control-static" th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister)}">
       n
@@ -232,18 +234,19 @@
 <td class="personDynamic" data-type="BURGELIJKE_STAND">
   <!-- Plaats -->
   <input type="text" class="form-control form-control-medium spacing plaats"
+         data:show-when="'#b3Brg'+__${rp}__+'0\.contentOfDynamicData'" data-has-values-in="2;3;5;9"
          th:field="*{b3Brg[__${rp}__][0].dynamicData2}"
          hsn:field="b3Brg[__${rp}__][0].dynamicData2"/>
 </td>
 <td class="personDynamic" data-type="KERKGENOOTSCHAP">
   <!-- Kerkg -->
-  <input type="text" class="form-control form-control-medium spacing kg"
+  <input type="text" class="form-control form-control-medium spacing kg required"
          th:field="*{b3Kg[__${rp}__][0].dynamicData2}"
          hsn:field="b3Kg[__${rp}__][0].dynamicData2"/>
 </td>
 <td class="personDynamic" data-type="BEROEP">
   <!-- Beroep -->
-  <input type="text" class="form-control form-control-medium spacing beroep"
+  <input type="text" class="form-control form-control-medium spacing beroep required"
          th:field="*{b3Brp[__${rp}__][0].dynamicData2}"
          hsn:field="b3Brp[__${rp}__][0].dynamicData2"/>
 </td>
@@ -260,38 +263,38 @@
 <td class="personDynamic" data-type="HERKOMST">
   <!-- Herkomst -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+    <input type="text" class="form-control form-control-digit has-herkomst required" maxlength="1" data-valid-chars="j;n"
            th:id="${'herkomst-' + rp}"
            th:value="${@bevolkingsregisterHelper.hasHerkomstData(akte, akte.b2[__${stat.index}__])}"/>
   </div>
 
-  <div class="sub-form-group spacing checkDateBevReg fullCheck"
+  <div class="sub-form-group spacing checkDateBevReg fullCheck herkomst-datum"
        data:show-when="${'#herkomst-' + rp}" data-has-values-in="j" style="display:none;"
        th:include="fragments/fields :: datum ('firstB3Her[__${rp}__].dayOfMutation', 'firstB3Her[__${rp}__].monthOfMutation', 'firstB3Her[__${rp}__].yearOfMutation')">
   </div>
 </td>
 <td class="personDynamic" data-type="HERKOMST">
   <!-- Plaats -->
-  <input type="text" class="form-control form-control-medium plaats" data:show-when="${'#herkomst-' + rp}"
+  <input type="text" class="form-control form-control-medium plaats herkomst-plaats" data:show-when="${'#herkomst-' + rp}"
          data-has-values-in="j" style="display:none;"
          th:field="*{firstB3Her[__${rp}__].dynamicData2}" hsn:field="firstB3Her[__${rp}__].dynamicData2"/>
 </td>
 <td class="personDynamic" data-type="VERTREK">
   <!-- Vertrek -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-digit required" th:id="${'vertrek-' + rp}"
+    <input type="text" class="form-control form-control-digit has-vertrek required" th:id="${'vertrek-' + rp}"
            maxlength="1" data-valid-chars="j;n"
            th:value="${@bevolkingsregisterHelper.hasVertrekData(akte, akte.b2[__${stat.index}__])}"/>
   </div>
 
-  <div class="sub-form-group spacing checkDateBevReg fullCheck"
+  <div class="sub-form-group spacing checkDateBevReg fullCheck vertrek-datum"
        data:show-when="${'#vertrek-' + rp}" data-has-values-in="j" style="display:none;"
        th:include="fragments/fields :: datum ('firstB3Ver[__${rp}__].dayOfMutation', 'firstB3Ver[__${rp}__].monthOfMutation', 'firstB3Ver[__${rp}__].yearOfMutation')">
   </div>
 </td>
 <td class="personDynamic" data-type="VERTREK">
   <!-- Plaats -->
-  <input type="text" class="form-control form-control-medium plaats" data:show-when="${'#vertrek-' + rp}"
+  <input type="text" class="form-control form-control-medium plaats vertrek-plaats" data:show-when="${'#vertrek-' + rp}"
          data-has-values-in="j" style="display:none;"
          th:field="*{firstB3Ver[__${rp}__].dynamicData2}" hsn:field="firstB3Ver[__${rp}__].dynamicData2"/>
 </td>
@@ -299,7 +302,8 @@
   <!-- Ovl dat -->
   <div class="sub-form-group">
     <input type="text" class="form-control form-control-digit required" th:id="${'overlijden-' + rp}"
-           maxlength="1" data-valid-chars="j;n"/>
+           maxlength="1" data-valid-chars="j;n"
+           th:value="${@bevolkingsregisterHelper.hasOverlijdensData(akte.b2[__${stat.index}__])}"/>
   </div>
 
   <div class="sub-form-group spacing checkDateBevReg fullCheck"
@@ -316,21 +320,21 @@
 </td>
 <td>
   <!-- Nat -->
-  <input type="text" class="form-control form-control-medium"
+  <input type="text" class="form-control form-control-medium nationality"
          th:field="*{b2[__${stat.index}__].nationality}"
          hsn:field="b2[__${stat.index}__].nationality"/>
 </td>
 <td>
   <!-- Wet dom -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-medium"
+    <input type="text" class="form-control form-control-medium legalPlaceOfLiving"
            th:field="*{b2[__${stat.index}__].legalPlaceOfLiving}"
            hsn:field="b2[__${stat.index}__].legalPlaceOfLiving"
            th:if="${akte.refAinb.typeRegister != 'C'}"/>
   </div>
 
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-medium"
+    <input type="text" class="form-control form-control-medium legalPlaceOfLiving"
            th:field="*{b2[__${stat.index}__].legalPlaceOfLivingInCodes}"
            hsn:field="b2[__${stat.index}__].legalPlaceOfLivingInCodes"
            th:if="${akte.refAinb.typeRegister == 'C'}"/>

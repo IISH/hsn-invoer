@@ -26,7 +26,8 @@
             <div class="col-xs-1">
               <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
                      name="datum-inschrijving" id="datum-inschrijving"
-                     th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister) == false}"/>
+                     th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister) == false}"
+                     th:value="${@bevolkingsregisterHelper.hasInschrijfDatum(akte.curB2)}"/>
 
               <p class="form-control-static" th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister)}">
                 n
@@ -352,7 +353,8 @@
 
             <div class="col-xs-1">
               <input type="text" class="form-control form-control-digit required" id="overlijden"
-                     maxlength="1" data-valid-chars="j;n"/>
+                     maxlength="1" data-valid-chars="j;n"
+                     th:value="${@bevolkingsregisterHelper.hasOverlijdensData(akte.curB2)}"/>
             </div>
           </div>
 
