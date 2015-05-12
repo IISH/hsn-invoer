@@ -70,7 +70,7 @@ public class BevolkingsregisterService {
     public BevolkingsregisterFlowState createNewAkteForCorrection() {
         BevolkingsregisterFlowState bevolkingsregisterFlowState = createNewAkte();
         bevolkingsregisterFlowState.setCorrection(true);
-        bevolkingsregisterFlowState.setOneLineEach(false);
+        bevolkingsregisterFlowState.setOneLineEach(true);
         return bevolkingsregisterFlowState;
     }
 
@@ -140,8 +140,10 @@ public class BevolkingsregisterService {
             }
 
             for (Person person : bevolkingsregisterFlow.getB2()) {
+                // First initialize the default person dynamics
                 createNewPersonDynamics(bevolkingsregisterFlow, person);
 
+                // Then obtain the stored person dynamics and replace the default initialized ones by these
                 List<PersonDynamic> personDynamics = personDynamicRepository
                         .findAllPersonDynamicForPerson(registrationId, person.getRp(), inputMetadata.getWorkOrder());
                 for (PersonDynamic personDynamic : personDynamics) {
@@ -159,6 +161,11 @@ public class BevolkingsregisterService {
 
                 updateFirstHerkomst(bevolkingsregisterFlow, person);
                 updateFirstVertrek(bevolkingsregisterFlow, person);
+
+                // If this is the RP, then update the pointer
+                if (person.getNatureOfPerson() == 1) {
+                    bevolkingsregisterFlow.setVolgnrOP(person.getRp() - 1);
+                }
             }
 
             List<RegistrationAddress> b6 =
@@ -175,29 +182,41 @@ public class BevolkingsregisterService {
     }
 
     /**
-     * Set up a new person for registration.
+     * Set up a (new) person for registration.
      *
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
     public void setUpPerson(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         Ref_GBH refGbh = bevolkingsregisterFlow.getRefGbh();
         List<Person> b2 = bevolkingsregisterFlow.getB2();
+        List<Integer> correctionPersons = bevolkingsregisterFlow.getCorrectionPersons();
+
+        int curPersonKey = bevolkingsregisterFlow.getCurPersonKey();
+        int nextPersonKey = bevolkingsregisterFlow.getNextPersonKey();
+        int correctionPersonKeyIdx = correctionPersons.indexOf(curPersonKey);
 
         // Check if the user indicated to go back to a previous person first
-        // If not, initialize a new person if there is no person created yet
-        int nextPersonKey = bevolkingsregisterFlow.getNextPersonKey();
         if ((nextPersonKey > 0) && (nextPersonKey <= b2.size())) {
             bevolkingsregisterFlow.setCurB2Index(nextPersonKey - 1);
             bevolkingsregisterFlow.setNextPersonKey(0);
         }
-        else if ((bevolkingsregisterFlow.getCurPersonKey() + 1) <= b2.size()) {
-            int newPersonKey = bevolkingsregisterFlow.getCurPersonKey() + 1;
+        // In case of correction: which people do we need to correct?
+        else if (bevolkingsregisterFlow.isCorrection() && (correctionPersons.size() > 0) &&
+                 ((curPersonKey == 0) || (correctionPersonKeyIdx <= correctionPersons.size() - 2))) {
+            int newPersonKey = correctionPersons.get(correctionPersonKeyIdx + 1);
+            bevolkingsregisterFlow.setCurB2Index(newPersonKey - 1);
+            bevolkingsregisterFlow.setCurPersonKey(newPersonKey);
+        }
+        // In case we do not correct: are we moving back to a previously entered person to correct?
+        else if (!bevolkingsregisterFlow.isCorrection() && ((curPersonKey + 1) <= b2.size())) {
+            int newPersonKey = curPersonKey + 1;
             bevolkingsregisterFlow.setCurB2Index(newPersonKey - 1);
             bevolkingsregisterFlow.setCurPersonKey(newPersonKey);
 
             // Update the person with data from the previous person
             updatePersonData(bevolkingsregisterFlow, bevolkingsregisterFlow.getCurB2());
         }
+        // Otherwise we have to add a new person to this registration
         else {
             Person person = new Person(b2.size() + 1);
             person.setRegistrationId(bevolkingsregisterFlow.getB4().getRegistrationId());
@@ -308,7 +327,7 @@ public class BevolkingsregisterService {
                 }
             }
 
-            b2.add(person.getKeyToRegistrationPersons() - 1, person);
+            b2.add(person.getRp() - 1, person);
             bevolkingsregisterFlow.setCurB2Index(person.getRp() - 1);
             bevolkingsregisterFlow.setCurPersonKey(person.getRp());
         }
@@ -413,6 +432,34 @@ public class BevolkingsregisterService {
         personRepository.delete(bevolkingsregisterRenumbering.getDeletedB2());
         personDynamicRepository.delete(bevolkingsregisterRenumbering.getDeletedB3());
         registrationAddressRepository.delete(bevolkingsregisterRenumbering.getDeletedB6());
+    }
+
+    /**
+     * Selects the persons of the registration that should be corrected.
+     *
+     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
+     * @param data                   Contains the persons that should be corrected as indicated by the user.
+     */
+    public void selectPersonsForCorrection(BevolkingsregisterFlowState bevolkingsregisterFlow,
+                                           Map<String, Object> data) {
+        List<Person> b2 = bevolkingsregisterFlow.getB2();
+        List<Integer> correctionPersons = bevolkingsregisterFlow.getCorrectionPersons();
+
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            // The persons for correction have a key ('person' + key)
+            // and 'x' as value in case the person has to be corrected
+            if (entry.getKey().startsWith("person") && entry.getValue().toString().equalsIgnoreCase("x")) {
+                String personKey = entry.getKey().replace("person", "");
+
+                // Make sure the person key is a valid integer and is a known person in this registration
+                if (personKey.matches("^\\d+$")) {
+                    Integer person = Integer.parseInt(personKey);
+                    if (person <= b2.size()) {
+                        correctionPersons.add(person);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -1005,7 +1052,8 @@ public class BevolkingsregisterService {
             }
 
             // Do the same for dynamic data of type kerkgenootschap, herkomst en vertrek
-            Map<Integer, List<PersonDynamic>> prevB3Kg = bevolkingsregisterFlow.getB3ForType(PersonDynamic.Type.KERKGENOOTSCHAP);
+            Map<Integer, List<PersonDynamic>> prevB3Kg =
+                    bevolkingsregisterFlow.getB3ForType(PersonDynamic.Type.KERKGENOOTSCHAP);
             if (prevB3Kg.containsKey(prevPerson)) {
                 PersonDynamic prevKg = prevB3Kg.get(prevPerson).get(0);
                 kg.setDynamicData2(prevKg.getDynamicData2());

@@ -83,7 +83,7 @@
     <transition on="next" to="stopEnd"/>
   </view-state>
 
-  <!-- BS1: ADRESSEN -->
+  <!-- BS2: ADRESSEN -->
   <view-state id="BS2" view="bevolkingsregister/BS2" model="akte">
     <transition on="registration-address-update">
       <evaluate

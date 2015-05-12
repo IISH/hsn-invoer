@@ -32,13 +32,13 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
     private Person curB2;
     private int curB2Index = -1;
 
-    private boolean isOneLineEach = true;
-    private int     volgnrOP      = 0;
-    private int     noRegels      = 0;
-    private int     curPersonKey = 1;
-    private int     nextPersonKey = 0;
-
-    private RegistrationId prevRegistration = new RegistrationId();
+    private boolean        isOneLineEach     = true;
+    private int            volgnrOP          = 0;
+    private int            noRegels          = 0;
+    private int            curPersonKey      = 0;
+    private int            nextPersonKey     = 0; // 0 if we continue with the normal order
+    private List<Integer>  correctionPersons = new ArrayList<>();
+    private RegistrationId prevRegistration  = new RegistrationId();
 
     public BevolkingsregisterFlowState(Registration b4, List<Person> b2, List<RegistrationAddress> b6,
                                        Map<Integer, List<PersonDynamic>> b3Rel, Map<Integer, List<PersonDynamic>> b3Brg,
@@ -254,6 +254,14 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
 
     public void setNextPersonKey(int nextPersonKey) {
         this.nextPersonKey = nextPersonKey;
+    }
+
+    public List<Integer> getCorrectionPersons() {
+        return correctionPersons;
+    }
+
+    public void setCorrectionPersons(List<Integer> correctionPersons) {
+        this.correctionPersons = correctionPersons;
     }
 
     public RegistrationId getPrevRegistration() {

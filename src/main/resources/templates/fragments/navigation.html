@@ -2,18 +2,20 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head></head>
 <body>
-<fieldset th:fragment="bev-reg-navigation (singlePersonScreen)">
+<fieldset th:fragment="bev-reg-navigation (akte, singlePersonScreen)">
   <span class="pull-right">
     <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop">
       Stoppen
     </button>
 
-    <button type="submit" name="_eventId_nextPerson" class="btn btn-default btn-next" th:if="${singlePersonScreen}">
+    <button type="submit" name="_eventId_nextPerson" class="btn btn-default btn-next"
+            th:if="${singlePersonScreen and !@bevolkingsregisterHelper.registrationHasMaxPersons(akte)}">
       Volgende persoon
       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
     </button>
 
-    <button type="submit" name="_eventId_next" class="btn btn-default btn-next">
+    <button type="submit" name="_eventId_next" class="btn btn-default btn-next"
+            th:if="${!singlePersonScreen or !@bevolkingsregisterHelper.registrationRequiresAnotherPerson(akte)}">
       Volgende
       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
     </button>

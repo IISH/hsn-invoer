@@ -8,15 +8,37 @@ import org.iish.hsn.invoer.flow.state.BevolkingsregisterFlowState;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
 public class BevolkingsregisterHelper {
     private static final Pattern DATE_EXPLICIET_HOOFD = Pattern.compile("^###\\$([0-9]{2})/([0-9]{2})/([0-9]{4})$");
+
+    public boolean registrationRequiresAnotherPerson(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+        List<Person> b2 = bevolkingsregisterFlow.getB2();
+        int curPerson = bevolkingsregisterFlow.getCurPersonKey();
+        int volgnrOP = bevolkingsregisterFlow.getVolgnrOP();
+
+        // If we are in correction, require another person as long as not all correction persons were corrected
+        if (bevolkingsregisterFlow.isCorrection()) {
+            List<Integer> correctionPersons = bevolkingsregisterFlow.getCorrectionPersons();
+            int correctionPersonKeyIdx = correctionPersons.indexOf(curPerson);
+
+            return ((correctionPersonKeyIdx <= (b2.size() - 2)) && (correctionPersonKeyIdx >= 0));
+        }
+
+        // Otherwise, if the RP is not yet entered, another person is required
+        return (curPerson < volgnrOP);
+    }
+
+    public boolean registrationHasMaxPersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+        Ref_AINB refAinb = bevolkingsregisterFlow.getRefAinb();
+        int curPerson = bevolkingsregisterFlow.getCurPersonKey();
+
+        return ((curPerson == 1) && (refAinb.getTypeRegister().equals("A") || refAinb.getTypeRegister().equals("I")));
+    }
 
     public int findKeyOfRp(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         for (Person person : bevolkingsregisterFlow.getB2()) {
@@ -122,7 +144,7 @@ public class BevolkingsregisterHelper {
     }
 
     public List<PersonDynamic> getWhereRelatedPerson(BevolkingsregisterFlowState bevolkingsregisterFlow, int person,
-                                                    PersonDynamic.Type type) {
+                                                     PersonDynamic.Type type) {
         List<PersonDynamic> relatedPersonDynamics = new ArrayList<>();
         for (PersonDynamic personDynamic : getWhereRelatedPerson(bevolkingsregisterFlow, person)) {
             if (personDynamic.getDynamicDataType() == type.getType()) {

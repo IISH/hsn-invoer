@@ -2,36 +2,27 @@
 <flow xmlns="http://www.springframework.org/schema/webflow"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
-  <!-- BS0I: IDENTIFICATIE BRON EN ONDERZOEKSPERSOON -->
-  <view-state id="BS0I" view="bevolkingsregister/BS0IC" model="akte">
+  <!-- BS0C: IDENTIFICATIE BRON EN ONDERZOEKSPERSOON -->
+  <view-state id="BS0C" view="bevolkingsregister/BS0IC" model="akte">
     <on-entry>
-      <evaluate expression="bevolkingsregisterService.createNewAkteForNewInputOneLineEach()" result="flowScope.akte"/>
+      <evaluate expression="bevolkingsregisterService.createNewAkteForCorrection()" result="flowScope.akte"/>
+      <evaluate expression="flowScope.akte.setCorrectionCode(5)"/>
     </on-entry>
 
     <transition on="stop" to="stopEnd"/>
 
-    <transition on="next" to="prevRegistrationCheck">
-      <evaluate expression="bevolkingsregisterService.registerOP(flowScope.akte)"/>
+    <transition on="next" to="BS0A2">
+      <evaluate expression="bevolkingsregisterService.editOP(flowScope.akte)"/>
     </transition>
   </view-state>
 
-  <action-state id="prevRegistrationCheck">
-    <evaluate expression="
-      flowScope.akte.prevRegistration.keyToSourceRegister gt 0 and
-      flowScope.akte.prevRegistration.dayEntryHead gt 0 and
-      flowScope.akte.prevRegistration.monthEntryHead gt 0 and
-      flowScope.akte.prevRegistration.yearEntryHead gt 0"/>
-
-    <transition on="yes" to="BS0A1"/>
-    <transition on="no" to="BS1"/>
-  </action-state>
-
-  <!-- BS0A1: HERNUMMEREN PERSONEN REGISTRATIE -->
-  <view-state id="BS0A1" view="bevolkingsregister/BS0A1" model="akte">
+  <!-- BS0A2: CORRECTIE PERSONEN REGISTRATIE -->
+  <view-state id="BS0A2" view="bevolkingsregister/BS0A2" model="akte">
     <transition on="stop" to="stopEnd"/>
 
-    <transition on="next" to="BS1">
-      <evaluate expression="bevolkingsregisterService.renumberRegistrationPersons(flowScope.akte)"/>
+    <transition on="next" to="nextPersonCheck">
+      <evaluate
+          expression="bevolkingsregisterService.selectPersonsForCorrection(flowScope.akte, requestParameters.asMap())"/>
     </transition>
   </view-state>
 
@@ -70,8 +61,6 @@
       <render fragments="currentPerson"/>
     </transition>
 
-    <transition on="stop" to="stopEnd"/>
-
     <transition on="nextPerson" to="nextPersonCheck">
       <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
     </transition>
@@ -87,7 +76,7 @@
     <transition on="yes" to="BS1">
       <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
     </transition>
-    <transition on="no" to="BS2"/>
+    <transition on="no" to="finishEnd"/>
   </action-state>
 
   <action-state id="nextCheck">
@@ -96,41 +85,10 @@
     <transition on="yes" to="BS1">
       <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
     </transition>
-    <transition on="no" to="BS2"/>
+    <transition on="no" to="finishEnd"/>
   </action-state>
 
-  <!-- BS2: ADRESSEN -->
-  <view-state id="BS2" view="bevolkingsregister/BS2" model="akte">
-    <transition on="registration-address-update">
-      <evaluate
-          expression="bevolkingsregisterService.updateRegistrationAddress(flowScope.akte, requestParameters.person, requestParameters.seqNr, requestParameters.asMap())"/>
-      <render fragments="registrationAddresses"/>
-    </transition>
-
-    <transition on="registration-address-add">
-      <evaluate
-          expression="bevolkingsregisterService.addNewRegistrationAddress(flowScope.akte, requestParameters.person, requestParameters.seqNr, requestParameters.asMap())"/>
-      <render fragments="registrationAddresses"/>
-    </transition>
-
-    <transition on="registration-address-remove">
-      <evaluate
-          expression="bevolkingsregisterService.removeRegistrationAddress(flowScope.akte, requestParameters.person,  requestParameters.seqNr)"/>
-      <render fragments="registrationAddresses"/>
-    </transition>
-
-    <transition on="stop" to="stopEnd"/>
-
-    <transition on="next" to="finishEnd">
-      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistrationAddresses(flowScope.akte)"/>
-    </transition>
-  </view-state>
-
-  <end-state id="stopEnd" view="redirect:/bevolkingsregister/hoofdmenu">
-    <on-entry>
-      <evaluate expression="bevolkingsregisterService.deleteRegistration(flowScope.akte)"/>
-    </on-entry>
-  </end-state>
+  <end-state id="stopEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
 
   <end-state id="finishEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
 </flow>

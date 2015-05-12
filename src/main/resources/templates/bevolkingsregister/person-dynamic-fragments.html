@@ -492,8 +492,8 @@
                    data:max-value="${akte.isCorrection()} ? ${akte.b2.size()}"
                    data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9"/>
           </td>
-          <td class="checkDateBevReg fullCheck" style="min-width:200px;max-width:200px;">
-            <div class="form-inline"
+          <td style="min-width:200px;max-width:200px;">
+            <div class="form-inline checkDateBevReg fullCheck"
                  data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9">
               <!-- Datum -->
               <input type="text" name="dayOfMutation" class="form-control form-control-digit"/>
@@ -503,7 +503,7 @@
               <input type="text" name="yearOfMutation" class="form-control form-control-small"/>
             </div>
           </td>
-          <td class="checkDateBevReg fullCheck" style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
+          <td class="checkInterprDateBevReg" style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
             <div class="form-inline"
                  data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9">
               <!-- INTERPR -->
@@ -572,7 +572,8 @@
         <thead>
         <tr>
           <th class="col-xs-2">VolgNr</th>
-          <th class="col-xs-8">Godsdienst</th>
+          <th class="col-xs-5">Godsdienst</th>
+          <th class="col-xs-3" th:if="${akte.isCorrection()}">INTERPR</th>
           <th class="col-xs-2">&nbsp;</th>
         </tr>
         </thead>
@@ -590,6 +591,20 @@
               <span class="dynamicData2"
                     th:utext="${akte.b3Kg[__${rp}__][__${stat.index}__].dynamicData2}">
               </span>
+          </td>
+          <td th:if="${akte.isCorrection()}">
+            <!-- INTERPR -->
+                <span class="dayOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Kg[__${rp}__][__${stat.index}__].dayOfMutationAfterInterpretation}">
+                </span>
+            /
+                <span class="monthOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Kg[__${rp}__][__${stat.index}__].monthOfMutationAfterInterpretation}">
+                </span>
+            /
+                <span class="yearOfMutationAfterInterpretation"
+                      th:utext="${akte.b3Kg[__${rp}__][__${stat.index}__].yearOfMutationAfterInterpretation}">
+                </span>
           </td>
           <td>
             <!-- Update -->
@@ -643,9 +658,19 @@
             <input type="text" disabled="disabled" name="dynamicDataSequenceNumber"
                    class="form-control form-control-digit"/>
           </td>
-          <td class="col-xs-8">
+          <td class="col-xs-5">
             <!-- Godsdienst -->
             <input type="text" class="form-control kg" name="dynamicData2"/>
+          </td>
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            <div class="form-inline checkInterprDateBevReg">
+              <!-- INTERPR -->
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              /
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+            </div>
           </td>
           <td class="col-xs-2">
             <!-- Cancel -->
@@ -809,8 +834,8 @@
               <p class="form-control-static spacing">h / o / n</p>
             </div>
           </td>
-          <td class="col-xs-3 checkDateBevReg fullCheck" th:if="${akte.isCorrection()}">
-            <div class="form-inline">
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            <div class="form-inline checkInterprDateBevReg">
               <!-- INTERPR -->
               <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
               /
@@ -956,8 +981,8 @@
               <input type="text" name="yearOfMutation" class="form-control form-control-small"/>
             </div>
           </td>
-          <td class="col-xs-3 checkDateBevReg fullCheck" th:if="${akte.isCorrection()}">
-            <div class="form-inline">
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            <div class="form-inline checkInterprDateBevReg">
               <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
               /
               <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
@@ -1106,8 +1131,8 @@
               <input type="text" name="yearOfMutation" class="form-control form-control-small"/>
             </div>
           </td>
-          <td class="col-xs-3 checkDateBevReg fullCheck" th:if="${akte.isCorrection()}">
-            <div class="form-inline">
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            <div class="form-inline checkInterprDateBevReg">
               <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
               /
               <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>

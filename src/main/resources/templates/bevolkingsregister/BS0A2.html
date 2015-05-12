@@ -29,8 +29,8 @@
         <table class="table table-condensed table-form">
           <thead>
           <tr>
-            <th>Oud</th>
-            <th>Nieuw</th>
+            <th>Regel</th>
+            <th>x</th>
             <th>Achternaam</th>
             <th>Voornamen</th>
             <th>Geb datum</th>
@@ -44,12 +44,8 @@
               <span class="line" th:utext="${akte.b2[__${stat.index}__].keyToRegistrationPersons}"></span>
             </td>
             <td>
-              <input type="text" class="form-control form-control-digit new-key" data-min="0"
-                     th:name="'b2[' + __${stat.index}__ + '].keyToRegistrationPersons'"
-                     th:id="'b2' + __${stat.index}__ + '.keyToRegistrationPersons'"
-                     hsn:field="b2[__${stat.index}__].keyToRegistrationPersons"
-                     th:classappend="${akte.volgnrOP == (stat.index + 1)} ? 'is-rp'"
-                     th:value="${akte.volgnrOP == (stat.index + 1)} ? ${@bevolkingsregisterHelper.findKeyOfRp(akte)}"/>
+              <input type="text" class="form-control form-control-digit x-toggle" data-valid-chars="x" maxlength="1"
+                     th:name="${'person' + akte.b2[__${stat.index}__].rp}"/>
             </td>
             <td>
               <span th:utext="${akte.b2[__${stat.index}__].familyName}"></span>
@@ -80,7 +76,6 @@
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
           th:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
-  <script src="../../static/js/bevolkingsregister/BS0A1.js" th:src="@{/js/bevolkingsregister/BS0A1.js}"></script>
 </th:block>
 </body>
 </html>

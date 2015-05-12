@@ -78,7 +78,8 @@
   </div>
 
   <div class="sub-form-group">
-    <span class="datum-inschrijving spacing checkDateBevReg fullCheck" data:show-when="${'#datum-inschrijving-' + rp}" data-has-values-in="j"
+    <span class="datum-inschrijving spacing checkDateBevReg fullCheck" data:show-when="${'#datum-inschrijving-' + rp}"
+          data-has-values-in="j"
           style="display:none;"
           th:include="fragments/fields :: datum ('b2[__${stat.index}__].dayOfRegistration', 'b2[__${stat.index}__].monthOfRegistration', 'b2[__${stat.index}__].yearOfRegistration')">
     </span>
@@ -225,9 +226,10 @@
          th:field="*{b3Brg[__${rp}__][0].valueOfRelatedPerson}"
          hsn:field="b3Brg[__${rp}__][0].valueOfRelatedPerson"/>
 </td>
-<td class="personDynamic checkDateBevReg fullCheck" data-type="BURGELIJKE_STAND">
+<td class="personDynamic" data-type="BURGELIJKE_STAND">
   <!-- Datum -->
-  <div data:show-when="'#b3Brg'+__${rp}__+'0\.contentOfDynamicData'" data-has-values-in="2;3;5;9"
+  <div class="checkDateBevReg fullCheck" data:show-when="'#b3Brg'+__${rp}__+'0\.contentOfDynamicData'"
+       data-has-values-in="2;3;5;9"
        th:include="fragments/fields :: datum ('b3Brg[__${rp}__][0].dayOfMutation', 'b3Brg[__${rp}__][0].monthOfMutation', 'b3Brg[__${rp}__][0].yearOfMutation')">
   </div>
 </td>
@@ -263,7 +265,8 @@
 <td class="personDynamic" data-type="HERKOMST">
   <!-- Herkomst -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-digit has-herkomst required" maxlength="1" data-valid-chars="j;n"
+    <input type="text" class="form-control form-control-digit has-herkomst required" maxlength="1"
+           data-valid-chars="j;n"
            th:id="${'herkomst-' + rp}"
            th:value="${@bevolkingsregisterHelper.hasHerkomstData(akte, akte.b2[__${stat.index}__])}"/>
   </div>
@@ -275,7 +278,8 @@
 </td>
 <td class="personDynamic" data-type="HERKOMST">
   <!-- Plaats -->
-  <input type="text" class="form-control form-control-medium plaats herkomst-plaats" data:show-when="${'#herkomst-' + rp}"
+  <input type="text" class="form-control form-control-medium plaats herkomst-plaats"
+         data:show-when="${'#herkomst-' + rp}"
          data-has-values-in="j" style="display:none;"
          th:field="*{firstB3Her[__${rp}__].dynamicData2}" hsn:field="firstB3Her[__${rp}__].dynamicData2"/>
 </td>
@@ -417,7 +421,8 @@
 </th:block>
 </fieldset>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: bev-reg-navigation (false)"></fieldset>
+<fieldset layout:fragment="navigation"
+          th:include="fragments/navigation :: bev-reg-navigation (${akte}, false)"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
