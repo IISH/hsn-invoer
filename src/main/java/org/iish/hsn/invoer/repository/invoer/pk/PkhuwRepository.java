@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface PkhuwRepository extends Repository<Pkhuw, Integer> {
     @Query("SELECT p FROM Pkhuw p WHERE p.idnr = ?1 AND p.workOrder = ?2 ORDER BY p.vnrhuwp ASC")
-    public List<Pkhuw> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
+    List<Pkhuw> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
 
-    public Pkhuw save(Pkhuw entity);
+    Pkhuw save(Pkhuw entity);
 
     void delete(Pkhuw entity);
 

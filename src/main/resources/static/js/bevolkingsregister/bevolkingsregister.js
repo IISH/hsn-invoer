@@ -126,6 +126,13 @@
         modal.modal('hide');
     };
 
+    $(document).on('click', '.btn-delete', function (e) {
+        if (!confirm('Wilt u deze inschrijving verwijderen?')) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    });
+
     $(document).keydown(function (e) {
         var modal = $.getOpenedModal();
         var isModalVisible = (modal.length === 1);

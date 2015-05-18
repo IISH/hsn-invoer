@@ -9,16 +9,10 @@ import java.io.Serializable;
  * This class handles the static attributes of a registration
  */
 @Entity
-@Table(name = "b4",
-       uniqueConstraints = {
-               @UniqueConstraint(columnNames = {
-                       "B1IDBG", "B2DIBG", "B2MIBG", "B2JIBG", "IDNR", "ONDRZKO", "OPDRNRI"
-               })
-       },
-       indexes = {
-               @Index(columnList = "IDNR, B1IDBG, B2DIBG, B2MIBG, B2JIBG"), @Index(columnList = "ONDRZKO, OPDRNRI"),
-               @Index(columnList = "B2FDBG, B2FMBG, B2FJBG")
-       })
+@Table(name = "b4", indexes = {
+        @Index(columnList = "IDNR, B1IDBG, B2DIBG, B2MIBG, B2JIBG"), @Index(columnList = "ONDRZKO, OPDRNRI"),
+        @Index(columnList = "B2FDBG, B2FMBG, B2FJBG")
+})
 public class Registration extends Invoer implements Serializable {
     @Embedded private RegistrationId registrationId = new RegistrationId();
 
@@ -26,11 +20,11 @@ public class Registration extends Invoer implements Serializable {
     @Column(name = "B2FMBG", nullable = false) private int monthEntryRP;
     @Column(name = "B2FJBG", nullable = false) private int yearEntryRP;
 
-    @Column(name = "B2PGBG", nullable = false) private String pageNumberOfSource;
-    @Column(name = "B2VHBG", nullable = false) private int    numberOfHousehold;
-    @Column(name = "B4GKBG", nullable = false) private String infoFamilyCardsSystem;
-    @Column(name = "B4SPBG", nullable = false) private String specialDataEntryCodes;
-    @Column(name = "B4AAN", nullable = false) private  String remarks;
+    @Column(name = "B2PGBG", nullable = false, length = 8) private  String pageNumberOfSource;
+    @Column(name = "B2VHBG", nullable = false) private              int    numberOfHousehold;
+    @Column(name = "B4GKBG", nullable = false, length = 50) private String infoFamilyCardsSystem;
+    @Column(name = "B4SPBG", nullable = false, length = 50) private String specialDataEntryCodes;
+    @Column(name = "B4AAN", nullable = false, length = 255) private String remarks;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

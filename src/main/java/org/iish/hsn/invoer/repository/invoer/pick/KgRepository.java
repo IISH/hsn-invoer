@@ -11,13 +11,13 @@ public interface KgRepository extends Repository<Kg, Integer> {
     @Query("SELECT kg FROM Kg kg " +
            "WHERE (UPPER(kg.kerkgeno) LIKE UPPER(?1)) " +
            "AND (kg.workOrder = ?2 OR kg.workOrder = ?3)")
-    public Kg findByKerkgeno(String kerkgeno, WorkOrder emptyWorkOrder, WorkOrder workOrder);
+    Kg findByKerkgeno(String kerkgeno, WorkOrder emptyWorkOrder, WorkOrder workOrder);
 
     @Query("SELECT kg FROM Kg kg " +
            "WHERE (UPPER(kg.kerkgeno) LIKE UPPER(?1)) " +
            "AND (kg.workOrder = ?2 OR kg.workOrder = ?3) " +
            "ORDER BY kg.kerkgeno ASC")
-    public List<Kg> findByKerkgenoLike(String kerkgeno, WorkOrder emptyWorkOrder, WorkOrder workOrder);
+    List<Kg> findByKerkgenoLike(String kerkgeno, WorkOrder emptyWorkOrder, WorkOrder workOrder);
 
-    public Kg save(Kg entity);
+    Kg save(Kg entity);
 }

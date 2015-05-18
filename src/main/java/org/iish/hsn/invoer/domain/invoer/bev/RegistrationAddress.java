@@ -9,13 +9,9 @@ import java.io.Serializable;
  * This class handles the address attributes of a registration
  */
 @Entity
-@Table(name = "b6",
-       uniqueConstraints = {
-               @UniqueConstraint(columnNames = {
-                       "B1IDBG", "B2DIBG", "B2MIBG", "B2JIBG", "IDNR", "B2RNBG", "B6VRNR", "ONDRZKO", "OPDRNRI"
-               })
-       },
-       indexes = {@Index(columnList = "IDNR, B1IDBG, B2DIBG, B2MIBG, B2JIBG"), @Index(columnList = "ONDRZKO, OPDRNRI")})
+@Table(name = "b6", indexes = {
+        @Index(columnList = "IDNR, B1IDBG, B2DIBG, B2MIBG, B2JIBG"), @Index(columnList = "ONDRZKO, OPDRNRI")
+})
 public class RegistrationAddress extends Invoer implements Serializable, Comparable<RegistrationAddress> {
     @Embedded private RegistrationId registrationId = new RegistrationId();
 
@@ -29,11 +25,11 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
     @Column(name = "B6MMCR", nullable = false) private int monthOfAddressAfterInterpretation;
     @Column(name = "B6MJCR", nullable = false) private int yearOfAddressAfterInterpretation;
 
-    @Column(name = "B6TPNR", nullable = false) private String addressType;
-    @Column(name = "B6SINR", nullable = false) private int    synchroneNumber;
-    @Column(name = "B6STNR", nullable = false) private String nameOfStreet;
-    @Column(name = "B6NRNR", nullable = false) private String number;
-    @Column(name = "B6TVNR", nullable = false) private String additionToNumber;
+    @Column(name = "B6TPNR", nullable = false, length = 2) private  String addressType;
+    @Column(name = "B6SINR", nullable = false) private              int    synchroneNumber;
+    @Column(name = "B6STNR", nullable = false, length = 40) private String nameOfStreet;
+    @Column(name = "B6NRNR", nullable = false, length = 9) private  String number;
+    @Column(name = "B6TVNR", nullable = false, length = 15) private String additionToNumber;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -171,7 +167,8 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
     @Override
     public int compareTo(RegistrationAddress registrationAddress) {
         // If the person and the sequence number are equal, then attempt to sort on date
-        if ((this.keyToRegistrationPersons == registrationAddress.keyToRegistrationPersons) && (this.sequenceNumberToAddresses == registrationAddress.sequenceNumberToAddresses)) {
+        if ((this.keyToRegistrationPersons == registrationAddress.keyToRegistrationPersons) &&
+                (this.sequenceNumberToAddresses == registrationAddress.sequenceNumberToAddresses)) {
             if (this.yearOfAddress < registrationAddress.yearOfAddress) {
                 return -1;
             }

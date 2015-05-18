@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface HuwvrkndRepository extends Repository<Huwvrknd, Integer> {
     @Query("SELECT h FROM Huwvrknd h WHERE h.idnr = ?1 AND h.huw = ?2 AND h.workOrder = ?3 ORDER BY h.vlgnrvk ASC")
-    public List<Huwvrknd> findByIdnrAndHuwAndWorkOrder(int idnr, Huw huw, WorkOrder workOrder);
+    List<Huwvrknd> findByIdnrAndHuwAndWorkOrder(int idnr, Huw huw, WorkOrder workOrder);
 
-    public Huwvrknd save(Huwvrknd entity);
+    Huwvrknd save(Huwvrknd entity);
 
     void delete(Huwvrknd entity);
 

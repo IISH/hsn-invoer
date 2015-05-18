@@ -68,4 +68,9 @@ public class PersoonskaartController {
 
         return new ModelAndView("persoonskaart/POVERZ", model);
     }
+
+    @RequestMapping(value = "/overzicht", method = RequestMethod.POST)
+    public String getOverviewRedirect() {
+        return "redirect:/persoonskaart/hoofdmenu";
+    }
 }

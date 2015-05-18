@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface PkeigkndRepository extends Repository<Pkeigknd, Integer> {
     @Query("SELECT p FROM Pkeigknd p WHERE p.idnr = ?1 AND p.workOrder = ?2 ORDER BY p.vgnrkdp ASC")
-    public List<Pkeigknd> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
+    List<Pkeigknd> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
 
-    public Pkeigknd save(Pkeigknd entity);
+    Pkeigknd save(Pkeigknd entity);
 
     void delete(Pkeigknd entity);
 

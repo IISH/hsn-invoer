@@ -21,9 +21,11 @@
             }
 
             if (message.length === 0) {
-                message = $('<div class="' + name + '">' + errorMessage + '</div>');
+                message = $('<div class="' + name + '"></div>');
                 alertBox.append(message);
             }
+
+            message.html(errorMessage);
             return message;
         });
     };
@@ -42,7 +44,7 @@
     };
 
     var getBtnNext = function () {
-        var crudTableBtn =  $('.crud-table-container:visible .btn-save-new, .crud-table-container:visible .btn-save-update');
+        var crudTableBtn = $('.crud-table-container:visible .btn-save-new, .crud-table-container:visible .btn-save-update');
         if (crudTableBtn.length > 0) {
             return crudTableBtn;
         }
@@ -56,19 +58,22 @@
     };
 
     var getMessage = function (className) {
-        var modalMessage = $('.modal:visible .modalMessages .' + className);
-        if (modalMessage.length > 0) {
-            return modalMessage;
-        }
-        return $('.messages .' + className);
+        return getMessages().find('.' + className);
     };
 
     var getMessages = function () {
-        var modalMessages = $('.modal:visible .modalMessages');
-        if (modalMessages.length > 0) {
-            return modalMessages;
+        var modal = $('.modal:visible');
+        if (modal.length > 0) {
+            // If the modal is a crud table container, then only show messages when the user is editing
+            if (!modal.is('.crud-table-container') || (modal.find('.on-edit').is(':visible'))) {
+                return modal.find('.modalMessages');
+            }
         }
-        return $('.messages');
+        else {
+            return $('.messages');
+        }
+
+        return $();
     };
 
     var addError = function (isError, className, btnNextClassName, onError) {
@@ -131,8 +136,8 @@
         $('.required:visible').each(function () {
             var elem = $(this);
             elem.hasErrorWhen(
-                    (elem.val() === undefined) || (elem.val().trim() === '') ||
-                    (!elem.hasClass('zero-allowed') && (elem.getIntegerValue() === 0))
+                (elem.val() === undefined) || (elem.val().trim() === '') ||
+                (!elem.hasClass('zero-allowed') && (elem.getIntegerValue() === 0))
             );
         });
     };

@@ -5,9 +5,9 @@ import org.iish.hsn.invoer.domain.invoer.geb.Gebakte;
 import org.springframework.data.repository.Repository;
 
 public interface GebakteRepository extends Repository<Gebakte, Integer> {
-    public Gebakte findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
+    Gebakte findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
 
-    public Gebakte save(Gebakte entity);
+    Gebakte save(Gebakte entity);
 
-    public void delete(Gebakte entity);
+    void delete(Gebakte entity);
 }

@@ -7,9 +7,9 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 
 public interface PkbyzRepository extends Repository<Pkbyz, Integer> {
-    public List<Pkbyz> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
+    List<Pkbyz> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
 
-    public Pkbyz save(Pkbyz entity);
+    Pkbyz save(Pkbyz entity);
 
     void delete(Pkbyz entity);
 

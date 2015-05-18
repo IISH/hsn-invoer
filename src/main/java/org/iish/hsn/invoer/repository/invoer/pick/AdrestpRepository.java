@@ -8,10 +8,10 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 
 public interface AdrestpRepository extends Repository<Adrestp, Integer> {
-    public Adrestp findByCode(String code);
+    Adrestp findByCode(String code);
 
     @Query("SELECT adr FROM Adrestp adr " +
            "WHERE (UPPER(adr.code) LIKE UPPER(?1) OR UPPER(adr.type) LIKE UPPER(?1)) " +
            "AND (adr.workOrder = ?2 OR adr.workOrder = ?3)")
-    public List<Adrestp> findByCodeOrTypeLike(String type, WorkOrder emptyWorkOrder, WorkOrder workOrder);
+    List<Adrestp> findByCodeOrTypeLike(String type, WorkOrder emptyWorkOrder, WorkOrder workOrder);
 }

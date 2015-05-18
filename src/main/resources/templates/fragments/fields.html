@@ -34,8 +34,9 @@
   </th:block>
 </div>
 
-<div class="col-xs-5" th:fragment="beroep (beroep)">
-  <input type="text" class="form-control beroep" th:field="*{__${beroep}__}" hsn:field="beroep"/>
+<div class="col-xs-5" th:fragment="beroep (beroep, requiredField)">
+  <input type="text" class="form-control beroep" th:field="*{__${beroep}__}" hsn:field="beroep"
+         th:classappend="${requiredField} ? 'required'"/>
 </div>
 
 <div class="col-xs-5 form-inline" th:fragment="burgelijke-stand (burgelijkeStand)" th:with="brgId=*{__${burgelijkeStand}__}">
@@ -71,8 +72,9 @@
   </p>
 </div>
 
-<div class="col-xs-5" th:fragment="kerkgenootschap (kerkgenootschap)">
-  <input type="text" class="form-control kg" th:field="*{__${kerkgenootschap}__}" hsn:field="kerkgenootschap"/>
+<div class="col-xs-5" th:fragment="kerkgenootschap (kerkgenootschap, requiredField)">
+  <input type="text" class="form-control kg" th:field="*{__${kerkgenootschap}__}" hsn:field="kerkgenootschap"
+         th:classappend="${requiredField} ? 'required'"/>
 </div>
 </body>
 </html>

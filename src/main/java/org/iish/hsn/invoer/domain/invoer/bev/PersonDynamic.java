@@ -9,16 +9,9 @@ import java.io.Serializable;
  * This class handles the dynamic attributes of a person (relation to head, civil status etc.)
  */
 @Entity
-@Table(name = "b3",
-       uniqueConstraints = {
-               @UniqueConstraint(columnNames = {
-                       "B1IDBG", "B2DIBG", "B2MIBG", "B2JIBG", "IDNR", "B2RNBG", "B3TYPE", "B3VRNR", "ONDRZKO",
-                       "OPDRNRI"
-               })
-       },
-       indexes = {
-               @Index(columnList = "IDNR, B1IDBG, B2DIBG, B2MIBG, B2JIBG"), @Index(columnList = "ONDRZKO, OPDRNRI")
-       })
+@Table(name = "b3", indexes = {
+        @Index(columnList = "IDNR, B1IDBG, B2DIBG, B2MIBG, B2JIBG, B2RNBG"), @Index(columnList = "ONDRZKO, OPDRNRI")
+})
 public class PersonDynamic extends Invoer implements Serializable {
     public enum Type {
         RELATIE_TOV_HOOFD(1), BURGELIJKE_STAND(2), KERKGENOOTSCHAP(3), BEROEP(5), HERKOMST(6), VERTREK(7);
@@ -51,7 +44,7 @@ public class PersonDynamic extends Invoer implements Serializable {
 
     @Column(name = "B3KODE", nullable = false) private int contentOfDynamicData;
     @Column(name = "B3RGLN", nullable = false) private int valueOfRelatedPerson;
-    @Column(name = "B2FCBG", nullable = false) private int natureOfPerson;
+    @Column(name = "B2FCBG", nullable = false) private int natureOfPerson; // TODO: Same as Person natureOfPerson?
     @Column(name = "B3MDNR", nullable = false) private int dayOfMutation;
     @Column(name = "B3MMNR", nullable = false) private int monthOfMutation;
     @Column(name = "B3MJNR", nullable = false) private int yearOfMutation;
@@ -59,7 +52,7 @@ public class PersonDynamic extends Invoer implements Serializable {
     @Column(name = "B3MMCR", nullable = false) private int monthOfMutationAfterInterpretation;
     @Column(name = "B3MJCR", nullable = false) private int yearOfMutationAfterInterpretation;
 
-    @Column(name = "B3GEGEVEN", nullable = false) private String dynamicData2;
+    @Column(name = "B3GEGEVEN", nullable = false, length = 50) private String dynamicData2;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

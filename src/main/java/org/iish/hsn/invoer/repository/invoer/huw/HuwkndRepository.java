@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.Repository;
 
 public interface HuwkndRepository extends Repository<Huwknd, Integer>, JpaSpecificationExecutor<Huwknd> {
-    public Huwknd findByIdnrAndHuwAndWorkOrder(int idnr, Huw huw, WorkOrder workOrder);
+    Huwknd findByIdnrAndHuwAndWorkOrder(int idnr, Huw huw, WorkOrder workOrder);
 
-    public Huwknd save(Huwknd entity);
+    Huwknd save(Huwknd entity);
 
     void delete(Huwknd entity);
 }

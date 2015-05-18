@@ -78,4 +78,9 @@ public class GeboorteController {
 
         return new ModelAndView("geboorte/GOVERZ", model);
     }
+
+    @RequestMapping(value = "/overzicht", method = RequestMethod.POST)
+    public String getOverviewRedirect() {
+        return "redirect:/geboorte/hoofdmenu";
+    }
 }

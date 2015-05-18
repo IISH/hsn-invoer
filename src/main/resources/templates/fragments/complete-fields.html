@@ -22,7 +22,7 @@
 <div class="form-group" th:fragment="beroep (beroep, label)">
   <label class="col-xs-3 control-label" th:utext="${label}">Beroep:</label>
 
-  <div th:replace="fragments/fields :: beroep (__${beroep}__)"></div>
+  <div th:replace="fragments/fields :: beroep (__${beroep}__, false)"></div>
 </div>
 
 <div class="form-group" th:fragment="relatie (relatie, label, relatieId, onId)">

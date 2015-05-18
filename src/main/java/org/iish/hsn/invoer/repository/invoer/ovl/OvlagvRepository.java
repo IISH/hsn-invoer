@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface OvlagvRepository extends Repository<Ovlagv, Integer> {
     @Query("SELECT o FROM Ovlagv o WHERE o.idnr = ?1 AND o.workOrder = ?2 ORDER BY o.vlgnrag ASC")
-    public List<Ovlagv> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
+    List<Ovlagv> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
 
-    public Ovlagv save(Ovlagv entity);
+    Ovlagv save(Ovlagv entity);
 
     void delete(Ovlagv entity);
 

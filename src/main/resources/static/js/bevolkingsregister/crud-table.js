@@ -16,14 +16,19 @@
         };
     };
 
-    var resetValues = function (parentElem) {
-        var inputElems = parentElem.find('input').not('[type=button]');
+    var resetValues = function () {
+        var elems = getElems();
+        var inputElems = elems.onEdit.find('input').not('[type=button]');
+
         inputElems.filter('.integer-field').val(0);
         inputElems.not('.integer-field').val('');
         inputElems.filter('[data-selected]').attr('data-selected', 0);
-        parentElem.find('p.picklist-label').html('&nbsp;');
+        inputElems.blur();
 
-        $(document).trigger('crud-table-reset', [getElems()]);
+        elems.onEdit.find('p.picklist-label').html('&nbsp;');
+        elems.parent.find('.modalMessages').hide().empty();
+
+        $(document).trigger('crud-table-reset', [elems]);
     };
 
     var getData = function (parentElem) {
@@ -47,10 +52,18 @@
         elems.onNoEdit.hide();
         elems.onEdit.show();
 
-        if (!isNew) {
-            elems.onEdit.find('input').not('[type=button]').each(function () {
-                var elem = $(this);
-                var value = row.find('.' + elem.attr('name')).text();
+        var valuesToSet = elems.onEdit.find(':input').not('[type=button]');
+        valuesToSet.each(function () {
+            var elem = $(this);
+
+            var searchElem = row;
+            var generalDataElem = elems.parent.find('.general-data');
+
+            var searchValueElem = searchElem.find('.' + elem.attr('name'));
+            var generalDataValueElem = generalDataElem.find('.' + elem.attr('name'));
+
+            if (searchValueElem.length > 0 || generalDataValueElem.length > 0) {
+                var value = (searchValueElem.length > 0) ? searchValueElem.text() : generalDataValueElem.text();
                 elem.val(value);
 
                 if (elem.is('[data-selected]')) {
@@ -59,8 +72,8 @@
                     var valueName = row.find('.' + elem.attr('name') + 'Name').text();
                     elem.nextAll('p.picklist-label').first().text(valueName);
                 }
-            });
-        }
+            }
+        });
 
         elems.parent.find('.btn-update, .btn-delete').attr('disabled', 'disabled');
         elems.onEdit.find(':input').filter(':visible').not(':disabled').first().focus().keyup();
@@ -82,11 +95,15 @@
         elems.parent.find('.btn-update, .btn-delete').removeAttr('disabled');
 
         var row = elems.parent.find('tr.rowToUpdate');
-        row.removeClass('rowToUpdate');
-        row.find('.btn-new, .btn-update').first().focus();
+        if (row.length > 0) {
+            row.removeClass('rowToUpdate');
+            row.find('.btn-update').first().focus();
+        }
+        else {
+            elems.onNoEdit.find('.btn-new').first().focus();
+        }
 
-        resetValues(elems.onEdit);
-
+        resetValues();
         self.trigger('crud-table-cancel', [elems]);
     };
 
@@ -102,7 +119,7 @@
 
         elems.onNoEdit.show();
         elems.onEdit.hide();
-        resetValues(elems.onEdit);
+        resetValues();
 
         if (isNew) {
             self.trigger('crud-table-save-new', [elems, data]);
@@ -188,18 +205,30 @@
     });
 
     $.registerInit(function (elem) {
-        elem.find('.crud-table-container:visible:first .crud-table .free.scrollable').scroll(function (e) {
+        var tableScroll = function (e) {
             var self = $(e.target);
             var target = self.closest('.crud-table-container').find('.on-edit .free.scrollable');
             target.scrollTop(self.scrollTop());
             target.scrollLeft(self.scrollLeft());
-        });
+        };
 
-        elem.find('.crud-table-container:visible:first .on-edit .free.scrollable').scroll(function (e) {
+        var editScroll = function (e) {
             var self = $(e.target);
             var target = self.closest('.crud-table-container').find('.crud-table .free.scrollable');
             target.scrollTop(self.scrollTop());
             target.scrollLeft(self.scrollLeft());
+        };
+
+        elem.find('.free.scrollable').each(function () {
+            var self = $(this);
+            if (self.closest('.crud-table-container').length === 1) {
+                if (self.closest('.crud-table').length === 1) {
+                    self.scroll(tableScroll);
+                }
+                if (self.closest('.on-edit').length === 1) {
+                    self.scroll(editScroll);
+                }
+            }
         });
     });
 })(jQuery);

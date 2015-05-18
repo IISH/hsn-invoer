@@ -7,9 +7,9 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 
 public interface GebbyzRepository extends Repository<Gebbyz, Integer> {
-    public List<Gebbyz> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
+    List<Gebbyz> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
 
-    public Gebbyz save(Gebbyz entity);
+    Gebbyz save(Gebbyz entity);
 
     void delete(Gebbyz entity);
 

@@ -17,7 +17,13 @@
         </div>
         <th:block layout:fragment="modal-form">
         </th:block>
-        <div class="alert alert-warning modalMessages" role="alert" style="display: none;">
+        <div class="alert alert-warning modalMessages" role="alert" style="display:none;">
+        </div>
+        <div class="alert alert-warning burgStaatInfoMessage" role="alert" th:if="${akte.burgStandRelFix}">
+          Relaties met de regelnummers
+          <span
+              th:utext="${#strings.listJoin(@bevolkingsregisterHelper.getRelatedPersonsOfFirstPerson(flashScope.get('invalidPersonDynamics')), ', ')}"></span>
+          zijn onmogelijk.
         </div>
       </div>
     </div>
@@ -68,15 +74,15 @@
               <span class="seqNr dynamicDataSequenceNumber"
                     th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
               </span>
+
+               <span class="dynamicData2 hidden"
+                     th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].dynamicData2}">
+              </span>
           </td>
           <td>
             <!-- Code -->
               <span class="contentOfDynamicData"
                     th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].contentOfDynamicData}">
-              </span>
-
-              <span class="dynamicData2 hidden"
-                    th:utext="${akte.b3Rel[__${rp}__][__${stat.index}__].dynamicData2}">
               </span>
           </td>
           <td>
@@ -153,11 +159,14 @@
         </tbody>
       </table>
     </div>
+
+    <div class="general-data hidden">
+      <span class="sex" th:utext="${akte.curB2.sex}"></span>
+    </div>
   </div>
 </div>
 
-<div class="fixed-left-column" th:fragment="relModalForm" th:object="${akte}"
-     th:with="rp=${akte.curB2.rp}">
+<div class="fixed-left-column" th:fragment="relModalForm" th:object="${akte}" th:with="rp=${akte.curB2.rp}">
   <div class="on-no-edit clearfix">
     <div class="pull-right content-spacing">
       <button type="button" class="btn btn-default btn-xs btn-new" data:person="${rp}" data-type="RELATIE_TOV_HOOFD">
@@ -187,8 +196,9 @@
             <!-- Volg -->
             <input type="text" disabled="disabled" name="dynamicDataSequenceNumber"
                    class="form-control form-control-digit"/>
+
+            <input type="hidden" class="sex" name="sex"/>
           </td>
-          <!-- TODO: On open modal, Create sex elem -->
           <td colspan="2" class="col-xs-4">
             <!-- Code + Naam -->
             <div class="form-inline">
@@ -200,35 +210,37 @@
               </p>
             </div>
 
+            <input type="hidden" class="dynamicData2" name="dynamicData2"/>
             <input type="hidden" class="relatie-regel" name="valueOfRelatedPerson"/>
 
             <div class="relatieRegelPopup" style="display:none;">
               <div class="form-group">
                 <label class="control-label">Regelnr. relatie:</label>
 
-                <input type="text" class="integer-field form-control form-control-digit spacing"/>
+                <input type="text" class="integer-field form-control form-control-digit spacing"
+                       hsn:field="b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson"/>
               </div>
             </div>
           </td>
-          <td class="col-xs-3 checkDateBevReg fullCheck">
-            <div class="form-inline"
+          <td class="col-xs-3">
+            <div class="form-inline checkDateBevReg fullCheck"
                  data-show-when="#relModal [name=dynamicDataSequenceNumber]" data-has-values-not-in="1">
               <!-- Datum -->
               <input type="text" name="dayOfMutation" class="form-control form-control-digit day"/>
               /
               <input type="text" name="monthOfMutation" class="form-control form-control-digit month"/>
               /
-              <input type="text" name="yearOfMutation" class="form-control form-control-small  year"/>
+              <input type="text" name="yearOfMutation" class="form-control form-control-small year"/>
             </div>
           </td>
-          <td class="col-xs-3 checkDateBevReg fullCheck" th:if="${akte.isCorrection()}">
-            <div class="form-inline">
+          <td class="col-xs-3" th:if="${akte.isCorrection()}">
+            <div class="form-inline checkDateBevReg fullCheck">
               <!-- INTERPR -->
-              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit day"/>
               /
-              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit month"/>
               /
-              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small year"/>
             </div>
           </td>
           <td class="col-xs-2">
@@ -257,14 +269,10 @@
       </table>
     </div>
 
-    <!-- TODO? Set data-rp on modal open -->
-    <div class="form-group dateHoofd extra-top-margin-sm checkDateBevReg fullCheck noNeg"
-         style="display:none;" data-rp="2">
-      <label class="col-xs-4 col-xs-offset-3 control-label">
+    <div class="form-group dateHoofd extra-top-margin-sm checkDateBevReg fullCheck noNeg" style="display:none;">
+      <label class="col-xs-5 control-label">
         Datum expliciet hoofd:
       </label>
-
-      <input type="hidden" name="dynamicData2"/> <!-- TODO: Hidden not working -->
 
       <div class="col-xs-4 form-inline datum-expliciet-hoofd">
         <input type="text" class="form-control form-control-digit day" name="dayHoofd"/>
@@ -275,15 +283,14 @@
       </div>
     </div>
 
-    <div class="extra-top-margin-sm" style="display:none;"
-         data-show-when="#relModal [name=contentOfDynamicData]" data-has-values-in="30;40;51;52">
+    <div class="extra-top-margin-sm regelInterpr" style="display:none;">
       <div class="form-group">
         <label class="col-xs-4 col-xs-offset-3 control-label">
           Regelnummer vader/moeder:
         </label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required relatie-regel-2" data-min-value="-3"
+          <input type="text" class="form-control form-control-digit required relatie-regel" data-min-value="-3"
                  name="valueOfRelatedPerson"/>
         </div>
       </div>
@@ -294,7 +301,8 @@
         </label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" maxlength="1" name="dynamicData2"
+          <input type="text" class="form-control form-control-digit required dynamicData2"
+                 maxlength="1" name="dynamicData2"
                  data-set-value-when="#relModal [name=valueOfRelatedPerson]"
                  data-has-values-in="-3" data-then-value="9"/>
         </div>
@@ -488,30 +496,30 @@
           </td>
           <td style="min-width:60px;max-width:60px;">
             <!-- Rel -->
-            <input type="text" class="form-control form-control-digit" name="valueOfRelatedPerson" data-min-value="-2"
-                   data:max-value="${akte.isCorrection()} ? ${akte.b2.size()}"
+            <input type="text" class="form-control form-control-digit required burg-stand-relatie"
+                   name="valueOfRelatedPerson" data-min-value="-2"
                    data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9"/>
           </td>
           <td style="min-width:200px;max-width:200px;">
             <div class="form-inline checkDateBevReg fullCheck"
                  data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9">
               <!-- Datum -->
-              <input type="text" name="dayOfMutation" class="form-control form-control-digit"/>
+              <input type="text" name="dayOfMutation" class="form-control form-control-digit day"/>
               /
-              <input type="text" name="monthOfMutation" class="form-control form-control-digit"/>
+              <input type="text" name="monthOfMutation" class="form-control form-control-digit month"/>
               /
-              <input type="text" name="yearOfMutation" class="form-control form-control-small"/>
+              <input type="text" name="yearOfMutation" class="form-control form-control-small year"/>
             </div>
           </td>
           <td class="checkInterprDateBevReg" style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
             <div class="form-inline"
                  data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9">
               <!-- INTERPR -->
-              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit day"/>
               /
-              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit month"/>
               /
-              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small year"/>
             </div>
           </td>
           <td style="min-width:300px;max-width:300px;">
@@ -660,16 +668,16 @@
           </td>
           <td class="col-xs-5">
             <!-- Godsdienst -->
-            <input type="text" class="form-control kg" name="dynamicData2"/>
+            <input type="text" class="form-control required kg" name="dynamicData2"/>
           </td>
           <td class="col-xs-3" th:if="${akte.isCorrection()}">
             <div class="form-inline checkInterprDateBevReg">
               <!-- INTERPR -->
-              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit day"/>
               /
-              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit month"/>
               /
-              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small year"/>
             </div>
           </td>
           <td class="col-xs-2">
@@ -820,16 +828,16 @@
           </td>
           <td class="col-xs-2">
             <!-- Beroep -->
-            <input type="text" name="dynamicData2" class="form-control beroep"/>
+            <input type="text" name="dynamicData2" class="form-control required beroep"/>
           </td>
           <td class="col-xs-2">
             <!-- Positie -->
             <div class="form-inline">
               <input type="hidden" name="contentOfDynamicData" class="modalContentOfDynamicData"/>
 
-              <input type="text" class="form-control form-control-digit" maxlength="1" name="contentOfDynamicDataCode"
-                     data-replace-in-field=".modalContentOfDynamicData" data-for-values="h:1;o:2;n:3;:"
-                     data-valid-chars="h;o;n"/>
+              <input type="text" class="form-control form-control-digit required" maxlength="1"
+                     name="contentOfDynamicDataCode" data-valid-chars="h;o;n"
+                     data-replace-in-field=".modalContentOfDynamicData" data-for-values="h:1;o:2;n:3;:"/>
 
               <p class="form-control-static spacing">h / o / n</p>
             </div>
@@ -837,11 +845,11 @@
           <td class="col-xs-3" th:if="${akte.isCorrection()}">
             <div class="form-inline checkInterprDateBevReg">
               <!-- INTERPR -->
-              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit day"/>
               /
-              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit month"/>
               /
-              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small year"/>
             </div>
           </td>
           <td class="col-xs-2">
@@ -974,20 +982,20 @@
           </td>
           <td class="col-xs-3 checkDateBevReg fullCheck">
             <div class="form-inline">
-              <input type="text" name="dayOfMutation" class="form-control form-control-digit"/>
+              <input type="text" name="dayOfMutation" class="form-control form-control-digit day"/>
               /
-              <input type="text" name="monthOfMutation" class="form-control form-control-digit"/>
+              <input type="text" name="monthOfMutation" class="form-control form-control-digit month"/>
               /
-              <input type="text" name="yearOfMutation" class="form-control form-control-small"/>
+              <input type="text" name="yearOfMutation" class="form-control form-control-small year"/>
             </div>
           </td>
           <td class="col-xs-3" th:if="${akte.isCorrection()}">
             <div class="form-inline checkInterprDateBevReg">
-              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit day"/>
               /
-              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit month"/>
               /
-              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small year"/>
             </div>
           </td>
           <td class="col-xs-3">
@@ -1124,20 +1132,20 @@
           </td>
           <td class="col-xs-3 checkDateBevReg fullCheck">
             <div class="form-inline">
-              <input type="text" name="dayOfMutation" class="form-control form-control-digit"/>
+              <input type="text" name="dayOfMutation" class="form-control form-control-digit day"/>
               /
-              <input type="text" name="monthOfMutation" class="form-control form-control-digit"/>
+              <input type="text" name="monthOfMutation" class="form-control form-control-digit month"/>
               /
-              <input type="text" name="yearOfMutation" class="form-control form-control-small"/>
+              <input type="text" name="yearOfMutation" class="form-control form-control-small year"/>
             </div>
           </td>
           <td class="col-xs-3" th:if="${akte.isCorrection()}">
             <div class="form-inline checkInterprDateBevReg">
-              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit day"/>
               /
-              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit"/>
+              <input type="text" name="monthOfMutationAfterInterpretation" class="form-control form-control-digit month"/>
               /
-              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small"/>
+              <input type="text" name="yearOfMutationAfterInterpretation" class="form-control form-control-small year"/>
             </div>
           </td>
           <td class="col-xs-3">

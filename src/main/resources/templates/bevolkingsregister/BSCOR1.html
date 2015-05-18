@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <legend align="center">CORRECTIE BEVOLKINGSREGISTER</legend>
+
+  <div class="form-main-header">
+    IDENTIFICATIE BRON
+  </div>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="row">
+      <label class="col-xs-3 text-control-label">Type register:</label>
+
+      <div class="col-xs-4">
+        <span class="data-bron" th:utext="${akte.refAinb.bron}"></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="col-xs-3 text-control-label">Gemeentenummer-/naam:</label>
+
+      <div class="col-xs-1">
+        <span class="data-b1bgbg" th:utext="${akte.refAinb.b1bgbg}"></span>
+      </div>
+
+      <div class="col-xs-4">
+        <span class="data-municipality" th:utext="${akte.refAinb.municipality}"></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="col-xs-3 text-control-label">Beginjaar register:</label>
+
+      <div class="col-xs-4">
+        <span class="data-startYearRegister" th:utext="${akte.refAinb.startYearRegister}"></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="col-xs-3 text-control-label">Eindjaar register:</label>
+
+      <div class="col-xs-4">
+        <span class="data-endYearRegister" th:utext="${akte.refAinb.endYearRegister}"></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="col-xs-3 text-control-label">Gehucht / wijk:</label>
+
+      <div class="col-xs-4">
+        <span class="data-b1gwbg" th:utext="${akte.refAinb.b1gwbg}"></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="col-xs-3 text-control-label">Inventarisnummer:</label>
+
+      <div class="col-xs-4">
+        <span class="data-b1ivbg" th:utext="${akte.refAinb.b1ivbg}"></span>
+      </div>
+    </div>
+
+    <div class="extra-top-margin">
+      <p class="fail text-danger text-center bron" style="display: none;"></p>
+
+      <p class="fail text-danger text-center registration" style="display: none;"></p>
+
+      <p class="fail text-danger text-center op-registration" style="display: none;"></p>
+    </div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-3 control-label">Idnr:</label>
+
+      <div class="col-xs-4">
+        <p class="form-control-static" id="b4.registrationId.keyToRP" th:utext="${akte.b4.registrationId.keyToRP}"></p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-3 control-label">Bron:</label>
+
+      <div class="col-xs-4">
+        <input type="text" class="form-control form-control-small required"
+               data:keyToSourceRegister="${akte.b4.registrationId.keyToSourceRegister}"
+               th:field="*{b4.registrationId.keyToSourceRegister}" hsn:field="b4.registrationId.keyToSourceRegister"/>
+      </div>
+    </div>
+    <div class="form-group checkDateHfd noNeg" data:dayEntryHead="${akte.b4.registrationId.dayEntryHead}"
+         data:monthEntryHead="${akte.b4.registrationId.monthEntryHead}"
+         data:yearEntryHead="${akte.b4.registrationId.yearEntryHead}">
+      <label class="col-xs-3 control-label">Hoofddatum:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('b4.registrationId.dayEntryHead', 'b4.registrationId.monthEntryHead', 'b4.registrationId.yearEntryHead')"></div>
+    </div>
+
+    <div class="form-group checkDateOP noNeg" data:dayEntryRP="${akte.b4.dayEntryRP}"
+         data:monthEntryRP="${akte.b4.monthEntryRP}"
+         data:yearEntryRP="${akte.b4.yearEntryRP}">
+      <label class="col-xs-3 control-label">OP-datum:</label>
+
+      <div th:replace="fragments/fields :: datum ('b4.dayEntryRP', 'b4.monthEntryRP', 'b4.yearEntryRP')"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-3 control-label">Volgnr OP:</label>
+
+      <div class="col-xs-4">
+        <input type="text" class="form-control form-control-digit required" maxlength="1" data-min-value="1"
+               name="volgnrOP" id="volgnrOP" th:value="${akte.getOp().getRp()}"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-3 control-label">Speciale codes:</label>
+
+      <div class="col-xs-8">
+        <input type="text" class="form-control" th:field="*{b4.specialDataEntryCodes}"
+               hsn:field="b4.specialDataEntryCodes"/>
+      </div>
+    </div>
+
+    <div class="form-group typeIG"
+         th:style="${#arrays.contains({'I', 'G'}, akte.refAinb.typeRegister) == false} ? 'display:none;'">
+      <label class="col-xs-6 control-label">Nadere identificatie Gezinskaarten-systeem:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control" th:field="*{b4.infoFamilyCardsSystem}"
+               hsn:field="b4.infoFamilyCardsSystem"/>
+      </div>
+    </div>
+
+    <div class="form-group typeNotIG"
+         th:style="${#arrays.contains({'I', 'G'}, akte.refAinb.typeRegister)} ? 'display:none;'">
+      <div class="sub-form-group">
+        <label class="col-xs-3 control-label">Paginanummer:</label>
+
+        <div class="col-xs-3">
+          <input type="text" class="form-control form-control-small" th:field="*{b4.pageNumberOfSource}"
+                 hsn:field="b4.pageNumberOfSource"/>
+        </div>
+      </div>
+
+      <div class="sub-form-group">
+        <label class="col-xs-3 control-label">Volgnr hoofd:</label>
+
+        <div class="col-xs-3">
+          <input type="text" class="form-control form-control-digit" th:field="*{b4.numberOfHousehold}"
+                 hsn:field="b4.numberOfHousehold"/>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation"
+          th:include="fragments/navigation :: bev-reg-navigation (${akte}, false)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
+          th:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
+  <script src="../../static/js/bevolkingsregister/BS0IC.js" th:src="@{/js/bevolkingsregister/BS0IC.js}"></script>
+</th:block>
+</body>
+</html>

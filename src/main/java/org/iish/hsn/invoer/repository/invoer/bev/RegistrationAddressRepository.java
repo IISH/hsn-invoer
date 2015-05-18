@@ -3,8 +3,10 @@ package org.iish.hsn.invoer.repository.invoer.bev;
 import org.iish.hsn.invoer.domain.invoer.WorkOrder;
 import org.iish.hsn.invoer.domain.invoer.bev.RegistrationAddress;
 import org.iish.hsn.invoer.domain.invoer.bev.RegistrationId;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,11 +15,16 @@ public interface RegistrationAddressRepository extends Repository<RegistrationAd
            "WHERE ra.registrationId = ?1 AND ra.workOrder = ?2 " +
            "ORDER BY ra.keyToRegistrationPersons, ra.sequenceNumberToAddresses, " +
            "ra.dayOfAddress, ra.monthOfAddress, ra.yearOfAddress ASC")
-    public List<RegistrationAddress> findByRegistrationId(RegistrationId registrationId, WorkOrder workOrder);
+    List<RegistrationAddress> findByRegistrationId(RegistrationId registrationId, WorkOrder workOrder);
 
-    public List<RegistrationAddress> save(Iterable<RegistrationAddress> entities);
+    List<RegistrationAddress> save(Iterable<RegistrationAddress> entities);
 
-    public void delete(RegistrationAddress entity);
+    void delete(RegistrationAddress entity);
 
-    public void delete(Iterable<? extends RegistrationAddress> entities);
+    void delete(Iterable<? extends RegistrationAddress> entities);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM RegistrationAddress ra WHERE ra.registrationId = ?1 AND ra.workOrder = ?2")
+    void delete(RegistrationId registrationId, WorkOrder workOrder);
 }

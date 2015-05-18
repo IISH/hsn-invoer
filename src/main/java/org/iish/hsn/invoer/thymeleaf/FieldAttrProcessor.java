@@ -52,7 +52,7 @@ public class FieldAttrProcessor extends AbstractAttrProcessor {
             // If the field is a string, then check the column attribute, is there a 'length' given?
             if (typeOfField.isAssignableFrom(String.class)) {
                 Column column = declaredField.getAnnotation(Column.class);
-                if (column != null) {
+                if ((column != null) && !element.hasAttribute("maxlength")) {
                     element.setAttribute("maxlength", Integer.valueOf(column.length()).toString());
                 }
             }

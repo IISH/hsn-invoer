@@ -6,9 +6,9 @@ import org.springframework.data.repository.Repository;
 
 // TODO: WorkOrder???
 public interface HuwttlRepository extends Repository<Huwttl, Integer> {
-    public Huwttl findByIdnrAndHuw(int idnr, Huw huw);
+    Huwttl findByIdnrAndHuw(int idnr, Huw huw);
 
-    public Huwttl save(Huwttl entity);
+    Huwttl save(Huwttl entity);
 
     void delete(Huwttl entity);
 }

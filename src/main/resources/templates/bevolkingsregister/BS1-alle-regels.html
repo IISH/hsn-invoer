@@ -104,18 +104,21 @@
 </td>
 <td>
   <!-- * -->
-  <span class="ind"
-        th:style="${akte.b3Rel[__${rp}__][0].valueOfRelatedPerson le 0} ? 'display:none;'">
+  <span class="ind" th:style="${akte.b3Rel[__${rp}__][0].valueOfRelatedPerson le 0} ? 'display:none;'">
     *
   </span>
 </td>
-<td class="personDynamic" data-type="RELATIE_TOV_HOOFD" data:rp="${rp}">
+<td class="personDynamic" data-type="RELATIE_TOV_HOOFD" data:person="${rp}"
+    th:classappend="${akte.b3Rel[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Rel -->
   <th:block
       th:include="fragments/fields :: relatie (null, 'b3Rel[__${rp}__][0].contentOfDynamicData', true)">
   </th:block>
 
-  <input type="hidden" class="relatie-regel" th:field="*{b3Rel[__${rp}__][0].valueOfRelatedPerson}"/>
+  <input type="hidden" class="relatieRegelInterpr regel relatie-regel"
+         th:field="*{b3Rel[__${rp}__][0].valueOfRelatedPerson}"/>
+  <input type="hidden" class="relatieRegelInterpr kode dynamicData2"
+         th:field="*{b3Rel[__${rp}__][0].dynamicData2}"/>
 
   <div class="relatieRegelPopup" style="display:none;">
     <div class="form-inline">
@@ -123,12 +126,12 @@
         <label class="control-label">Regelnr. relatie:</label>
 
         <input type="text" class="form-control form-control-digit spacing"
+               th:value="${akte.b3Rel[__${rp}__][0].valueOfRelatedPerson}"
                hsn:field="b3Rel[__${rp}__][0].valueOfRelatedPerson"/>
       </div>
     </div>
   </div>
 
-  <input type="hidden" class="relatieDateHoofd code" th:field="*{b3Rel[__${rp}__][0].dynamicData2}"/>
   <input type="hidden" class="relatieDateHoofd day"
          th:value="${@bevolkingsregisterHelper.getDayFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
   <input type="hidden" class="relatieDateHoofd month"
@@ -155,10 +158,6 @@
     </div>
   </div>
 
-  <input type="hidden" class="relatieRegelInterpr regel relatie-regel-2"
-         th:field="*{b3Rel[__${rp}__][0].valueOfRelatedPerson}"/>
-  <input type="hidden" class="relatieRegelInterpr kode" th:field="*{b3Rel[__${rp}__][0].dynamicData2}"/>
-
   <div class="relatieRegelInterprPopup" style="display:none;">
     <div class="relatieRegelInterprPopupContent" style="width:300px">
       <div class="form-group">
@@ -168,6 +167,7 @@
 
         <div class="col-xs-3">
           <input type="text" class="form-control form-control-digit required regel" data-min-value="-3"
+                 th:value="${akte.b3Rel[__${rp}__][0].valueOfRelatedPerson}"
                  hsn:field="b3Rel[__${rp}__][0].valueOfRelatedPerson"/>
         </div>
       </div>
@@ -179,7 +179,7 @@
 
         <div class="col-xs-3">
           <input type="text" class="form-control form-control-digit required kode" maxlength="1"
-                 hsn:field="b3Rel[__${rp}__][0].dynamicData2"
+                 th:value="${akte.b3Rel[__${rp}__][0].dynamicData2}" hsn:field="b3Rel[__${rp}__][0].dynamicData2"
                  data-set-value-when=".popover .regel" data-has-values-in="-3" data-then-value="9"/>
         </div>
       </div>
@@ -198,12 +198,14 @@
   <input type="hidden" class="volgende-inschrijving" th:field="*{b2[__${stat.index}__].natureOfPerson}"/>
 
   <div class="volgendeInschrijvingOpPopup" style="display:none;">
-    <div class="form-group">
-      <label class="control-label">Betreft het hier een volgende inschrijving van de OP? j / n:</label>
+    <div class="form-inline">
+      <div class="form-group">
+        <label class="control-label">Betreft het hier een volgende inschrijving van de OP? j / n:</label>
 
-      <input type="text" class="form-control form-control-digit spacing" maxlength="1"
-             data-valid-chars="j;n"
-             data:person="${rp}"/>
+        <input type="text" class="form-control form-control-digit spacing" maxlength="1"
+               data-valid-chars="j;n"
+               data:person="${rp}"/>
+      </div>
     </div>
   </div>
 </td>
@@ -212,41 +214,45 @@
   <input type="text" class="form-control form-control-medium spacing plaats required placeOfBirth"
          th:field="*{b2[__${stat.index}__].placeOfBirth}" hsn:field="b2[__${stat.index}__].placeOfBirth"/>
 </td>
-<td class="personDynamic" data-type="BURGELIJKE_STAND">
+<td class="personDynamic" data-type="BURGELIJKE_STAND"
+    th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Brg -->
   <th:block
       th:include="fragments/fields :: burgelijke-stand ('b3Brg[__${rp}__][0].contentOfDynamicData')">
   </th:block>
 </td>
-<td class="personDynamic" data-type="BURGELIJKE_STAND">
+<td class="personDynamic" data-type="BURGELIJKE_STAND"
+    th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Rel -->
-  <input type="text" class="form-control form-control-digit required"
-         data:show-when="'#b3Brg'+__${rp}__+'0\.contentOfDynamicData'" data-has-values-in="2;3;5;9"
-         data-min-value="-2" data:max-value="${akte.isCorrection()} ? ${akte.b2.size()}"
-         th:field="*{b3Brg[__${rp}__][0].valueOfRelatedPerson}"
-         hsn:field="b3Brg[__${rp}__][0].valueOfRelatedPerson"/>
+  <input type="text" class="form-control form-control-digit required burg-stand-relatie"
+         data:show-when="'#b3Brg'+__${rp}__+'0\.contentOfDynamicData'" data-has-values-in="2;3;5;9" data-min-value="-2"
+         th:field="*{b3Brg[__${rp}__][0].valueOfRelatedPerson}" hsn:field="b3Brg[__${rp}__][0].valueOfRelatedPerson"/>
 </td>
-<td class="personDynamic" data-type="BURGELIJKE_STAND">
+<td class="personDynamic" data-type="BURGELIJKE_STAND"
+    th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Datum -->
   <div class="checkDateBevReg fullCheck" data:show-when="'#b3Brg'+__${rp}__+'0\.contentOfDynamicData'"
        data-has-values-in="2;3;5;9"
        th:include="fragments/fields :: datum ('b3Brg[__${rp}__][0].dayOfMutation', 'b3Brg[__${rp}__][0].monthOfMutation', 'b3Brg[__${rp}__][0].yearOfMutation')">
   </div>
 </td>
-<td class="personDynamic" data-type="BURGELIJKE_STAND">
+<td class="personDynamic" data-type="BURGELIJKE_STAND"
+    th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Plaats -->
   <input type="text" class="form-control form-control-medium spacing plaats"
          data:show-when="'#b3Brg'+__${rp}__+'0\.contentOfDynamicData'" data-has-values-in="2;3;5;9"
          th:field="*{b3Brg[__${rp}__][0].dynamicData2}"
          hsn:field="b3Brg[__${rp}__][0].dynamicData2"/>
 </td>
-<td class="personDynamic" data-type="KERKGENOOTSCHAP">
+<td class="personDynamic" data-type="KERKGENOOTSCHAP"
+    th:classappend="${akte.b3Kg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Kerkg -->
   <input type="text" class="form-control form-control-medium spacing kg required"
          th:field="*{b3Kg[__${rp}__][0].dynamicData2}"
          hsn:field="b3Kg[__${rp}__][0].dynamicData2"/>
 </td>
-<td class="personDynamic" data-type="BEROEP">
+<td class="personDynamic" data-type="BEROEP"
+    th:classappend="${akte.b3Brp[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Beroep -->
   <input type="text" class="form-control form-control-medium spacing beroep required"
          th:field="*{b3Brp[__${rp}__][0].dynamicData2}"

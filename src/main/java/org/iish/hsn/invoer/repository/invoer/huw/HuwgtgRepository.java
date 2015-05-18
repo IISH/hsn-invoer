@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface HuwgtgRepository extends Repository<Huwgtg, Integer> {
     @Query("SELECT h FROM Huwgtg h WHERE h.idnr = ?1 AND h.huw = ?2 AND h.workOrder = ?3 ORDER BY h.vlgnrgt ASC")
-    public List<Huwgtg> findByIdnrAndHuwAndWorkOrder(int idnr, Huw huw, WorkOrder workOrder);
+    List<Huwgtg> findByIdnrAndHuwAndWorkOrder(int idnr, Huw huw, WorkOrder workOrder);
 
-    public Huwgtg save(Huwgtg entity);
+    Huwgtg save(Huwgtg entity);
 
     void delete(Huwgtg entity);
 

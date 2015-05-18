@@ -77,4 +77,9 @@ public class OverlijdensController {
 
         return new ModelAndView("overlijden/OOVERZ", model);
     }
+
+    @RequestMapping(value = "/overzicht", method = RequestMethod.POST)
+    public String getOverviewRedirect() {
+        return "redirect:/overlijden/hoofdmenu";
+    }
 }

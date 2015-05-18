@@ -6,26 +6,16 @@
   <view-state id="BS0C" view="bevolkingsregister/BS0IC" model="akte">
     <on-entry>
       <evaluate expression="bevolkingsregisterService.createNewAkteForCorrection()" result="flowScope.akte"/>
-      <evaluate expression="flowScope.akte.setCorrectionCode(9)"/>
+      <evaluate expression="flowScope.akte.setCorrectionDelete()"/>
     </on-entry>
 
-    <transition on="stop" to="stopEnd"/>
+    <transition on="stop" to="end"/>
 
-    <transition on="next" to="BSCOR1">
+    <transition on="delete" to="end">
       <evaluate expression="bevolkingsregisterService.editOP(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.deleteRegistration(flowScope.akte)"/>
     </transition>
   </view-state>
 
-  <!-- BSCOR1: WIJZIGEN IDENTIFICATIE BRON EN ONDERZOEKSPERSOON -->
-  <view-state id="BSCOR1" view="bevolkingsregister/BSCOR1" model="akte">
-    <transition on="stop" to="stopEnd"/>
-
-    <transition on="next" to="finishEnd">
-      <evaluate expression="bevolkingsregisterService.registerIdentification(flowScope.akte)"/>
-    </transition>
-  </view-state>
-
-  <end-state id="stopEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
-
-  <end-state id="finishEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
+  <end-state id="end" view="redirect:/bevolkingsregister/hoofdmenu"/>
 </flow>

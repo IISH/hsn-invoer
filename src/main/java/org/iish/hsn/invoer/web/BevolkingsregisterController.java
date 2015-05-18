@@ -89,4 +89,9 @@ public class BevolkingsregisterController {
 
         return new ModelAndView("bevolkingsregister/BOVERZ :: personsBody", model);
     }
+
+    @RequestMapping(value = "/overzicht", method = RequestMethod.POST)
+    public String getOverviewRedirect() {
+        return "redirect:/bevolkingsregister/hoofdmenu";
+    }
 }

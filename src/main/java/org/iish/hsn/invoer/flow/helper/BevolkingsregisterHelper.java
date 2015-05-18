@@ -8,7 +8,9 @@ import org.iish.hsn.invoer.flow.state.BevolkingsregisterFlowState;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,14 +37,57 @@ public class BevolkingsregisterHelper {
 
     public boolean registrationHasMaxPersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         Ref_AINB refAinb = bevolkingsregisterFlow.getRefAinb();
+        List<Person> b2 = bevolkingsregisterFlow.getB2();
         int curPerson = bevolkingsregisterFlow.getCurPersonKey();
 
-        return ((curPerson == 1) && (refAinb.getTypeRegister().equals("A") || refAinb.getTypeRegister().equals("I")));
+        // If we are in correction, there is no max as long as not all correction persons were corrected
+        if (bevolkingsregisterFlow.isCorrection()) {
+            List<Integer> correctionPersons = bevolkingsregisterFlow.getCorrectionPersons();
+            int correctionPersonKeyIdx = correctionPersons.indexOf(curPerson);
+
+            if ((correctionPersonKeyIdx <= (b2.size() - 2)) && (correctionPersonKeyIdx >= 0)) {
+                return false;
+            }
+        }
+
+        // Only one person is allowed in case of an A or I register (correction may lead to multiple persons though)
+        return ((curPerson >= 1) && (refAinb.getTypeRegister().equals("A") || refAinb.getTypeRegister().equals("I")));
+    }
+
+    public List<PersonDynamic> getPersonDynamicsWithInvalidBurgStandRelatie(BevolkingsregisterFlowState
+                                                                                    bevolkingsregisterFlow) {
+        List<PersonDynamic> personDynamics = new ArrayList<>();
+        List<PersonDynamic> b3 = bevolkingsregisterFlow.getAllB3ForType(PersonDynamic.Type.BURGELIJKE_STAND);
+        int nrOfPersons = bevolkingsregisterFlow.getB2().size();
+
+        for (PersonDynamic personDynamic : b3) {
+            if (personDynamic.getValueOfRelatedPerson() > nrOfPersons) {
+                personDynamics.add(personDynamic);
+            }
+        }
+
+        return personDynamics;
+    }
+
+    public Set<Integer> getRelatedPersonsOfFirstPerson(List<PersonDynamic> personDynamics) {
+        Integer person = -1;
+        Set<Integer> relatedPersons = new HashSet<>();
+
+        for (PersonDynamic personDynamic : personDynamics) {
+            if (person == -1) {
+                person = personDynamic.getKeyToRegistrationPersons();
+            }
+            if (personDynamic.getKeyToRegistrationPersons() == person) {
+                relatedPersons.add(personDynamic.getValueOfRelatedPerson());
+            }
+        }
+
+        return relatedPersons;
     }
 
     public int findKeyOfRp(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         for (Person person : bevolkingsregisterFlow.getB2()) {
-            if (person.getNatureOfPerson() == 1) {
+            if (person.getNatureOfPerson() == Person.NatureOfPerson.FIRST_RP.getNatureOfPerson()) {
                 return person.getRp();
             }
         }
@@ -91,7 +136,7 @@ public class BevolkingsregisterHelper {
         if ((day == -2) && (month == -2) && (year == -2)) {
             return "j";
         }
-        if ((day < 0) && (month < 0) && (year < 0)) {
+        if ((day <= 0) && (month <= 0) && (year <= 0)) {
             return "n";
         }
         return "j";
@@ -125,8 +170,8 @@ public class BevolkingsregisterHelper {
     public RegistrationAddress getRegistrationAddressFor(List<RegistrationAddress> registrationAddresses, int person,
                                                          int seqNr) {
         for (RegistrationAddress registrationAddress : registrationAddresses) {
-            if (registrationAddress.getKeyToRegistrationPersons() == person &&
-                registrationAddress.getSequenceNumberToAddresses() == seqNr) {
+            if (registrationAddress.getKeyToRegistrationPersons() == person && registrationAddress
+                    .getSequenceNumberToAddresses() == seqNr) {
                 return registrationAddress;
             }
         }
@@ -159,8 +204,9 @@ public class BevolkingsregisterHelper {
         if (date != null) {
             Matcher matcher = DATE_EXPLICIET_HOOFD.matcher(date);
             if (matcher.matches()) {
-                return new int[]{new Integer(matcher.group(1)), new Integer(matcher.group(2)),
-                                 new Integer(matcher.group(3))};
+                return new int[]{
+                        new Integer(matcher.group(1)), new Integer(matcher.group(2)), new Integer(matcher.group(3))
+                };
             }
         }
         return new int[]{0, 0, 0};

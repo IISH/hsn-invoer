@@ -12,9 +12,9 @@ public interface HuweerRepository extends Repository<Huweer, Integer> {
     @Query("SELECT h FROM Huweer h " +
            "WHERE h.idnr = ?1 AND h.huw = ?2 AND h.huwer = ?3 AND h.workOrder = ?4 " +
            "ORDER BY h.vlgnreh ASC")
-    public List<Huweer> findByIdnrAndHuwAndHuwerAndWorkOrder(int idnr, Huw huw, String huwer, WorkOrder workOrder);
+    List<Huweer> findByIdnrAndHuwAndHuwerAndWorkOrder(int idnr, Huw huw, String huwer, WorkOrder workOrder);
 
-    public Huweer save(Huweer entity);
+    Huweer save(Huweer entity);
 
     void delete(Huweer entity);
 

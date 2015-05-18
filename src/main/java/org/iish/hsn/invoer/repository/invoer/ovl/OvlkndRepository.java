@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.Repository;
 
 public interface OvlkndRepository extends Repository<Ovlknd, Integer>, JpaSpecificationExecutor<Ovlknd> {
-    public Ovlknd findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
+    Ovlknd findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
 
-    public Ovlknd save(Ovlknd entity);
+    Ovlknd save(Ovlknd entity);
 
     void delete(Ovlknd entity);
 }

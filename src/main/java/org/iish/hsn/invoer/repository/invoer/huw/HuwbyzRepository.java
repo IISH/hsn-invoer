@@ -8,9 +8,9 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 
 public interface HuwbyzRepository extends Repository<Huwbyz, Integer> {
-    public List<Huwbyz> findByIdnrAndHuwAndWorkOrder(int idnr, Huw huw, WorkOrder workOrder);
+    List<Huwbyz> findByIdnrAndHuwAndWorkOrder(int idnr, Huw huw, WorkOrder workOrder);
 
-    public Huwbyz save(Huwbyz entity);
+    Huwbyz save(Huwbyz entity);
 
     void delete(Huwbyz entity);
 

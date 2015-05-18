@@ -12,16 +12,16 @@ import java.io.Serializable;
 public abstract class Invoer implements Serializable {
     @Embedded private WorkOrder workOrder = new WorkOrder();
 
-    @Column(name = "ARCH", nullable = false) private    String arch; // TODO: Column not found in PkKnd or B* (Rijksarchief / gemeentearchief)
-    @Column(name = "OPDRNR", nullable = false) private  String opdrnr;
-    @Column(name = "DATUM", nullable = false) private   String datum;
-    @Column(name = "INIT", nullable = false) private    String init;
-    @Column(name = "VERSIE", nullable = false) private  String versie;
-    @Column(name = "ARCHO", nullable = false) private   String archo; // TODO: Column not found in PkKnd or B* (Rijksarchief / gemeentearchief)
-    @Column(name = "OPDRNRO", nullable = false) private String opdrnro;
-    @Column(name = "DATUMO", nullable = false) private  String datumo;
-    @Column(name = "INITO", nullable = false) private   String inito;
-    @Column(name = "VERSIEO", nullable = false) private String versieo;
+    @Column(name = "ARCH", nullable = false, length = 1) private    String arch; // TODO: Column not found in PkKnd or B* (Rijksarchief / gemeentearchief)
+    @Column(name = "OPDRNR", nullable = false, length = 3) private  String opdrnr;
+    @Column(name = "DATUM", nullable = false, length = 10) private  String datum;
+    @Column(name = "INIT", nullable = false, length = 3) private    String init;
+    @Column(name = "VERSIE", nullable = false, length = 5) private  String versie;
+    @Column(name = "ARCHO", nullable = false, length = 1) private   String archo; // TODO: Column not found in PkKnd or B* (Rijksarchief / gemeentearchief)
+    @Column(name = "OPDRNRO", nullable = false, length = 3) private String opdrnro;
+    @Column(name = "DATUMO", nullable = false, length = 10) private String datumo;
+    @Column(name = "INITO", nullable = false, length = 3) private   String inito;
+    @Column(name = "VERSIEO", nullable = false, length = 5) private String versieo;
 
     public WorkOrder getWorkOrder() {
         return workOrder;

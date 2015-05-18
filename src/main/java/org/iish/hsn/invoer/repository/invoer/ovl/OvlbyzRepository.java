@@ -7,9 +7,9 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 
 public interface OvlbyzRepository extends Repository<Ovlbyz, Integer> {
-    public List<Ovlbyz> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
+    List<Ovlbyz> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
 
-    public Ovlbyz save(Ovlbyz entity);
+    Ovlbyz save(Ovlbyz entity);
 
     void delete(Ovlbyz entity);
 

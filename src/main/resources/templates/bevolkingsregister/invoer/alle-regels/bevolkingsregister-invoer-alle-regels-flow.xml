@@ -76,11 +76,11 @@
       <render fragments="registrationAllLines"/>
     </transition>
 
+    <transition on="stop" to="stopEnd"/>
+
     <transition on="next" to="BS2">
       <evaluate expression="bevolkingsregisterService.registerAndSavePersons(flowScope.akte)"/>
     </transition>
-
-    <transition on="next" to="stopEnd"/>
   </view-state>
 
   <!-- BS2: ADRESSEN -->

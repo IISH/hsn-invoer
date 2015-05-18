@@ -106,19 +106,9 @@
         });
     };
 
-    // TODO: eDayInsValidate
-    var onDatumExplicietHoofd = function (date, dayVal, monthVal, yearVal) {
-        if (!isNaN(dayVal) && !isNaN(monthVal) && !isNaN(yearVal)) {
-            date.val('###$' + ('0' + dayVal).slice(-2) + '/' + ('0' + monthVal).slice(-2) + '/' + yearVal);
-        }
-        else {
-            date.val('');
-        }
-    };
-
-    var registerRelatieRegelPopup = function (elem) {
+    var registerRelatie = function (elem) {
         var elems = elem;
-        if (!elem.is('tr')) {
+        if (!elem.is('tr') && !elem.hasClass('relatieElems')) {
             elems = elem.find('.relatieElems, #registrationAllLines tr');
         }
 
@@ -127,18 +117,21 @@
             var relatie = container.find('.relatie');
             var parent = relatie.getParentOfFormElement();
 
-            var f9 = false;
+            // Prevent multiple popovers on the relatie elem when either the 'F4' or the 'F9' popover was selected
+            var f4, f9 = false;
             var focusPopover = false;
-            var rp = parent.getIntegerDataValue('rp');
+
+            var relatieRegel = container.find('.relatie-regel');
+            var dynamicData2 = container.find('.dynamicData2');
 
             var ind = container.find('.ind').first();
-            var relatieRegel = container.find('.relatie-regel').first();
-            var relatieRegel2 = container.find('.relatie-regel-2').first();
+            var sex = container.find('.sex').first();
 
             var relatieRegelPopup = parent.find('.relatieRegelPopup').first();
             var relatieDateHoofdPopup = parent.find('.relatieDateHoofdPopup').first();
             var relatieRegelInterprPopup = parent.find('.relatieRegelInterprPopup').first();
 
+            // Init popover for relation element
             relatie.popover({
                 content: relatieRegelPopup.html(),
                 html: true,
@@ -146,16 +139,35 @@
                 trigger: 'manual'
             });
 
+            // Synchronizes the relatie regel
             var setRelatieRegel = function (value) {
-                if (value !== undefined) {
+                if ((value !== undefined) && !isNaN(value)) {
+                    if (value === 0) {
+                        value = -1;
+                    }
+
                     relatieRegel.val(value);
-                    relatieRegel2.val(value);
-                    (relatieRegel.getIntegerValue() > 0) ? ind.show() : ind.hide();
+                    (value > 0) ? ind.show() : ind.hide();
                 }
             };
 
+            // TODO: eDayInsValidate
+            // Encodes the datum expliciet hoofd and synchronizes the value
+            var onDatumExplicietHoofd = function (dayVal, monthVal, yearVal) {
+                var value = '';
+                if (!isNaN(dayVal) && !isNaN(monthVal) && !isNaN(yearVal)) {
+                    value = '###$' + ('0' + dayVal).slice(-2) + '/' + ('0' + monthVal).slice(-2) + '/' + yearVal;
+                }
+                dynamicData2.val(value);
+            };
+
+            // Hides the popover and performs the related checks and procedures
             var hidePopover = function (popover, checkError) {
+                // Check for errors first, if necessary
                 if (!checkError || (popover.find('.has-error').length === 0)) {
+                    var focusOnRelatieElem = false; // In some cases, the focus has to go back to the relatie elem
+
+                    // In case of an 'expliciet hoofd', we have to safely store and transform the date before closing
                     if (popover.find('.relatieDateHoofdPopupContent').length > 0) {
                         var day = parent.find('.relatieDateHoofd.day');
                         var month = parent.find('.relatieDateHoofd.month');
@@ -165,90 +177,41 @@
                         month.val(popover.find('.month').val());
                         year.val(popover.find('.year').val());
 
-                        onDatumExplicietHoofd(
-                            parent.find('.relatieDateHoofd.code'),
-                            day.getIntegerValue(), month.getIntegerValue(), year.getIntegerValue()
-                        );
+                        onDatumExplicietHoofd(day.getIntegerValue(), month.getIntegerValue(), year.getIntegerValue());
                     }
+                    // In case of an 'relatie regel' and 'kode' safely store the values
+                    // and synchronize the 'regel' with the other 'regel' input elems
                     else if (popover.find('.relatieRegelInterprPopupContent').length > 0) {
-                        setRelatieRegel(popover.find('.regel').val());
+                        setRelatieRegel(popover.find('.regel').getIntegerValue());
                         parent.find('.relatieRegelInterpr.kode').val(popover.find('.kode').val());
                     }
+                    // Last case is the 'relatie regel' only case,
+                    // so safely store and synchronize with the other 'regel' input elems
                     else {
                         f9 = false;
-                        setRelatieRegel(popover.find('input').val());
+                        focusOnRelatieElem = true;
+                        setRelatieRegel(popover.find('input').getIntegerValue());
                     }
 
                     focusPopover = false;
                     relatie.popover('hide');
+
+                    if (focusOnRelatieElem) {
+                        relatie.focus();
+                    }
                 }
             };
 
-            $(document).on('focus', 'input', function (e) {
-                var popover = parent.find('.popover');
-                if ((popover.length > 0) && $.contains(popover[0], e.target)) {
-                    focusPopover = true;
-                }
-                else if (focusPopover) {
-                    hidePopover(parent.find('.popover'), true);
-                }
-            });
-
-            parent.keydown(function (e) {
-                if (e.which === 120) { // F9
-                    var popover = parent.find('.popover');
-                    if (popover.is(':visible')) {
-                        hidePopover(parent.find('.popover'), true);
-                        relatie.focus();
-                    }
-                    else {
-                        relatieRegelPopup.find(':input').attr('value', relatieRegel.val());
-                        relatie.data('bs.popover').options.content = relatieRegelPopup.html();
-                        relatie.popover('show');
-
-                        f9 = true;
-                        parent.find('.popover :input:first').focus();
-                    }
-                }
-            });
-
-            relatieRegel2.blur(function () {
-                setRelatieRegel(relatieRegel2.val());
-            });
-
-            parent.on('blur', '.relatie', function () {
-                var self = $(this);
-                var rel = self.getIntegerValue();
-                var sex = container.find('.sex').val();
-
-                var error = false;
-                var message = '';
-
-                var female = [2, 4, 6, 9, 40, 52, 54, 55, 56, 82, 84, 86, 88];
-                var male = [3, 5, 8, 30, 51, 53, 57, 58, 81, 83, 85, 87];
-
-                if ((sex === 'm') && ((female.indexOf(rel) >= 0) || (rel > 19 && rel < 29) || (rel > 69 && rel < 80))) {
-                    error = true;
-                    message = 'Geslacht is mannelijk en relatiekode is vrouwelijk van aard!';
-                }
-                else if ((sex === 'v') && ((male.indexOf(rel) >= 0) || (rel > 9 && rel < 19) || (rel > 59 && rel < 70))) {
-                    error = true;
-                    message = 'Geslacht is vrouwelijk en relatiekode is mannelijk van aard!';
-                }
-
-                $.setError(error, 'relatie-geslacht-' + self.attr('id'), message);
-            });
-
-            parent.on('focus', '.relatie', function () {
-                hidePopover(parent.find('.popover'), false);
-            });
-
-            parent.on('blur', '.relatie', function (e) {
-                if (f9) {
+            // Determine what has to happen after a relation has been chosen
+            var onRelationChosen = function (isInit) {
+                // If the blur was caused by pressing 'F9' do nothing yet
+                if (f4 || f9) {
                     return;
                 }
 
-                if ((relatieDateHoofdPopup.length > 0) && (rp > 1) && ($(e.target).getIntegerValue() === 1)) {
+                // Does the chosen relation require an 'expliciet hoofd' value?
+                var person = container.find($.getDataElemSelector('person')).getIntegerDataValue('person');
+                if (!isInit && (relatieDateHoofdPopup.length > 0) && (person > 1) && (relatie.getIntegerValue() === 1)) {
                     relatieDateHoofdPopup.find('.day').attr('value', parent.find('.relatieDateHoofd.day').val());
                     relatieDateHoofdPopup.find('.month').attr('value', parent.find('.relatieDateHoofd.month').val());
                     relatieDateHoofdPopup.find('.year').attr('value', parent.find('.relatieDateHoofd.year').val());
@@ -258,22 +221,17 @@
                 }
                 else {
                     var dateHoofd = container.find('.dateHoofd');
-                    if ((rp > 1) && ($(e.target).getIntegerValue() === 1)) {
+                    if ((person > 1) && (relatie.getIntegerValue() === 1)) {
                         dateHoofd.show();
                     }
                     else {
                         dateHoofd.hide();
                     }
                 }
-            });
 
-            parent.on('blur', '.relatie', function (e) {
-                if (f9) {
-                    return;
-                }
-
-                var shouldShow = [30, 40, 51, 52].indexOf($(e.target).getIntegerValue()) >= 0;
-                if ((relatieRegelInterprPopup.length > 0) && shouldShow) {
+                // Does the chosen relation require an 'regel relatie' value?
+                var shouldShow = [30, 40, 51, 52].indexOf(relatie.getIntegerValue()) >= 0;
+                if (!isInit && (relatieRegelInterprPopup.length > 0) && shouldShow) {
                     relatieRegelInterprPopup.find('.regel').attr('value', parent.find('.relatieRegelInterpr.regel').val());
                     relatieRegelInterprPopup.find('.kode').attr('value', parent.find('.relatieRegelInterpr.kode').val());
 
@@ -289,7 +247,98 @@
                         regelInterpr.hide();
                     }
                 }
+            };
+
+            // If the user wants to close the popover, determine whether this is allowed
+            // and what has to happen first by calling 'hidePopover'
+            $(document).on('focus', 'input', function (e) {
+                var popover = parent.find('.popover');
+                if ((popover.length > 0) && $.contains(popover[0], e.target)) {
+                    focusPopover = true;
+                }
+                else if (focusPopover) {
+                    hidePopover(parent.find('.popover'), true);
+                }
             });
+
+            // Bind the 'F9' key to open the 'relatie regel' popover or to close the opened relatie popover
+            parent.keydown(function (e) {
+                if (e.which === 120) { // F9
+                    var popover = parent.find('.popover');
+                    if (popover.is(':visible')) {
+                        hidePopover(popover, true);
+                        relatie.focus();
+                    }
+                    else {
+                        relatieRegelPopup.find(':input').attr('value', relatieRegel.val());
+                        relatie.data('bs.popover').options.content = relatieRegelPopup.html();
+                        relatie.popover('show');
+
+                        f9 = true;
+                        parent.find('.popover :input:first').focus();
+                    }
+                }
+
+                if (e.which === 115) { // F4
+                    f4 = true;
+                }
+            });
+
+            // Synchronize the value with the other 'regel' input elems
+            relatieRegel.blur(function () {
+                setRelatieRegel($(this).getIntegerValue());
+            });
+
+            // Synchronize the value dynamicData2
+            dynamicData2.blur(function () {
+                dynamicData2.val($(this).val());
+            });
+
+            // Update the datum expliciet hoofd when changes are made
+            container.on('blur', $.createDateSelector('.datum-expliciet-hoofd'), function (e) {
+                var hsnDate = $(e.target).getParentOfFormElement().getHsnDate();
+                onDatumExplicietHoofd(hsnDate.day.getValue(), hsnDate.month.getValue(), hsnDate.year.getValue());
+            });
+
+            // Validate the relation based on the given sex and the other way around
+            container.on('blur', '.relatie, .sex', function () {
+                var rel = relatie.getIntegerValue();
+                var sexVal = sex.is(':input') ? sex.val() : sex.text();
+
+                var error = false;
+                var message = '';
+
+                var female = [2, 4, 6, 9, 40, 52, 54, 55, 56, 82, 84, 86, 88];
+                var male = [3, 5, 8, 30, 51, 53, 57, 58, 81, 83, 85, 87];
+
+                if ((sexVal === 'm') && ((female.indexOf(rel) >= 0) || (rel > 19 && rel < 29) || (rel > 69 && rel < 80))) {
+                    error = true;
+                    message = 'Geslacht is mannelijk en relatiekode is vrouwelijk van aard!';
+                }
+                else if ((sexVal === 'v') && ((male.indexOf(rel) >= 0) || (rel > 9 && rel < 19) || (rel > 59 && rel < 70))) {
+                    error = true;
+                    message = 'Geslacht is vrouwelijk en relatiekode is mannelijk van aard!';
+                }
+
+                $.setError(error, 'relatie-geslacht-' + relatie.attr('id'), message);
+            });
+
+            // Always close the popover if the focus is back on the relation input box, even in case of errors
+            parent.on('focus', '.relatie', function () {
+                hidePopover(parent.find('.popover'), false);
+            });
+
+            // Determine what has to happen after a relation has been chosen
+            parent.on('blur', '.relatie', function () {
+                onRelationChosen(false);
+            });
+
+            // If the focus is back on the container, it must indicate that the person dynamic window (f4) is closed
+            container.focus(function () {
+                f4 = false;
+            });
+
+            onRelationChosen(true);
         });
     };
 
@@ -321,14 +370,14 @@
             });
 
             var onBlur = function () {
-                if (gebDatePerson.data('is-op') && gebDatePerson.is('[data-op-geb-day]')) {
-                    var dayPersonVal = dayPerson.getIntegerValue();
-                    var monthPersonVal = monthPerson.getIntegerValue();
-                    var yearPersonVal = yearPerson.getIntegerValue();
+                var dayPersonVal = dayPerson.getIntegerValue();
+                var monthPersonVal = monthPerson.getIntegerValue();
+                var yearPersonVal = yearPerson.getIntegerValue();
 
-                    var dayOpVal = gebDatePerson.getIntegerDataValue('op-geb-day');
-                    var monthOpVal = gebDatePerson.getIntegerDataValue('op-geb-month');
-                    var yearOpVal = gebDatePerson.getIntegerDataValue('op-geb-year');
+                if (!gebDatePerson.data('is-op') && gebDatePerson.is('[data-op-geb-day]')) {
+                    var dayOpVal = parseInt(gebDatePerson.attr('data-op-geb-day'));
+                    var monthOpVal = parseInt(gebDatePerson.attr('data-op-geb-month'));
+                    var yearOpVal = parseInt(gebDatePerson.attr('data-op-geb-year'));
 
                     if (dayPersonVal === dayOpVal && monthPersonVal === monthOpVal && yearPersonVal === yearOpVal) {
                         yearPerson.popover('show');
@@ -336,6 +385,11 @@
                     else {
                         volgendeInschrijving.val(2); // No OP
                     }
+                }
+                else if (gebDatePerson.data('is-op')) {
+                    $('[data-op-geb-day]').attr('data-op-geb-day', dayPersonVal);
+                    $('[data-op-geb-month]').attr('data-op-geb-month', monthPersonVal);
+                    $('[data-op-geb-year]').attr('data-op-geb-year', yearPersonVal);
                 }
             };
 
@@ -345,25 +399,43 @@
         });
     };
 
-    var registerDatumExplicietHoofd = function (elem) {
-        elem.find('.datum-expliciet-hoofd').each(function () {
+    var registerBurgStandCheck = function (elem) {
+        if ($('#currentPerson').data('is-burg-stand-rel-fix')) {
+            elem.find(':input').not('.burg-stand-relatie, .btn-next, .modal button').attr('disabled', 'disabled');
+        }
+
+        elem.find('.burg-stand-relatie').each(function () {
             var self = $(this);
-            var day = self.find('.day');
-            var month = self.find('.month');
-            var year = self.find('.year');
-            var date = self.prev();
 
             var onBlur = function () {
-                var dayVal = day.getIntegerValue();
-                var monthVal = month.getIntegerValue();
-                var yearVal = year.getIntegerValue();
-                onDatumExplicietHoofd(date, dayVal, monthVal, yearVal);
+                var relatie = self.getIntegerValue();
+                var curPerson = $('#currentPerson');
+
+                var numberOfLines = 0;
+                if (isAllLines()) {
+                    numberOfLines = $('#registrationAllLines').find('tr[data-rp]:last').getIntegerDataValue('rp');
+                }
+                else if (curPerson.data('is-burg-stand-rel-fix')) {
+                    numberOfLines = curPerson.getIntegerDataValue('nr-persons');
+                }
+
+                $.setError(
+                    !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
+                    'burg-stand',
+                    'Een relatie met regelnummer ' + relatie + ' is onmogelijk.'
+                );
+                $(document).trigger('changeOfState');
             };
 
-            day.blur(onBlur);
-            month.blur(onBlur);
-            year.blur(onBlur);
+            onBlur();
+            self.blur(onBlur);
         });
+    };
+
+    var setNationality = function (elem) {
+        if (elem.val().trim().toUpperCase() === 'NL') {
+            elem.val('Nederlandse');
+        }
     };
 
     var updateNumberOfLines = function () {
@@ -491,7 +563,7 @@
                 row.find('.legalPlaceOfLiving').val(prevRow.find('.legalPlaceOfLiving').val());
 
                 row.find('.kg').val(prevRow.find('.kg').val());
-                
+
                 row.find('.has-herkomst').val(prevRow.find('.has-herkomst').val());
                 row.find('.herkomst-datum .day').val(prevRow.find('.herkomst-datum .day').val());
                 row.find('.herkomst-datum .month').val(prevRow.find('.herkomst-datum .month').val());
@@ -520,16 +592,31 @@
                 e.preventDefault();
                 break;
         }
-    });
-
-    $(document).on('focus', '#registrationAllLines input', function () {
+    }).on('focus', '#registrationAllLines input', function () {
         copyFromPrevLine();
+    }).on('blur', '.nationality', function (e) {
+        setNationality($(e.target));
+    }).ready(function () {
+        // Extend the width to create more space in case one enters all lines at once
+        if (isAllLines()) {
+            $('#main').addClass('extend-width');
+        }
+
+        // If the user has to fix the burg. stand relation, then immediately open the person dynamic modal
+        if ($('#currentPerson').data('is-burg-stand-rel-fix')) {
+            // Open the person dynamic modal by triggering a F4 event
+            var e = $.Event('keydown');
+            e.which = 115; // F4
+            e.keyCode = 115; // F4
+
+            $('.burg-stand-relatie:first').focus().trigger(e);
+        }
     });
 
     $.registerInit(function (elem) {
         registerDateOfRegistration(elem);
-        registerRelatieRegelPopup(elem);
+        registerRelatie(elem);
         registerVolgendeInschrijvingPopup(elem);
-        registerDatumExplicietHoofd(elem);
+        registerBurgStandCheck(elem);
     });
 })(jQuery);

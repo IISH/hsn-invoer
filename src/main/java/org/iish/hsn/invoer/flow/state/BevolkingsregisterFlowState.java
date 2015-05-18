@@ -33,6 +33,7 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
     private int curB2Index = -1;
 
     private boolean        isOneLineEach     = true;
+    private boolean        isBurgStandRelFix = false;
     private int            volgnrOP          = 0;
     private int            noRegels          = 0;
     private int            curPersonKey      = 0;
@@ -90,9 +91,15 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
     public List<PersonDynamic> getAllB3() {
         List<PersonDynamic> b3 = new ArrayList<>();
         for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
-            for (List<PersonDynamic> personDynamics : getB3ForType(type).values()) {
-                b3.addAll(personDynamics);
-            }
+            b3.addAll(getAllB3ForType(type));
+        }
+        return b3;
+    }
+
+    public List<PersonDynamic> getAllB3ForType(PersonDynamic.Type type) {
+        List<PersonDynamic> b3 = new ArrayList<>();
+        for (List<PersonDynamic> personDynamics : getB3ForType(type).values()) {
+            b3.addAll(personDynamics);
         }
         return b3;
     }
@@ -222,6 +229,14 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
 
     public void setOneLineEach(boolean isOneLineEach) {
         this.isOneLineEach = isOneLineEach;
+    }
+
+    public boolean isBurgStandRelFix() {
+        return isBurgStandRelFix;
+    }
+
+    public void setBurgStandRelFix(boolean isBurgStandRelFix) {
+        this.isBurgStandRelFix = isBurgStandRelFix;
     }
 
     public int getVolgnrOP() {

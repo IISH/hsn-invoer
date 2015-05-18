@@ -3,22 +3,28 @@
 <head></head>
 <body>
 <fieldset th:fragment="bev-reg-navigation (akte, singlePersonScreen)">
-  <span class="pull-right">
-    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop">
+  <span class="pull-right" th:with="burgstandRelFix=${singlePersonScreen and akte.isBurgStandRelFix()}">
+    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop" th:if="${!burgstandRelFix}">
       Stoppen
     </button>
 
-    <button type="submit" name="_eventId_nextPerson" class="btn btn-default btn-next"
-            th:if="${singlePersonScreen and !@bevolkingsregisterHelper.registrationHasMaxPersons(akte)}">
-      Volgende persoon
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    </button>
+    <th:block th:if="${akte.isCorrectionDelete()} == false">
+      <button type="submit" name="_eventId_nextPerson" class="btn btn-default btn-next"
+              th:if="${!burgstandRelFix and singlePersonScreen and !@bevolkingsregisterHelper.registrationHasMaxPersons(akte)}">
+        Volgende persoon
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      </button>
 
-    <button type="submit" name="_eventId_next" class="btn btn-default btn-next"
-            th:if="${!singlePersonScreen or !@bevolkingsregisterHelper.registrationRequiresAnotherPerson(akte)}">
-      Volgende
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    </button>
+      <button type="submit" name="_eventId_next" class="btn btn-default btn-next"
+              th:if="${burgstandRelFix or !singlePersonScreen or !@bevolkingsregisterHelper.registrationRequiresAnotherPerson(akte)}">
+        Volgende
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      </button>
+    </th:block>
+
+     <button type="submit" name="_eventId_delete" class="btn btn-default btn-delete" th:if="${akte.isCorrectionDelete()}">
+       Verwijderen
+     </button>
   </span>
 </fieldset>
 

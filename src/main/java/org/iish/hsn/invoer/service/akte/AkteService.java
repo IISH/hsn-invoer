@@ -3,9 +3,6 @@ package org.iish.hsn.invoer.service.akte;
 import org.iish.hsn.invoer.domain.invoer.Byz;
 import org.iish.hsn.invoer.flow.state.AkteFlowState;
 import org.iish.hsn.invoer.flow.state.ByzAkteFlowState;
-import org.iish.hsn.invoer.flow.state.HuwelijksAkteFlowState;
-
-import java.util.Arrays;
 
 /**
  * Deals primarily with the storage of the 'bijzonderheden'.

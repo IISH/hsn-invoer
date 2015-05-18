@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface OvlechRepository extends Repository<Ovlech, Integer> {
     @Query("SELECT o FROM Ovlech o WHERE o.idnr = ?1 AND o.workOrder = ?2 ORDER BY o.vlgech ASC")
-    public List<Ovlech> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
+    List<Ovlech> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
 
-    public Ovlech save(Ovlech entity);
+    Ovlech save(Ovlech entity);
 
     void delete(Ovlech entity);
 

@@ -8,18 +8,18 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 
 public interface RelatieRepository extends Repository<Relatie, Integer> {
-    public Relatie findByRelkode(Integer relkode);
+    Relatie findByRelkode(Integer relkode);
 
     @Query("SELECT rel FROM Relatie rel " +
            "WHERE (UPPER(rel.relatie) LIKE UPPER(?1)) " +
            "AND (rel.workOrder = ?2 OR rel.workOrder = ?3)")
-    public Relatie findByRelatie(String relatie, WorkOrder emptyWorkOrder, WorkOrder workOrder);
+    Relatie findByRelatie(String relatie, WorkOrder emptyWorkOrder, WorkOrder workOrder);
 
     @Query("SELECT rel FROM Relatie rel " +
            "WHERE (UPPER(rel.relatie) LIKE UPPER(?1)) " +
            "AND (rel.workOrder = ?2 OR rel.workOrder = ?3) " +
            "ORDER BY rel.relatie ASC")
-    public List<Relatie> findByRelatieLike(String relatie, WorkOrder emptyWorkOrder, WorkOrder workOrder);
+    List<Relatie> findByRelatieLike(String relatie, WorkOrder emptyWorkOrder, WorkOrder workOrder);
 
-    public Relatie save(Relatie entity);
+    Relatie save(Relatie entity);
 }
