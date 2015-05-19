@@ -20,11 +20,78 @@
   <view-state id="BS0A1" view="bevolkingsregister/BS0A1" model="akte">
     <transition on="stop" to="stopEnd"/>
 
-    <transition on="next" to="finishEnd">
+    <transition on="next" to="nextPersonCheck">
       <evaluate expression="bevolkingsregisterService.renumberRegistrationPersons(flowScope.akte)"/>
-      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
     </transition>
   </view-state>
+
+  <!-- BS1: PERSONEN -->
+  <view-state id="BS1" view="bevolkingsregister/BS1-per-regel" model="akte">
+    <transition on="person-dynamic-update">
+      <evaluate
+          expression="bevolkingsregisterService.updateDynamicField(flowScope.akte, requestParameters.person, requestParameters.type, requestParameters.seqNr, requestParameters.asMap())"/>
+      <render fragments="#{'b3Content' + requestParameters.type}"/>
+    </transition>
+
+    <transition on="person-dynamic-add">
+      <evaluate
+          expression="bevolkingsregisterService.addNewDynamicField(flowScope.akte, requestParameters.person, requestParameters.type, requestParameters.asMap())"/>
+      <render fragments="#{'b3Content' + requestParameters.type}"/>
+    </transition>
+
+    <transition on="person-dynamic-remove">
+      <evaluate
+          expression="bevolkingsregisterService.removeDynamicField(flowScope.akte, requestParameters.person, requestParameters.type, requestParameters.seqNr)"/>
+      <render fragments="#{'b3Content' + requestParameters.type}"/>
+    </transition>
+
+    <transition on="refresh-person-dynamics">
+      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+      <render fragments="#{'b3Content' + requestParameters.type}"/>
+    </transition>
+
+    <transition on="refresh-person-dynamic">
+      <render fragments="#{requestParameters.type + '_CONTAINER'}"/>
+    </transition>
+
+    <transition on="copy-line">
+      <evaluate
+          expression="bevolkingsregisterService.copyLine(flowScope.akte, requestParameters.person, requestParameters.copyLine)"/>
+      <render fragments="currentPerson"/>
+    </transition>
+
+    <transition on="nextPerson" to="nextPersonCheck">
+      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+    </transition>
+
+    <transition on="next" to="nextCheck">
+      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="nextPersonCheck">
+    <evaluate expression="bevolkingsregisterHelper.registrationHasMaxPersons(flowScope.akte) == false"/>
+
+    <transition on="yes" to="BS1">
+      <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
+    </transition>
+
+    <transition on="no" to="finishEnd">
+      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
+    </transition>
+  </action-state>
+
+  <action-state id="nextCheck">
+    <evaluate expression="bevolkingsregisterHelper.registrationRequiresAnotherPerson(flowScope.akte)"/>
+
+    <transition on="yes" to="BS1">
+      <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
+    </transition>
+
+    <transition on="no" to="finishEnd">
+      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
+    </transition>
+  </action-state>
 
   <end-state id="stopEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
 

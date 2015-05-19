@@ -8,9 +8,10 @@
 <fieldset>
 <th:block layout:fragment="fields">
 <input type="hidden" id="curPerson" name="curPerson" th:value="${akte.curB2.rp}"/>
+<input type="hidden" th:field="*{nextPersonKey}" value="0"/>
 
-<div id="currentPerson" th:fragment="currentPerson"
-     data:is-burg-stand-rel-fix="${akte.isBurgStandRelFix()}" data:nr-persons="${akte.b2.size()}">
+<div id="currentPerson" th:fragment="currentPerson" data:nr-persons="${akte.b2.size()}" th:object="${akte}"
+     data:is-burg-stand-rel-fix="${akte.isBurgStandRelFix()}" data:correction-code="${akte.correctionCode}">
 <div class="form-group">
   <div class="sub-form-group">
     <label class="col-xs-3 control-label">HSN-volgnummer:</label>

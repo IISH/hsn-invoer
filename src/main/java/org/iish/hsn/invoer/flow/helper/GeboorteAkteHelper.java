@@ -3,7 +3,7 @@ package org.iish.hsn.invoer.flow.helper;
 import org.iish.hsn.invoer.domain.invoer.geb.Gebkant;
 import org.iish.hsn.invoer.domain.invoer.geb.Gebknd;
 import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
-import org.iish.hsn.invoer.domain.reference.Stpb;
+import org.iish.hsn.invoer.domain.invoer.geb.Stpb;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.service.LookupService;
 import org.springframework.beans.factory.annotation.Autowired;

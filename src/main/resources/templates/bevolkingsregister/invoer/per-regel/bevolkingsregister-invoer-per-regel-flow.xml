@@ -23,14 +23,14 @@
       flowScope.akte.prevRegistration.yearEntryHead gt 0"/>
 
     <transition on="yes" to="BS0A1"/>
-    <transition on="no" to="BS1"/>
+    <transition on="no" to="nextPersonCheck"/>
   </action-state>
 
   <!-- BS0A1: HERNUMMEREN PERSONEN REGISTRATIE -->
   <view-state id="BS0A1" view="bevolkingsregister/BS0A1" model="akte">
     <transition on="stop" to="stopEnd"/>
 
-    <transition on="next" to="BS1">
+    <transition on="next" to="nextPersonCheck">
       <evaluate expression="bevolkingsregisterService.renumberRegistrationPersons(flowScope.akte)"/>
     </transition>
   </view-state>
@@ -87,7 +87,7 @@
     <transition on="yes" to="BS1">
       <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
     </transition>
-    <transition on="no" to="BS2"/>
+    <transition on="no" to="burgStandRelatieCheck"/>
   </action-state>
 
   <action-state id="nextCheck">

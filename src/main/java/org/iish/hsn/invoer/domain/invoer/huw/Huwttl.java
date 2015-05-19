@@ -1,12 +1,14 @@
 package org.iish.hsn.invoer.domain.invoer.huw;
 
+import org.iish.hsn.invoer.domain.invoer.Invoer;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "huwttl",
        uniqueConstraints = {@UniqueConstraint(columnNames = {"IDNR", "HDAG", "HMAAND", "HJAAR"})})
-public class Huwttl implements Serializable {
+public class Huwttl extends Invoer implements Serializable {
     @Column(name = "IDNR", nullable = false) private int idnr;
 
     @Embedded private Huw huw = new Huw();

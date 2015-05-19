@@ -36,8 +36,8 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
     private boolean        isBurgStandRelFix = false;
     private int            volgnrOP          = 0;
     private int            noRegels          = 0;
-    private int            curPersonKey      = 0;
     private int            nextPersonKey     = 0; // 0 if we continue with the normal order
+    private int            originalPersonKey = 0; // 0 if nextPersonKey was not used
     private List<Integer>  correctionPersons = new ArrayList<>();
     private RegistrationId prevRegistration  = new RegistrationId();
 
@@ -219,7 +219,12 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
     public void setCurB2Index(int curB2Index) {
         if (curB2Index < this.b2.size()) {
             this.curB2Index = curB2Index;
-            this.curB2 = this.b2.get(curB2Index);
+            if (curB2Index >= 0) {
+                this.curB2 = this.b2.get(curB2Index);
+            }
+            else if (!this.b2.isEmpty()) {
+                this.curB2 = this.b2.get(0);
+            }
         }
     }
 
@@ -256,11 +261,7 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
     }
 
     public int getCurPersonKey() {
-        return curPersonKey;
-    }
-
-    public void setCurPersonKey(int curPersonKey) {
-        this.curPersonKey = curPersonKey;
+        return curB2Index + 1;
     }
 
     public int getNextPersonKey() {
@@ -269,6 +270,14 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
 
     public void setNextPersonKey(int nextPersonKey) {
         this.nextPersonKey = nextPersonKey;
+    }
+
+    public int getOriginalPersonKey() {
+        return originalPersonKey;
+    }
+
+    public void setOriginalPersonKey(int originalPersonKey) {
+        this.originalPersonKey = originalPersonKey;
     }
 
     public List<Integer> getCorrectionPersons() {

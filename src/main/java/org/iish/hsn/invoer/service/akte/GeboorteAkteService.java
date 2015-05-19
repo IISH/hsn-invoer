@@ -2,7 +2,7 @@ package org.iish.hsn.invoer.service.akte;
 
 import org.iish.hsn.invoer.domain.invoer.Byz;
 import org.iish.hsn.invoer.domain.invoer.geb.*;
-import org.iish.hsn.invoer.domain.reference.Stpb;
+import org.iish.hsn.invoer.domain.invoer.geb.Stpb;
 import org.iish.hsn.invoer.exception.AkteException;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.flow.state.*;

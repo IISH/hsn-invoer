@@ -61,8 +61,10 @@
       <render fragments="currentPerson"/>
     </transition>
 
+    <transition on="stop" to="stopEnd"/>
+
     <transition on="nextPerson" to="nextPersonCheck">
-      <evaluate expression="bevolkingsregisterService.registePerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
     </transition>
 
     <transition on="next" to="nextCheck">
@@ -76,10 +78,7 @@
     <transition on="yes" to="BS1">
       <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
     </transition>
-
-    <transition on="no" to="finishEnd">
-      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
-    </transition>
+    <transition on="no" to="burgStandRelatieCheck"/>
   </action-state>
 
   <action-state id="nextCheck">
@@ -88,8 +87,24 @@
     <transition on="yes" to="BS1">
       <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
     </transition>
+    <transition on="no" to="burgStandRelatieCheck"/>
+  </action-state>
+
+  <action-state id="burgStandRelatieCheck">
+    <evaluate
+        expression="bevolkingsregisterHelper.getPersonDynamicsWithInvalidBurgStandRelatie(flowScope.akte)"
+        result="flashScope.invalidPersonDynamics"/>
+    <evaluate expression="flashScope.invalidPersonDynamics.size() > 0"/>
+
+    <transition on="yes" to="BS1">
+      <evaluate expression="flowScope.akte.setBurgStandRelFix(true)"/>
+      <evaluate
+          expression="flowScope.akte.setNextPersonKey(flashScope.invalidPersonDynamics.get(0).keyToRegistrationPersons)"/>
+      <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
+    </transition>
 
     <transition on="no" to="finishEnd">
+      <evaluate expression="flowScope.akte.setBurgStandRelFix(false)"/>
       <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
     </transition>
   </action-state>

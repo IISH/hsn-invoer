@@ -1,23 +1,28 @@
-package org.iish.hsn.invoer.domain.reference;
+package org.iish.hsn.invoer.domain.invoer.geb;
+
+import org.iish.hsn.invoer.domain.invoer.Invoer;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "stpb")
-public class Stpb implements Serializable {
-    @Column(name = "DOELNR", nullable = false) private   int    doelnr;
-    @Column(name = "GEMEENTE", nullable = false) private String gemeente;
-    @Column(name = "GEMNR", nullable = false) private    int    gemnr;
-    @Column(name = "JAAR", nullable = false) private     int    jaar;
-    @Column(name = "AKTENR", nullable = false) private   int    aktenr;
-    @Column(name = "COHORTNR", nullable = false) private int    cohortnr;
-    @Column(name = "IDNR", nullable = false) private     int    idnr;
-    @Column(name = "PROVNR", nullable = false) private   int    provnr;
-    @Column(name = "REGNR", nullable = false) private    int    regnr;
-    @Column(name = "SUBCOHNR", nullable = false) private int    subcohnr;
+public class Stpb extends Invoer implements Serializable {
+    @Column(name = "DOELNR", nullable = false) private                int    doelnr;
+    @Column(name = "GEMEENTE", nullable = false, length = 50) private String gemeente;
+    @Column(name = "GEMNR", nullable = false) private                 int    gemnr;
+    @Column(name = "JAAR", nullable = false) private                  int    jaar;
+    @Column(name = "AKTENR", nullable = false) private                int    aktenr;
+    @Column(name = "COHORTNR", nullable = false) private              int    cohortnr;
+    @Column(name = "IDNR", nullable = false) private                  int    idnr;
+    @Column(name = "PROVNR", nullable = false) private                int    provnr;
+    @Column(name = "REGNR", nullable = false) private                 int    regnr;
+    @Column(name = "SUBCOHNR", nullable = false) private              int    subcohnr;
 
-    @Id @Column(name = "RecordID") private Integer recordID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "RecordID")
+    private Integer recordID;
 
     public int getDoelnr() {
         return doelnr;

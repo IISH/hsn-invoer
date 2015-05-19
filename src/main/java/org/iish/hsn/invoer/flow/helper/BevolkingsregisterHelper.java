@@ -18,35 +18,55 @@ import java.util.regex.Pattern;
 public class BevolkingsregisterHelper {
     private static final Pattern DATE_EXPLICIET_HOOFD = Pattern.compile("^###\\$([0-9]{2})/([0-9]{2})/([0-9]{4})$");
 
+    public boolean hasCorrectionPersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+        if (bevolkingsregisterFlow.isCorrection()) {
+            List<Integer> correctionPersons = bevolkingsregisterFlow.getCorrectionPersons();
+            int curPerson = bevolkingsregisterFlow.getCurPersonKey();
+            int correctionPersonKeyIdx = correctionPersons.indexOf(curPerson);
+
+            if (correctionPersons.size() > 0) {
+                // If we have correction persons, and no current person, then yes, we still have correction persons
+                if (curPerson == 0) {
+                    return true;
+                }
+
+                // As long as the current person is not the last one in the list, then we still have correction persons
+                if (correctionPersonKeyIdx >= 0 && correctionPersonKeyIdx <= (correctionPersons.size() - 2)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public boolean registrationRequiresAnotherPerson(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        List<Person> b2 = bevolkingsregisterFlow.getB2();
         int curPerson = bevolkingsregisterFlow.getCurPersonKey();
         int volgnrOP = bevolkingsregisterFlow.getVolgnrOP();
 
         // If we are in correction, require another person as long as not all correction persons were corrected
         if (bevolkingsregisterFlow.isCorrection()) {
-            List<Integer> correctionPersons = bevolkingsregisterFlow.getCorrectionPersons();
-            int correctionPersonKeyIdx = correctionPersons.indexOf(curPerson);
-
-            return ((correctionPersonKeyIdx <= (b2.size() - 2)) && (correctionPersonKeyIdx >= 0));
+            return hasCorrectionPersons(bevolkingsregisterFlow);
         }
 
         // Otherwise, if the RP is not yet entered, another person is required
-        return (curPerson < volgnrOP);
+        // Also another person is required if one was chosen from previous registration
+        return ((curPerson < volgnrOP) || (curPerson < bevolkingsregisterFlow.getB2().size()));
     }
 
     public boolean registrationHasMaxPersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         Ref_AINB refAinb = bevolkingsregisterFlow.getRefAinb();
-        List<Person> b2 = bevolkingsregisterFlow.getB2();
         int curPerson = bevolkingsregisterFlow.getCurPersonKey();
 
         // If we are in correction, there is no max as long as not all correction persons were corrected
         if (bevolkingsregisterFlow.isCorrection()) {
-            List<Integer> correctionPersons = bevolkingsregisterFlow.getCorrectionPersons();
-            int correctionPersonKeyIdx = correctionPersons.indexOf(curPerson);
-
-            if ((correctionPersonKeyIdx <= (b2.size() - 2)) && (correctionPersonKeyIdx >= 0)) {
+            if (hasCorrectionPersons(bevolkingsregisterFlow)) {
                 return false;
+            }
+
+            // However, in the case of a renumbering, we will stop after all correction persons were corrected
+            if (bevolkingsregisterFlow.getCorrectionCode() == 6) {
+                return true;
             }
         }
 

@@ -2,7 +2,7 @@ package org.iish.hsn.invoer.flow.state;
 
 import org.iish.hsn.invoer.domain.invoer.Byz;
 import org.iish.hsn.invoer.domain.invoer.geb.*;
-import org.iish.hsn.invoer.domain.reference.Stpb;
+import org.iish.hsn.invoer.domain.invoer.geb.Stpb;
 import org.iish.hsn.invoer.flow.helper.GeboorteAkteViewNames;
 import org.iish.hsn.invoer.flow.helper.ViewNames;
 

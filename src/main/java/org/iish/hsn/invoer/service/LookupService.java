@@ -12,7 +12,7 @@ import org.iish.hsn.invoer.domain.invoer.pick.*;
 import org.iish.hsn.invoer.domain.invoer.pk.Pkknd;
 import org.iish.hsn.invoer.domain.reference.Ref_AINB;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
-import org.iish.hsn.invoer.domain.reference.Stpb;
+import org.iish.hsn.invoer.domain.invoer.geb.Stpb;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.repository.invoer.bev.RegistrationRepository;
 import org.iish.hsn.invoer.repository.invoer.geb.GebakteRepository;
@@ -23,7 +23,7 @@ import org.iish.hsn.invoer.repository.invoer.pick.*;
 import org.iish.hsn.invoer.repository.invoer.pk.PkkndRepository;
 import org.iish.hsn.invoer.repository.reference.Ref_AINBRepository;
 import org.iish.hsn.invoer.repository.reference.Ref_GBHRepository;
-import org.iish.hsn.invoer.repository.reference.StpbRepository;
+import org.iish.hsn.invoer.repository.invoer.geb.StpbRepository;
 import org.iish.hsn.invoer.util.InputMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class LookupService {
      * @throws NotFoundException Thrown if the record was not found.
      */
     public Stpb getStpb(int idnr, boolean throwException) throws NotFoundException {
-        Stpb stpb = stpbRepository.findByIdnr(idnr);
+        Stpb stpb = stpbRepository.findByIdnrAndWorkOrder(idnr, inputMetadata.getWorkOrder());
         if ((stpb == null) && throwException) {
             throw new NotFoundException("Stpb with idnr " + idnr + " could not be found!");
         }
@@ -159,7 +159,7 @@ public class LookupService {
      * @throws NotFoundException Thrown if the record was not found.
      */
     public Huwttl getHuwttl(int idnr, Huw huw, boolean throwException) throws NotFoundException {
-        Huwttl huwttl = huwttlRepository.findByIdnrAndHuw(idnr, huw);
+        Huwttl huwttl = huwttlRepository.findByIdnrAndHuwAndWorkOrder(idnr, huw, inputMetadata.getWorkOrder());
         if ((huwttl == null) && throwException) {
             throw new NotFoundException("Huwttl with idnr " + idnr + " could not be found!");
         }

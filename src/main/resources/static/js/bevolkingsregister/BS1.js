@@ -17,7 +17,7 @@
             person = getActiveRow().getIntegerDataValue('rp');
         }
         else {
-            person = ('#curPerson').getIntegerValue();
+            person = $('#curPerson').getIntegerValue();
         }
 
         if (!isNaN(person)) {
@@ -62,7 +62,6 @@
 
     /* BS1 specific operations */
 
-    // TODO: eDayInsValidate
     var registerDateOfRegistration = function (elem) {
         elem.find('.datum-inschrijving').each(function () {
             var self = $(this);
@@ -151,7 +150,6 @@
                 }
             };
 
-            // TODO: eDayInsValidate
             // Encodes the datum expliciet hoofd and synchronizes the value
             var onDatumExplicietHoofd = function (dayVal, monthVal, yearVal) {
                 var value = '';
@@ -441,7 +439,8 @@
                 if (isAllLines()) {
                     numberOfLines = $('#registrationAllLines').find('tr[data-rp]:last').getIntegerDataValue('rp');
                 }
-                else if (curPerson.data('is-burg-stand-rel-fix')) {
+                else if (curPerson.data('is-burg-stand-rel-fix') ||
+                    ($.isCorrection() && (curPerson.getIntegerDataValue('correction-code') === 6))) {
                     numberOfLines = curPerson.getIntegerDataValue('nr-persons');
                 }
 
@@ -571,6 +570,30 @@
         });
     };
 
+    var nextLine = function () {
+        var nextPersonKeyElem = $('#nextPersonKey');
+
+        var person = $.getCurPerson();
+        if (isNaN(person)) {
+            return;
+        }
+
+        var nextLine = parseInt(prompt('Volgend te bewerken regelnummer:', nextPersonKeyElem.val()));
+        if (isNaN(nextLine)) {
+            return;
+        }
+        if (nextLine === person) {
+            alert('Hetzelfde regelnummer.');
+            return;
+        }
+        if (nextLine > person) {
+            alert('Het nummer moet kleiner zijn dan ' + person);
+            return;
+        }
+
+        nextPersonKeyElem.val(nextLine);
+    };
+
     var copyFromPrevLine = function () {
         var row = getActiveRow();
         if (!$.isCorrection() && (row.data('copy-prev-person') !== 'copy-prev-person')) {
@@ -622,6 +645,12 @@
             case 118: // F7
                 copyLine();
                 e.preventDefault();
+                break;
+            case 119: // F8
+                if (!isAllLines()) {
+                    nextLine();
+                    e.preventDefault();
+                }
                 break;
         }
     }).on('focus', '#registrationAllLines input', function () {

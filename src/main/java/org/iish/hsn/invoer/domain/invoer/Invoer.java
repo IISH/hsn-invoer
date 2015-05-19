@@ -12,12 +12,12 @@ import java.io.Serializable;
 public abstract class Invoer implements Serializable {
     @Embedded private WorkOrder workOrder = new WorkOrder();
 
-    @Column(name = "ARCH", nullable = false, length = 1) private    String arch; // TODO: Column not found in PkKnd or B* (Rijksarchief / gemeentearchief)
+    // @Column(name = "ARCH", nullable = false, length = 1) private    String arch; // TODO: Column not found in PkKnd or B* (Rijksarchief / gemeentearchief)
     @Column(name = "OPDRNR", nullable = false, length = 3) private  String opdrnr;
     @Column(name = "DATUM", nullable = false, length = 10) private  String datum;
     @Column(name = "INIT", nullable = false, length = 3) private    String init;
     @Column(name = "VERSIE", nullable = false, length = 5) private  String versie;
-    @Column(name = "ARCHO", nullable = false, length = 1) private   String archo; // TODO: Column not found in PkKnd or B* (Rijksarchief / gemeentearchief)
+    // @Column(name = "ARCHO", nullable = false, length = 1) private   String archo; // TODO: Column not found in PkKnd or B* (Rijksarchief / gemeentearchief)
     @Column(name = "OPDRNRO", nullable = false, length = 3) private String opdrnro;
     @Column(name = "DATUMO", nullable = false, length = 10) private String datumo;
     @Column(name = "INITO", nullable = false, length = 3) private   String inito;
@@ -31,13 +31,13 @@ public abstract class Invoer implements Serializable {
         this.workOrder = workOrder;
     }
 
-    public String getArch() {
+   /*public String getArch() {
         return arch;
     }
 
     public void setArch(String arch) {
         this.arch = arch;
-    }
+    }*/
 
     public String getOpdrnr() {
         return opdrnr;
@@ -71,13 +71,13 @@ public abstract class Invoer implements Serializable {
         this.versie = versie;
     }
 
-    public String getArcho() {
+    /*public String getArcho() {
         return archo;
     }
 
     public void setArcho(String archo) {
         this.archo = archo;
-    }
+    }*/
 
     public String getOpdrnro() {
         return opdrnro;

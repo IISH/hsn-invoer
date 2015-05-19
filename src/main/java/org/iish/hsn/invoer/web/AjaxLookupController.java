@@ -11,7 +11,7 @@ import org.iish.hsn.invoer.domain.invoer.pick.*;
 import org.iish.hsn.invoer.domain.invoer.pk.Pkknd;
 import org.iish.hsn.invoer.domain.reference.Ref_AINB;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
-import org.iish.hsn.invoer.domain.reference.Stpb;
+import org.iish.hsn.invoer.domain.invoer.geb.Stpb;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.service.LookupService;
 import org.springframework.beans.factory.annotation.Autowired;

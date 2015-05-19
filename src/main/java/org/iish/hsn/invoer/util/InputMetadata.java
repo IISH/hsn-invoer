@@ -1,6 +1,7 @@
 package org.iish.hsn.invoer.util;
 
 import org.iish.hsn.invoer.domain.invoer.Invoer;
+import org.iish.hsn.invoer.domain.invoer.StatusWorkOrder;
 import org.iish.hsn.invoer.domain.invoer.WorkOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -19,7 +20,7 @@ public class InputMetadata implements Serializable {
 
     private String ondrzk;
     private String opdrnr;
-    private String arch; // TODO: Required?
+    //private String arch; // TODO: Required?
     private String init;
 
     @Value("${application.version}") private String version;
@@ -40,13 +41,13 @@ public class InputMetadata implements Serializable {
         this.opdrnr = opdrnr;
     }
 
-    public String getArch() {
+    /*public String getArch() {
         return arch;
     }
 
     public void setArch(String arch) {
         this.arch = arch;
-    }
+    }*/
 
     public String getInit() {
         return init;
@@ -73,7 +74,7 @@ public class InputMetadata implements Serializable {
 
     public void saveToEntity(Invoer invoer) {
         invoer.setOpdrnr(opdrnr);
-        invoer.setArch(arch);
+        //invoer.setArch(arch);
         invoer.setInit(init);
         invoer.setVersie(version);
         invoer.setDatum(DATE_TIME_FORMAT.format(new Date()));
@@ -82,7 +83,7 @@ public class InputMetadata implements Serializable {
         if ((invoer.getOpdrnro() == null) || invoer.getOpdrnro().trim().isEmpty()) {
             invoer.setWorkOrder(getWorkOrder());
             invoer.setOpdrnro(opdrnr);
-            invoer.setArcho(arch);
+            //invoer.setArcho(arch);
             invoer.setInito(init);
             invoer.setVersieo(version);
             invoer.setDatumo(DATE_TIME_FORMAT.format(new Date()));

@@ -6,10 +6,7 @@ import org.iish.hsn.invoer.domain.invoer.bev.RegistrationAddress;
 import org.iish.hsn.invoer.flow.state.BevolkingsregisterFlowState;
 import org.springframework.beans.BeanUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Takes care of the renumbering of persons.
@@ -21,6 +18,8 @@ public class BevolkingsregisterRenumbering {
     private Set<Person>              deletedB2;
     private Set<PersonDynamic>       deletedB3;
     private Set<RegistrationAddress> deletedB6;
+
+    private List<Integer> missingKeys;
 
     /**
      * Starts the renumbering of persons.
@@ -38,6 +37,13 @@ public class BevolkingsregisterRenumbering {
         this.deletedB2 = new HashSet<>();
         this.deletedB3 = new HashSet<>();
         this.deletedB6 = new HashSet<>();
+
+        this.missingKeys = new ArrayList<>();
+
+        // Already initialize the missing keys list, we remove those that are not missing later
+        for (int i=1; i<=renumbered.getB2().size(); i++) {
+            missingKeys.add(i);
+        }
     }
 
     public Set<Person> getDeletedB2() {
@@ -50,6 +56,10 @@ public class BevolkingsregisterRenumbering {
 
     public Set<RegistrationAddress> getDeletedB6() {
         return deletedB6;
+    }
+
+    public List<Integer> getMissingKeys() {
+        return missingKeys;
     }
 
     public void renumber() {
@@ -72,6 +82,7 @@ public class BevolkingsregisterRenumbering {
             }
             else {
                 renumbered.getB2().set(keyNew - 1, newPerson);
+                missingKeys.remove((Integer) keyNew); // Casting to make sure the right method is called
 
                 renumberPersonDynamics(keyOriginal, keyNew, false);
                 renumberRegistrationAddresses(keyOriginal, keyNew, false);
@@ -116,6 +127,7 @@ public class BevolkingsregisterRenumbering {
     }
 
     private void deletePersonDynamic(PersonDynamic personDynamic) {
+        // If it has no record id, it is not stored in the database, so just forget about it
         if (personDynamic.getRecordID() != null) {
             PersonDynamic newPersonDynamic = new PersonDynamic();
             BeanUtils.copyProperties(personDynamic, newPersonDynamic);
@@ -129,6 +141,7 @@ public class BevolkingsregisterRenumbering {
                 RegistrationAddress newRegistrationAddress = new RegistrationAddress();
                 BeanUtils.copyProperties(registrationAddress, newRegistrationAddress);
 
+                // If it has no record id and will be deleted, it is not stored in the database, so just forget about it
                 if (isDeleted && (newRegistrationAddress.getRecordID() != null)) {
                     deletedB6.add(newRegistrationAddress);
                 }

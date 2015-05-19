@@ -35,7 +35,7 @@
             elemParent = this.getParentOfFormElement();
         }
 
-        if (condition) {
+        if (condition && this.is(':enabled')) {
             elemParent.addClass('has-error');
         }
         else {
