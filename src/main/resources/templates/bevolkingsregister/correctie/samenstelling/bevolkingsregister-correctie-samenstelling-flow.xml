@@ -22,6 +22,7 @@
 
     <transition on="next" to="finishEnd">
       <evaluate expression="bevolkingsregisterService.renumberRegistrationPersons(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
     </transition>
   </view-state>
 

@@ -7,127 +7,18 @@
 <fieldset>
 <th:block layout:fragment="table">
 <div class="crud-table-container">
-  <div class="crud-table">
-    <div class="fixed-left-column ajax-updated" id="registrationAddresses"
-         th:fragment="registrationAddresses" th:object="${akte}" data:number-of-persons="${akte.b2.size()}">
-      <div class="fixed">
-        <table class="table table-condensed table-data">
-          <thead>
-          <tr>
-            <th>&nbsp;</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="address,stat : *{b6}">
-            <td>
-              <span></span>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="free scrollable" id="registrationAddressesTable">
-        <table class="table table-condensed table-data">
-          <thead>
-          <tr>
-            <th style="min-width:60px;max-width:60px;">Pers.</th>
-            <th style="min-width:60px;max-width:60px;">Volgnr</th>
-            <th style="min-width:200px;max-width:200px;">Datum</th>
-            <th style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">INTERPR</th>
-            <th style="min-width:60px;max-width:60px;">Sim</th>
-            <th style="min-width:60px;max-width:60px;">Type</th>
-            <th style="min-width:300px;max-width:300px;">Straat etc.</th>
-            <th style="min-width:150px;max-width:150px;">Nr</th>
-            <th style="min-width:150px;max-width:150px;">Tvg</th>
-            <th style="min-width:150px;max-width:150px;">&nbsp;</th>
-          </tr>
-          </thead>
-
-          <tbody>
-          <tr th:each="address,stat : *{b6}">
-            <td>
-              <!-- Pers. -->
-              <span class="person keyToRegistrationPersons"
-                    th:utext="${akte.b6[__${stat.index}__].keyToRegistrationPersons}">
-              </span>
-            </td>
-            <td>
-              <!-- Volgnr -->
-              <span class="seqNr sequenceNumberToAddresses"
-                    th:utext="${akte.b6[__${stat.index}__].sequenceNumberToAddresses}">
-              </span>
-            </td>
-            <td class="dateOrder">
-              <!-- Datum -->
-              <span class="dayOfAddress day" th:utext="${akte.b6[__${stat.index}__].dayOfAddress}"></span>
-              /
-              <span class="monthOfAddress month" th:utext="${akte.b6[__${stat.index}__].monthOfAddress}"></span>
-              /
-              <span class="yearOfAddress year" th:utext="${akte.b6[__${stat.index}__].yearOfAddress}"></span>
-            </td>
-            <td th:if="${akte.isCorrection()}">
-              <!-- INTERPR -->
-              <span class="dayOfAddressAfterInterpretation day"
-                    th:utext="${akte.b6[__${stat.index}__].dayOfAddressAfterInterpretation}"></span>
-              /
-              <span class="monthOfAddressAfterInterpretation month"
-                    th:utext="${akte.b6[__${stat.index}__].monthOfAddressAfterInterpretation}"></span>
-              /
-              <span class="yearOfAddressAfterInterpretation year"
-                    th:utext="${akte.b6[__${stat.index}__].yearOfAddressAfterInterpretation}"></span>
-            </td>
-            <td>
-              <!-- Sim -->
-              <span class="synchroneNumber" th:utext="${akte.b6[__${stat.index}__].synchroneNumber}"></span>
-            </td>
-            <td>
-              <!-- Type -->
-              <span class="addressType" th:utext="${akte.b6[__${stat.index}__].addressType}"></span>
-            </td>
-            <td>
-              <!-- Straat etc. -->
-              <span class="nameOfStreet" th:utext="${akte.b6[__${stat.index}__].nameOfStreet}"></span>
-            </td>
-            <td>
-              <!-- Nr -->
-              <span class="number" th:utext="${akte.b6[__${stat.index}__].number}"></span>
-            </td>
-            <td>
-              <!-- Toevoeging -->
-              <span class="additionToNumber" th:utext="${akte.b6[__${stat.index}__].additionToNumber}"></span>
-            </td>
-            <td>
-              <!-- Update -->
-              <button type="button" class="btn btn-default btn-xs btn-update">
-                Correctie
-              </button>
-
-              <!-- Remove -->
-              <button type="button" class="btn btn-default btn-xs btn-delete">
-                Vervallen
-              </button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="on-no-edit clearfix">
-    <div class="pull-right content-spacing">
-      <button type="button" class="btn btn-default btn-xs btn-new">
-        Nieuw
-      </button>
-    </div>
-  </div>
-
-  <div class="on-edit extra-top-margin fixed-left-column" style="display:none;">
+<div class="crud-table">
+  <div class="fixed-left-column ajax-updated" id="registrationAddresses"
+       th:fragment="registrationAddresses" th:object="${akte}" data:number-of-persons="${akte.b2.size()}">
     <div class="fixed">
-      <table class="table table-condensed table-form">
-        <tbody>
+      <table class="table table-condensed table-data">
+        <thead>
         <tr>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="address,stat : *{b6}">
           <td>
             <span></span>
           </td>
@@ -136,67 +27,85 @@
       </table>
     </div>
 
-    <div class="free scrollable">
-      <table class="table table-condensed table-form">
-        <tbody>
+    <div class="free scrollable" id="registrationAddressesTable">
+      <table class="table table-condensed table-data">
+        <thead>
         <tr>
-          <td style="min-width:60px;max-width:60px;">
+          <th style="min-width:60px;max-width:60px;">Pers.</th>
+          <th style="min-width:60px;max-width:60px;">Volgnr</th>
+          <th style="min-width:200px;max-width:200px;">Datum</th>
+          <th style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">INTERPR</th>
+          <th style="min-width:60px;max-width:60px;">Sim</th>
+          <th style="min-width:60px;max-width:60px;">Type</th>
+          <th style="min-width:300px;max-width:300px;">Straat etc.</th>
+          <th style="min-width:150px;max-width:150px;">Nr</th>
+          <th style="min-width:150px;max-width:150px;">Tvg</th>
+          <th style="min-width:150px;max-width:150px;">&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="address,stat : *{b6}">
+          <td>
             <!-- Pers. -->
-            <input type="text" name="keyToRegistrationPersons" class="person form-control form-control-digit required"/>
+              <span class="person keyToRegistrationPersons"
+                    th:utext="${akte.b6[__${stat.index}__].keyToRegistrationPersons}">
+              </span>
           </td>
-          <td style="min-width:60px;max-width:60px;">
-            <!-- Volg -->
-            <input type="text" name="sequenceNumberToAddresses" class="seqNr form-control form-control-digit required"/>
+          <td>
+            <!-- Volgnr -->
+              <span class="seqNr sequenceNumberToAddresses"
+                    th:utext="${akte.b6[__${stat.index}__].sequenceNumberToAddresses}">
+              </span>
           </td>
-          <td class="dateOrder checkDateBevReg fullCheck" style="min-width:200px;max-width:200px;">
+          <td class="dateOrder">
             <!-- Datum -->
-            <input type="text" name="dayOfAddress" class="form-control form-control-digit day"/>
+            <span class="dayOfAddress day" th:utext="${akte.b6[__${stat.index}__].dayOfAddress}"></span>
             /
-            <input type="text" name="monthOfAddress" class="form-control form-control-digit month"/>
+            <span class="monthOfAddress month" th:utext="${akte.b6[__${stat.index}__].monthOfAddress}"></span>
             /
-            <input type="text" name="yearOfAddress" class="form-control form-control-small year"/>
+            <span class="yearOfAddress year" th:utext="${akte.b6[__${stat.index}__].yearOfAddress}"></span>
           </td>
-          <td class="checkDateBevReg fullCheck" style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
+          <td th:if="${akte.isCorrection()}">
             <!-- INTERPR -->
-            <input type="text" name="dayOfAddressAfterInterpretation" class="form-control form-control-digit day"/>
+              <span class="dayOfAddressAfterInterpretation day"
+                    th:utext="${akte.b6[__${stat.index}__].dayOfAddressAfterInterpretation}"></span>
             /
-            <input type="text" name="monthOfAddressAfterInterpretation" class="form-control form-control-digit month"/>
+              <span class="monthOfAddressAfterInterpretation month"
+                    th:utext="${akte.b6[__${stat.index}__].monthOfAddressAfterInterpretation}"></span>
             /
-            <input type="text" name="yearOfAddressAfterInterpretation" class="form-control form-control-small year"/>
+              <span class="yearOfAddressAfterInterpretation year"
+                    th:utext="${akte.b6[__${stat.index}__].yearOfAddressAfterInterpretation}"></span>
           </td>
-          <td style="min-width:60px;max-width:60px;">
+          <td>
             <!-- Sim -->
-            <input type="text" name="synchroneNumber" class="form-control form-control-digit"/>
+            <span class="synchroneNumber" th:utext="${akte.b6[__${stat.index}__].synchroneNumber}"></span>
           </td>
-          <td style="min-width:60px;max-width:60px;">
+          <td>
             <!-- Type -->
-            <input type="text" class="form-control required adrestype is-id" name="addressType" data-selected="0"/>
+            <span class="addressType" th:utext="${akte.b6[__${stat.index}__].addressType}"></span>
           </td>
-          <td style="min-width:300px;max-width:300px;">
+          <td>
             <!-- Straat etc. -->
-            <input type="text" name="nameOfStreet" class="form-control required"/>
+            <span class="nameOfStreet" th:utext="${akte.b6[__${stat.index}__].nameOfStreet}"></span>
           </td>
-          <td style="min-width:150px;max-width:150px;">
+          <td>
             <!-- Nr -->
-            <input type="text" name="number" class="form-control"/>
+            <span class="number" th:utext="${akte.b6[__${stat.index}__].number}"></span>
           </td>
-          <td style="min-width:150px;max-width:150px;">
-            <!-- Tvg -->
-            <input type="text" name="additionToNumber" class="form-control"/>
+          <td>
+            <!-- Toevoeging -->
+            <span class="additionToNumber" th:utext="${akte.b6[__${stat.index}__].additionToNumber}"></span>
           </td>
-          <td style="min-width:150px;max-width:150px;">
-            <!-- Cancel -->
-            <button type="button" class="btn btn-default btn-xs btn-cancel">
-              Annuleren
+          <td>
+            <!-- Update -->
+            <button type="button" class="btn btn-default btn-xs btn-update">
+              Correctie
             </button>
 
-            <!-- Save -->
-            <button type="button" class="btn btn-default btn-xs btn-save-new">
-              Opslaan
-            </button>
-
-            <button type="button" class="btn btn-default btn-xs btn-save-update">
-              Opslaan
+            <!-- Remove -->
+            <button type="button" class="btn btn-default btn-xs btn-delete">
+              Vervallen
             </button>
           </td>
         </tr>
@@ -204,6 +113,102 @@
       </table>
     </div>
   </div>
+</div>
+
+<div class="on-no-edit clearfix">
+  <div class="pull-right content-spacing">
+    <button type="button" class="btn btn-default btn-xs btn-new">
+      Nieuw
+    </button>
+  </div>
+</div>
+
+<div class="on-edit extra-top-margin fixed-left-column" style="display:none;">
+  <div class="fixed">
+    <table class="table table-condensed table-form">
+      <tbody>
+      <tr>
+        <td>
+          <span></span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="free scrollable">
+    <table class="table table-condensed table-form">
+      <tbody>
+      <tr>
+        <td style="min-width:60px;max-width:60px;">
+          <!-- Pers. -->
+          <input type="text" name="keyToRegistrationPersons"
+                 class="person form-control form-control-digit required zero-allowed"/>
+        </td>
+        <td style="min-width:60px;max-width:60px;">
+          <!-- Volg -->
+          <input type="text" name="sequenceNumberToAddresses" class="seqNr form-control form-control-digit required"/>
+        </td>
+        <td style="min-width:200px;max-width:200px;">
+          <div class="dateOrder checkDateBevReg fullCheck">
+            <!-- Datum -->
+            <input type="text" name="dayOfAddress" class="form-control form-control-digit day"/>
+            /
+            <input type="text" name="monthOfAddress" class="form-control form-control-digit month"/>
+            /
+            <input type="text" name="yearOfAddress" class="form-control form-control-small year"/>
+          </div>
+        </td>
+        <td style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
+          <div class="checkInterprDateBevReg">
+            <!-- INTERPR -->
+            <input type="text" name="dayOfAddressAfterInterpretation" class="form-control form-control-digit day"/>
+            /
+            <input type="text" name="monthOfAddressAfterInterpretation" class="form-control form-control-digit month"/>
+            /
+            <input type="text" name="yearOfAddressAfterInterpretation" class="form-control form-control-small year"/>
+          </div>
+        </td>
+        <td style="min-width:60px;max-width:60px;">
+          <!-- Sim -->
+          <input type="text" name="synchroneNumber" class="form-control form-control-digit"/>
+        </td>
+        <td style="min-width:60px;max-width:60px;">
+          <!-- Type -->
+          <input type="text" class="form-control required adrestype is-id" name="addressType" data-selected="0"/>
+        </td>
+        <td style="min-width:300px;max-width:300px;">
+          <!-- Straat etc. -->
+          <input type="text" name="nameOfStreet" class="form-control required"/>
+        </td>
+        <td style="min-width:150px;max-width:150px;">
+          <!-- Nr -->
+          <input type="text" name="number" class="form-control"/>
+        </td>
+        <td style="min-width:150px;max-width:150px;">
+          <!-- Tvg -->
+          <input type="text" name="additionToNumber" class="form-control"/>
+        </td>
+        <td style="min-width:150px;max-width:150px;">
+          <!-- Cancel -->
+          <button type="button" class="btn btn-default btn-xs btn-cancel">
+            Annuleren
+          </button>
+
+          <!-- Save -->
+          <button type="button" class="btn btn-default btn-xs btn-save-new">
+            Opslaan
+          </button>
+
+          <button type="button" class="btn btn-default btn-xs btn-save-update">
+            Opslaan
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 </div>
 
 <div id="dateOrderWarning" class="content-spacing" style="display:none;">
@@ -223,7 +228,8 @@
 </th:block>
 </fieldset>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: bev-reg-navigation (${akte}, false)"></fieldset>
+<fieldset layout:fragment="navigation"
+          th:include="fragments/navigation :: bev-reg-navigation (${akte}, false)"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"

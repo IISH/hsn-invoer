@@ -39,37 +39,39 @@
          th:classappend="${requiredField} ? 'required'"/>
 </div>
 
-<div class="col-xs-5 form-inline" th:fragment="burgelijke-stand (burgelijkeStand)" th:with="brgId=*{__${burgelijkeStand}__}">
-  <input type="text" class="form-control form-control-digit burgstand required is-id"
-         data:selected="${brgId}" th:field="*{__${burgelijkeStand}__}"/>
+<div class="col-xs-5 form-inline" th:fragment="burgelijke-stand (burgelijkeStand)">
+  <th:block th:with="brgId=*{__${burgelijkeStand}__}">
+    <input type="text" class="form-control form-control-digit burgstand required is-id"
+           data:selected="${brgId}" th:field="*{__${burgelijkeStand}__}"/>
 
-  <p class="form-control-static picklist-label spacing" th:if="${#arrays.contains({1,2,3,5,6,9}, brgId) == false}">
-    &nbsp;
-  </p>
+    <p class="form-control-static picklist-label spacing" th:if="${#arrays.contains({1,2,3,5,6,9}, brgId) == false}">
+      &nbsp;
+    </p>
 
-  <p class="form-control-static picklist-label spacing" th:if="${brgId == 1}">
-    Ongehuwd
-  </p>
+    <p class="form-control-static picklist-label spacing" th:if="${brgId == 1}">
+      Ongehuwd
+    </p>
 
-  <p class="form-control-static picklist-label spacing" th:if="${brgId == 2}">
-    Verweduwd
-  </p>
+    <p class="form-control-static picklist-label spacing" th:if="${brgId == 2}">
+      Verweduwd
+    </p>
 
-  <p class="form-control-static picklist-label spacing" th:if="${brgId == 3}">
-    Gescheiden
-  </p>
+    <p class="form-control-static picklist-label spacing" th:if="${brgId == 3}">
+      Gescheiden
+    </p>
 
-  <p class="form-control-static picklist-label spacing" th:if="${brgId == 5}">
-    Gehuwd
-  </p>
+    <p class="form-control-static picklist-label spacing" th:if="${brgId == 5}">
+      Gehuwd
+    </p>
 
-  <p class="form-control-static picklist-label spacing" th:if="${brgId == 6}">
-    Onbekend
-  </p>
+    <p class="form-control-static picklist-label spacing" th:if="${brgId == 6}">
+      Onbekend
+    </p>
 
-  <p class="form-control-static picklist-label spacing" th:if="${brgId == 9}">
-    Onb -> huwelijk
-  </p>
+    <p class="form-control-static picklist-label spacing" th:if="${brgId == 9}">
+      Onb -> huwelijk
+    </p>
+  </th:block>
 </div>
 
 <div class="col-xs-5" th:fragment="kerkgenootschap (kerkgenootschap, requiredField)">

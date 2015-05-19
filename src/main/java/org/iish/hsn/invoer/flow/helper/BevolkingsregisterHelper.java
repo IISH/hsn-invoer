@@ -85,6 +85,33 @@ public class BevolkingsregisterHelper {
         return relatedPersons;
     }
 
+    // TODO
+    public int getNumberOfHoofden(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+        int counter = 0;
+        List<PersonDynamic> b3Rel = bevolkingsregisterFlow.getAllB3ForType(PersonDynamic.Type.RELATIE_TOV_HOOFD);
+
+        for (PersonDynamic personDynamic : b3Rel) {
+            if (personDynamic.getContentOfDynamicData() == 1) {
+                counter++;
+            }
+        }
+
+        return counter;
+    }
+
+    public int getNumberOfHoofden(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
+        int counter = 0;
+        List<PersonDynamic> b3Rel = bevolkingsregisterFlow.getB3Rel().get(person.getRp());
+
+        for (PersonDynamic personDynamic : b3Rel) {
+            if (personDynamic.getContentOfDynamicData() == 1) {
+                counter++;
+            }
+        }
+
+        return counter;
+    }
+
     public int findKeyOfRp(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         for (Person person : bevolkingsregisterFlow.getB2()) {
             if (person.getNatureOfPerson() == Person.NatureOfPerson.FIRST_RP.getNatureOfPerson()) {

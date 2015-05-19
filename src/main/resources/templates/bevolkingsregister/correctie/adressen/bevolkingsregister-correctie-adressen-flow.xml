@@ -39,7 +39,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="finishEnd">
-      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistrationAddresses(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
     </transition>
   </view-state>
 

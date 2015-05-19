@@ -78,8 +78,11 @@
 </div>
 
 <div data-show-when="#curB2\.familyName" data-has-values-not-in="GEEN OP">
-<div id="RELATIE_TOV_HOOFD_CONTAINER" class="relatieElems personDynamic" data-type="RELATIE_TOV_HOOFD"
-     th:fragment="RELATIE_TOV_HOOFD_CONTAINER" th:object="${akte}">
+<div id="RELATIE_TOV_HOOFD_CONTAINER" class="relatieElems personDynamic"
+     data:type="${akte.refAinb.typeRegister != 'C'} ? 'RELATIE_TOV_HOOFD'"
+     th:fragment="RELATIE_TOV_HOOFD_CONTAINER" th:object="${akte}"
+     th:classappend="${akte.refAinb.typeRegister == 'C'} ? 'only-head'">
+    <!-- data:nr-heads="${@bevolkingsregisterHelper.getNumberOfHoofden(akte)}"-->
   <div class="form-group">
     <div class="sub-form-group">
       <label class="col-xs-2 control-label">Geslacht: m/v/o</label>
@@ -101,8 +104,12 @@
                 </span>
       </label>
 
-      <div
-          th:replace="fragments/fields :: relatie (null, 'b3Rel[__${akte.curB2.rp}__][0].contentOfDynamicData', true)"></div>
+      <p class="form-control-static" th:if="${(akte.refAinb.typeRegister == 'C') and (akte.curB2.rp == 1)}"
+            th:utext="${akte.b3Rel[__${akte.curB2.rp}__][0].contentOfDynamicData}"></p>
+
+      <th:block th:if="${(akte.refAinb.typeRegister != 'C') or (akte.curB2.rp != 1)}">
+        <div th:replace="fragments/fields :: relatie (null, 'b3Rel[__${akte.curB2.rp}__][0].contentOfDynamicData', true)"></div>
+      </th:block>
 
       <input type="hidden" class="relatie-regel" th:field="*{b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson}"/>
       <input type="hidden" class="dynamicData2" th:field="*{b3Rel[__${akte.curB2.rp}__][0].dynamicData2}"/>
@@ -408,8 +415,9 @@
              hsn:field="curB2.legalPlaceOfLiving"
              th:if="${akte.refAinb.typeRegister != 'C'}"/>
 
-      <input type="text" class="form-control" th:field="*{curB2.legalPlaceOfLivingInCodes}"
-             hsn:field="curB2.legalPlaceOfLivingInCodes" th:if="${akte.refAinb.typeRegister == 'C'}"/>
+      <input type="text" class="form-control required legalPlaceOfLivingInCodes"
+             th:field="*{curB2.legalPlaceOfLivingInCodes}" hsn:field="curB2.legalPlaceOfLivingInCodes"
+             th:if="${akte.refAinb.typeRegister == 'C'}"/>
     </div>
   </div>
 </div>

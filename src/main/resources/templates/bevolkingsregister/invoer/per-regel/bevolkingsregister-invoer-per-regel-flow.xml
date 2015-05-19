@@ -73,11 +73,11 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="nextPerson" to="nextPersonCheck">
-      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
     </transition>
 
     <transition on="next" to="nextCheck">
-      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -140,7 +140,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="finishEnd">
-      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistrationAddresses(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
     </transition>
   </view-state>
 

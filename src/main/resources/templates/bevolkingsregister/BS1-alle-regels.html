@@ -56,7 +56,8 @@
 </tr>
 </thead>
 <tbody>
-<tr th:each="person,stat : *{b2}" th:with="rp=${akte.b2[__${stat.index}__].rp}" data:rp="${rp}">
+<tr th:each="person,stat : *{b2}" th:with="rp=${akte.b2[__${stat.index}__].rp}" data:rp="${rp}"
+    data:copy-prev-person="${rp == akte.curB2.rp} ? 'copy-prev-person'">
 <td class="person-byz">
   <!-- Nr -->
   <span class="line" th:utext="${akte.b2[__${stat.index}__].keyToRegistrationPersons}"></span>
@@ -108,11 +109,15 @@
     *
   </span>
 </td>
-<td class="personDynamic" data-type="RELATIE_TOV_HOOFD" data:person="${rp}"
+<td th:class="${akte.refAinb.typeRegister == 'C'} ? 'personDynamic only-head' : 'personDynamic'"
+    data:type="${akte.refAinb.typeRegister != 'C'} ? 'RELATIE_TOV_HOOFD'" data:person="${rp}"
     th:classappend="${akte.b3Rel[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
+  <span th:if="${(akte.refAinb.typeRegister == 'C') and (rp == 1)}"
+        th:utext="${akte.b3Rel[__${rp}__][0].contentOfDynamicData}"></span>
+
   <!-- Rel -->
-  <th:block
-      th:include="fragments/fields :: relatie (null, 'b3Rel[__${rp}__][0].contentOfDynamicData', true)">
+  <th:block th:if="${(akte.refAinb.typeRegister != 'C') or (rp != 1)}"
+            th:include="fragments/fields :: relatie (null, 'b3Rel[__${rp}__][0].contentOfDynamicData', true)">
   </th:block>
 
   <input type="hidden" class="relatieRegelInterpr regel relatie-regel"
@@ -344,7 +349,7 @@
   </div>
 
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-medium legalPlaceOfLiving"
+    <input type="text" class="form-control form-control-medium legalPlaceOfLiving legalPlaceOfLivingInCodes required"
            th:field="*{b2[__${stat.index}__].legalPlaceOfLivingInCodes}"
            hsn:field="b2[__${stat.index}__].legalPlaceOfLivingInCodes"
            th:if="${akte.refAinb.typeRegister == 'C'}"/>

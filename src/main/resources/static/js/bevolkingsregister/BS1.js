@@ -247,6 +247,32 @@
                         regelInterpr.hide();
                     }
                 }
+
+                // Now validate the relation
+                var relVal = relatie.getIntegerValue();
+                if (relatie.length > 0) {
+                    if ((container.hasClass('only-head')) || (container.find('.only-head').length > 0)) {
+                        $.setError(
+                                (relVal != -3) && (relVal != 1),
+                                'rel-only-head-' + relatie.attr('id'),
+                            'Relatiecode moet 1 of -3 zijn'
+                        );
+                    }
+
+                    /* TODO: var nrHeads = 0;
+                     if (isAllLines()) {
+                     $('.relatie:visible').each(function () {
+                     if ($(this).getIntegerValue() == 1) {
+                     nrHeads++;
+                     }
+                     });
+                     }
+                     else {
+                     nrHeads = container.getIntegerDataValue('nr-heads');
+                     }
+
+                     $.setError(nrHeads > 2, 'nr-of-heads', 'Slechts een expliciet hoofd toegestaan');*/
+                }
             };
 
             // If the user wants to close the popover, determine whether this is allowed
@@ -420,9 +446,9 @@
                 }
 
                 $.setError(
-                    !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
+                        !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
                     'burg-stand',
-                    'Een relatie met regelnummer ' + relatie + ' is onmogelijk.'
+                        'Een relatie met regelnummer ' + relatie + ' is onmogelijk.'
                 );
                 $(document).trigger('changeOfState');
             };
@@ -436,6 +462,12 @@
         if (elem.val().trim().toUpperCase() === 'NL') {
             elem.val('Nederlandse');
         }
+    };
+
+    var checkLegalPlaceOfLivingInCodes = function (elem) {
+        var value = elem.val().trim().toLowerCase();
+        var validValues = ['w', 'v', 'n', 'vw', 'wv'];
+        elem.hasErrorWhen(validValues.indexOf(value) < 0);
     };
 
     var updateNumberOfLines = function () {
@@ -596,6 +628,8 @@
         copyFromPrevLine();
     }).on('blur', '.nationality', function (e) {
         setNationality($(e.target));
+    }).on('blur', '.legalPlaceOfLivingInCodes', function (e) {
+        checkLegalPlaceOfLivingInCodes($(e.target));
     }).ready(function () {
         // Extend the width to create more space in case one enters all lines at once
         if (isAllLines()) {

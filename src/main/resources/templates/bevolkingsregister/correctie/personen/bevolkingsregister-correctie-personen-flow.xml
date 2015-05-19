@@ -62,11 +62,11 @@
     </transition>
 
     <transition on="nextPerson" to="nextPersonCheck">
-      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registePerson(flowScope.akte)"/>
     </transition>
 
     <transition on="next" to="nextCheck">
-      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -76,7 +76,10 @@
     <transition on="yes" to="BS1">
       <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
     </transition>
-    <transition on="no" to="finishEnd"/>
+
+    <transition on="no" to="finishEnd">
+      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
+    </transition>
   </action-state>
 
   <action-state id="nextCheck">
@@ -85,7 +88,10 @@
     <transition on="yes" to="BS1">
       <evaluate expression="bevolkingsregisterService.setUpPerson(flowScope.akte)"/>
     </transition>
-    <transition on="no" to="finishEnd"/>
+
+    <transition on="no" to="finishEnd">
+      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
+    </transition>
   </action-state>
 
   <end-state id="stopEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>

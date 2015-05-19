@@ -511,8 +511,8 @@
               <input type="text" name="yearOfMutation" class="form-control form-control-small year"/>
             </div>
           </td>
-          <td class="checkInterprDateBevReg" style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
-            <div class="form-inline"
+          <td style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
+            <div class="form-inline checkInterprDateBevReg"
                  data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9">
               <!-- INTERPR -->
               <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit day"/>
