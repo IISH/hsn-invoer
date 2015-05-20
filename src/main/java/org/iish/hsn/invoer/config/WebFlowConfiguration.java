@@ -1,6 +1,8 @@
 package org.iish.hsn.invoer.config;
 
 import org.iish.hsn.invoer.flow.AkteFlowExecutionListener;
+import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.InputMetadataInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.binding.convert.service.DefaultConversionService;
@@ -13,6 +15,8 @@ import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import org.springframework.webflow.executor.FlowExecutor;
 import org.springframework.webflow.mvc.builder.MvcViewFactoryCreator;
+import org.springframework.webflow.mvc.servlet.FlowHandlerAdapter;
+import org.springframework.webflow.mvc.servlet.FlowHandlerMapping;
 
 import java.util.List;
 
@@ -22,19 +26,38 @@ public class WebFlowConfiguration extends AbstractFlowConfiguration {
     private Environment env;
 
     @Autowired
+    private InputMetadata inputMetadata;
+
+    @Autowired
     private ConversionService mvcConversionService;
 
     @Autowired
     private List<ViewResolver> viewResolvers;
 
     @Bean
+    public FlowHandlerMapping flowHandlerMapping() {
+        FlowHandlerMapping handlerMapping = new FlowHandlerMapping();
+        handlerMapping.setOrder(-1);
+        handlerMapping.setFlowRegistry(flowRegistry());
+        handlerMapping
+                .setInterceptors(new InputMetadataInterceptor[]{new InputMetadataInterceptor(this.inputMetadata)});
+        return handlerMapping;
+    }
+
+    @Bean
+    public FlowHandlerAdapter flowHandlerAdapter() {
+        FlowHandlerAdapter handlerAdapter = new FlowHandlerAdapter();
+        handlerAdapter.setFlowExecutor(flowExecutor());
+        handlerAdapter.setSaveOutputToFlashScopeOnRedirect(true);
+        return handlerAdapter;
+    }
+
+    @Bean
     public FlowExecutor flowExecutor() {
         // There is no going back to a previous screen, unless we're running with the development profile
         int maxFlowExecutionSnapshots = this.env.acceptsProfiles("development") ? -1 : 0;
-        return getFlowExecutorBuilder(flowRegistry())
-                .setMaxFlowExecutionSnapshots(maxFlowExecutionSnapshots)
-                .addFlowExecutionListener(new AkteFlowExecutionListener())
-                .build();
+        return getFlowExecutorBuilder(flowRegistry()).setMaxFlowExecutionSnapshots(maxFlowExecutionSnapshots)
+                                                     .addFlowExecutionListener(new AkteFlowExecutionListener()).build();
     }
 
     @Bean

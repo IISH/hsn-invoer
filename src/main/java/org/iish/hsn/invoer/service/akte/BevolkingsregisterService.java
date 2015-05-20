@@ -195,16 +195,17 @@ public class BevolkingsregisterService {
         int originalPersonKey = bevolkingsregisterFlow.getOriginalPersonKey();
         int correctionPersonKeyIdx = correctionPersons.indexOf(curPersonKey);
 
+        // Check if we previously went back to a previous person, if so, try te return to the original person
+        if ((originalPersonKey > 0) && (originalPersonKey <= b2.size())) {
+            curPersonKey = originalPersonKey;
+            bevolkingsregisterFlow.setOriginalPersonKey(0);
+        }
+
         // Check if the user indicated to go back to a previous person first
         if ((nextPersonKey > 0) && (nextPersonKey <= b2.size())) {
             bevolkingsregisterFlow.setCurB2Index(nextPersonKey - 1);
             bevolkingsregisterFlow.setNextPersonKey(0);
             bevolkingsregisterFlow.setOriginalPersonKey(curPersonKey);
-        }
-        // Check if we previously went back to a previous person, if so, try te return to the original person
-        else if ((originalPersonKey > 0) && (originalPersonKey <= b2.size())) {
-            bevolkingsregisterFlow.setCurB2Index(originalPersonKey - 1);
-            bevolkingsregisterFlow.setOriginalPersonKey(0);
         }
         // In case of correction: do we have people to correct?
         else if (bevolkingsregisterHelper.hasCorrectionPersons(bevolkingsregisterFlow)) {

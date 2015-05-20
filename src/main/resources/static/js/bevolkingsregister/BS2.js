@@ -123,6 +123,23 @@
         warningMsg.hide();
     };
 
+    var copyFromLastLine = function () {
+        var row = getActiveRow();
+        var lastRow = $('#registrationAddresses').find('.free tbody tr:last-child');
+
+        if (lastRow.length > 0) {
+            var names = ['keyToRegistrationPersons', 'dayOfAddress', 'monthOfAddress', 'yearOfAddress', 'synchroneNumber'];
+            $.each(names, function (i, name) {
+                var value = lastRow.find('.' + name).text();
+                row.find('[name=' + name + ']').val(value);
+            });
+            row.find('.adrestype').val('WK').attr('data-selected', 'WK');
+        }
+
+        determineSeqNr(true);
+        $(document).trigger('changeOfState');
+    };
+
     var onReset = function () {
         $('#dateOrderWarning').hide();
     };
@@ -207,4 +224,11 @@
     });
 
     $('input[name=dayOfAddress], input[name=monthOfAddress], input[name=yearOfAddress]').blur(checkOrderOfDate);
+
+    $('.on-edit :input').keydown(function (e) {
+        if (e.which === 121) { // F10
+            copyFromLastLine();
+            e.preventDefault();
+        }
+    });
 })(jQuery);

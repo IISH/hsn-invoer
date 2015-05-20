@@ -26,9 +26,6 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
     private InputMetadata inputMetadata;
 
     @Autowired
-    private WebFlowConfiguration webFlowConfiguration;
-
-    @Autowired
     private ThymeleafProperties thymeleafProperties;
 
     @Autowired
@@ -40,24 +37,6 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new InputMetadataInterceptor(this.inputMetadata));
-    }
-
-    @Bean
-    public FlowHandlerMapping flowHandlerMapping() {
-        FlowHandlerMapping handlerMapping = new FlowHandlerMapping();
-        handlerMapping.setOrder(-1);
-        handlerMapping.setFlowRegistry(this.webFlowConfiguration.flowRegistry());
-        handlerMapping.setInterceptors(
-                new InputMetadataInterceptor[] {new InputMetadataInterceptor(this.inputMetadata)});
-        return handlerMapping;
-    }
-
-    @Bean
-    public FlowHandlerAdapter flowHandlerAdapter() {
-        FlowHandlerAdapter handlerAdapter = new FlowHandlerAdapter();
-        handlerAdapter.setFlowExecutor(this.webFlowConfiguration.flowExecutor());
-        handlerAdapter.setSaveOutputToFlashScopeOnRedirect(true);
-        return handlerAdapter;
     }
 
     /**
