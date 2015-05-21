@@ -12,13 +12,13 @@ public class Pkhuw extends Invoer {
     @Column(name = "IDNR", nullable = false) private    int idnr;                       // ID Number
     @Column(name = "VNRHUWP", nullable = false) private int vnrhuwp;                    // sequence number spouse
 
-    @Column(name = "ANMHUWP", nullable = false, length = 50) private String anmhuwp;    // last name spouse
-    @Column(name = "TUSHUWP", nullable = false, length = 10) private String tushuwp;    // prefix spouse
-    @Column(name = "VN1HUWP", nullable = false, length = 20) private String vn1huwp;    // 1st firstname spouse
-    @Column(name = "VN2HUWP", nullable = false, length = 20) private String vn2huwp;    // 2nd firstname spouse
-    @Column(name = "VN3HUWP", nullable = false, length = 30) private String vn3huwp;    // 3rd firstname spouse
+    @Column(name = "ANMHUWP", nullable = false, length = 50) private String anmhuwp = "";    // last name spouse
+    @Column(name = "TUSHUWP", nullable = false, length = 10) private String tushuwp = "";    // prefix spouse
+    @Column(name = "VN1HUWP", nullable = false, length = 20) private String vn1huwp = "";    // 1st firstname spouse
+    @Column(name = "VN2HUWP", nullable = false, length = 20) private String vn2huwp = "";    // 2nd firstname spouse
+    @Column(name = "VN3HUWP", nullable = false, length = 30) private String vn3huwp = "";    // 3rd firstname spouse
 
-    @Column(name = "BRPHUWP", nullable = false, length = 50) private String brphuwp;    // profession spouse
+    @Column(name = "BRPHUWP", nullable = false, length = 50) private String brphuwp = "";    // profession spouse
 
     @Column(name = "GDGHUWP", nullable = false) private   int gdghuwp;                  // day of birth spouse
     @Column(name = "GMDHUWP", nullable = false) private   int gmdhuwp;                  // month of birth spouse
@@ -27,12 +27,12 @@ public class Pkhuw extends Invoer {
     @Column(name = "GMDHUWPCR", nullable = false) private int gmdhuwpcr;                // month of birth spouse after correction
     @Column(name = "GJRHUWPCR", nullable = false) private int gjrhuwpcr;                // year of birth spouse after correction
 
-    @Column(name = "GPLHUWP", nullable = false, length = 50) private String gplhuwp;    // birth place spouse
+    @Column(name = "GPLHUWP", nullable = false, length = 50) private String gplhuwp = "";    // birth place spouse
 
     @Column(name = "HDGHUWP", nullable = false) private              int    hdghuwp;    // day of marriage spouse
     @Column(name = "HMDHUWP", nullable = false) private              int    hmdhuwp;    // month of marriage spouse
     @Column(name = "HJRHUWP", nullable = false) private              int    hjrhuwp;    // year of marriage spouse
-    @Column(name = "HPLHUWP", nullable = false, length = 50) private String hplhuwp;    // place of marriage
+    @Column(name = "HPLHUWP", nullable = false, length = 50) private String hplhuwp = "";    // place of marriage
 
     @Column(name = "ODGHUWP", nullable = false) private int odghuwp;                    // day of decease spouse
     @Column(name = "OMDHUWP", nullable = false) private int omdhuwp;                    // month of decease spouse
@@ -40,13 +40,13 @@ public class Pkhuw extends Invoer {
 
     @Column(name = "ORDHUWP", nullable = false) private int ordhuwp;                    // reason divorce
 
-    @Column(name = "OPLHUWP", nullable = false, length = 50) private String oplhuwp;    // place decease spouse
+    @Column(name = "OPLHUWP", nullable = false, length = 50) private String oplhuwp = "";    // place decease spouse
     @Column(name = "ADGHUWP", nullable = false) private              int    adghuwp;    // day of departure spouse
     @Column(name = "AMDHUWP", nullable = false) private              int    amdhuwp;    // month of departure spouse
     @Column(name = "AJRHUWP", nullable = false) private              int    ajrhuwp;    // year of departure spouse
 
-    @Column(name = "APLHUWP", nullable = false, length = 50) private String aplhuwp;    // destination departing spouse
-    @Column(name = "SRTHUWP", nullable = false, length = 50) private String srthuwp;    // kind of marriage (geregistreerd partnerschap etc.)
+    @Column(name = "APLHUWP", nullable = false, length = 50) private String aplhuwp = "";    // destination departing spouse
+    @Column(name = "SRTHUWP", nullable = false, length = 50) private String srthuwp = "";    // kind of marriage (geregistreerd partnerschap etc.)
 
     @Column(name = "DDGHUWP", nullable = false) private int ddghuwp;                    // registration day spouse
     @Column(name = "DMDHUWP", nullable = false) private int dmdhuwp;                    // registration month spouse

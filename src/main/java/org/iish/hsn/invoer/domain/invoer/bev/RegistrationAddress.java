@@ -25,11 +25,11 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
     @Column(name = "B6MMCR", nullable = false) private int monthOfAddressAfterInterpretation;
     @Column(name = "B6MJCR", nullable = false) private int yearOfAddressAfterInterpretation;
 
-    @Column(name = "B6TPNR", nullable = false, length = 2) private  String addressType;
+    @Column(name = "B6TPNR", nullable = false, length = 2) private  String addressType = "";
     @Column(name = "B6SINR", nullable = false) private              int    synchroneNumber;
-    @Column(name = "B6STNR", nullable = false, length = 40) private String nameOfStreet;
-    @Column(name = "B6NRNR", nullable = false, length = 9) private  String number;
-    @Column(name = "B6TVNR", nullable = false, length = 15) private String additionToNumber;
+    @Column(name = "B6STNR", nullable = false, length = 40) private String nameOfStreet = "";
+    @Column(name = "B6NRNR", nullable = false, length = 9) private  String number = "";
+    @Column(name = "B6TVNR", nullable = false, length = 15) private String additionToNumber = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

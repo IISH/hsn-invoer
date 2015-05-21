@@ -17,26 +17,26 @@ public class Huwvrknd extends Invoer implements Serializable {
     @Embedded private Huw huw = new Huw();
 
     @Column(name = "VLGNRVK", nullable = false) private              int    vlgnrvk;
-    @Column(name = "ANMVK", nullable = false, length = 50) private   String anmvk;
-    @Column(name = "TUSVK", nullable = false, length = 10) private   String tusvk;
-    @Column(name = "VRN1VK", nullable = false, length = 20) private  String vrn1vk;
-    @Column(name = "VRN2VK", nullable = false, length = 20) private  String vrn2vk;
-    @Column(name = "VRN3VK", nullable = false, length = 30) private  String vrn3vk;
+    @Column(name = "ANMVK", nullable = false, length = 50) private   String anmvk = "";
+    @Column(name = "TUSVK", nullable = false, length = 10) private   String tusvk = "";
+    @Column(name = "VRN1VK", nullable = false, length = 20) private  String vrn1vk = "";
+    @Column(name = "VRN2VK", nullable = false, length = 20) private  String vrn2vk = "";
+    @Column(name = "VRN3VK", nullable = false, length = 30) private  String vrn3vk = "";
     @Column(name = "GBDGVK", nullable = false) private               int    gbdgvk;
     @Column(name = "GBMDVK", nullable = false) private               int    gbmdvk;
     @Column(name = "GBJRVK", nullable = false) private               int    gbjrvk;
-    @Column(name = "GESLVK", nullable = false, length = 1) private   String geslvk;
-    @Column(name = "GBPLVK", nullable = false, length = 50) private  String gbplvk;
-    @Column(name = "ERVK", nullable = false, length = 1) private     String ervk;
-    @Column(name = "ERVKWIE", nullable = false, length = 1) private  String ervkwie;
+    @Column(name = "GESLVK", nullable = false, length = 1) private   String geslvk = "";
+    @Column(name = "GBPLVK", nullable = false, length = 50) private  String gbplvk = "";
+    @Column(name = "ERVK", nullable = false, length = 1) private     String ervk = "";
+    @Column(name = "ERVKWIE", nullable = false, length = 1) private  String ervkwie = "";
     @Column(name = "MEKDGVK", nullable = false) private              int    mekdgvk;
     @Column(name = "MEKMDVK", nullable = false) private              int    mekmdvk;
     @Column(name = "MEKJRVK", nullable = false) private              int    mekjrvk;
-    @Column(name = "MEKPLVK", nullable = false, length = 50) private String mekplvk;
+    @Column(name = "MEKPLVK", nullable = false, length = 50) private String mekplvk = "";
     @Column(name = "VEKDGVK", nullable = false) private              int    vekdgvk;
     @Column(name = "VEKMDVK", nullable = false) private              int    vekmdvk;
     @Column(name = "VEKJRVK", nullable = false) private              int    vekjrvk;
-    @Column(name = "VEKPLVK", nullable = false, length = 50) private String vekplvk;
+    @Column(name = "VEKPLVK", nullable = false, length = 50) private String vekplvk = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

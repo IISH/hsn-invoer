@@ -38,9 +38,9 @@ public class Person extends Invoer implements Serializable {
     @Column(name = "B2RDCR", nullable = false) private int    dayOfRegistrationAfterInterpretation;
     @Column(name = "B2RMCR", nullable = false) private int    monthOfRegistrationAfterInterpretation;
     @Column(name = "B2RJCR", nullable = false) private int    yearOfRegistrationAfterInterpretation;
-    @Column(name = "B2ANNR", nullable = false, length = 50) private String familyName;
-    @Column(name = "B2VNNR", nullable = false, length = 50) private String firstName;
-    @Column(name = "B2GSNR", nullable = false, length = 1) private String sex;
+    @Column(name = "B2ANNR", nullable = false, length = 50) private String familyName = "";
+    @Column(name = "B2VNNR", nullable = false, length = 50) private String firstName = "";
+    @Column(name = "B2GSNR", nullable = false, length = 1) private String sex = "";
 
     @Column(name = "B2GDNR", nullable = false) private int    dayOfBirth;
     @Column(name = "B2GMNR", nullable = false) private int    monthOfBirth;
@@ -48,7 +48,7 @@ public class Person extends Invoer implements Serializable {
     @Column(name = "B2GDCR", nullable = false) private int    dayOfBirthAfterInterpretation;
     @Column(name = "B2GMCR", nullable = false) private int    monthOfBirthAfterInterpretation;
     @Column(name = "B2GJCR", nullable = false) private int    yearOfBirthAfterInterpretation;
-    @Column(name = "B2GNNR", nullable = false, length = 50) private String placeOfBirth;
+    @Column(name = "B2GNNR", nullable = false, length = 50) private String placeOfBirth = "";
 
     @Column(name = "B2ODNR", nullable = false) private int    dayOfDecease;
     @Column(name = "B2OMNR", nullable = false) private int    monthOfDecease;
@@ -56,13 +56,13 @@ public class Person extends Invoer implements Serializable {
     @Column(name = "B2ODCR", nullable = false) private int    dayOfDeceaseAfterInterpretation;
     @Column(name = "B2OMCR", nullable = false) private int    monthOfDeceaseAfterInterpretation;
     @Column(name = "B2OJCR", nullable = false) private int    yearOfDeceaseAfterInterpretation;
-    @Column(name = "B2ONNR", nullable = false, length = 50) private String placeOfDecease;
+    @Column(name = "B2ONNR", nullable = false, length = 50) private String placeOfDecease = "";
 
-    @Column(name = "B2NANR", nullable = false, length = 40) private String nationality;
-    @Column(name = "B2WDNR", nullable = false, length = 50) private String legalPlaceOfLiving;
-    @Column(name = "B2VWNR", nullable = false, length = 2) private String legalPlaceOfLivingInCodes;
-    @Column(name = "B2AANR", nullable = false, length = 100) private String remarks;
-    @Column(name = "B2AAN", nullable = false, length = 128) private  String remarks2;
+    @Column(name = "B2NANR", nullable = false, length = 40) private String nationality = "";
+    @Column(name = "B2WDNR", nullable = false, length = 50) private String legalPlaceOfLiving = "";
+    @Column(name = "B2VWNR", nullable = false, length = 2) private String legalPlaceOfLivingInCodes = "";
+    @Column(name = "B2AANR", nullable = false, length = 100) private String remarks = "";
+    @Column(name = "B2AAN", nullable = false, length = 128) private  String remarks2 = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

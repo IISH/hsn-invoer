@@ -8,12 +8,12 @@ import javax.persistence.*;
 @Table(name = "geb")
 public class Geb extends Invoer {
     @Column(name = "GEMNR", nullable = false) private    int    gemnr;
-    @Column(name = "GEMNAAM", nullable = false) private  String gemnaam;
+    @Column(name = "GEMNAAM", nullable = false) private  String gemnaam = "";
     @Column(name = "JAAR", nullable = false) private     int    jaar;
     @Column(name = "AKTENR", nullable = false) private   int    aktenr;
     @Column(name = "IDNR", nullable = false) private     int    idnr;
     @Column(name = "GEBKODE", nullable = false) private  int    gebkode;
-    @Column(name = "OVERSAMP", nullable = false) private String oversamp;
+    @Column(name = "OVERSAMP", nullable = false) private String oversamp = "";
 
     @Id @Column(name = "RecordID") private Integer recordID;
 

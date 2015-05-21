@@ -18,28 +18,28 @@ public class Gebkant extends Invoer implements Serializable {
     @Column(name = "KHUWDAG", nullable = false) private               int    khuwdag;
     @Column(name = "KHUWMND", nullable = false) private               int    khuwmnd;
     @Column(name = "KHUWJR", nullable = false) private                int    khuwjr;
-    @Column(name = "KHUWGEM", nullable = false, length = 50) private  String khuwgem;
-    @Column(name = "KHUWANR", nullable = false, length = 50) private  String khuwanr;
-    @Column(name = "KANMVAD", nullable = false, length = 50) private  String kanmvad;
-    @Column(name = "KTUSVAD", nullable = false, length = 10) private  String ktusvad;
-    @Column(name = "KVRN1VAD", nullable = false, length = 20) private String kvrn1vad;
-    @Column(name = "KVRN2VAD", nullable = false, length = 20) private String kvrn2vad;
-    @Column(name = "KVRN3VAD", nullable = false, length = 30) private String kvrn3vad;
+    @Column(name = "KHUWGEM", nullable = false, length = 50) private  String khuwgem = "";
+    @Column(name = "KHUWANR", nullable = false, length = 50) private  String khuwanr = "";
+    @Column(name = "KANMVAD", nullable = false, length = 50) private  String kanmvad = "";
+    @Column(name = "KTUSVAD", nullable = false, length = 10) private  String ktusvad = "";
+    @Column(name = "KVRN1VAD", nullable = false, length = 20) private String kvrn1vad = "";
+    @Column(name = "KVRN2VAD", nullable = false, length = 20) private String kvrn2vad = "";
+    @Column(name = "KVRN3VAD", nullable = false, length = 30) private String kvrn3vad = "";
     @Column(name = "KWYZDAG", nullable = false) private               int    kwyzdag;
     @Column(name = "KWYZMND", nullable = false) private               int    kwyzmnd;
     @Column(name = "KWYZJR", nullable = false) private                int    kwyzjr;
     @Column(name = "KWYZKB", nullable = false) private                int    kwyzkb;
     @Column(name = "KWYZSTBL", nullable = false) private              int    kwyzstbl;
-    @Column(name = "KGMRB", nullable = false, length = 50) private    String kgmrb;
-    @Column(name = "KGMERK", nullable = false, length = 50) private   String kgmerk;
-    @Column(name = "KWGMMR", nullable = false, length = 50) private   String kwgmmr;
-    @Column(name = "KBRPMR", nullable = false, length = 50) private   String kbrpmr;
-    @Column(name = "KANMGEB", nullable = false, length = 50) private  String kanmgeb;
-    @Column(name = "KVRN1GEB", nullable = false, length = 20) private String kvrn1geb;
-    @Column(name = "KVRN2GEB", nullable = false, length = 20) private String kvrn2geb;
-    @Column(name = "KVRN3GEB", nullable = false, length = 30) private String kvrn3geb;
-    @Column(name = "KTUSGEB", nullable = false, length = 10) private  String ktusgeb;
-    @Column(name = "KSEXGEB", nullable = false, length = 1) private   String ksexgeb;
+    @Column(name = "KGMRB", nullable = false, length = 50) private    String kgmrb = "";
+    @Column(name = "KGMERK", nullable = false, length = 50) private   String kgmerk = "";
+    @Column(name = "KWGMMR", nullable = false, length = 50) private   String kwgmmr = "";
+    @Column(name = "KBRPMR", nullable = false, length = 50) private   String kbrpmr = "";
+    @Column(name = "KANMGEB", nullable = false, length = 50) private  String kanmgeb = "";
+    @Column(name = "KVRN1GEB", nullable = false, length = 20) private String kvrn1geb = "";
+    @Column(name = "KVRN2GEB", nullable = false, length = 20) private String kvrn2geb = "";
+    @Column(name = "KVRN3GEB", nullable = false, length = 30) private String kvrn3geb = "";
+    @Column(name = "KTUSGEB", nullable = false, length = 10) private  String ktusgeb = "";
+    @Column(name = "KSEXGEB", nullable = false, length = 1) private   String ksexgeb = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -162,7 +162,7 @@
             // Hides the popover and performs the related checks and procedures
             var hidePopover = function (popover, checkError) {
                 // Check for errors first, if necessary
-                if (!checkError || (popover.find('.has-error').length === 0)) {
+                if (!checkError || (popover.find('.has-an-error').length === 0)) {
                     var focusOnRelatieElem = false; // In some cases, the focus has to go back to the relatie elem
 
                     // In case of an 'expliciet hoofd', we have to safely store and transform the date before closing

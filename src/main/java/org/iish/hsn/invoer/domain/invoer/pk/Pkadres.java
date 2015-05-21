@@ -14,10 +14,10 @@ public class Pkadres extends Invoer {
     @Column(name = "DGADRP", nullable = false) private               int    dgadrp;       // day address
     @Column(name = "MDADRP", nullable = false) private               int    mdadrp;       // month address
     @Column(name = "JRADRP", nullable = false) private               int    jradrp;       // year address
-    @Column(name = "VERNUM", nullable = false, length = 1) private   String vernum;       // renumbering (vernummering)
-    @Column(name = "STRADRP", nullable = false, length = 50) private String stradrp;      // address (street)
-    @Column(name = "PLADRP", nullable = false, length = 50) private  String pladrp;       // place (municipality)
-    @Column(name = "LNDADRP", nullable = false, length = 50) private String lndadrp;      // land (country)
+    @Column(name = "VERNUM", nullable = false, length = 1) private   String vernum = "";       // renumbering (vernummering)
+    @Column(name = "STRADRP", nullable = false, length = 50) private String stradrp = "";      // address (street)
+    @Column(name = "PLADRP", nullable = false, length = 50) private  String pladrp = "";       // place (municipality)
+    @Column(name = "LNDADRP", nullable = false, length = 50) private String lndadrp = "";      // land (country)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

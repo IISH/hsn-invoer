@@ -12,6 +12,6 @@ spring:
       password:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
 hibernate:
-  dialect: org.hibernate.dialect.MySQLInnoDBDialect
+  dialect: org.hibernate.dialect.MySQL5InnoDBDialect

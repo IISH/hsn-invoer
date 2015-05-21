@@ -11,36 +11,36 @@ import javax.persistence.*;
 public class Pkeigknd extends Invoer {
     @Column(name = "IDNR", nullable = false) private                 int    idnr;       // ID Number
     @Column(name = "VGNRKDP", nullable = false) private              int    vgnrkdp;    // sequence number child
-    @Column(name = "ANMKNDP", nullable = false, length = 50) private String anmkndp;    // last name child
-    @Column(name = "TUSKNDP", nullable = false, length = 10) private String tuskndp;    // prefix child
-    @Column(name = "VN1KNDP", nullable = false, length = 20) private String vn1kndp;    // 1st firstname child
-    @Column(name = "VN2KNDP", nullable = false, length = 20) private String vn2kndp;    // 2nd firstname child
-    @Column(name = "VN3KNDP", nullable = false, length = 30) private String vn3kndp;    // 3rd firstname child
+    @Column(name = "ANMKNDP", nullable = false, length = 50) private String anmkndp = "";    // last name child
+    @Column(name = "TUSKNDP", nullable = false, length = 10) private String tuskndp = "";    // prefix child
+    @Column(name = "VN1KNDP", nullable = false, length = 20) private String vn1kndp = "";    // 1st firstname child
+    @Column(name = "VN2KNDP", nullable = false, length = 20) private String vn2kndp = "";    // 2nd firstname child
+    @Column(name = "VN3KNDP", nullable = false, length = 30) private String vn3kndp = "";    // 3rd firstname child
     @Column(name = "GDGKNDP", nullable = false) private              int    gdgkndp;    // day of birth child
     @Column(name = "GMDKNDP", nullable = false) private              int    gmdkndp;    // month of birth child
     @Column(name = "GJRKNDP", nullable = false) private              int    gjrkndp;    // year of birth child
     @Column(name = "GDGKNDPCR", nullable = false) private            int    gdgkndpcr;  // day of birth child after correction
     @Column(name = "GMDKNDPCR", nullable = false) private            int    gmdkndpcr;  // month of birth child after correction
     @Column(name = "GJRKNDPCR", nullable = false) private            int    gjrkndpcr;  // year of birth child after correction
-    @Column(name = "GPLKNDP", nullable = false, length = 50) private String gplkndp;    // birth place child
-    @Column(name = "GLNKNDP", nullable = false) private              String glnkndp;    // birth country child
-    @Column(name = "RELKNDP", nullable = false, length = 50) private String relkndp;    // relationship to PK-Holder (son, daughter etc)
+    @Column(name = "GPLKNDP", nullable = false, length = 50) private String gplkndp = "";    // birth place child
+    @Column(name = "GLNKNDP", nullable = false) private              String glnkndp = "";    // birth country child
+    @Column(name = "RELKNDP", nullable = false, length = 50) private String relkndp = "";    // relationship to PK-Holder (son, daughter etc)
     @Column(name = "HDGKNDP", nullable = false) private              int    hdgkndp;    // day of marriage child
     @Column(name = "HMDKNDP", nullable = false) private              int    hmdkndp;    // month of marriage child
     @Column(name = "HJRKNDP", nullable = false) private              int    hjrkndp;    // year of marriage child
-    @Column(name = "HPLKNDP", nullable = false, length = 50) private String hplkndp;    // place of marriage
-    @Column(name = "VNMPTNP", nullable = false, length = 20) private String vnmptnp;    // first name partner child
-    @Column(name = "TUSPTNP", nullable = false, length = 10) private String tusptnp;    // prefix partner child
-    @Column(name = "ANMPTNP", nullable = false, length = 50) private String anmptnp;    // last name partner child
+    @Column(name = "HPLKNDP", nullable = false, length = 50) private String hplkndp = "";    // place of marriage
+    @Column(name = "VNMPTNP", nullable = false, length = 20) private String vnmptnp = "";    // first name partner child
+    @Column(name = "TUSPTNP", nullable = false, length = 10) private String tusptnp = "";    // prefix partner child
+    @Column(name = "ANMPTNP", nullable = false, length = 50) private String anmptnp = "";    // last name partner child
     @Column(name = "ODGKNDP", nullable = false) private              int    odgkndp;    // day of decease child
     @Column(name = "OMDKNDP", nullable = false) private              int    omdkndp;    // month of decease child
     @Column(name = "OJRKNDP", nullable = false) private              int    ojrkndp;    // year of decease child
-    @Column(name = "OPLKNDP", nullable = false, length = 50) private String oplkndp;    // place decease child
+    @Column(name = "OPLKNDP", nullable = false, length = 50) private String oplkndp = "";    // place decease child
     @Column(name = "ADGKNDP", nullable = false) private              int    adgkndp;    // day of departure child
     @Column(name = "AMDKNDP", nullable = false) private              int    amdkndp;    // month of departure child
     @Column(name = "AJRKNDP", nullable = false) private              int    ajrkndp;    // year of departure child
-    @Column(name = "APLKNDP", nullable = false, length = 50) private String aplkndp;    // destination departing child
-    @Column(name = "AANTEK", nullable = false, length = 60) private  String aantek;     // remark
+    @Column(name = "APLKNDP", nullable = false, length = 50) private String aplkndp = "";    // destination departing child
+    @Column(name = "AANTEK", nullable = false, length = 60) private  String aantek = "";     // remark
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

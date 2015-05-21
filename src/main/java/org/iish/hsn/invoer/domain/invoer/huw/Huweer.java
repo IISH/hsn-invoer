@@ -17,13 +17,13 @@ public class Huweer extends Invoer implements Serializable {
     @Embedded private Huw huw = new Huw();
 
     @Column(name = "VLGNREH", nullable = false) private             int    vlgnreh;
-    @Column(name = "HUWER", nullable = false, length = 1) private   String huwer;
-    @Column(name = "ANMEH", nullable = false, length = 50) private  String anmeh;
-    @Column(name = "TUSEH", nullable = false, length = 10) private  String tuseh;
-    @Column(name = "VRN1EH", nullable = false, length = 20) private String vrn1eh;
-    @Column(name = "VRN2EH", nullable = false, length = 20) private String vrn2eh;
-    @Column(name = "VRN3EH", nullable = false, length = 30) private String vrn3eh;
-    @Column(name = "EINDEH", nullable = false, length = 1) private  String eindeh;
+    @Column(name = "HUWER", nullable = false, length = 1) private   String huwer = "";
+    @Column(name = "ANMEH", nullable = false, length = 50) private  String anmeh = "";
+    @Column(name = "TUSEH", nullable = false, length = 10) private  String tuseh = "";
+    @Column(name = "VRN1EH", nullable = false, length = 20) private String vrn1eh = "";
+    @Column(name = "VRN2EH", nullable = false, length = 20) private String vrn2eh = "";
+    @Column(name = "VRN3EH", nullable = false, length = 30) private String vrn3eh = "";
+    @Column(name = "EINDEH", nullable = false, length = 1) private  String eindeh = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

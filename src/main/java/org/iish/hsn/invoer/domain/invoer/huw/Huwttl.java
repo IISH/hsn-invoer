@@ -15,7 +15,7 @@ public class Huwttl extends Invoer implements Serializable {
 
     @Column(name = "HGEMNR", nullable = false) private             int    hgemnr;
     @Column(name = "HAKTENR", nullable = false) private            int    haktenr;
-    @Column(name = "HPLTS", nullable = false, length = 50) private String hplts;
+    @Column(name = "HPLTS", nullable = false, length = 50) private String hplts = "";
     @Column(name = "HUUR", nullable = false) private               int    huur;
 
     @Id

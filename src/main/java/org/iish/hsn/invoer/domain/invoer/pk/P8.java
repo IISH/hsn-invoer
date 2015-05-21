@@ -15,27 +15,27 @@ public class P8 extends Invoer {
     @Column(name = "DGADRP", nullable = false) private              int    dgadrp;       // day address
     @Column(name = "MDADRP", nullable = false) private              int    mdadrp;       // month address
     @Column(name = "JRADRP", nullable = false) private              int    jradrp;       // year address
-    @Column(name = "PLADRP", nullable = false, length = 50) private String pladrp;       // place (municipality)
+    @Column(name = "PLADRP", nullable = false, length = 50) private String pladrp = "";       // place (municipality)
     @Column(name = "P8OPPD", nullable = false) private              int    p8oppd;       // day of first address
     @Column(name = "P8OPPM", nullable = false) private              int    p8oppm;       // month of first address
     @Column(name = "P8OPPJ", nullable = false) private              int    p8oppj;       // year of first address
-    @Column(name = "P8OPWF", nullable = false) private              String p8opwf;       // type of address
-    @Column(name = "P8OPWL", nullable = false) private              String p8opwl;       // Name of locality
-    @Column(name = "P8OPWS", nullable = false) private              String p8opws;       // Name of the street
-    @Column(name = "P8OPWH", nullable = false) private              String p8opwh;       // House number
-    @Column(name = "P8OPWR", nullable = false) private              String p8opwr;       // Addition character(s) to house number
-    @Column(name = "P8OPWT", nullable = false) private              String p8opwt;       // Additional number to house number
-    @Column(name = "P8OPWP", nullable = false) private              String p8opwp;       // Postal code
-    @Column(name = "P8OPWB", nullable = false) private              String p8opwb;       // Description of location
-    @Column(name = "P8OPIL", nullable = false, length = 50) private String p8opil;       // Country from which PL-holder originates from
+    @Column(name = "P8OPWF", nullable = false) private              String p8opwf = "";       // type of address
+    @Column(name = "P8OPWL", nullable = false) private              String p8opwl = "";       // Name of locality
+    @Column(name = "P8OPWS", nullable = false) private              String p8opws = "";       // Name of the street
+    @Column(name = "P8OPWH", nullable = false) private              String p8opwh = "";       // House number
+    @Column(name = "P8OPWR", nullable = false) private              String p8opwr = "";       // Addition character(s) to house number
+    @Column(name = "P8OPWT", nullable = false) private              String p8opwt = "";       // Additional number to house number
+    @Column(name = "P8OPWP", nullable = false) private              String p8opwp = "";       // Postal code
+    @Column(name = "P8OPWB", nullable = false) private              String p8opwb = "";       // Description of location
+    @Column(name = "P8OPIL", nullable = false, length = 50) private String p8opil = "";       // Country from which PL-holder originates from
     @Column(name = "P8OPIJ", nullable = false) private              int    p8opij;       // Year of registration of arrival from foreign country
     @Column(name = "P8OPIM", nullable = false) private              int    p8opim;       // Month of registration of arrival from foreign country
     @Column(name = "P8OPID", nullable = false) private              int    p8opid;       // Day of registration of arrival from foreign country
-    @Column(name = "P8OPAG", nullable = false) private              String p8opag;       // Data under research
+    @Column(name = "P8OPAG", nullable = false) private              String p8opag = "";       // Data under research
     @Column(name = "P8OPZJ", nullable = false) private              int    p8opzj;       // Year of 'data under research'
     @Column(name = "P8OPZM", nullable = false) private              int    p8opzm;       // Month of 'data under research'
     @Column(name = "P8OPZD", nullable = false) private              int    p8opzd;       // Day of 'data under research'
-    @Column(name = "P8OPIO", nullable = false) private              String p8opio;       // 'indicatie onjuist'; not clear what this variable means (only sporadically content)
+    @Column(name = "P8OPIO", nullable = false) private              String p8opio = "";       // 'indicatie onjuist'; not clear what this variable means (only sporadically content)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

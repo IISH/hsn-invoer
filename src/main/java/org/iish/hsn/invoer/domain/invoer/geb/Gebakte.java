@@ -15,7 +15,7 @@ public class Gebakte extends Invoer implements Serializable {
     @Column(name = "AKTENR", nullable = false) private               int    aktenr;
     @Column(name = "IDNR", nullable = false) private                 int    idnr;
     @Column(name = "GEBKODE", nullable = false) private              int    gebkode;
-    @Column(name = "OVERSAMP", nullable = false, length = 1) private String oversamp;
+    @Column(name = "OVERSAMP", nullable = false, length = 1) private String oversamp = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -12,7 +12,7 @@ public class Pkknd extends Invoer {
     @Column(name = "IDNR", nullable = false) private  int idnr;                         // ID Number
     @Column(name = "IDNRP", nullable = false) private int idnrp;                        // IDNR partner
 
-    @Column(name = "GAKTNRP", nullable = false, length = 8) private String gaktnrp;     // Number or code of the birth certificate on which the Personal Card has been based
+    @Column(name = "GAKTNRP", nullable = false, length = 8) private String gaktnrp = "";     // Number or code of the birth certificate on which the Personal Card has been based
     @Column(name = "PKTYPE", nullable = false) private              int    pktype;      // Type of PK
 
     @Column(name = "EINDAGPK", nullable = false) private int eindagpk;                  // Day of end of the PK, when the observation of the PK-holder does not end with his or her death
@@ -23,16 +23,16 @@ public class Pkknd extends Invoer {
     @Column(name = "CTRMDP", nullable = false) private int ctrmdp;                      // Month of the check of the personal card with the information on the PK and check sign of the civil servant.
     @Column(name = "CTRJRP", nullable = false) private int ctrjrp;                      // Year of the check of the personal card with the information on the PK and check sign of the civil servant.
 
-    @Column(name = "CTRPARP", nullable = false, length = 1) private  String ctrparp;    // check sign of the civil servant (j/n)
-    @Column(name = "GZNVRMP", nullable = false, length = 50) private String gznvrmp;    // Structure of the family, indicated by who is the head of the family
+    @Column(name = "CTRPARP", nullable = false, length = 1) private  String ctrparp = "";    // check sign of the civil servant (j/n)
+    @Column(name = "GZNVRMP", nullable = false, length = 50) private String gznvrmp = "";    // Structure of the family, indicated by who is the head of the family
 
     // Information about the PK-Holder
 
-    @Column(name = "ANMPERP", nullable = false, length = 50) private  String anmperp;   // Last name PK-Holder
-    @Column(name = "TUSPERP", nullable = false, length = 10) private  String tusperp;   // Prefix Last Name PK-Holder
-    @Column(name = "VNM1PERP", nullable = false, length = 20) private String vnm1perp;  // First first name of PK-Holder
-    @Column(name = "VNM2PERP", nullable = false, length = 20) private String vnm2perp;  // Second first name of PK-Holder
-    @Column(name = "VNM3PERP", nullable = false, length = 30) private String vnm3perp;  // Third (and fourth, fifth etc.) first name of PK-Holder
+    @Column(name = "ANMPERP", nullable = false, length = 50) private  String anmperp = "";   // Last name PK-Holder
+    @Column(name = "TUSPERP", nullable = false, length = 10) private  String tusperp = "";   // Prefix Last Name PK-Holder
+    @Column(name = "VNM1PERP", nullable = false, length = 20) private String vnm1perp = "";  // First first name of PK-Holder
+    @Column(name = "VNM2PERP", nullable = false, length = 20) private String vnm2perp = "";  // Second first name of PK-Holder
+    @Column(name = "VNM3PERP", nullable = false, length = 30) private String vnm3perp = "";  // Third (and fourth, fifth etc.) first name of PK-Holder
 
     @Column(name = "GDGPERP", nullable = false) private int gdgperp;                    // Birth day of PK-Holder
     @Column(name = "GMDPERP", nullable = false) private int gmdperp;                    // Birth month of PK-Holder
@@ -42,18 +42,18 @@ public class Pkknd extends Invoer {
     @Column(name = "GMDPERPCR", nullable = false) private int gmdperpcr;                // Birth month of PK-Holder after correction
     @Column(name = "GJRPERPCR", nullable = false) private int gjrperpcr;                // Birth year of PK-Holder after correction
 
-    @Column(name = "GPLPERP", nullable = false, length = 50) private String gplperp;    // Birth place of PK-Holder
-    @Column(name = "NATPERP", nullable = false, length = 40) private String natperp;    // Nationality of PK-Holder
-    @Column(name = "GDSPERP", nullable = false, length = 20) private String gdsperp;    // Religion of PK-Holder
-    @Column(name = "GSLPERP", nullable = false, length = 1) private  String gslperp;    // Gender of PK-Holder
+    @Column(name = "GPLPERP", nullable = false, length = 50) private String gplperp = "";    // Birth place of PK-Holder
+    @Column(name = "NATPERP", nullable = false, length = 40) private String natperp = "";    // Nationality of PK-Holder
+    @Column(name = "GDSPERP", nullable = false, length = 20) private String gdsperp = "";    // Religion of PK-Holder
+    @Column(name = "GSLPERP", nullable = false, length = 1) private  String gslperp = "";    // Gender of PK-Holder
 
     // Information about the Father of the PK-Holder
 
-    @Column(name = "ANMVDRP", nullable = false, length = 50) private  String anmvdrp;   // Last name Father PK-Holder
-    @Column(name = "TUSVDRP", nullable = false, length = 10) private  String tusvdrp;   // Prefix Last name Father PK-Holder
-    @Column(name = "VNM1VDRP", nullable = false, length = 20) private String vnm1vdrp;  // First first name Father PK-Holder
-    @Column(name = "VNM2VDRP", nullable = false, length = 20) private String vnm2vdrp;  // Second firstname Father PK-Holder
-    @Column(name = "VNM3VDRP", nullable = false, length = 30) private String vnm3vdrp;  // Third (and fourth, fifth etc.) first name Father of PK-Holder
+    @Column(name = "ANMVDRP", nullable = false, length = 50) private  String anmvdrp = "";   // Last name Father PK-Holder
+    @Column(name = "TUSVDRP", nullable = false, length = 10) private  String tusvdrp = "";   // Prefix Last name Father PK-Holder
+    @Column(name = "VNM1VDRP", nullable = false, length = 20) private String vnm1vdrp = "";  // First first name Father PK-Holder
+    @Column(name = "VNM2VDRP", nullable = false, length = 20) private String vnm2vdrp = "";  // Second firstname Father PK-Holder
+    @Column(name = "VNM3VDRP", nullable = false, length = 30) private String vnm3vdrp = "";  // Third (and fourth, fifth etc.) first name Father of PK-Holder
 
     @Column(name = "GDGVDRP", nullable = false) private int gdgvdrp;                    // Birth day of Father PK-Holder
     @Column(name = "GMDVDRP", nullable = false) private int gmdvdrp;                    // Birth month of Father PK-Holder
@@ -63,15 +63,15 @@ public class Pkknd extends Invoer {
     @Column(name = "GMDVDRPCR", nullable = false) private int gmdvdrpcr;                // Birth month of Father PK-Holder after correction
     @Column(name = "GJRVDRPCR", nullable = false) private int gjrvdrpcr;                // Birth year of Father PK-Holder after correction
 
-    @Column(name = "GPLVDRP", nullable = false, length = 50) private String gplvdrp;    // Birth place of Father PK-Holder
+    @Column(name = "GPLVDRP", nullable = false, length = 50) private String gplvdrp = "";    // Birth place of Father PK-Holder
 
     // Information about the Mother of the PK-Holder
 
-    @Column(name = "ANMMDRP", nullable = false, length = 50) private  String anmmdrp;   // Last name Mother PK-Holder
-    @Column(name = "TUSMDRP", nullable = false, length = 10) private  String tusmdrp;   // Prefix Last name Mother PK-Holder
-    @Column(name = "VNM1MDRP", nullable = false, length = 20) private String vnm1mdrp;  // First first name Mother PK-Holder
-    @Column(name = "VNM2MDRP", nullable = false, length = 20) private String vnm2mdrp;  // Second firstname Mother PK-Holder
-    @Column(name = "VNM3MDRP", nullable = false, length = 30) private String vnm3mdrp;  // Third (and fourth, fifth etc.) first name Mother of PK-Holder
+    @Column(name = "ANMMDRP", nullable = false, length = 50) private  String anmmdrp = "";   // Last name Mother PK-Holder
+    @Column(name = "TUSMDRP", nullable = false, length = 10) private  String tusmdrp = "";   // Prefix Last name Mother PK-Holder
+    @Column(name = "VNM1MDRP", nullable = false, length = 20) private String vnm1mdrp = "";  // First first name Mother PK-Holder
+    @Column(name = "VNM2MDRP", nullable = false, length = 20) private String vnm2mdrp = "";  // Second firstname Mother PK-Holder
+    @Column(name = "VNM3MDRP", nullable = false, length = 30) private String vnm3mdrp = "";  // Third (and fourth, fifth etc.) first name Mother of PK-Holder
 
     @Column(name = "GDGMDRP", nullable = false) private int gdgmdrp;                    // Birth day of Mother PK-Holder
     @Column(name = "GMDMDRP", nullable = false) private int gmdmdrp;                    // Birth month of Mother PK-Holder
@@ -81,7 +81,7 @@ public class Pkknd extends Invoer {
     @Column(name = "GMDMDRPCR", nullable = false) private int gmdmdrpcr;                // Birth month of Mother PK-Holder after correction
     @Column(name = "GJRMDRPCR", nullable = false) private int gjrmdrpcr;                // Birth year of Mother PK-Holder after correction
 
-    @Column(name = "GPLMDRP", nullable = false, length = 50) private String gplmdrp;    // Birth place of Mother PK-Holder
+    @Column(name = "GPLMDRP", nullable = false, length = 50) private String gplmdrp = "";    // Birth place of Mother PK-Holder
 
     // Information about the PK-Holder
 
@@ -89,20 +89,20 @@ public class Pkknd extends Invoer {
     @Column(name = "OMDPERP", nullable = false) private int omdperp;                    // Decease month of PK-Holder
     @Column(name = "OJRPERP", nullable = false) private int ojrperp;                    // Decease year of PK-Holder
 
-    @Column(name = "OPLPERP", nullable = false, length = 50) private String oplperp;    // Decease place of PK-Holder
-    @Column(name = "OAKPERP", nullable = false, length = 10) private String oakperp;    // Code of death certificate of PK-holder
-    @Column(name = "ODOPERP", nullable = false, length = 50) private String odoperp;    // Cause of death of the PK-holder
+    @Column(name = "OPLPERP", nullable = false, length = 50) private String oplperp = "";    // Decease place of PK-Holder
+    @Column(name = "OAKPERP", nullable = false, length = 10) private String oakperp = "";    // Code of death certificate of PK-holder
+    @Column(name = "ODOPERP", nullable = false, length = 50) private String odoperp = "";    // Cause of death of the PK-holder
 
-    @Column(name = "GEGPERP", nullable = false, length = 1) private String gegperp;     // Fields to record distinctions between data of the original birth certificate and the Personal Card; not usable and not necessary in the further process
-    @Column(name = "GEGVDRP", nullable = false, length = 1) private String gegvdrp;     // Fields to record distinctions between data of the original birth certificate and the Personal Card; not usable and not necessary in the further process
-    @Column(name = "GEGMDRP", nullable = false, length = 1) private String gegmdrp;     // Fields to record distinctions between data of the original birth certificate and the Personal Card; not usable and not necessary in the further process
+    @Column(name = "GEGPERP", nullable = false, length = 1) private String gegperp = "";     // Fields to record distinctions between data of the original birth certificate and the Personal Card; not usable and not necessary in the further process
+    @Column(name = "GEGVDRP", nullable = false, length = 1) private String gegvdrp = "";     // Fields to record distinctions between data of the original birth certificate and the Personal Card; not usable and not necessary in the further process
+    @Column(name = "GEGMDRP", nullable = false, length = 1) private String gegmdrp = "";     // Fields to record distinctions between data of the original birth certificate and the Personal Card; not usable and not necessary in the further process
 
-    @Column(name = "PROBLMP", nullable = false, length = 1) private String problmp;     // Indicator if there are records in the file PKBYZ or not; not usable anymore
+    @Column(name = "PROBLMP", nullable = false, length = 1) private String problmp = "";     // Indicator if there are records in the file PKBYZ or not; not usable anymore
 
     @Column(name = "PSBDGP", nullable = false) private              int    psbdgp;      // Day    of the "Persoonsbewijs" (Ausweis), date should be between 01-01-1941 and 5-05-1945.
     @Column(name = "PSBMDP", nullable = false) private              int    psbmdp;      // Month  of the "Persoonsbewijs" (Ausweis), date should be between 01-01-1941 and 5-05-1945.
     @Column(name = "PSBJRP", nullable = false) private              int    psbjrp;      // Year   of the "Persoonsbewijs" (Ausweis), date should be between 01-01-1941 and 5-05-1945.
-    @Column(name = "PSBNRP", nullable = false, length = 12) private String psbnrp;      // Number of the "Persoonsbewijs" (Ausweis), date should be between 01-01-1941 and 5-05-1945.
+    @Column(name = "PSBNRP", nullable = false, length = 12) private String psbnrp = "";      // Number of the "Persoonsbewijs" (Ausweis), date should be between 01-01-1941 and 5-05-1945.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -12,13 +12,13 @@ public class P7 extends Invoer {
     @Column(name = "IDNR", nullable = false) private                int    idnr;   // ID Number
     @Column(name = "IDNRP", nullable = false) private               int    idnrp;  // IDNR partner
     @Column(name = "P7IDBG", nullable = false) private              int    p7idbg; // Original identifier for the Personal List from CBG itself (only kept for checks on consistency)
-    @Column(name = "P7OPOG", nullable = false) private              String p7opog; // Place of death on PL-lists (municipality and country distinguished)
-    @Column(name = "P7OPOL", nullable = false) private              String p7opol; // Place of death on PL-lists (municipality and country distinguished)
-    @Column(name = "P7OPOR", nullable = false) private              String p7opor; // Municipality of certificate; rarely used only in case of foreign places of death
-    @Column(name = "P7OPOB", nullable = false) private              String p7opob; // Administrative code of the death certificate or other indication; comparable with field oakperp (to be checked); only in combination with p7opor
-    @Column(name = "P7OPIO", nullable = false) private              String p7opio; // indicatie onjuist; Not clear what this variable means (only sporadically content)
-    @Column(name = "P7OPPG", nullable = false, length = 50) private String p7oppg; // Municipality where the Personal List was put up
-    @Column(name = "P7OPPC", nullable = false, length = 1) private  String p7oppc; // Affirmation of the Personal Card was converted
+    @Column(name = "P7OPOG", nullable = false) private              String p7opog = ""; // Place of death on PL-lists (municipality and country distinguished)
+    @Column(name = "P7OPOL", nullable = false) private              String p7opol = ""; // Place of death on PL-lists (municipality and country distinguished)
+    @Column(name = "P7OPOR", nullable = false) private              String p7opor = ""; // Municipality of certificate; rarely used only in case of foreign places of death
+    @Column(name = "P7OPOB", nullable = false) private              String p7opob = ""; // Administrative code of the death certificate or other indication; comparable with field oakperp (to be checked); only in combination with p7opor
+    @Column(name = "P7OPIO", nullable = false) private              String p7opio = ""; // indicatie onjuist; Not clear what this variable means (only sporadically content)
+    @Column(name = "P7OPPG", nullable = false, length = 50) private String p7oppg = ""; // Municipality where the Personal List was put up
+    @Column(name = "P7OPPC", nullable = false, length = 1) private  String p7oppc = ""; // Affirmation of the Personal Card was converted
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

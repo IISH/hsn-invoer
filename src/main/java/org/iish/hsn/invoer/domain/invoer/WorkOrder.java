@@ -8,8 +8,8 @@ import java.io.Serializable;
 public class WorkOrder implements Serializable {
     public static final WorkOrder EMPTY_WORKORDER = new WorkOrder("", "");
 
-    @Column(name = "ONDRZKO", nullable = false, length = 3) private String ondrzko;
-    @Column(name = "OPDRNRI", nullable = false, length = 3) private String opdrnri;
+    @Column(name = "ONDRZKO", nullable = false, length = 3) private String ondrzko = "";
+    @Column(name = "OPDRNRI", nullable = false, length = 3) private String opdrnri = "";
 
     public WorkOrder() {
     }

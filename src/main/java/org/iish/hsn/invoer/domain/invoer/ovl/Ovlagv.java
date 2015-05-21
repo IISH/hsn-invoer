@@ -12,16 +12,16 @@ import java.io.Serializable;
 public class Ovlagv extends Invoer implements Serializable {
     @Column(name = "IDNR", nullable = false) private                 int    idnr;
     @Column(name = "VLGNRAG", nullable = false) private              int    vlgnrag;
-    @Column(name = "ANMAGV", nullable = false, length = 50) private  String anmagv;
-    @Column(name = "TUSAGV", nullable = false, length = 10) private  String tusagv;
-    @Column(name = "VRN1AGV", nullable = false, length = 20) private String vrn1agv;
-    @Column(name = "VRN2AGV", nullable = false, length = 20) private String vrn2agv;
-    @Column(name = "VRN3AGV", nullable = false, length = 30) private String vrn3agv;
-    @Column(name = "RAGVOVL", nullable = false, length = 50) private String ragvovl;
+    @Column(name = "ANMAGV", nullable = false, length = 50) private  String anmagv = "";
+    @Column(name = "TUSAGV", nullable = false, length = 10) private  String tusagv = "";
+    @Column(name = "VRN1AGV", nullable = false, length = 20) private String vrn1agv = "";
+    @Column(name = "VRN2AGV", nullable = false, length = 20) private String vrn2agv = "";
+    @Column(name = "VRN3AGV", nullable = false, length = 30) private String vrn3agv = "";
+    @Column(name = "RAGVOVL", nullable = false, length = 50) private String ragvovl = "";
     @Column(name = "LFTAGV", nullable = false) private               int    lftagv;
-    @Column(name = "BRPAGV", nullable = false, length = 50) private  String brpagv;
-    @Column(name = "ADRAGV", nullable = false, length = 50) private  String adragv;
-    @Column(name = "HNDAGV", nullable = false, length = 1) private   String hndagv;
+    @Column(name = "BRPAGV", nullable = false, length = 50) private  String brpagv = "";
+    @Column(name = "ADRAGV", nullable = false, length = 50) private  String adragv = "";
+    @Column(name = "HNDAGV", nullable = false, length = 1) private   String hndagv = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

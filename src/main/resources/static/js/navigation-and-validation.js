@@ -36,10 +36,10 @@
         }
 
         if (condition && this.is(':enabled')) {
-            elemParent.addClass('has-error');
+            elemParent.addClass('has-an-error');
         }
         else {
-            elemParent.removeClass('has-error');
+            elemParent.removeClass('has-an-error');
         }
     };
 
@@ -148,10 +148,10 @@
 
         var hasAnError = [];
         if ($('.modal:visible').length === 0) {
-            hasAnError = $('.has-error:visible');
+            hasAnError = $('.has-an-error:visible');
         }
         else {
-            hasAnError = $('.modal:visible .has-error:visible');
+            hasAnError = $('.modal:visible .has-an-error:visible');
         }
 
         if (nextBtn.is('[class$=error]') || (hasAnError.length > 0)) {

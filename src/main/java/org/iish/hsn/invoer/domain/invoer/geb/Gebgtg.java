@@ -12,15 +12,15 @@ import java.io.Serializable;
 public class Gebgtg extends Invoer implements Serializable {
     @Column(name = "IDNR", nullable = false) private                int    idnr;
     @Column(name = "VLGNRGT", nullable = false) private             int    vlgnrgt;
-    @Column(name = "ANMGT", nullable = false, length = 50) private  String anmgt;
-    @Column(name = "TUSGT", nullable = false, length = 10) private  String tusgt;
-    @Column(name = "VRN1GT", nullable = false, length = 20) private String vrn1gt;
-    @Column(name = "VRN2GT", nullable = false, length = 20) private String vrn2gt;
-    @Column(name = "VRN3GT", nullable = false, length = 30) private String vrn3gt;
+    @Column(name = "ANMGT", nullable = false, length = 50) private  String anmgt = "";
+    @Column(name = "TUSGT", nullable = false, length = 10) private  String tusgt = "";
+    @Column(name = "VRN1GT", nullable = false, length = 20) private String vrn1gt = "";
+    @Column(name = "VRN2GT", nullable = false, length = 20) private String vrn2gt = "";
+    @Column(name = "VRN3GT", nullable = false, length = 30) private String vrn3gt = "";
     @Column(name = "LFTGT", nullable = false) private               int    lftgt;
-    @Column(name = "BRPGT", nullable = false, length = 50) private  String brpgt;
-    @Column(name = "ADRGT", nullable = false, length = 50) private  String adrgt;
-    @Column(name = "HNDGT", nullable = false, length = 1) private   String hndgt;
+    @Column(name = "BRPGT", nullable = false, length = 50) private  String brpgt = "";
+    @Column(name = "ADRGT", nullable = false, length = 50) private  String adrgt = "";
+    @Column(name = "HNDGT", nullable = false, length = 1) private   String hndgt = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,8 +9,8 @@ import javax.persistence.*;
 public class Adrestp {
     @Embedded private WorkOrder workOrder;
 
-    @Column(name = "CODE", nullable = false, length = 2) private  String code;
-    @Column(name = "TYPE", nullable = false, length = 40) private String type;
+    @Column(name = "CODE", nullable = false, length = 2) private  String code = "";
+    @Column(name = "TYPE", nullable = false, length = 40) private String type = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,8 +9,8 @@ import javax.persistence.*;
 public class Beroep {
     @Embedded private WorkOrder workOrder;
 
-    @Column(name = "BERPNAAM", nullable = false, length = 50) private String berpnaam;
-    @Column(name = "NWINLST", nullable = false, length = 1) private   String nwinlst;
+    @Column(name = "BERPNAAM", nullable = false, length = 50) private String berpnaam = "";
+    @Column(name = "NWINLST", nullable = false, length = 1) private   String nwinlst = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

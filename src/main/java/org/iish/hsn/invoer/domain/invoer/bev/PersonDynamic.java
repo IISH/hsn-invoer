@@ -52,7 +52,7 @@ public class PersonDynamic extends Invoer implements Serializable {
     @Column(name = "B3MMCR", nullable = false) private int monthOfMutationAfterInterpretation;
     @Column(name = "B3MJCR", nullable = false) private int yearOfMutationAfterInterpretation;
 
-    @Column(name = "B3GEGEVEN", nullable = false, length = 50) private String dynamicData2;
+    @Column(name = "B3GEGEVEN", nullable = false, length = 50) private String dynamicData2 = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

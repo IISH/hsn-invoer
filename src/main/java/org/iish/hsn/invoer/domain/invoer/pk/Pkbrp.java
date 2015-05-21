@@ -11,9 +11,9 @@ import org.iish.hsn.invoer.domain.invoer.Invoer;
 public class Pkbrp extends Invoer {
     @Column(name = "IDNR", nullable = false) private                 int    idnr;    // ID Number
     @Column(name = "VGNRBRP", nullable = false) private              int    vgnrbrp; // Sequence number for different profession of person
-    @Column(name = "BRPPOSP", nullable = false, length = 1) private  String brpposp; // Position in profession hierarchy
-    @Column(name = "BEROEPP", nullable = false, length = 50) private String beroepp; // Profession
-    @Column(name = "DHBRPP", nullable = false, length = 1) private   String dhbrppp; // Profession is crossed over (doorgehaald)
+    @Column(name = "BRPPOSP", nullable = false, length = 1) private  String brpposp = ""; // Position in profession hierarchy
+    @Column(name = "BEROEPP", nullable = false, length = 50) private String beroepp = ""; // Profession
+    @Column(name = "DHBRPP", nullable = false, length = 1) private   String dhbrppp = ""; // Profession is crossed over (doorgehaald)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

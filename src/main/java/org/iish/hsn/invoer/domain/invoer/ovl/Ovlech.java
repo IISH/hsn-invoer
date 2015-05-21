@@ -12,15 +12,15 @@ import java.io.Serializable;
 public class Ovlech extends Invoer implements Serializable {
     @Column(name = "IDNR", nullable = false) private                  int    idnr;
     @Column(name = "VLGECH", nullable = false) private                int    vlgech;
-    @Column(name = "ANMEOVL", nullable = false, length = 50) private  String anmeovl;
-    @Column(name = "TUSEOVL", nullable = false, length = 10) private  String tuseovl;
-    @Column(name = "VRN1EOVL", nullable = false, length = 20) private String vrn1eovl;
-    @Column(name = "VRN2EOVL", nullable = false, length = 20) private String vrn2eovl;
-    @Column(name = "VRN3EOVL", nullable = false, length = 30) private String vrn3eovl;
-    @Column(name = "LEVEOVL", nullable = false, length = 1) private   String leveovl;
+    @Column(name = "ANMEOVL", nullable = false, length = 50) private  String anmeovl = "";
+    @Column(name = "TUSEOVL", nullable = false, length = 10) private  String tuseovl = "";
+    @Column(name = "VRN1EOVL", nullable = false, length = 20) private String vrn1eovl = "";
+    @Column(name = "VRN2EOVL", nullable = false, length = 20) private String vrn2eovl = "";
+    @Column(name = "VRN3EOVL", nullable = false, length = 30) private String vrn3eovl = "";
+    @Column(name = "LEVEOVL", nullable = false, length = 1) private   String leveovl = "";
     @Column(name = "LFTEOVL", nullable = false) private               int    lfteovl;
-    @Column(name = "BRPEOVL", nullable = false, length = 50) private  String brpeovl;
-    @Column(name = "ADREOVL", nullable = false, length = 50) private  String adreovl;
+    @Column(name = "BRPEOVL", nullable = false, length = 50) private  String brpeovl = "";
+    @Column(name = "ADREOVL", nullable = false, length = 50) private  String adreovl = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

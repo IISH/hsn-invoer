@@ -19,7 +19,7 @@ public class Huwafk extends Invoer implements Serializable {
     @Column(name = "HWAKMD", nullable = false) private              int    hwakmd;
     @Column(name = "HWAKJR", nullable = false) private              int    hwakjr;
     @Column(name = "HWAKGR", nullable = false) private              int    hwakgr;
-    @Column(name = "HWAKPL", nullable = false, length = 50) private String hwakpl;
+    @Column(name = "HWAKPL", nullable = false, length = 50) private String hwakpl = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

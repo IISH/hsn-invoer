@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Table(name = "stpb")
 public class Stpb extends Invoer implements Serializable {
     @Column(name = "DOELNR", nullable = false) private                int    doelnr;
-    @Column(name = "GEMEENTE", nullable = false, length = 50) private String gemeente;
+    @Column(name = "GEMEENTE", nullable = false, length = 50) private String gemeente = "";
     @Column(name = "GEMNR", nullable = false) private                 int    gemnr;
     @Column(name = "JAAR", nullable = false) private                  int    jaar;
     @Column(name = "AKTENR", nullable = false) private                int    aktenr;
