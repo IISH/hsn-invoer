@@ -34,8 +34,13 @@ header {
   }
 }
 
+@-moz-document url-prefix() {
+  fieldset {
+    display: table-column; // Fixes scrollbar issues within a fieldset in Firefox
+  }
+}
+
 fieldset {
-  display: table-column; // Fixes scrollbar issues within a fieldset in Firefox
   border: 1px solid #adadad;
   margin-bottom: 20px;
 
