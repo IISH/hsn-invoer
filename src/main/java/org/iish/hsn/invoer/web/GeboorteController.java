@@ -26,9 +26,15 @@ public class GeboorteController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String startPost(@RequestParam("oversamp") String oversamp, @RequestParam("invbeper") String invbeper) {
+    public String startPost(@RequestParam("basis") String basis, @RequestParam("invbeper") String invbeper) {
+        String oversamp = "n";
+        if (basis.equalsIgnoreCase("n")) {
+            oversamp = "j";
+        }
+
         geboorteStart.setOversamp(oversamp);
         geboorteStart.setInvbeper(invbeper);
+
         return "redirect:/geboorte/hoofdmenu";
     }
 

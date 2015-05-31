@@ -14,10 +14,10 @@ public class GeboorteStart implements Serializable {
     private String invbeper;
 
     public String getOversamp() {
-        if (oversamp == null) {
+        if ((this.oversamp == null) || this.oversamp.trim().isEmpty()) {
             return "n";
         }
-        return oversamp;
+        return this.oversamp;
     }
 
     public void setOversamp(String oversamp) {
@@ -25,10 +25,10 @@ public class GeboorteStart implements Serializable {
     }
 
     public String getInvbeper() {
-        if (invbeper == null) {
+        if ((this.invbeper == null) || this.invbeper.trim().isEmpty()) {
             return "n";
         }
-        return invbeper;
+        return this.invbeper;
     }
 
     public void setInvbeper(String invbeper) {

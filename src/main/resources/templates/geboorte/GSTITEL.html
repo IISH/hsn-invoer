@@ -18,7 +18,7 @@
     </div>
 
     <div class="col-xs-3" th:if="${akte.gebknd.oversamp} == 'j'">
-      <span class="jaar" th:utext="${@geboorteAkteHelper(akte.gebknd}"></span>
+      <span class="jaar" th:utext="${@geboorteAkteHelper.getDatum(akte.gebknd)}"></span>
     </div>
 
     <div class="col-xs-3">

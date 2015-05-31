@@ -23,7 +23,7 @@
     <evaluate expression="new Integer(flowScope.akte.gebakte.gebkode) == 1"/>
 
     <transition on="yes" to="GS1"/>
-    <transition on="no" to="stopEnd"/>
+    <transition on="no" to="finishEnd"/>
   </action-state>
 
   <!-- GS1: AANGEVER -->

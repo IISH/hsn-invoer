@@ -13,7 +13,7 @@
     <div class="alert alert-info" role="alert">
       <div>Het gaat hier om de volgende akte:</div>
       <div>
-        <span th:utext="${akte.gebknd.gemnaam}"></span>,
+        <span th:utext="${@geboorteAkteHelper.getGemeente(akte.stpb)}"></span>,
         <span th:utext="${akte.gebknd.jaar}"></span>,
         <span th:utext="${akte.gebknd.aktenr}"></span>
       </div>

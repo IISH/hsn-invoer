@@ -13,10 +13,10 @@ public class OverlijdensStart implements Serializable {
     private String levnloos;
 
     public String getLevnloos() {
-        if (levnloos == null) {
+        if ((this.levnloos == null) || this.levnloos.trim().isEmpty()) {
             return "n";
         }
-        return levnloos;
+        return this.levnloos;
     }
 
     public void setLevnloos(String levnloos) {
