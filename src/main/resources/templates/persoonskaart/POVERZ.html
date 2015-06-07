@@ -15,10 +15,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="curOvl,stat : ${overview}">
-      <td th:utext="${curOvl.idnr}"></td>
-      <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteLastName(curOvl.anmovl, curOvl.tusovl)}"></td>
-      <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getFirstNames(curOvl.vrn1ovl, curOvl.vrn2ovl, curOvl.vrn3ovl)}"></td>
+    <tr th:each="curPk,stat : ${overview}">
+      <td th:utext="${curPk.idnr}"></td>
+      <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteLastName(curPk.anmperp, curPk.tusperp)}"></td>
+      <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getFirstNames(curPk.vnm1perp, curPk.vnm2perp, curPk.vnm3perp)}"></td>
       <td th:utext="${stat.index + 1}"></td>
     </tr>
     </tbody>

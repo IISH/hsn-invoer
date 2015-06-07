@@ -61,12 +61,12 @@
                 $('.idnr').text(stpb.idnr);
 
                 $.getJSON('/ajax/lookup/gebakte', {idnr: idnr}, function (gebakte) {
-                    self.onFailure('In het bestand opgenomen kode: ' + gebakte.gebkode, true, true);
+                    self.onFailure('In het bestand opgenomen kode: ' + gebakte.gebkode, true, true, false);
                 }).fail(function () {
                     self.gebkndLookup();
                 });
             }).fail(function () {
-                self.onFailure('Nummer niet gevonden!', false, false);
+                self.onFailure('Nummer niet gevonden!', false, false, true);
             });
         });
     };
@@ -83,11 +83,11 @@
                 }
                 else {
                     self.onFailure('U moet eerst de opgenomen geboorteakte (kode = 1) vernietigen, ' +
-                    'alvorens u de kode kunt veranderen!', true, false);
+                    'alvorens u de kode kunt veranderen!', true, false, true);
                 }
             }).fail(function () {
                 if ($.isCorrection()) {
-                    self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, false);
+                    self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, false, true);
                 }
                 else {
                     self.onSuccess();
@@ -107,7 +107,7 @@
                         self.noRefGBHLookup();
                     }
                 }).fail(function () {
-                    self.onFailure('De onderzoekspersoon met deze identificatie is niet aanwezig!', false, false);
+                    self.onFailure('De onderzoekspersoon met deze identificatie is niet aanwezig!', false, false, true);
                 });
             }
             else {
@@ -123,11 +123,11 @@
                     self.onSuccess();
                 }
                 else {
-                    self.onFailure('De akte of kaart met deze identificatie is reeds ingevoerd!', true, false);
+                    self.onFailure('De akte of kaart met deze identificatie is reeds ingevoerd!', true, false, true);
                 }
             }).fail(function () {
                 if ($.isCorrection()) {
-                    self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, false);
+                    self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, false, true);
                 }
                 else {
                     self.onSuccess();
@@ -152,11 +152,11 @@
                     '<div class="text-left center-block" style="width:50%;">' +
                     'gemeentenaam: ' + huwttl.hplts + '<br/>' +
                     'huwelijkdsdatum: ' + huwttl.hdag + '-' + huwttl.hmaand + '-' + huwttl.hjaar + '<br/>' +
-                    'aktenummer: ' + huwttl.haktenr + '</div>', true, true);
+                    'aktenummer: ' + huwttl.haktenr + '</div>', true, true, true);
                 }
             }).fail(function () {
                 if ($.isCorrection()) {
-                    self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, true);
+                    self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, true, true);
                 }
                 else {
                     self.onSuccess();
@@ -191,16 +191,17 @@
         $(document).trigger('changeOfState');
     };
 
-    FindOp.prototype.onFailure = function (message, foundOp, editOp) {
+    FindOp.prototype.onFailure = function (message, foundOp, editOp, error) {
         self.failElem.html(message).show();
 
         self.withOpElems.hide();
         self.withoutOpElems.hide();
+
         foundOp ? self.withOpElems.show() : self.withoutOpElems.show();
-
         editOp ? self.withOpStateElems.show() : self.withOpStateElems.hide();
+        error ? self.nextBtnElem.addClass('op-error') : self.nextBtnElem.removeClass('op-error');
 
-        self.nextBtnElem.addClass('op-error');
+        self.blur.getNextFormElement().focus();
         $(document).trigger('changeOfState');
     };
 

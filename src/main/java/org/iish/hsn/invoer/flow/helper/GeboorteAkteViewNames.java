@@ -39,12 +39,12 @@ public class GeboorteAkteViewNames implements ViewNames {
         return getByzViewName(viewStateHistory.getPrevViewStateId(), curGebgtgIndex);
     }
 
-    private static String getByzViewName(String viewState, int getuigeNr) {
+    private static String getByzViewName(String viewState, int getuigeIndex) {
         if (byzViewNames.containsKey(viewState)) {
             return byzViewNames.get(viewState);
         }
         else if (viewState.equals("GS5")) {
-            return getuigeNr + "e getuige";
+            return (getuigeIndex + 1) + "e getuige";
         }
         return "Overige bijzonderheden";
     }

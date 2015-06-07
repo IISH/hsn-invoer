@@ -38,12 +38,12 @@ public class OverlijdensAkteViewNames implements ViewNames {
         return getByzViewName(viewStateHistory.getPrevViewStateId(), curAangeverIndex);
     }
 
-    private static String getByzViewName(String viewState, int aangeverNr) {
+    private static String getByzViewName(String viewState, int aangeverIdx) {
         if (byzViewNames.containsKey(viewState)) {
             return byzViewNames.get(viewState);
         }
         else if (viewState.equals("OS3B")) {
-            return aangeverNr + "e Aangever";
+            return (aangeverIdx + 1) + "e Aangever";
         }
         return "Overige bijzonderheden";
     }

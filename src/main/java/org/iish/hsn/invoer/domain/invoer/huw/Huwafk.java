@@ -7,7 +7,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "huwafk",
-       uniqueConstraints = {@UniqueConstraint(columnNames = {"IDNR", "HDAG", "HMAAND", "HJAAR", "ONDRZKO", "OPDRNRI"})},
+       uniqueConstraints = {
+               @UniqueConstraint(columnNames = {"IDNR", "HDAG", "HMAAND", "HJAAR", "HWAKNR", "ONDRZKO", "OPDRNRI"})
+       },
        indexes = {@Index(columnList = "ONDRZKO, OPDRNRI")})
 public class Huwafk extends Invoer implements Serializable {
     @Column(name = "IDNR", nullable = false) private int idnr;

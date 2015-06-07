@@ -44,12 +44,12 @@ public class HuwelijksAkteViewNames implements ViewNames {
         return getByzViewName(viewStateHistory.getPrevViewStateId(), curGebgtgIndex);
     }
 
-    private static String getByzViewName(String viewState, int getuigeNr) {
+    private static String getByzViewName(String viewState, int getuigeIdx) {
         if (byzViewNames.containsKey(viewState)) {
             return byzViewNames.get(viewState);
         }
         else if ((viewState != null) && viewState.equals("HS5")) {
-            return getuigeNr + "e getuige";
+            return (getuigeIdx + 1) + "e getuige";
         }
         return "Overige bijzonderheden";
     }

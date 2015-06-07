@@ -4,17 +4,22 @@
 </head>
 <body>
 <div class="col-xs-4 form-inline" th:fragment="datum (dag, maand, jaar)">
-  <input type="text" class="form-control form-control-digit day" th:field="*{__${dag}__}" hsn:field="dag"/>
+  <input type="text" class="form-control form-control-digit day" maxlength="2"
+         th:field="*{__${dag}__}" hsn:field="dag"/>
   /
-  <input type="text" class="form-control form-control-digit month" th:field="*{__${maand}__}" hsn:field="maand"/>
+  <input type="text" class="form-control form-control-digit month" maxlength="2"
+         th:field="*{__${maand}__}" hsn:field="maand"/>
   /
-  <input type="text" class="form-control form-control-small year" th:field="*{__${jaar}__}" hsn:field="jaar"/>
+  <input type="text" class="form-control form-control-small year" maxlength="4"
+         th:field="*{__${jaar}__}" hsn:field="jaar"/>
 </div>
 
 <div class="col-xs-3 form-inline" th:fragment="tijd (uur, minuut)">
-  <input type="text" class="form-control form-control-digit hour" th:field="*{__${uur}__}" hsn:field="uur"/>
+  <input type="text" class="form-control form-control-digit hour" maxlength="2"
+         th:field="*{__${uur}__}" hsn:field="uur"/>
   :
-  <input type="text" class="form-control form-control-digit minute" th:field="*{__${minuut}__}" hsn:field="minuut"/>
+  <input type="text" class="form-control form-control-digit minute" maxlength="2"
+         th:field="*{__${minuut}__}" hsn:field="minuut"/>
 </div>
 
 <div class="col-xs-5" th:fragment="relatie (relatie, relatieId, onId)" th:classappend="${onId} ? 'form-inline'">

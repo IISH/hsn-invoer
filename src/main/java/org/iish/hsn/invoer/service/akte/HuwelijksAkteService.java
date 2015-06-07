@@ -312,6 +312,7 @@ public class HuwelijksAkteService extends AkteService {
             }
 
             Huwttl huwttl = huwelijksAkteFlow.getHuwttl();
+            inputMetadata.saveToEntity(huwttl);
             huwttl = huwttlRepository.save(huwttl);
             huwelijksAkteFlow.setHuwttl(huwttl);
 
