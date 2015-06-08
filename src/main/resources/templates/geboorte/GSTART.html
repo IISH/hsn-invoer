@@ -9,7 +9,7 @@
 
   <div class="form-group extra-top-margin">
     <div class="sub-form-group">
-      <label class="col-xs-7 control-label">Zijn het akten voor de HSN-basissteekproef?</label>
+      <label class="col-xs-8 control-label">Zijn het akten voor de HSN-basissteekproef? j / n</label>
 
       <div class="col-xs-1">
         <input type="text" class="form-control form-control-digit required" id="basis" name="basis"
@@ -19,7 +19,7 @@
   </div>
 
   <div class="form-group" data-show-when="#basis" data-has-values-in="n">
-    <label class="col-xs-7 control-label">Betreft het hier beperkte invoer?</label>
+    <label class="col-xs-8 control-label">Betreft het hier beperkte invoer? j / n</label>
 
     <div class="col-xs-1">
       <input type="text" class="form-control form-control-digit required" id="invbeper" name="invbeper"
@@ -35,6 +35,6 @@
   </div>
 </fieldset>
 
-<footer layout:fragment="footer" th:include="layoutFragments :: footer"></footer>
+<footer layout:fragment="footer" th:include="layoutFragments :: footer ('GSTART')"></footer>
 </body>
 </html>

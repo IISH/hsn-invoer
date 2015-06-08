@@ -66,6 +66,7 @@ public class GeboorteController {
         Map<String, Object> model = new HashMap<>();
         model.put("action", "/geboorte/overzicht/menu");
         model.put("isBirthOverview", true);
+        model.put("nameOverz", "GOVERZS");
 
         return new ModelAndView("main/OVERZ", model);
     }

@@ -11,7 +11,7 @@
   </fieldset>
 </header>
 
-<footer th:fragment="footer">
+<footer th:fragment="footer (scherm)">
   <fieldset class="content-spacing">
     <div class="row">
       <div class="col-xs-12">
@@ -19,11 +19,11 @@
       </div>
     </div>
     <div class="row extra-top-margin-sm">
-      <div class="col-xs-2">
-        HSN
+      <div class="col-xs-2" th:utext="${scherm}">
+        SCHERM
       </div>
-      <div class="col-xs-3" th:utext="'versie ' + ${@environment.getProperty('application.version')}">
-        versie 0.00
+      <div class="col-xs-3" th:utext="'HSN versie ' + ${@environment.getProperty('application.version')}">
+        HSN versie 0.00
       </div>
       <div class="col-xs-4 col-xs-offset-3" th:utext="'d.d. ' + ${@environment.getProperty('application.date')}">
         d.d. 1 januari 2015

@@ -51,6 +51,7 @@ public class HuwelijksController {
         Map<String, Object> model = new HashMap<>();
         model.put("action", "/huwelijk/overzicht/menu");
         model.put("isBirthOverview", false);
+        model.put("nameOverz", "HOVERZS");
 
         return new ModelAndView("main/OVERZ", model);
     }

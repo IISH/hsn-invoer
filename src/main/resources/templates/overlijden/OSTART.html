@@ -9,7 +9,7 @@
 
   <div class="form-group extra-top-margin">
     <div class="sub-form-group">
-      <label class="col-xs-7 control-label">Betreft het levenloos aangegevenen?</label>
+      <label class="col-xs-8 control-label">Betreft het levenloos aangegevenen? j / n</label>
 
       <div class="col-xs-1">
         <input type="text" class="form-control form-control-digit required" id="levnloos" name="levnloos"
@@ -26,6 +26,6 @@
   </div>
 </fieldset>
 
-<footer layout:fragment="footer" th:include="layoutFragments :: footer"></footer>
+<footer layout:fragment="footer" th:include="layoutFragments :: footer ('OSTART')"></footer>
 </body>
 </html>

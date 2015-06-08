@@ -51,6 +51,7 @@ public class PersoonskaartController {
         Map<String, Object> model = new HashMap<>();
         model.put("action", "/persoonskaart/overzicht/menu");
         model.put("isBirthOverview", false);
+        model.put("nameOverz", "POVERZS");
 
         return new ModelAndView("main/OVERZ", model);
     }
