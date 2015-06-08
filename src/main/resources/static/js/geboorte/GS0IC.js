@@ -2,14 +2,14 @@
     $.initCheckDate(
         '.checkDateTime',
         function (hsnDate) {
-            $.each([hsnDate.day, hsnDate.month, hsnDate.year, hsnDate.hour], function (i, elem) {
+            /*$.each([hsnDate.day, hsnDate.month, hsnDate.year, hsnDate.hour], function (i, elem) {
                 if (elem.isInput && isNaN(elem.getValue())) {
                     elem.elem.val(0);
                 }
-            });
+            });*/
 
             $.each([hsnDate.day, hsnDate.month], function (i, elem) {
-                if (elem.isInput && elem.getValue() === 0) {
+                if (elem.isInput && (elem.getValue() === 0) && !elem.isEmptyVal()) {
                     elem.elem.val(-1);
                 }
             });
@@ -25,10 +25,10 @@
             if (hourVal < -3 || hourVal > 23) {
                 error = true;
             }
-            if (monthVal < -3 || monthVal > 12) {
+            if (monthVal === 0 || monthVal < -3 || monthVal > 12) {
                 error = true;
             }
-            if (dayVal < -3 || dayVal > 31) {
+            if (dayVal === 0 || dayVal < -3 || dayVal > 31) {
                 error = true;
             }
 

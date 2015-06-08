@@ -10,10 +10,10 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 public abstract class Byz extends Invoer implements Serializable {
-    @Column(name = "IDNR", nullable = false) private             int    idnr;
-    @Column(name = "BYZNR", nullable = false) private            int    byznr;
-    @Column(name = "BYZ", nullable = false, length = 55) private String byz = "";
-    @Column(name = "SCHERM", nullable = false) private           String scherm = "";
+    @Column(name = "IDNR", nullable = false) private                int    idnr;
+    @Column(name = "BYZNR", nullable = false) private               int    byznr;
+    @Column(name = "BYZ", nullable = false, length = 55) private    String byz = "";
+    @Column(name = "SCHERM", nullable = false, length = 15) private String scherm = "";
 
     public int getIdnr() {
         return idnr;

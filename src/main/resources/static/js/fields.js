@@ -280,6 +280,35 @@
         }
     };
 
+    var prepareByz = function (elem) {
+        var allByzElem = elem.find('textarea');
+
+        var text = '';
+        for (var i = 1; i <= 5; i++) {
+            text += elem.find('.byz' + i).val();
+        }
+        allByzElem.val(text);
+        allByzElem[0].setSelectionRange(text.length * 2, text.length * 2);
+
+        allByzElem.blur(function () {
+            var text = allByzElem.val();
+            var textParts = text.match(/.{1,55}/g); // Split into blocks of 55 chars each
+            for (var i = 1; i <= 5; i++) {
+                var textPart = (textParts.length >= i) ? textParts[i-1] : '';
+                elem.find('.byz' + i).val(textPart);
+            }
+        });
+    };
+
+    var setDefaultValues = function (inputElems) {
+        inputElems.each(function () {
+            var self = $(this);
+            if (self.hasClass('integer-field') && (self.getIntegerValue() === 0)) {
+                self.val('');
+            }
+        });
+    };
+
     $(document).on('keyup', '.submit-on-keyup', function (e) {
         return onSubmitOnKeyup($(e.target));
     });
@@ -335,5 +364,12 @@
         elem.find($.getDataElemSelector('set-value-when')).each(function () {
             prepareSetValueWhen($(this));
         });
+
+        setDefaultValues(elem.find(':input'));
+
+        var byz = elem.find('.bijzonderheden');
+        if (byz.length > 0) {
+            prepareByz(byz);
+        }
     });
 })(jQuery);

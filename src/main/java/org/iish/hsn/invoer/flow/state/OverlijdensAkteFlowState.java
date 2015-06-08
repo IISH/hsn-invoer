@@ -142,7 +142,7 @@ public class OverlijdensAkteFlowState extends ByzAkteFlowState implements Serial
             Ovlbyz byz = new Ovlbyz();
             if (i == 0) {
                 ViewNames viewNames = new OverlijdensAkteViewNames(getViewStateHistory(), getCurOvlagvIndex());
-                byz.setByz(viewNames.getPrevByzViewName() + ":");
+                byz.setByz(viewNames.getPrevByzViewName() + ": ");
             }
             newByz[i] = byz;
         }

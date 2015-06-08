@@ -448,7 +448,7 @@ public class GeboorteAkteService extends AkteService {
         GeboorteAkteFlowState geboorteAkteFlowState = (GeboorteAkteFlowState) byzAkteFlowState;
         Gebbyz gebbyz = (Gebbyz) byz;
 
-        gebbyz.setIdnr(geboorteAkteFlowState.getGebknd().getIdnr());
+        gebbyz.setIdnr(geboorteAkteFlowState.getStpb().getIdnr());
         inputMetadata.saveToEntity(gebbyz);
         gebbyz = gebbyzRepository.save(gebbyz);
 

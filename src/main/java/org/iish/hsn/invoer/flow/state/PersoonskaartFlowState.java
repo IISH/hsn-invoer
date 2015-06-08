@@ -199,7 +199,7 @@ public class PersoonskaartFlowState extends ByzAkteFlowState implements Serializ
             Pkbyz byz = new Pkbyz();
             if (i == 0) {
                 ViewNames viewNames = new PersoonskaartViewNames(getViewStateHistory());
-                byz.setByz(viewNames.getPrevByzViewName() + ":");
+                byz.setByz(viewNames.getPrevByzViewName() + ": ");
             }
             newByz[i] = byz;
         }

@@ -45,6 +45,11 @@ public class AjaxLookupController {
         return lookupService.getRefAinb(keyToSourceRegister, true);
     }
 
+    @RequestMapping(value = "/plaats", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Plaats getPlaats(@RequestParam Integer gemnr) throws NotFoundException {
+        return lookupService.getPlaats(gemnr, true);
+    }
+
     @RequestMapping(value = "/gebakte", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Gebakte getGebakte(@RequestParam Integer idnr) throws NotFoundException {
         return lookupService.getGebakte(idnr, true);

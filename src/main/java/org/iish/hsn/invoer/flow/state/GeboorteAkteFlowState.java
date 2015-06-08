@@ -121,7 +121,7 @@ public class GeboorteAkteFlowState extends ByzAkteFlowState implements Serializa
             Gebbyz byz = new Gebbyz();
             if (i == 0) {
                 ViewNames viewNames = new GeboorteAkteViewNames(getViewStateHistory(), getCurGebgtgIndex());
-                byz.setByz(viewNames.getPrevByzViewName() + ":");
+                byz.setByz(viewNames.getPrevByzViewName() + ": ");
             }
             newByz[i] = byz;
         }

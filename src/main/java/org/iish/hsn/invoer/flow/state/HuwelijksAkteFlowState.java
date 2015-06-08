@@ -211,7 +211,7 @@ public class HuwelijksAkteFlowState extends ByzAkteFlowState implements Serializ
             Huwbyz byz = new Huwbyz();
             if (i == 0) {
                 ViewNames viewNames = new HuwelijksAkteViewNames(getViewStateHistory(), getCurHuwgtgIndex());
-                byz.setByz(viewNames.getPrevByzViewName() + ":");
+                byz.setByz(viewNames.getPrevByzViewName() + ": ");
             }
             newByz[i] = byz;
         }

@@ -39,18 +39,20 @@ public class MainController {
     }
 
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.POST)
-    public String redirectToModule(@RequestParam("keuze") int module) {
+    public String redirectToModule(@RequestParam("keuze") String module) {
         switch (module) {
-            case 1:
+            case "1":
                 return "redirect:/geboorte";
-            case 2:
+            case "2":
                 return "redirect:/overlijden";
-            case 3:
+            case "3":
                 return "redirect:/huwelijk";
-            case 4:
+            case "4":
                 return "redirect:/persoonskaart";
-            case 5:
+            case "5":
                 return "redirect:/bevolkingsregister";
+            case "s":
+                return "redirect:/";
             default:
                 return "redirect:/hoofdmenu";
         }

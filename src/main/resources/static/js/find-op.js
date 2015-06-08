@@ -60,6 +60,12 @@
                 $('.aktenr').text(stpb.aktenr);
                 $('.idnr').text(stpb.idnr);
 
+                if (stpb.gemeente.trim().length === 0) {
+                    $.getJSON('/ajax/lookup/plaats', {gemnr: stpb.gemnr}, function (plaats) {
+                        $('.gemeente').text(plaats.gemnaam);
+                    });
+                }
+
                 $.getJSON('/ajax/lookup/gebakte', {idnr: idnr}, function (gebakte) {
                     self.onFailure('In het bestand opgenomen kode: ' + gebakte.gebkode, true, true, false);
                 }).fail(function () {
