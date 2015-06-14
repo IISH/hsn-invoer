@@ -30,16 +30,21 @@
         });
     };
 
-    $.fn.hasErrorWhen = function (condition, elemParent) {
+    $.fn.hasErrorWhen = function (condition, elemParent, name, errorMessage) {
         if (elemParent === undefined) {
             elemParent = this.getParentOfFormElement();
         }
 
-        if (condition && this.is(':enabled')) {
+        var error = (condition && this.is(':enabled') && this.is(':visible'));
+        if (error) {
             elemParent.addClass('has-an-error');
         }
         else {
             elemParent.removeClass('has-an-error');
+        }
+
+        if ((name !== undefined) && (errorMessage !== undefined)) {
+            $.setError(error, name, errorMessage);
         }
     };
 
@@ -136,8 +141,8 @@
         $('.required:visible').each(function () {
             var elem = $(this);
             elem.hasErrorWhen(
-                    (elem.val() === undefined) || (elem.val().trim() === '') ||
-                    (!elem.hasClass('zero-allowed') && (elem.getIntegerValue() === 0))
+                (elem.val() === undefined) || (elem.val().trim() === '') ||
+                (!elem.hasClass('zero-allowed') && (elem.getIntegerValue() === 0))
             );
         });
     };
@@ -176,7 +181,8 @@
         }
     };
 
-    var determineNextFocusElem = function (self, e) {
+    var determineNextFocusElem = function (e) {
+        var self = $(e.target);
         var formElements = $.getFormElementsEnabled();
 
         // Disable the enter key, unless the focused element is a button
@@ -198,6 +204,7 @@
 
                 // setTimeout can also be used to make IE wait until the blur event has completed
                 setTimeout(function () {
+                    var focusElem;
                     if (isUp || isDown) {
                         var column = self.closest('td');
                         var row = self.closest('tr');
@@ -232,7 +239,7 @@
                             while (!focusElemFound) {
                                 var input = rows.eq(nextRowIndex).find('td').eq(columnIndex).find(':input:visible:enabled:first');
                                 if (input.length === 1) {
-                                    input.focus();
+                                    focusElem = input;
                                     focusElemFound = true;
                                 }
                                 columnIndex--;
@@ -241,19 +248,22 @@
                         else {
                             var table = self.closest('table');
                             if (prev) {
-                                table.find(':input:first').getPrevFormElement().focus();
+                                focusElem = table.find(':input:first').getPrevFormElement();
                             }
                             else {
-                                table.find(':input:last').getNextFormElement().focus();
+                                focusElem = table.find(':input:last').getNextFormElement();
                             }
                         }
                     }
                     else if (isLeft) {
-                        self.getPrevFormElement().focus();
+                        focusElem = self.getPrevFormElement();
                     }
                     else {
-                        self.getNextFormElement().focus();
+                        focusElem = self.getNextFormElement();
                     }
+
+                    focusElem.focus();
+                    focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
                 }, 0);
             }
         }
@@ -268,34 +278,37 @@
 
                 // setTimeout can also be used to make IE wait until the blur event has completed
                 setTimeout(function () {
+                    var focusElem;
                     if (isPrev) {
-                        self.getPrevFormElement().focus();
+                        focusElem = self.getPrevFormElement();
                     }
                     else {
-                        self.getNextFormElement().focus();
+                        focusElem = self.getNextFormElement();
                     }
+
+                    focusElem.focus();
+                    focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
                 }, 0);
             }
         }
     };
 
-    var autoNextFocusElem = function (self, e) {
-        var char = String.fromCharCode(e.keyCode);
-        if (char.match(/\w/)) {
-            var maxlength = parseInt(self.attr('maxlength'));
-            if (!isNaN(maxlength) && (self.val().length >= maxlength)) {
-                e.which = 9; // Simulate a TAB
-                determineNextFocusElem($(e.target), e);
-            }
+    var autoFocusNext = false;
+
+    var shouldAutoNextFocusElem = function (e) {
+        if (e.charCode !== 0) {
+            var self = $(e.target);
+            var maxLength = parseInt(self.attr('maxlength'));
+            autoFocusNext = (!isNaN(maxLength) && (self.getCaret() >= (maxLength - 1)));
         }
     };
 
-    var determineNextFocusElemHandler = function (e) {
-        determineNextFocusElem($(e.target), e);
-    };
-
-    var autoNextFocusElemHanlder = function (e) {
-        autoNextFocusElem($(e.target), e);
+    var autoNextFocusElem = function (e) {
+        if (autoFocusNext) {
+            autoFocusNext = false;
+            e.which = 9; // Simulate a TAB
+            determineNextFocusElem(e);
+        }
     };
 
     var init = function () {
@@ -311,10 +324,12 @@
 
         // We want to ensure these are always performed last, so unbind and bind them again
         $(document)
-            .off('keydown', determineNextFocusElemHandler)
-            .on('keydown', determineNextFocusElemHandler)
-            .off('keyup', autoNextFocusElemHanlder)
-            .on('keyup', autoNextFocusElemHanlder);
+            .off('keydown', determineNextFocusElem)
+            .on('keydown', determineNextFocusElem)
+            .off('keyup', autoNextFocusElem)
+            .on('keyup', autoNextFocusElem)
+            .off('keypress', shouldAutoNextFocusElem)
+            .on('keypress', shouldAutoNextFocusElem);
     });
 
     $(document).on('blur', 'form input, form button', init);

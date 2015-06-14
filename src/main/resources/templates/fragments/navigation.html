@@ -4,10 +4,6 @@
 <body>
 <fieldset th:fragment="bev-reg-navigation (akte, singlePersonScreen)">
   <span class="pull-right" th:with="burgstandRelFix=${singlePersonScreen and akte.isBurgStandRelFix()}">
-    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop" th:if="${!burgstandRelFix}">
-      Stoppen
-    </button>
-
     <th:block th:if="${akte.isCorrectionDelete()} == false">
       <button type="submit" name="_eventId_nextPerson" class="btn btn-default btn-next"
               th:if="${!burgstandRelFix and singlePersonScreen and !@bevolkingsregisterHelper.registrationHasMaxPersons(akte)}">
@@ -22,9 +18,13 @@
       </button>
     </th:block>
 
-     <button type="submit" name="_eventId_delete" class="btn btn-default btn-delete" th:if="${akte.isCorrectionDelete()}">
-       Verwijderen
-     </button>
+    <button type="submit" name="_eventId_delete" class="btn btn-default btn-delete" th:if="${akte.isCorrectionDelete()}">
+      Verwijderen
+    </button>
+
+    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop" th:if="${!burgstandRelFix}">
+      Stoppen
+    </button>
   </span>
 </fieldset>
 
@@ -34,8 +34,9 @@
   </span>
 
   <span class="pull-right">
-    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop" th:if="${mayStop}">
-      Stoppen
+    <button type="submit" name="_eventId_next" class="btn btn-default btn-next">
+      Volgende
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
     </button>
 
     <button type="submit" name="_eventId_byz" class="btn btn-default btn-byz"
@@ -43,14 +44,15 @@
       Bijzonderheden
     </button>
 
-    <button type="submit" name="_eventId_next" class="btn btn-default btn-next">
-      Volgende
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop" th:if="${mayStop}">
+      Stoppen
     </button>
   </span>
 </fieldset>
 
 <fieldset th:fragment="byz-navigation">
+  <span class="pull-left">Bijzonderheden</span>
+
   <span class="pull-right">
     <button type="submit" name="_eventId_more" class="btn btn-default btn-more" th:if="${akte.allowMoreByz}">
       Nog meer bijzonderheden toevoegen

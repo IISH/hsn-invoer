@@ -182,4 +182,18 @@
             this.text(val);
         }
     };
+
+    $.fn.getCaret = function () {
+        if (this.length > 0) {
+            return this[0].selectionStart;
+        }
+        return 0;
+    };
+
+    $.fn.setCaret = function (caretPos) {
+        if (this.length > 0) {
+            this[0].focus();
+            this[0].setSelectionRange(caretPos, caretPos);
+        }
+    };
 })(jQuery);

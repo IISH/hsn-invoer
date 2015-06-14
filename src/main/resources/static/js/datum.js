@@ -66,8 +66,8 @@
             };
 
             /*if (obj.isInput && isNaN(obj.getValue())) {
-                obj.elem.val(0);
-            }*/
+             obj.elem.val(0);
+             }*/
             return obj;
         }
 
@@ -87,7 +87,25 @@
             if (runPrepare && $.isFunction(prepare)) {
                 prepare(hsnDate, elem);
             }
-            elem.hasErrorWhen(dateCheck(hsnDate, elem), parent);
+
+            // Generate an random id as an identifier for error messages
+            var id = parent.data('random-id');
+            if (id === undefined || id === null) {
+                id = Math.floor(Math.random() * 999999).toString();
+                parent.data('random-id', id);
+            }
+
+            var message = 'De datum ' + hsnDate.day.getValue() + '-' +
+                hsnDate.month.getValue() + '-' + hsnDate.year.getValue() + ' ';
+            if ((hsnDate.hour.elem.length > 0) && (hsnDate.minute.elem.length > 0)) {
+                message += 'en/of de tijd ' + hsnDate.hour.getValue() + ':' + hsnDate.minute.getValue() + ' ';
+            }
+            else if ((hsnDate.hour.elem.length > 0) && (hsnDate.minute.elem.length === 0)) {
+                message += 'en/of het uur ' + hsnDate.hour.getValue() + ' ';
+            }
+            message += 'is niet geldig.';
+
+            elem.hasErrorWhen(dateCheck(hsnDate, elem), parent, id, message);
             $(document).trigger('changeOfState');
         };
 

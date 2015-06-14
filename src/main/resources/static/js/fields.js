@@ -3,7 +3,25 @@
  * Deals with actions to be performed when certain values are entered in input fields.
  */
 (function ($) {
-    var regexOnlyNumbers = /^[0-9/-]+$/;
+    var regexOnlyNumbers = /^[0-9]+$/;
+
+    /**
+     * Replaces the first character with an uppercase character.
+     */
+    var onUppercase = function (elem, e) {
+        // If there is already a 'integer-field' or 'data-valid-chars' handler, don't handle the new event
+        var caret = elem.getCaret();
+        if (!elem.hasClass('integer-field') && !elem.is('[data-valid-chars]') && (elem.getCaret() === 1)) {
+            var val = elem.val();
+            var char = String.fromCharCode(e.which);
+            // Only reset value if we just entered the first character
+            // To know, check if the caret just moved to the second character
+            if (val.substr(0, 1).toUpperCase() === char.toUpperCase()) {
+                elem.val(val.substr(0, 1).toUpperCase() + val.substr(1));
+                elem.setCaret(caret); // Make sure the caret position is not changed
+            }
+        }
+    };
 
     /**
      * Submit the form when the user pressed a (valid) key.
@@ -21,7 +39,16 @@
         // If there is already a 'valid chars' handler, don't handle the new event
         if (!elem.is('[data-valid-chars]') && (e.charCode !== 0)) {
             var char = String.fromCharCode(e.which);
-            return regexOnlyNumbers.test(char);
+            var allow = regexOnlyNumbers.test(char);
+
+            // If the character is not allowed, but we are about to replace the first character,
+            // then check if the first character starts with a dash to indicate a negative number
+            if (!allow && (elem.getCaret() === 0)) {
+                allow = (char === '-');
+            }
+
+            if (!allow) e.stopImmediatePropagation();
+            return allow;
         }
     };
 
@@ -37,7 +64,9 @@
         if (e.charCode !== 0) {
             var validChars = elem.getMultipleDataValues('valid-chars');
             var char = String.fromCharCode(e.which);
-            return (validChars.indexOf(char) >= 0);
+            var allow = (validChars.indexOf(char) >= 0);
+            if (!allow) e.stopImmediatePropagation();
+            return allow;
         }
     };
 
@@ -294,7 +323,7 @@
             var text = allByzElem.val();
             var textParts = text.match(/.{1,55}/g); // Split into blocks of 55 chars each
             for (var i = 1; i <= 5; i++) {
-                var textPart = (textParts.length >= i) ? textParts[i-1] : '';
+                var textPart = (textParts.length >= i) ? textParts[i - 1] : '';
                 elem.find('.byz' + i).val(textPart);
             }
         });
@@ -308,6 +337,25 @@
             }
         });
     };
+
+    var setOverwrite = function (elem, e) {
+        if (e.charCode !== 0) {
+            var text = elem.val();
+            var caret = elem.getCaret();
+
+            // First remove the character that will be replaced
+            var output = text.substring(0, caret);
+            elem.val(output + text.substring(caret + 1));
+
+            // Then reinitialize the caret position
+            elem.setCaret(caret);
+        }
+        return true;
+    };
+
+    $(document).on('keyup', ':input', function (e) {
+        return onUppercase($(e.target), e);
+    });
 
     $(document).on('keyup', '.submit-on-keyup', function (e) {
         return onSubmitOnKeyup($(e.target));
@@ -335,6 +383,10 @@
 
     $(document).on('blur', $.getDataElemSelector('replace-in-field'), function (e) {
         onReplaceInField($(e.target));
+    });
+
+    $(document).on('keypress', ':input', function (e) {
+        return setOverwrite($(e.target), e);
     });
 
     $.registerInit(function (elem) {
