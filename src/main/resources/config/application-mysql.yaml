@@ -2,7 +2,7 @@ spring:
   datasource:
     invoer:
       driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/invoer-2
+      url: jdbc:mysql://localhost:3306/invoer
       username: root
       password:
 
