@@ -57,4 +57,9 @@ public class MainController {
                 return "redirect:/hoofdmenu";
         }
     }
+
+    @RequestMapping(value = "/backButton", method = RequestMethod.GET)
+    public String backButtonPrevent() {
+        return "exception/backButtonError";
+    }
 }

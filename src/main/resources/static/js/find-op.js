@@ -5,6 +5,7 @@
         // Hold a reference to 'this' in cases where 'this' won't refer to this object anymore
         self = this;
 
+        self.isTyping = false;
         self.idnrElem = elem;
         self.failElem = $('.fail');
         self.withOpElems = $('.with-op');
@@ -14,10 +15,16 @@
         self.nextBtnElem = $('.btn-next');
         self.lookup = elem.getDataValue('lookup');
 
-        self.idnrElem.focus(self.onTyping);
+        self.idnrElem.keypress(function (e) {
+            if ((e.charCode !== 0) && !self.isTyping) {
+                self.isTyping = true;
+                self.onTyping();
+            }
+        });
 
         if (self.idnrElem.hasClass('stpb-idnr')) {
             self.idnrElem.blur(function () {
+                self.isTyping = false;
                 self.blur = $(this);
                 self.stpbLookup();
             });
@@ -183,6 +190,7 @@
         $(document).trigger('changeOfState');
 
         self.blur.getNextFormElement().focus();
+        $(document).trigger('changeOfState');
     };
 
     FindOp.prototype.onTyping = function () {

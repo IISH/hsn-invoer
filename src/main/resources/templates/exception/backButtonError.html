@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head></head>
+<body>
+<header layout:fragment="header" th:include="layoutFragments :: header"></header>
+
+<fieldset class="content-spacing" layout:fragment="main">
+  <div class="alert alert-warning" role="alert">
+    U kunt niet terug naar het vorige scherm. <br/>
+    U wordt binnen enkele seconden terug gestuurd naar het huidige scherm.
+  </div>
+</fieldset>
+
+<footer layout:fragment="footer" th:include="layoutFragments :: footer ('')"></footer>
+
+<th:block layout:fragment="js">
+  <script language="JavaScript">
+    setTimeout(function () { history.forward(); }, 5000); // Wait 5 seconds
+  </script>
+</th:block>
+</body>
+</html>

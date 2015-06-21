@@ -62,12 +62,13 @@
                 getValue: function () {
                     var val = this.isInput ? this.elem.getIntegerValue() : this.elem.getIntegerText();
                     return isNaN(val) ? 0 : val;
+                },
+                isEmptyVal: function () {
+                    var val = this.isInput ? this.elem.getIntegerValue() : this.elem.getIntegerText();
+                    return isNaN(val);
                 }
             };
 
-            /*if (obj.isInput && isNaN(obj.getValue())) {
-             obj.elem.val(0);
-             }*/
             return obj;
         }
 

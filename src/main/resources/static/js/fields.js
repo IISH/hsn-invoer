@@ -11,7 +11,9 @@
     var onUppercase = function (elem, e) {
         // If there is already a 'integer-field' or 'data-valid-chars' handler, don't handle the new event
         var caret = elem.getCaret();
-        if (!elem.hasClass('integer-field') && !elem.is('[data-valid-chars]') && (elem.getCaret() === 1)) {
+        if (!elem.hasClass('integer-field') && !elem.hasClass('no-auto-uppercase') &&
+            !elem.is('[data-valid-chars]') && (elem.getCaret() === 1)) {
+
             var val = elem.val();
             var char = String.fromCharCode(e.which);
             // Only reset value if we just entered the first character
@@ -162,15 +164,18 @@
         hasValues(
             elem, showWhen,
             function () {
-                if (showWhen.is(':visible')) {
+                var visible = showWhen.is(':visible');
+                if (visible) {
                     elem.show();
                 }
                 else {
                     elem.hide();
                 }
+                return visible;
             },
             function () {
                 elem.hide();
+                return false;
             }
         );
 
@@ -178,9 +183,11 @@
             elem, showWhen,
             function () {
                 elem.show();
+                return true;
             },
             function () {
                 elem.hide();
+                return false;
             }
         );
     };
@@ -269,16 +276,24 @@
         var onValuesNotIn = elem.getDataValue('has-values-not-in');
         onValuesNotIn = (onValuesNotIn !== undefined) ? onValuesNotIn.toString().split(';') : onValuesNotIn;
 
+        var previousResult = null;
+
         var valuesAreDefined = function (onValues) {
             return ((onValues !== undefined) && (onValues.length > 0));
         };
         var checkConditions = function (onValues, isNegate) {
+            var newResult = null;
             if (onValues.indexOf(target.val()) >= 0) {
-                isNegate ? onFalse() : onTrue();
+                newResult = isNegate ? onFalse() : onTrue();
             }
             else {
-                isNegate ? onTrue() : onFalse();
+                newResult = isNegate ? onTrue() : onFalse();
             }
+
+            if (newResult !== previousResult) {
+                $(document).trigger('changeOfState');
+            }
+            previousResult = newResult;
         };
         var onEvent = function () {
             if (valuesAreDefined(onValuesIn)) {
@@ -294,14 +309,21 @@
     };
 
     var hasNoErrors = function (elem, target, onTrue, onFalse) {
+        var previousResult = null;
         if (elem.data('has-no-errors') !== undefined) {
             var onEvent = function () {
+                var newResult = null;
                 if (target.hasClass('has-an-error')) {
-                    onFalse();
+                    newResult = onFalse();
                 }
                 else {
-                    onTrue();
+                    newResult = onTrue();
                 }
+
+                if (newResult !== previousResult) {
+                    $(document).trigger('changeOfState');
+                }
+                previousResult = newResult;
             };
 
             onEvent();

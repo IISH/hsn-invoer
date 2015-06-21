@@ -25,6 +25,9 @@
       <td th:utext="${curGeb.idnr}"></td>
       <td th:utext="${stat.index + 1}"></td>
     </tr>
+    <tr th:if="${overview.size() == 0}">
+      <td colspan="6" class="text-center">EINDE BESTAND / echter niets gevonden!</td>
+    </tr>
     </tbody>
   </table>
 

@@ -9,7 +9,7 @@
  * In addition, it also sets the focus on the fist element of the first found form on the page.
  */
 (function ($) {
-    $.setError = function (isError, name, errorMessage) {
+    $.setError = function (isError, name, errorMessage, elemParent) {
         if (name.indexOf('.') >= 0) {
             name = name.substring(0, name.indexOf('.'));
         }
@@ -23,6 +23,10 @@
             if (message.length === 0) {
                 message = $('<div class="' + name + '"></div>');
                 alertBox.append(message);
+
+                if (elemParent !== undefined) {
+                    message.data('error-elem', elemParent);
+                }
             }
 
             message.html(errorMessage);
@@ -44,7 +48,7 @@
         }
 
         if ((name !== undefined) && (errorMessage !== undefined)) {
-            $.setError(error, name, errorMessage);
+            $.setError(error, name, errorMessage, elemParent);
         }
     };
 
@@ -82,22 +86,35 @@
     };
 
     var addError = function (isError, className, btnNextClassName, onError) {
-        var messages = getMessages();
         var message = getMessage(className);
 
         if (isError) {
             getBtnNext().addClass(btnNextClassName);
-
-            message = onError(messages, message);
-
-            message.show();
-            messages.show();
+            message = onError(getMessages(), message);
+            showMessage(message, true);
         }
         else {
             getBtnNext().removeClass(btnNextClassName);
+            hideMessage(message, true);
+        }
+    };
 
+    var showMessage = function(message, isErrorCheck) {
+        if (!message.is(':visible')) {
+            var hiddenByErrorCheck = message.data('error-check');
+            if (isErrorCheck || (!hiddenByErrorCheck && !isErrorCheck)) {
+                message.show();
+                getMessages().show();
+            }
+        }
+    };
+
+    var hideMessage = function(message, isErrorCheck) {
+        if (message.is(':visible')) {
+            message.data('error-check', isErrorCheck);
             message.hide();
 
+            var messages = getMessages();
             var alertBox = messages;
             if (!messages.hasClass('alert')) {
                 alertBox = messages.find('.alert');
@@ -144,6 +161,21 @@
                 (elem.val() === undefined) || (elem.val().trim() === '') ||
                 (!elem.hasClass('zero-allowed') && (elem.getIntegerValue() === 0))
             );
+        });
+    };
+
+    var checkErrorMessages = function () {
+        getMessages().children().each(function () {
+            var message = $(this);
+            var errorElem = message.data('error-elem');
+            if ((errorElem !== null) && (errorElem !== undefined)) {
+                if (errorElem.filter(':visible').length === 0) {
+                    hideMessage(message, false);
+                }
+                else {
+                    showMessage(message, false);
+                }
+            }
         });
     };
 
@@ -316,6 +348,8 @@
             checkByz();
         }
         checkRequired();
+
+        checkErrorMessages();
         checkNextByzButton();
     };
 
@@ -333,7 +367,11 @@
     });
 
     $(document).on('blur', 'form input, form button', init);
-    $(document).on('changeOfState', checkNextByzButton);
+
+    $(document).on('changeOfState', function () {
+        checkErrorMessages();
+        checkNextByzButton();
+    });
 
     $('form:first').submit(function () {
         $.resetInvisibleFormElements();

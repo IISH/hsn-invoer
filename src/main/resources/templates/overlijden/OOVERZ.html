@@ -23,6 +23,9 @@
       <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getAgeAsString(curOvl.lftdovl, curOvl.lftwovl, curOvl.lftmovl, curOvl.lftjovl)}"></td>
       <td th:utext="${stat.index + 1}"></td>
     </tr>
+    <tr th:if="${overview.size() == 0}">
+      <td colspan="5" class="text-center">EINDE BESTAND / echter niets gevonden!</td>
+    </tr>
     </tbody>
   </table>
 

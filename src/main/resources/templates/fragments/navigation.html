@@ -29,6 +29,10 @@
 </fieldset>
 
 <fieldset th:fragment="navigation (mayStop, mayAddByz)">
+  <div th:include="fragments/navigation :: correction-navigation (${mayStop}, false, ${mayAddByz})"></div>
+</fieldset>
+
+<fieldset th:fragment="correction-navigation (mayStop, mayStopCorrection, mayAddByz)">
   <span class="pull-left">
     <span class="scherm" th:utext="${flowRequestContext.currentState.id}"></span>
   </span>
@@ -44,7 +48,8 @@
       Bijzonderheden
     </button>
 
-    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop" th:if="${mayStop}">
+    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop"
+            th:if="${(!akte.isCorrection() and mayStop) or (akte.isCorrection() and mayStopCorrection)}">
       Stoppen
     </button>
   </span>

@@ -2,12 +2,6 @@
     $.initCheckDate(
         '.checkDateTime',
         function (hsnDate) {
-            /*$.each([hsnDate.day, hsnDate.month, hsnDate.year, hsnDate.hour], function (i, elem) {
-                if (elem.isInput && isNaN(elem.getValue())) {
-                    elem.elem.val(0);
-                }
-            });*/
-
             $.each([hsnDate.day, hsnDate.month], function (i, elem) {
                 if (elem.isInput && (elem.getValue() === 0) && !elem.isEmptyVal()) {
                     elem.elem.val(-1);

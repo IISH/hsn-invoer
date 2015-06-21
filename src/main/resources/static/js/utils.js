@@ -184,14 +184,14 @@
     };
 
     $.fn.getCaret = function () {
-        if (this.length > 0) {
+        if ((this.length > 0) && (typeof this[0].selectionStart !== 'undefined')) {
             return this[0].selectionStart;
         }
         return 0;
     };
 
     $.fn.setCaret = function (caretPos) {
-        if (this.length > 0) {
+        if ((this.length > 0) && (typeof this[0].setSelectionRange !== 'undefined')) {
             this[0].focus();
             this[0].setSelectionRange(caretPos, caretPos);
         }

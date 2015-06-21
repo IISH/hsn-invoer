@@ -29,6 +29,9 @@
       <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getDateAsString(curHuw.huw.hdag, curHuw.huw.hmaand, curHuw.huw.hjaar)}"></td>
       <td th:utext="${stat.index + 1}"></td>
     </tr>
+    <tr th:if="${overview.size() == 0}">
+      <td colspan="5" class="text-center">EINDE BESTAND / echter niets gevonden!</td>
+    </tr>
     </tbody>
   </table>
 

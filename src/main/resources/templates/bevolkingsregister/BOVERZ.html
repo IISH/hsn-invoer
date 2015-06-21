@@ -99,6 +99,9 @@
             </button>
           </td>
         </tr>
+        <tr th:if="${overview.size() == 0}">
+          <td colspan="10" class="text-center">EINDE BESTAND / echter niets gevonden!</td>
+        </tr>
         </tbody>
       </table>
     </div>
