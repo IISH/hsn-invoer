@@ -55,7 +55,7 @@ public class WebFlowConfiguration extends AbstractFlowConfiguration {
     @Bean
     public FlowExecutor flowExecutor() {
         // There is no going back to a previous screen, unless we're running with the development profile
-        int maxFlowExecutionSnapshots = /*this.env.acceptsProfiles("development") ? -1 :*/ 0;
+        int maxFlowExecutionSnapshots = this.env.acceptsProfiles("development") ? -1 : 0;
         return getFlowExecutorBuilder(flowRegistry()).setMaxFlowExecutionSnapshots(maxFlowExecutionSnapshots)
                                                      .addFlowExecutionListener(new AkteFlowExecutionListener()).build();
     }
