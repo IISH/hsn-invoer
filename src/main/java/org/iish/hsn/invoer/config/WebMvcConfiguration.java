@@ -1,6 +1,7 @@
 package org.iish.hsn.invoer.config;
 
 import org.iish.hsn.invoer.thymeleaf.HSNThymeleafDialect;
+import org.iish.hsn.invoer.util.CachingInterceptor;
 import org.iish.hsn.invoer.util.InputMetadata;
 import org.iish.hsn.invoer.util.InputMetadataInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.webflow.mvc.servlet.FlowHandlerAdapter;
-import org.springframework.webflow.mvc.servlet.FlowHandlerMapping;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.AjaxThymeleafViewResolver;
@@ -37,6 +36,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new InputMetadataInterceptor(this.inputMetadata));
+        registry.addInterceptor(new CachingInterceptor());
     }
 
     /**

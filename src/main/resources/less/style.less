@@ -1,5 +1,7 @@
 @import "bootstrap/bootstrap.less";
 
+@form-group-margin-bottom: 5px;
+
 #main {
   position: relative;
   width: 900px;
@@ -163,6 +165,35 @@ form {
   .input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-base; @line-height-small; @input-border-radius-small);
 }
 
+.form-control-static {
+  height: @input-height-small;
+  padding: @padding-small-vertical @padding-small-horizontal;
+  font-size: @font-size-base;
+  line-height: @line-height-small;
+  min-height: (@line-height-computed + @font-size-base);
+}
+
+.form-group {
+  @media (min-width: @screen-sm-min) {
+    .control-label {
+      padding-top: (@padding-small-vertical + 1);
+      font-size: @font-size-base;
+    }
+  }
+}
+
+.form-inline .control-label {
+  padding: 0;
+}
+
+.form-group-style {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: @form-group-margin-bottom;
+
+  &:extend(.clearfix all);
+}
+
 .form-control {
   &.form-control-digit {
     width: 40px;
@@ -181,15 +212,9 @@ form {
   }
 }
 
-/*.bijzonderheden.form-control {
-  padding: 0;
-  height: auto;
-
-  input.form-control {
-    border: none;
-    box-shadow: none;
-  }
-}*/
+textarea.form-control {
+  height: 120px;
+}
 
 p.scherm {
   margin: 7px 0;

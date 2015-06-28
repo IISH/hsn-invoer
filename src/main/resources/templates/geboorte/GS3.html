@@ -13,58 +13,55 @@
              data-set-value-when="#is-echtgenoot-aangever" data-has-values-in="j"
              data-then-value="5" data-else-value-of="#keuze-echtgenoot"/>
 
-      <label for="is-echtgenoot-aangever" class="col-xs-7 control-label">Is de moeder de echtgenote van de aangever: j
-        / n</label>
+      <div class="form-group-style">
+        <label for="is-echtgenoot-aangever" class="col-xs-7 control-label">
+          Is de moeder de echtgenote van de aangever: j / n
+        </label>
 
-      <div class="col-xs-5">
-        <input type="text" id="is-echtgenoot-aangever" class="form-control form-control-digit required"
-               maxlength="1" data-valid-chars="j;n"
-               th:value="${@geboorteAkteHelper.getMoederEchtgenoteAangever(akte.gebknd)}"/>
+        <div class="col-xs-5">
+          <input type="text" id="is-echtgenoot-aangever" class="form-control form-control-digit required"
+                 maxlength="1" data-valid-chars="j;n"
+                 th:value="${@geboorteAkteHelper.getMoederEchtgenoteAangever(akte.gebknd)}"/>
+        </div>
       </div>
 
       <div data-show-when="#is-echtgenoot-aangever" data-has-values-in="n" style="display: none;">
-        <div class="row">
+        <div class="form-group-style">
           <div class="col-xs-5 col-xs-offset-2">
-            <label class="control-label">1 = ongehuwd</label>
+            <span class="text-control-label inline">1 = ongehuwd</span>
+          </div>
+
+          <div class="col-xs-5">
+            <span class="text-control-label inline">6 = onbekend</span>
           </div>
         </div>
 
-        <div class="row">
+        <div class="form-group-style">
           <div class="col-xs-5 col-xs-offset-2">
-            <label class="control-label">2 = weduwe</label>
+            <span class="text-control-label inline">2 = weduwe</span>
+          </div>
+
+          <div class="col-xs-5">
+            <span class="text-control-label inline">7 = onbekend, aangever is de vader</span>
           </div>
         </div>
 
-        <div class="row">
+        <div class="form-group-style">
           <div class="col-xs-5 col-xs-offset-2">
-            <label class="control-label">3 = gescheiden</label>
+            <span class="text-control-label inline">3 = gescheiden</span>
+          </div>
+
+          <div class="col-xs-5">
+            <span class="text-control-label inline">8 = ongehuwd, aangever is de vader</span>
           </div>
         </div>
 
-        <div class="row">
+        <div class="form-group-style">
           <div class="col-xs-5 col-xs-offset-2">
-            <label class="control-label">4 = gehuwd, echtgenoot is niet de aangever</label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-5 col-xs-offset-2">
-            <label class="control-label">6 = onbekend</label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-5 col-xs-offset-2">
-            <label class="control-label">7 = onbekend, aangever is de vader</label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-5 col-xs-offset-2">
-            <label class="control-label">8 = ongehuwd, aangever is de vader</label>
+            <span class="text-control-label inline">4 = gehuwd, echtgenoot is niet de aangever</span>
           </div>
 
-          <div class="form-inline col-xs-3 col-xs-offset-1">
+          <div class="form-inline col-xs-5">
             <label for="keuze-echtgenoot" class="control-label">Uw keuze:</label>
             <input type="text" id="keuze-echtgenoot" class="form-control form-control-digit spacing required"
                    maxlength="1" data-valid-chars="1;2;3;4;6;7;8" th:value="${akte.gebknd.brgstmr}"/>
