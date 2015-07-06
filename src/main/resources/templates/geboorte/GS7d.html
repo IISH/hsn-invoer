@@ -15,7 +15,7 @@
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit datum-kantmelding required" data-valid-chars="j;n"
-               th:value="${@geboorteAkteHelper.getKantmeldingDatum(akte.gebkant)}"/>
+               maxlength="1" th:value="${@geboorteAkteHelper.getKantmeldingDatum(akte.gebkant)}"/>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit datum-erkenning required" data-valid-chars="j;n"
-               th:value="${@geboorteAkteHelper.getKantmeldingBesluitDatum(akte.gebkant)}"/>
+               maxlength="1" th:value="${@geboorteAkteHelper.getKantmeldingBesluitDatum(akte.gebkant)}"/>
       </div>
     </div>
 

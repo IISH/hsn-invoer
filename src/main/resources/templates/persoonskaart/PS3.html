@@ -13,48 +13,51 @@
       Dubbele beroepen vermelden als één beroep
     </div>
 
-    <div class="form-group extra-top-margin">
-      <label class="col-xs-7 control-label">Aantal beroepen:</label>
-
-      <div class="col-xs-2">
-        <input type="text" class="form-control form-control-digit" id="noBrp" name="noBrp"
-               data-min-value="0" data-ajax-update="#brp"
-               th:value="${(akte.pkbrp.size() > 0) ? akte.pkbrp.size() : 0}"/>
-      </div>
-    </div>
-
-    <fieldset id="brp" class="content-spacing" th:fragment="brp" th:object="${akte}">
+    <div id="brp" class="extra-top-margin" th:fragment="brp" th:object="${akte}">
       <th:block th:each="curPkbrp,stat : *{pkbrp}">
         <div class="pk-beroep" th:with="vgnrbrp=${akte.pkbrp[__${stat.index}__].vgnrbrp}">
-          <div class="form-group"
-               th:replace="fragments/complete-fields :: beroep ('pkbrp[__${stat.index}__].beroepp', ${vgnrbrp + 'e beroep:'})"></div>
-
           <div class="form-group">
             <div class="sub-form-group">
-              <label class="col-xs-3 control-label">Positie: h / o / n</label>
+              <label class="col-xs-1 control-label"
+                     th:utext="${vgnrbrp + 'e beroep:'}" style="width:15%;">Beroep:</label>
 
-              <div class="col-xs-1">
-                <input type="text" class="form-control form-control-digit required" data-valid-chars="h;o;n"
-                       th:field="*{pkbrp[__${stat.index}__].brpposp}"/>
+              <div class="col-xs-1" style="width:25%;">
+                <input type="text" class="form-control beroep"
+                       th:field="*{pkbrp[__${stat.index}__].beroepp}"
+                       hsn:field="pkbrp[__${stat.index}__].beroepp"/>
               </div>
             </div>
 
             <div class="sub-form-group">
-              <label class="col-xs-3 control-label">Doorgehaald? j / n</label>
+              <label class="col-xs-1 control-label" style="width:20%;">Positie: h / o / n</label>
 
-              <div class="col-xs-1">
-                <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
-                       th:field="*{pkbrp[__${stat.index}__].dhbrppp}"/>
+              <div class="col-xs-1" style="width:8%;">
+                <input type="text" class="form-control form-control-digit positie" data-valid-chars="h;o;n"
+                       maxlength="1" th:field="*{pkbrp[__${stat.index}__].brpposp}"
+                       th:classappend="${(stat.index + 1) lt akte.pkbrp.size()} ? 'required'"/>
+              </div>
+            </div>
+
+            <div class="sub-form-group">
+              <label class="col-xs-1 control-label" style="width:20%;">Doorgehaald? j / n</label>
+
+              <div class="col-xs-1" style="width:8%;">
+                <input type="text" class="form-control form-control-digit" data-valid-chars="j;n"
+                       maxlength="1" th:field="*{pkbrp[__${stat.index}__].dhbrppp}"
+                       th:classappend="${(stat.index + 1) lt akte.pkbrp.size()} ? 'required'"/>
               </div>
             </div>
           </div>
         </div>
       </th:block>
-    </fieldset>
+    </div>
   </th:block>
 </fieldset>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
 
+<th:block layout:fragment="js">
+  <script src="../../static/js/persoonskaart/PS3.js" th:src="@{/js/persoonskaart/PS3.js}"></script>
+</th:block>
 </body>
 </html>

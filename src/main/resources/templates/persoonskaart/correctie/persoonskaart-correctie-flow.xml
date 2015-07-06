@@ -111,10 +111,14 @@
 
   <!-- PS3: BEROEPEN -->
   <view-state id="PS3" view="persoonskaart/PS3" model="akte">
+    <on-entry>
+      <evaluate expression="persoonskaartService.updateBeroepen(flowScope.akte)"/>
+    </on-entry>
+
     <transition on="stop" to="stopEnd"/>
 
     <transition on="ajax">
-      <evaluate expression="persoonskaartService.updateBeroepen(flowScope.akte, requestParameters.noBrp)"/>
+      <evaluate expression="persoonskaartService.updateBeroepen(flowScope.akte)"/>
       <render fragments="brp"/>
     </transition>
 

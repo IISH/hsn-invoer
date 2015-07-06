@@ -15,7 +15,7 @@
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit datum-kantmelding required" data-valid-chars="j;n"
-               th:value="${@geboorteAkteHelper.getKantmeldingDatum(akte.gebkant)}"/>
+               maxlength="1" th:value="${@geboorteAkteHelper.getKantmeldingDatum(akte.gebkant)}"/>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit datum-besluit required" data-valid-chars="j;n"
-               th:value="${@geboorteAkteHelper.getKantmeldingBesluitDatum(akte.gebkant)}"/>
+               maxlength="1" th:value="${@geboorteAkteHelper.getKantmeldingBesluitDatum(akte.gebkant)}"/>
       </div>
     </div>
 
@@ -60,7 +60,8 @@
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit naamsverandering required" data-valid-chars="j;n"
-               th:value="${@geboorteAkteHelper.getKantmeldingNaamsverandering(akte.gebkant, akte.isCorrection())}"/>
+               th:value="${@geboorteAkteHelper.getKantmeldingNaamsverandering(akte.gebkant, akte.isCorrection())}"
+               maxlength="1"/>
       </div>
     </div>
 
@@ -74,7 +75,8 @@
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit geslachtsverandering required" data-valid-chars="j;n"
-               th:value="${@geboorteAkteHelper.getKantmeldingGeslachtsverandering(akte.gebkant, akte.isCorrection())}"/>
+               th:value="${@geboorteAkteHelper.getKantmeldingGeslachtsverandering(akte.gebkant, akte.isCorrection())}"
+               maxlength="1"/>
       </div>
     </div>
 
@@ -83,7 +85,7 @@
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit required" data-valid-chars="m;v"
-               th:field="*{gebkant.ksexgeb}" hsn:field="gebkant.ksexgeb"/>
+               maxlength="1" th:field="*{gebkant.ksexgeb}" hsn:field="gebkant.ksexgeb"/>
       </div>
     </div>
   </th:block>

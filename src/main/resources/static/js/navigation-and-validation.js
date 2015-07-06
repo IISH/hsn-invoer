@@ -99,7 +99,7 @@
         }
     };
 
-    var showMessage = function(message, isErrorCheck) {
+    var showMessage = function (message, isErrorCheck) {
         if (!message.is(':visible')) {
             var hiddenByErrorCheck = message.data('error-check');
             if (isErrorCheck || (!hiddenByErrorCheck && !isErrorCheck)) {
@@ -109,7 +109,7 @@
         }
     };
 
-    var hideMessage = function(message, isErrorCheck) {
+    var hideMessage = function (message, isErrorCheck) {
         if (message.is(':visible')) {
             message.data('error-check', isErrorCheck);
             message.hide();
@@ -213,13 +213,15 @@
         }
     };
 
-    var determineNextFocusElem = function (e) {
+    $.ifTableNavigation = function (e, body) {
         var self = $(e.target);
         var formElements = $.getFormElementsEnabled();
 
         // Disable the enter key, unless the focused element is a button
         if ((e.which === 13) && ($.inArray(self[0], formElements.filter('input')) > -1)) {
-            e.preventDefault();
+            if (typeof e.preventDefault === 'function') {
+                e.preventDefault();
+            }
             return;
         }
 
@@ -231,98 +233,152 @@
             var isRight = ((e.which === 9) && (!e.shiftKey)); // Shift + Tab
 
             if ((isUp || isDown || isLeft || isRight) && ($.inArray(self[0], formElements) > -1)) {
-                e.preventDefault();
-                self.blur(); // Now perform the blur and all event handlers attached to this event
-
-                // setTimeout can also be used to make IE wait until the blur event has completed
-                setTimeout(function () {
-                    var focusElem;
-                    if (isUp || isDown) {
-                        var column = self.closest('td');
-                        var row = self.closest('tr');
-
-                        var columns = row.find('td');
-                        var rows = row.closest('tbody').find('tr');
-
-                        var columnIndex = columns.index(column);
-                        var rowIndex = rows.index(row);
-
-                        // The booleans prev and next indicate whether we should leave the table
-                        // and thus focus a previous or next element outside the table
-                        var prev, next = false;
-                        var nextRowIndex = 0;
-                        if (isUp) {
-                            nextRowIndex = rowIndex - 1;
-                            if (nextRowIndex < 0) {
-                                prev = true;
-                            }
-                        }
-                        else {
-                            nextRowIndex = rowIndex + 1;
-                            if (nextRowIndex >= rows.length) {
-                                next = true;
-                            }
-                        }
-
-                        if (!prev && !next) {
-                            // Sometimes there is no input element in the new column
-                            // Then keep moving to the left till a column with an input element to focus is found
-                            var focusElemFound = false;
-                            while (!focusElemFound) {
-                                var input = rows.eq(nextRowIndex).find('td').eq(columnIndex).find(':input:visible:enabled:first');
-                                if (input.length === 1) {
-                                    focusElem = input;
-                                    focusElemFound = true;
-                                }
-                                columnIndex--;
-                            }
-                        }
-                        else {
-                            var table = self.closest('table');
-                            if (prev) {
-                                focusElem = table.find(':input:first').getPrevFormElement();
-                            }
-                            else {
-                                focusElem = table.find(':input:last').getNextFormElement();
-                            }
-                        }
-                    }
-                    else if (isLeft) {
-                        focusElem = self.getPrevFormElement();
-                    }
-                    else {
-                        focusElem = self.getNextFormElement();
-                    }
-
-                    focusElem.focus();
-                    focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
-                }, 0);
+                body(self, isUp, isDown, isLeft, isRight);
             }
         }
-        // Otherwise we only know about up/down (previous/next input element)
-        else {
+    };
+
+    $.ifDefaultNavigation = function (e, body) {
+        var self = $(e.target);
+        var formElements = $.getFormElementsEnabled();
+
+        // Disable the enter key, unless the focused element is a button
+        if ((e.which === 13) && ($.inArray(self[0], formElements.filter('input')) > -1)) {
+            if (typeof e.preventDefault === 'function') {
+                e.preventDefault();
+            }
+            return;
+        }
+
+        // Navigation is different inside a table
+        if (self.closest('table').length === 0) {
             var isNext = (((e.which === 9) && (!e.shiftKey)) || (e.which === 40)); // Tab or arrow down
             var isPrev = (((e.which === 9) && (e.shiftKey)) || (e.which === 38)); // Shift + Tab or arrow up
 
             if ((isNext || isPrev) && ($.inArray(self[0], formElements) > -1)) {
-                e.preventDefault();
-                self.blur(); // Now perform the blur and all event handlers attached to this event
-
-                // setTimeout can also be used to make IE wait until the blur event has completed
-                setTimeout(function () {
-                    var focusElem;
-                    if (isPrev) {
-                        focusElem = self.getPrevFormElement();
-                    }
-                    else {
-                        focusElem = self.getNextFormElement();
-                    }
-
-                    focusElem.focus();
-                    focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
-                }, 0);
+                body(self, isNext, isPrev);
             }
         }
+    };
+
+    $.fn.autoNextFocus = function (performBlur) {
+        if (this.length > 0) {
+            // Simulate a TAB
+            $.determineNextFocusElem({
+                target: this[0],
+                which: 9,
+                shiftKey: false
+            }, performBlur);
+        }
+    };
+
+    $.fn.autoPrevFocus = function (performBlur) {
+        if (this.length > 0) {
+            // Simulate a Shift + TAB
+            $.determineNextFocusElem({
+                target: this[0],
+                which: 9,
+                shiftKey: true
+            }, performBlur);
+        }
+    };
+
+    $.determineNextFocusElem = function (e, performBlur) {
+        $.ifTableNavigation(e, function (self, isUp, isDown, isLeft, isRight) {
+            if (typeof e.preventDefault === 'function') {
+                e.preventDefault();
+            }
+            if (performBlur || (performBlur === undefined)) {
+                self.blur(); // Now perform the blur and all event handlers attached to this event
+            }
+
+            // setTimeout can also be used to make IE wait until the blur event has completed
+            setTimeout(function () {
+                var focusElem;
+                if (isUp || isDown) {
+                    var column = self.closest('td');
+                    var row = self.closest('tr');
+
+                    var columns = row.find('td');
+                    var rows = row.closest('tbody').find('tr');
+
+                    var columnIndex = columns.index(column);
+                    var rowIndex = rows.index(row);
+
+                    // The booleans prev and next indicate whether we should leave the table
+                    // and thus focus a previous or next element outside the table
+                    var prev, next = false;
+                    var nextRowIndex = 0;
+                    if (isUp) {
+                        nextRowIndex = rowIndex - 1;
+                        if (nextRowIndex < 0) {
+                            prev = true;
+                        }
+                    }
+                    else {
+                        nextRowIndex = rowIndex + 1;
+                        if (nextRowIndex >= rows.length) {
+                            next = true;
+                        }
+                    }
+
+                    if (!prev && !next) {
+                        // Sometimes there is no input element in the new column
+                        // Then keep moving to the left till a column with an input element to focus is found
+                        var focusElemFound = false;
+                        while (!focusElemFound) {
+                            var input = rows.eq(nextRowIndex).find('td').eq(columnIndex).find(':input:visible:enabled:first');
+                            if (input.length === 1) {
+                                focusElem = input;
+                                focusElemFound = true;
+                            }
+                            columnIndex--;
+                        }
+                    }
+                    else {
+                        var table = self.closest('table');
+                        if (prev) {
+                            focusElem = table.find(':input:first').getPrevFormElement();
+                        }
+                        else {
+                            focusElem = table.find(':input:last').getNextFormElement();
+                        }
+                    }
+                }
+                else if (isLeft) {
+                    focusElem = self.getPrevFormElement();
+                }
+                else {
+                    focusElem = self.getNextFormElement();
+                }
+
+                focusElem.focus();
+                focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
+            }, 0);
+        });
+
+        $.ifDefaultNavigation(e, function (self, isNext, isPrev) {
+            if (typeof e.preventDefault === 'function') {
+                e.preventDefault();
+            }
+            if (performBlur || (performBlur === undefined)) {
+                self.blur(); // Now perform the blur and all event handlers attached to this event
+            }
+
+            // setTimeout can also be used to make IE wait until the blur event has completed
+            setTimeout(function () {
+                var focusElem;
+                if (isPrev) {
+                    focusElem = self.getPrevFormElement();
+                }
+                else {
+                    focusElem = self.getNextFormElement();
+                }
+
+                focusElem.focus();
+                focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
+            }, 0);
+        });
     };
 
     var autoFocusNext = false;
@@ -338,8 +394,7 @@
     var autoNextFocusElem = function (e) {
         if (autoFocusNext) {
             autoFocusNext = false;
-            e.which = 9; // Simulate a TAB
-            determineNextFocusElem(e);
+            $(e.target).autoNextFocus(true);
         }
     };
 
@@ -358,8 +413,8 @@
 
         // We want to ensure these are always performed last, so unbind and bind them again
         $(document)
-            .off('keydown', determineNextFocusElem)
-            .on('keydown', determineNextFocusElem)
+            .off('keydown', $.determineNextFocusElem)
+            .on('keydown', $.determineNextFocusElem)
             .off('keyup', autoNextFocusElem)
             .on('keyup', autoNextFocusElem)
             .off('keypress', shouldAutoNextFocusElem)

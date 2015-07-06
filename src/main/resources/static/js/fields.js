@@ -8,20 +8,13 @@
     /**
      * Replaces the first character with an uppercase character.
      */
-    var onUppercase = function (elem, e) {
+    var onUppercase = function (elem) {
         // If there is already a 'integer-field' or 'data-valid-chars' handler, don't handle the new event
         var caret = elem.getCaret();
-        if (!elem.hasClass('integer-field') && !elem.hasClass('no-auto-uppercase') &&
-            !elem.is('[data-valid-chars]') && (elem.getCaret() === 1)) {
-
+        if (!elem.hasClass('integer-field') && !elem.hasClass('no-auto-uppercase') && !elem.is('[data-valid-chars]')) {
             var val = elem.val();
-            var char = String.fromCharCode(e.which);
-            // Only reset value if we just entered the first character
-            // To know, check if the caret just moved to the second character
-            if (val.substr(0, 1).toUpperCase() === char.toUpperCase()) {
-                elem.val(val.substr(0, 1).toUpperCase() + val.substr(1));
-                elem.setCaret(caret); // Make sure the caret position is not changed
-            }
+            elem.val(val.substr(0, 1).toUpperCase() + val.substr(1));
+            elem.setCaret(caret);
         }
     };
 
@@ -376,7 +369,7 @@
     };
 
     $(document).on('keyup', ':input', function (e) {
-        return onUppercase($(e.target), e);
+        return onUppercase($(e.target));
     });
 
     $(document).on('keyup', '.submit-on-keyup', function (e) {

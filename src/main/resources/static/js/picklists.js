@@ -124,6 +124,10 @@
                 }
             });
 
+            field.on('change', function () {
+                field.autoNextFocus(true);
+            });
+
             if (isId) {
                 field.keydown(function (e, data) {
                     var curValueId = field.val().trim();

@@ -27,7 +27,7 @@
 
         <div class="col-xs-1">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
-                 name="vrmdNation" id="vrmdNation"
+                 maxlength="1" name="vrmdNation" id="vrmdNation"
                  th:value="${(akte.pkknd.natperp == null) || (akte.pkknd.natperp.trim() == 'Nederlandse') || akte.pkknd.natperp.trim().isEmpty()} ? 'n' : 'j'"/>
         </div>
       </div>
@@ -55,7 +55,7 @@
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="m;v;o"
-                 th:field="*{pkknd.gslperp}" hsn:field="pkknd.gslperp"/>
+                 maxlength="1" th:field="*{pkknd.gslperp}" hsn:field="pkknd.gslperp"/>
         </div>
       </div>
     </div>
@@ -108,7 +108,7 @@
 
           <div class="col-xs-2">
             <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
-                   name="pk-voll-geconv" id="pk-voll-geconv"
+                   name="pk-voll-geconv" id="pk-voll-geconv" maxlength="1"
                    th:val="${akte.p7.p7oppc.trim() == 'PK-gegevens volledig meegeconverteerd'} ? 'j' : 'n'"/>
           </div>
         </div>

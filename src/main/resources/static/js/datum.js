@@ -96,8 +96,8 @@
                 parent.data('random-id', id);
             }
 
-            var message = 'De datum ' + hsnDate.day.getValue() + '-' +
-                hsnDate.month.getValue() + '-' + hsnDate.year.getValue() + ' ';
+            var message = 'De datum ' + hsnDate.day.getValue() + '/' +
+                hsnDate.month.getValue() + '/' + hsnDate.year.getValue() + ' ';
             if ((hsnDate.hour.elem.length > 0) && (hsnDate.minute.elem.length > 0)) {
                 message += 'en/of de tijd ' + hsnDate.hour.getValue() + ':' + hsnDate.minute.getValue() + ' ';
             }

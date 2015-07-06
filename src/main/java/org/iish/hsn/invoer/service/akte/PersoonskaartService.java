@@ -286,10 +286,18 @@ public class PersoonskaartService extends AkteService {
      * Update the total number of beroepen.
      *
      * @param persoonskaartFlow The persoonskaart flow state.
-     * @param totalNumber       The total number of beroepen.
      */
-    public void updateBeroepen(PersoonskaartFlowState persoonskaartFlow, int totalNumber) {
+    public void updateBeroepen(PersoonskaartFlowState persoonskaartFlow) {
         List<Pkbrp> pkbrp = persoonskaartFlow.getPkbrp();
+
+        // First check how many we need
+        int totalNumber = 0;
+        for (Pkbrp curPkbrp : pkbrp) {
+            if ((curPkbrp.getBeroepp() == null) || curPkbrp.getBeroepp().trim().isEmpty()) {
+                break;
+            }
+            totalNumber++;
+        }
 
         // First add new instances to the list if necessary
         for (int i = pkbrp.size(); i < totalNumber; i++) {
@@ -304,6 +312,9 @@ public class PersoonskaartService extends AkteService {
             pkbrp = new ArrayList<>(pkbrp.subList(0, totalNumber));
             persoonskaartFlow.setPkbrp(pkbrp);
         }
+
+        // Always add one empty one
+        pkbrp.add(totalNumber, new Pkbrp(totalNumber + 1));
     }
 
     /**
@@ -315,14 +326,20 @@ public class PersoonskaartService extends AkteService {
         Pkknd pkknd = persoonskaartFlow.getPkknd();
         List<Pkbrp> pkbrp = persoonskaartFlow.getPkbrp();
 
-        for (int i = 0; i < pkbrp.size(); i++) {
+        for (int i = 0; i < (pkbrp.size() - 1); i++) {
             Pkbrp curPkbrp = pkbrp.get(i);
             curPkbrp.setIdnr(pkknd.getIdnr());
-
             inputMetadata.saveToEntity(curPkbrp);
             curPkbrp = pkbrpRepository.save(curPkbrp);
             pkbrp.set(i, curPkbrp);
         }
+
+        // Make sure to delete the last one
+        Pkbrp curPkbrp = pkbrp.get(pkbrp.size() - 1);
+        pkbrpRepository.delete(curPkbrp);
+
+        pkbrp = new ArrayList<>(pkbrp.subList(0, pkbrp.size() - 1));
+        persoonskaartFlow.setPkbrp(pkbrp);
     }
 
     /**
