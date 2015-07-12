@@ -172,13 +172,13 @@
                     self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, true, true);
                 }
                 else {
-                    self.onSuccess();
+                    self.onSuccess(false);
                 }
             });
         });
     };
 
-    FindOp.prototype.onSuccess = function () {
+    FindOp.prototype.onSuccess = function (autoNextElement) {
         self.failElem.hide();
 
         self.withOpElems.show();
@@ -189,7 +189,9 @@
         self.nextBtnElem.removeClass('op-error');
         $(document).trigger('changeOfState');
 
-        self.blur.getNextFormElement().focus();
+        if (autoNextElement || (autoNextElement === undefined))
+            self.blur.getNextFormElement().focus();
+
         $(document).trigger('changeOfState');
     };
 

@@ -11,7 +11,9 @@
     var onUppercase = function (elem) {
         // If there is already a 'integer-field' or 'data-valid-chars' handler, don't handle the new event
         var caret = elem.getCaret();
-        if (!elem.hasClass('integer-field') && !elem.hasClass('no-auto-uppercase') && !elem.is('[data-valid-chars]')) {
+        if (!elem.hasClass('integer-field') && !elem.hasClass('is-id') && !elem.hasClass('no-auto-uppercase')
+            && !elem.is('[data-valid-chars]')) {
+
             var val = elem.val();
             elem.val(val.substr(0, 1).toUpperCase() + val.substr(1));
             elem.setCaret(caret);
@@ -347,7 +349,7 @@
     var setDefaultValues = function (inputElems) {
         inputElems.each(function () {
             var self = $(this);
-            if (self.hasClass('integer-field') && (self.getIntegerValue() === 0)) {
+            if ((self.hasClass('integer-field') || self.hasClass('is-id')) && (self.getIntegerValue() === 0)) {
                 self.val('');
             }
         });

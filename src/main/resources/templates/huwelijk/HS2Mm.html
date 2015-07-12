@@ -21,7 +21,7 @@
            data-then-value-of="#toestemming-kode" data-else-value-of="#toestemming-geven"
            th:field="*{huwknd.toemrhm}" hsn:field="huwknd.toemrhm"/>
 
-    <div class="form-group" data-show-when="#huwknd\.levmrhm" data-has-values-in="j">
+    <div class="form-group" data-show-when="#huwknd\.levmrhm" data-has-values-in="j" style="display:none;">
       <div class="form-group">
         <label for="toestemming-geven" class="col-xs-10 control-label">
           Geeft deze toestemming tot het huwelijk? j (ja) / n (nee) / i (jur. irrelevant) / g (geen antw)
@@ -54,7 +54,7 @@
         th:include="fragments/groups-of-fields :: namen ('huwknd.anmmrhm', 'huwknd.vrn1mrhm', 'huwknd.vrn2mrhm', 'huwknd.vrn3mrhm', false)">
     </th:block>
 
-    <div data-show-when="#huwknd\.levmrhm" data-has-values-in="j">
+    <div data-show-when="#huwknd\.levmrhm" data-has-values-in="j" style="display:none;">
       <div class="form-group extra-top-margin"
            th:include="fragments/complete-fields :: beroep ('huwknd.brpmrhm', 'Beroep:')"></div>
 
@@ -70,11 +70,13 @@
            th:replace="fragments/complete-fields :: plaats ('huwknd.adrmrhm', 'Woonplaats:')"></div>
 
       <div class="extra-top-margin text-center" data-show-when="#huwknd\.toemrhm" data-has-values-in="m"
+           style="display:none;"
            th:include="fragments/complete-fields :: handtekening ('huwknd.hndmrhm')">
       </div>
     </div>
 
     <div class="form-group extra-top-margin" data-show-when="#huwknd\.levmrhm" data-has-values-in="n"
+         style="display:none;"
          th:include="fragments/complete-fields :: plaats ('huwknd.plovmrhm', 'Plaats overlijden:')"></div>
   </th:block>
 </fieldset>

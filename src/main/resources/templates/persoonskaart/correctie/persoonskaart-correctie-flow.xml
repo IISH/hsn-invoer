@@ -244,10 +244,14 @@
 
   <!-- PS5: ADRESSEN -->
   <view-state id="PS5" view="persoonskaart/PS5" model="akte">
+    <on-entry>
+      <evaluate expression="persoonskaartService.updateAdressen(flowScope.akte)"/>
+    </on-entry>
+
     <transition on="stop" to="stopEnd"/>
 
     <transition on="ajax">
-      <evaluate expression="persoonskaartService.updateAdressen(flowScope.akte, requestParameters.noAddresses)"/>
+      <evaluate expression="persoonskaartService.updateAdressen(flowScope.akte)"/>
       <render fragments="addresses"/>
     </transition>
 

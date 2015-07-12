@@ -78,11 +78,10 @@
     </p>
   </div>
 
-  <div class="sub-form-group">
-    <span class="datum-inschrijving spacing checkDateBevReg fullCheck" data:show-when="${'#datum-inschrijving-' + rp}"
-          data-has-values-in="j"
-          style="display:none;"
-          th:include="fragments/fields :: datum ('b2[__${stat.index}__].dayOfRegistration', 'b2[__${stat.index}__].monthOfRegistration', 'b2[__${stat.index}__].yearOfRegistration')">
+  <div class="sub-form-group datum-inschrijving spacing checkDateBevReg fullCheck"
+       data:show-when="${'#datum-inschrijving-' + rp}" data-has-values-in="j" style="display:none;">
+    <span
+          th:replace="fragments/fields :: datum ('b2[__${stat.index}__].dayOfRegistration', 'b2[__${stat.index}__].monthOfRegistration', 'b2[__${stat.index}__].yearOfRegistration')">
     </span>
   </div>
 </td>
@@ -236,7 +235,7 @@
 <td class="personDynamic" data-type="BURGELIJKE_STAND"
     th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Datum -->
-  <div class="checkDateBevReg fullCheck" data:show-when="'#b3Brg'+__${rp}__+'0\.contentOfDynamicData'"
+  <div class="sub-form-group checkDateBevReg fullCheck" data:show-when="'#b3Brg'+__${rp}__+'0\.contentOfDynamicData'"
        data-has-values-in="2;3;5;9"
        th:include="fragments/fields :: datum ('b3Brg[__${rp}__][0].dayOfMutation', 'b3Brg[__${rp}__][0].monthOfMutation', 'b3Brg[__${rp}__][0].yearOfMutation')">
   </div>

@@ -89,24 +89,8 @@
                 prepare(hsnDate, elem);
             }
 
-            // Generate an random id as an identifier for error messages
-            var id = parent.data('random-id');
-            if (id === undefined || id === null) {
-                id = Math.floor(Math.random() * 999999).toString();
-                parent.data('random-id', id);
-            }
-
-            var message = 'De datum ' + hsnDate.day.getValue() + '/' +
-                hsnDate.month.getValue() + '/' + hsnDate.year.getValue() + ' ';
-            if ((hsnDate.hour.elem.length > 0) && (hsnDate.minute.elem.length > 0)) {
-                message += 'en/of de tijd ' + hsnDate.hour.getValue() + ':' + hsnDate.minute.getValue() + ' ';
-            }
-            else if ((hsnDate.hour.elem.length > 0) && (hsnDate.minute.elem.length === 0)) {
-                message += 'en/of het uur ' + hsnDate.hour.getValue() + ' ';
-            }
-            message += 'is niet geldig.';
-
-            elem.hasErrorWhen(dateCheck(hsnDate, elem), parent, id, message);
+            var error = dateCheck(hsnDate, elem);
+            elem.hasErrorWhen(error, parent);
             $(document).trigger('changeOfState');
         };
 
@@ -118,7 +102,29 @@
         });
 
         $(document).on('blur', $.createDateSelector(selector), function (e) {
-            doCheckDate($(e.target), prepare, dateCheck, true);
+            if (!$.isRunningInit()) {
+                doCheckDate($(e.target), prepare, dateCheck, true);
+            }
+        });
+
+        $(document).on('show', function (e) {
+            if (!$.isRunningInit()) {
+                var elem = $(e.target);
+                var elements = [];
+                if (elem.is(selector)) {
+                   elements = elem;
+                }
+                else {
+                    elements = elem.find(selector);
+                }
+
+                if (elements.length > 0) {
+                    elements.each(function () {
+                        var elem = $(this).find('.day, .month, .year, .minute, .hour').first();
+                        doCheckDate(elem, prepare, dateCheck, false);
+                    });
+                }
+            }
         });
     };
 

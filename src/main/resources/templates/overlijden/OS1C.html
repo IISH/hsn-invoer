@@ -9,8 +9,8 @@
     <legend th:if="${akte.isLevnloos()} == false">OVERLIJDENS-DATUM en -TIJD</legend>
     <legend th:if="${akte.isLevnloos()}">GEBOORTE-DATUM en -TIJD levenloos aangegevene</legend>
 
-    <div class="form-group">
-      <div class="col-xs-12 checkDateTimeOvl"
+    <div class="form-group checkDateTimeOvl">
+      <div class="col-xs-12"
            data:geb-day="${akte.refGbh} ? ${akte.refGbh.dayOfBirth}"
            data:geb-month="${akte.refGbh} ? ${akte.refGbh.monthOfBirth}"
            data:geb-year="${akte.refGbh} ? ${akte.refGbh.yearOfBirth}">

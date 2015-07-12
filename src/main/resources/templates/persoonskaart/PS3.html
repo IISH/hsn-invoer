@@ -17,7 +17,7 @@
       <th:block th:each="curPkbrp,stat : *{pkbrp}">
         <div class="pk-beroep" th:with="vgnrbrp=${akte.pkbrp[__${stat.index}__].vgnrbrp}">
           <div class="form-group">
-            <div class="sub-form-group">
+            <div class="sub-form-group noAutoNext">
               <label class="col-xs-1 control-label"
                      th:utext="${vgnrbrp + 'e beroep:'}" style="width:15%;">Beroep:</label>
 

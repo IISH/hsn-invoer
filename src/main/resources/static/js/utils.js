@@ -8,17 +8,24 @@
      * Basically, every time the DOM is changed.
      */
 
+    var runningInit = true;
     var initFunctions = [];
 
     $.registerInit = function (func) {
         initFunctions.push(func);
     };
 
+    $.isRunningInit = function () {
+        return runningInit;
+    };
+
     var runInit = function (elem) {
+        runningInit = true;
         for (var i = 0; i < initFunctions.length; i++) {
             var initFunction = initFunctions[i];
             initFunction(elem);
         }
+        runningInit = false;
     };
 
     $(document).ready(function () {
@@ -33,27 +40,31 @@
      * Allow table with active row selector which is always visible, even on a scrollable table
      */
 
-    var toggleActiveRow = function (setActive, e) {
-        var row = $(e.target).closest('tr');
-        var index = row.closest('tbody').find('tr').index(row);
+    var toggleActiveRow = function (elem) {
+        var rows, focusIndicator;
 
-        var parent = row.closest('.fixed-left-column');
-        var fixedRow = parent.find('.fixed tbody tr:nth-child(' + (index + 1) + ')');
+        // Find out which row to make active, if there is one...
+        if (elem.is('.fixed-left-column .free tbody input, .fixed-left-column .free tbody button')) {
+            var row = elem.closest('tr');
+            var index = row.closest('tbody').find('tr').index(row);
 
-        var rows = row.add(fixedRow);
-        setActive ? rows.addClass('active') : rows.removeClass('active');
+            var parent = row.closest('.fixed-left-column');
+            var fixedRow = parent.find('.fixed tbody tr:nth-child(' + (index + 1) + ')');
 
-        var classNames = 'glyphicon glyphicon-triangle-right';
-        var focusIndicator = fixedRow.find('span');
-        setActive ? focusIndicator.addClass(classNames) : focusIndicator.removeClass(classNames);
+            rows = row.add(fixedRow);
+            rows.addClass('active');
+
+            focusIndicator = fixedRow.find('span');
+            focusIndicator.addClass('glyphicon glyphicon-triangle-right');
+        }
+
+        // Now de-activate all rows except the active ones
+        $('.fixed-left-column tr.active').not(rows).removeClass('active');
+        $('.fixed-left-column .fixed .glyphicon').not(focusIndicator).removeClass('glyphicon glyphicon-triangle-right');
     };
 
-    var selector = '.fixed-left-column .free tbody input, .fixed-left-column .free tbody button';
-    $(document).on('focus', selector, function (e) {
-        toggleActiveRow(true, e);
-    });
-    $(document).on('blur', selector, function (e) {
-        toggleActiveRow(false, e);
+    $(document).on('focus', ':input', function (e) {
+        toggleActiveRow($(e.target));
     });
 
     /**
@@ -195,5 +206,49 @@
             this[0].focus();
             this[0].setSelectionRange(caretPos, caretPos);
         }
+    };
+
+    /* Overwrite 'show' / 'hide' jQuery functions to send event */
+
+    var onHide = $.fn.hide;
+    $.fn.hide = function () {
+        // Determine if the elements are all already hidden
+        var isHidden = true;
+        var isTypeahead = false;
+        this.each(function () {
+            if ($(this).css('display') !== 'none')
+                isHidden = false;
+            if ($(this).hasClass('typeahead'))
+                isTypeahead = true;
+        });
+
+        var toReturn = onHide.apply(this, arguments);
+
+        // Only trigger the event if at least one element was not yet hidden and is not typeahead
+        if (!isHidden && !isTypeahead)
+            this.trigger('hide');
+
+        return toReturn;
+    };
+
+    var onShow = $.fn.show;
+    $.fn.show = function () {
+        // Determine if the elements are all already shown
+        var isHidden = false;
+        var isTypeahead = false;
+        this.each(function () {
+            if ($(this).css('display') === 'none')
+                isHidden = true;
+            if ($(this).hasClass('typeahead'))
+                isTypeahead = true;
+        });
+
+        var toReturn = onShow.apply(this, arguments);
+
+        // Only trigger the event if at least one element was not yet shown and is not typeahead
+        if (isHidden && !isTypeahead)
+            this.trigger('show');
+
+        return toReturn;
     };
 })(jQuery);

@@ -63,7 +63,8 @@
       </div>
     </div>
 
-    <div class="form-group extra-top-margin" data-show-when="#curHuwvrknd\.ervk" data-has-values-in="j">
+    <div class="form-group extra-top-margin" data-show-when="#curHuwvrknd\.ervk" data-has-values-in="j"
+         style="display:none;">
       <label class="col-xs-8 control-label">
         Kode (1=moeder, 2=vader, 3 = vr&amp;mr tegelijk, 4 = vr&amp;mr elk apart)
       </label>
@@ -74,15 +75,15 @@
       </div>
     </div>
 
-    <div data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="1;3;4">
+    <div data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="1;3;4" style="display:none;">
       <div class="form-group extra-top-margin checkDateDefault">
         <label class="col-xs-3 control-label"
-               data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="1;4">
+               data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="1;4" style="display:none;">
           Datum erkenning moeder:
         </label>
 
         <label class="col-xs-3 control-label"
-               data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="3">
+               data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="3" style="display:none;">
           Datum erkenning vr&amp;mr:
         </label>
 
@@ -93,9 +94,9 @@
       <div th:replace="fragments/complete-fields :: plaats ('curHuwvrknd.mekplvk', 'Plaats erkenning:')"></div>
     </div>
 
-    <div data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="2;4">
-      <div class="form-group extra-top-margin">
-        <label class="col-xs-3 control-label checkDateDefault">Datum erkenning vader:</label>
+    <div data-show-when="#curHuwvrknd\.ervkwie" data-has-values-in="2;4" style="display:none;">
+      <div class="form-group extra-top-margin checkDateDefault">
+        <label class="col-xs-3 control-label">Datum erkenning vader:</label>
 
         <div
             th:replace="fragments/fields :: datum ('curHuwvrknd.vekdgvk', 'curHuwvrknd.vekmdvk', 'curHuwvrknd.vekjrvk')"></div>

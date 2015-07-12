@@ -426,10 +426,18 @@ public class PersoonskaartService extends AkteService {
      * Update the total number of adressen.
      *
      * @param persoonskaartFlow The persoonskaart flow state.
-     * @param totalNumber       The total number of beroepen.
      */
-    public void updateAdressen(PersoonskaartFlowState persoonskaartFlow, int totalNumber) {
+    public void updateAdressen(PersoonskaartFlowState persoonskaartFlow) {
         List<Pkadres> pkadres = persoonskaartFlow.getPkadres();
+
+        // First check how many we need
+        int totalNumber = 0;
+        for (Pkadres curPkadres : pkadres) {
+            if ((curPkadres.getDgadrp() == 0) && (curPkadres.getMdadrp() == 0) && (curPkadres.getJradrp() == 0)) {
+                break;
+            }
+            totalNumber++;
+        }
 
         // First add new instances to the list if necessary
         for (int i = pkadres.size(); i < totalNumber; i++) {
@@ -444,6 +452,9 @@ public class PersoonskaartService extends AkteService {
             pkadres = new ArrayList<>(pkadres.subList(0, totalNumber));
             persoonskaartFlow.setPkadres(pkadres);
         }
+
+        // Always add one empty one
+        pkadres.add(totalNumber, new Pkadres(totalNumber + 1, "Nl"));
     }
 
     /**
@@ -455,7 +466,7 @@ public class PersoonskaartService extends AkteService {
         Pkknd pkknd = persoonskaartFlow.getPkknd();
         List<Pkadres> pkadres = persoonskaartFlow.getPkadres();
 
-        for (int i = 0; i < pkadres.size(); i++) {
+        for (int i = 0; i < (pkadres.size() - 1); i++) {
             Pkadres curPkadres = pkadres.get(i);
             curPkadres.setIdnr(pkknd.getIdnr());
 
@@ -463,6 +474,13 @@ public class PersoonskaartService extends AkteService {
             curPkadres = pkadresRepository.save(curPkadres);
             pkadres.set(i, curPkadres);
         }
+
+        // Make sure to delete the last one
+        Pkadres curPkadres = pkadres.get(pkadres.size() - 1);
+        pkadresRepository.delete(curPkadres);
+
+        pkadres = new ArrayList<>(pkadres.subList(0, pkadres.size() - 1));
+        persoonskaartFlow.setPkadres(pkadres);
     }
 
     /**

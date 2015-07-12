@@ -1,4 +1,6 @@
 (function ($) {
+    var adrAjax = false;
+
     var initAddressRenumbering = function (elem) {
         if (!$.isCorrection()) {
             var regex = /pkadres([0-9]).vernum/;
@@ -49,6 +51,61 @@
             $.setError(!isOrderOk, 'address-order', 'De adressen staan niet op chronologische volgorde, verbeter nu!');
         });
     };
+
+    var updateAdrFields = function (elem, isNext, isPrev) {
+        if (!adrAjax) {
+            adrAjax = true;
+            $.resetInvisibleFormElements();
+
+            var id = elem.attr('id');
+            var form = elem.parents('form:first');
+            var data = form.serialize() + '&_eventId=ajax&ajaxSource=' + id;
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'text',
+                data: data,
+                success: function (result) {
+                    var resultElem = $(result);
+                    $('#addresses').replaceWith(resultElem);
+                    $(document).trigger('ajax-update', [resultElem]);
+                    $(document).trigger('show');
+
+                    var elem = $(document.getElementById(id));
+                    var btnNext = $('.btn-next');
+                    if ((elem.val().trim().length === 0) && (btnNext.is(':enabled'))) {
+                        btnNext.focus();
+                    }
+                    else if (isPrev) {
+                        elem.autoPrevFocus(false);
+                    }
+                    else {
+                        elem.autoNextFocus(false);
+                    }
+
+                    adrAjax = false;
+                }
+            });
+        }
+    };
+
+    $(document).on('keydown', '.year', function (e) {
+        $.ifDefaultNavigation(e, function (self, isNext, isPrev) {
+            var hsnDate = self.getParentOfFormElement().getHsnDate();
+            updateAdrFields(self, isNext, isPrev);
+/*
+            if (isNext && hsnDate.day.isEmptyVal() && hsnDate.month.isEmptyVal() && hsnDate.year.isEmptyVal()) {
+                e.stopImmediatePropagation();
+                self.blur();
+                setTimeout(function () {
+                    var btnNext = $('.btn-next');
+                    if (btnNext.is(':enabled')) {
+                        btnNext.focus();
+                    }
+                }, 0);
+            }*/
+        });
+    });
 
     $.registerInit(function (elem) {
         initAddressRenumbering(elem);

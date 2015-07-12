@@ -11,17 +11,13 @@
     <div class="form-header">GEBOORTE</div>
 
     <div class="form-group checkDateAndTime" data:aktedag="${akte.gebknd.aktedag}" data:aktemnd="${akte.gebknd.aktemnd}">
-      <div class="sub-form-group">
-        <label class="col-xs-3 control-label">Geboortedatum:</label>
+      <label class="col-xs-3 control-label">Geboortedatum:</label>
 
-        <div th:replace="fragments/fields :: datum ('gebknd.gebdag', 'gebknd.gebmnd', 'gebknd.gebjr')"></div>
-      </div>
+      <div th:replace="fragments/fields :: datum ('gebknd.gebdag', 'gebknd.gebmnd', 'gebknd.gebjr')"></div>
 
-      <div class="sub-form-group">
-        <label class="col-xs-2 control-label">Tijd:</label>
+      <label class="col-xs-2 control-label">Tijd:</label>
 
-        <div th:replace="fragments/fields :: tijd ('gebknd.gebuur', 'gebknd.gebmin')"></div>
-      </div>
+      <div th:replace="fragments/fields :: tijd ('gebknd.gebuur', 'gebknd.gebmin')"></div>
     </div>
 
     <div class="form-group">

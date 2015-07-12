@@ -73,7 +73,7 @@
           </label>
 
           <label class="col-xs-2 control-label left">
-            10=PK94+PL
+            a=PK94+PL
           </label>
 
           <label class="col-xs-1 control-label left">
@@ -81,19 +81,23 @@
           </label>
 
           <div class="col-xs-2">
-            <input type="text" class="form-control form-control-digit" maxlength="2"
-                   th:field="*{pkknd.pktype}" hsn:field="pkknd.pktype"/>
+            <input type="hidden" data-set-value-when="#pktype" data-has-values-in="a"
+                   data-then-value="10" data-else-value-of="#pktype" th:field="*{pkknd.pktype}"/>
+
+            <input type="text" id="pktype" class="form-control form-control-digit" maxlength="1"
+                   data-valid-chars="1;2;3;4;5;6;7;8;a" hsn:field="pkknd.pktype"
+                   th:value="${akte.pkknd.pktype == 10} ? 'a' : ${akte.pkknd.pktype}"/>
           </div>
         </div>
       </div>
 
-      <div class="form-group checkDateDefault" data-show-when="#pkknd\.pktype" data-has-values-in="3;5;7">
+      <div class="form-group checkDateDefault" data-show-when="#pktype" data-has-values-in="3;5;7" style="display:none;">
         <label class="col-xs-4 control-label">Datum einde PK:</label>
 
         <div th:replace="fragments/fields :: datum ('pkknd.eindagpk', 'pkknd.einmndpk', 'pkknd.einjarpk')"></div>
       </div>
 
-      <div data-show-when="#pkknd\.pktype" data-has-values-in="1;2;3;4;10">
+      <div data-show-when="#pktype" data-has-values-in="1;2;3;4;a" style="display:none;">
         <div class="form-header extra-top-margin">Vergelijking geboorteakte:</div>
 
         <div class="form-group">
@@ -111,36 +115,43 @@
         </div>
 
         <div class="form-group">
-          <label class="col-xs-4 control-label">Controle-paraaf aanwezig? j / n</label>
+          <div class="sub-form-group">
+            <label class="col-xs-4 control-label">Controle-paraaf aanwezig? j / n</label>
 
-          <div class="col-xs-2">
-            <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
-                   th:field="*{pkknd.ctrparp}" hsn:field="pkknd.ctrparp"/>
+            <div class="col-xs-1">
+              <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+                     th:field="*{pkknd.ctrparp}" hsn:field="pkknd.ctrparp"/>
+            </div>
           </div>
-        </div>
 
-        <div class="form-group extra-top-margin">
-          <label class="col-xs-4 control-label">Gezinsverband:</label>
+          <div class="sub-form-group">
+            <label class="col-xs-2 control-label">Gezinsverband:</label>
 
-          <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{pkknd.gznvrmp}" hsn:field="pkknd.gznvrmp"/>
+            <div class="col-xs-4">
+              <input type="text" class="form-control" th:field="*{pkknd.gznvrmp}" hsn:field="pkknd.gznvrmp"/>
+            </div>
           </div>
         </div>
       </div>
     </fieldset>
 
-    <fieldset class="extra-top-margin content-spacing" data-show-when="#pkknd\.pktype" data-has-values-in="1;2;3;4;10">
-      <div class="form-group checkDatePersBewijs persoonsbewijs">
-        <label class="col-xs-4 control-label">Datum persoonsbewijs:</label>
-
-        <div th:replace="fragments/fields :: datum ('pkknd.psbdgp', 'pkknd.psbmdp', 'pkknd.psbjrp')"></div>
-      </div>
+    <fieldset class="extra-top-margin content-spacing" data-show-when="#pktype" data-has-values-in="1;2;3;4;a"
+              style="display:none;">
+      <legend>Persoonsbewijs</legend>
 
       <div class="form-group">
-        <label class="col-xs-4 control-label">Nummer persoonsbewijs:</label>
+        <div class="sub-form-group checkDatePersBewijs persoonsbewijs">
+          <label class="col-xs-3 control-label">Datum persoonsbewijs:</label>
 
-        <div class="col-xs-4">
-          <input type="text" class="form-control form-control-small" th:field="*{pkknd.psbnrp}" hsn:field="pkknd.psbnrp"/>
+          <div th:replace="fragments/fields :: datum-sm ('pkknd.psbdgp', 'pkknd.psbmdp', 'pkknd.psbjrp')"></div>
+        </div>
+
+        <div class="sub-form-group">
+          <label class="col-xs-2 control-label">Nummer:</label>
+
+          <div class="col-xs-3">
+            <input type="text" class="form-control" th:field="*{pkknd.psbnrp}" hsn:field="pkknd.psbnrp"/>
+          </div>
         </div>
       </div>
     </fieldset>

@@ -376,7 +376,7 @@
           this.lookup();
       }
 
-      e.stopPropagation();
+      //e.stopPropagation();
       e.preventDefault();
    },
 

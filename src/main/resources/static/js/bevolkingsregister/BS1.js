@@ -185,7 +185,7 @@
                     }
                     // Last case is the 'relatie regel' only case,
                     // so safely store and synchronize with the other 'regel' input elems
-                    else {
+                    else if (f9) {
                         f9 = false;
                         focusOnRelatieElem = true;
                         setRelatieRegel(popover.find('input').getIntegerValue());
@@ -256,20 +256,6 @@
                             'Relatiecode moet 1 of -3 zijn'
                         );
                     }
-
-                    /* TODO: var nrHeads = 0;
-                     if (isAllLines()) {
-                     $('.relatie:visible').each(function () {
-                     if ($(this).getIntegerValue() == 1) {
-                     nrHeads++;
-                     }
-                     });
-                     }
-                     else {
-                     nrHeads = container.getIntegerDataValue('nr-heads');
-                     }
-
-                     $.setError(nrHeads > 2, 'nr-of-heads', 'Slechts een expliciet hoofd toegestaan');*/
                 }
             };
 

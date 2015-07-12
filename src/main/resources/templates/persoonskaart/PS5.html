@@ -6,16 +6,6 @@
 
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="form-group">
-      <label class="col-xs-7 control-label">Aantal addressen:</label>
-
-      <div class="col-xs-2">
-        <input type="text" class="form-control form-control-digit" id="noAddresses" name="noAddresses"
-               data-min-value="0" data-ajax-update="#addresses"
-               th:value="${(akte.pkadres.size() > 0) ? akte.pkadres.size() : 0}"/>
-      </div>
-    </div>
-
     <div id="addresses" class="extra-top-margin" th:fragment="addresses" th:object="${akte}">
       <th:block th:each="curPkadres,stat : *{pkadres}">
         <div class="pk-adres" th:with="vgnradp=${akte.pkadres[__${stat.index}__].vgnradp}"
@@ -23,7 +13,8 @@
           <div class="form-header" th:utext="${vgnradp + 'e ADRES:'}">1e ADRES:</div>
 
           <div class="form-group">
-            <div class="sub-form-group checkDateDefault">
+            <div class="sub-form-group noAutoNext"
+                 th:classappend="${(stat.index + 1) lt akte.pkadres.size()} ? 'checkDateDefault'">
               <label class="col-xs-3 control-label">Aangiftedatum:</label>
 
               <div class="col-xs-3 form-inline"
@@ -34,8 +25,9 @@
               <label class="col-xs-4 control-label">vernum/annex/niet rel v / a / n</label>
 
               <div class="col-xs-2">
-                <input type="text" class="form-control form-control-digit required adresRenumbering" maxlength="1"
-                       data-valid-chars="v;a;n" th:field="*{pkadres[__${stat.index}__].vernum}"/>
+                <input type="text" class="form-control form-control-digit adresRenumbering" maxlength="1"
+                       data-valid-chars="v;a;n" th:field="*{pkadres[__${stat.index}__].vernum}"
+                       th:classappend="${(stat.index + 1) lt akte.pkadres.size()} ? 'required'"/>
               </div>
             </div>
           </div>
@@ -51,8 +43,7 @@
             </div>
           </div>
 
-          <div class="form-group" data:show-when="${vgnradp > 1} ? '#pkadres__${stat.index}__\.vernum'"
-               data:has-values-in="${vgnradp > 1} ? 'n'">
+          <div class="form-group"> <!--data:show-when="${vgnradp > 1} ? '#pkadres__${stat.index}__\.vernum'" data:has-values-in="${vgnradp > 1} ? 'n'"-->
             <label class="col-xs-3 control-label">LAND:</label>
 
             <div class="col-xs-5">

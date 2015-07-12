@@ -20,6 +20,7 @@
                 var resultElem = $(result);
                 target.replaceWith(resultElem);
                 $(document).trigger('ajax-update', [resultElem]);
+                $(document).trigger('show');
                 elem.getNextFormElement().focus();
             }
         });

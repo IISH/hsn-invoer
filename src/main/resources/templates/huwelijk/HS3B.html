@@ -31,15 +31,15 @@
       <div class="form-table-body" id="huwAfk" th:fragment="huwAfk" th:object="${akte}">
         <th:block th:each="curHuwAfk,stat : *{huwafk}">
           <div class="form-group">
-            <div class="col-xs-1">
+            <div class="sub-form-group col-xs-1">
               <p class="form-control-static" th:utext="${akte.huwafk[__${stat.index}__].hwaknr}">1</p>
             </div>
 
-            <div class="col-xs-3 form-inline checkDateDefault"
+            <div class="sub-form-group col-xs-3 form-inline checkDateDefault"
                  th:include="fragments/fields :: datum ('huwafk[__${stat.index}__].hwakdg', 'huwafk[__${stat.index}__].hwakmd', 'huwafk[__${stat.index}__].hwakjr')">
             </div>
 
-            <div class="col-xs-5">
+            <div class="sub-form-group col-xs-5">
               <input type="text" class="form-control plaats" th:field="*{huwafk[__${stat.index}__].hwakpl}"/>
             </div>
           </div>

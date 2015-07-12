@@ -26,11 +26,15 @@
                     $('#brp').replaceWith(resultElem);
                     $(document).trigger('ajax-update', [resultElem]);
 
-                    if (isPrev) {
-                        $(document.getElementById(id)).autoPrevFocus(false);
+                    var elem = $(document.getElementById(id));
+                    if (elem.val().trim().length === 0) {
+                        $('.btn-next').focus();
+                    }
+                    else if (isPrev) {
+                        elem.autoPrevFocus(false);
                     }
                     else {
-                        $(document.getElementById(id)).autoNextFocus(false);
+                        elem.autoNextFocus(false);
                     }
 
                     brpAjax = false;
@@ -44,6 +48,13 @@
             if (isPrev) {
                 setPositie(self);
                 updateBrpFields(self, isNext, isPrev);
+            }
+            else if (isNext && (self.val().trim().length === 0)) {
+                e.stopImmediatePropagation();
+                self.blur();
+                setTimeout(function () {
+                    $('.btn-next').focus();
+                }, 0);
             }
         });
     });

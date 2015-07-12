@@ -15,28 +15,38 @@
     <div class="form-group extra-top-margin" th:if="${akte.pkknd.pktype != 8}"
          th:include="fragments/complete-fields :: relatie ('curPkeigknd.relkndp', 'Relatie tot PK-houder:', null, false)"></div>
 
-    <div class="form-group extra-top-margin checkDateDefault">
+    <div class="form-group extra-top-margin">
       <label class="col-xs-3 control-label">GEB dat/plts:</label>
 
       <div class="col-xs-9 form-inline">
-        <th:block
-            th:include="fragments/fields :: datum ('curPkeigknd.gdgkndp', 'curPkeigknd.gmdkndp', 'curPkeigknd.gjrkndp')">
-        </th:block>
+        <div class="sub-form-group checkDateDefault" style="display:inline;">
+          <th:block
+              th:include="fragments/fields :: datum ('curPkeigknd.gdgkndp', 'curPkeigknd.gmdkndp', 'curPkeigknd.gjrkndp')">
+          </th:block>
+        </div>
 
-        <input type="text" class="form-control spacing plaats" th:field="*{curPkeigknd.gplkndp}" hsn:field="curPkeigknd.gplkndp"/>
+        <div class="sub-form-group" style="display:inline;">
+          <input type="text" class="form-control spacing plaats"
+                 th:field="*{curPkeigknd.gplkndp}" hsn:field="curPkeigknd.gplkndp"/>
+        </div>
       </div>
     </div>
 
     <th:block th:if="${akte.pkknd.pktype != 8}">
-      <div class="form-group extra-top-margin checkDateDefault">
+      <div class="form-group extra-top-margin">
         <label class="col-xs-3 control-label">HUW dat/plts:</label>
 
         <div class="col-xs-9 form-inline">
-          <th:block
-              th:include="fragments/fields :: datum ('curPkeigknd.gdgkndp', 'curPkeigknd.gmdkndp', 'curPkeigknd.gjrkndp')">
-          </th:block>
+          <div class="sub-form-group checkDateDefault" style="display:inline;">
+            <th:block
+                th:include="fragments/fields :: datum ('curPkeigknd.gdgkndp', 'curPkeigknd.gmdkndp', 'curPkeigknd.gjrkndp')">
+            </th:block>
+          </div>
 
-          <input type="text" class="form-control spacing plaats" th:field="*{curPkeigknd.hplkndp}" hsn:field="curPkeigknd.hplkndp"/>
+          <div class="sub-form-group" style="display:inline;">
+            <input type="text" class="form-control spacing plaats"
+                   th:field="*{curPkeigknd.hplkndp}" hsn:field="curPkeigknd.hplkndp"/>
+          </div>
         </div>
       </div>
 
@@ -56,27 +66,37 @@
         </div>
       </div>
 
-      <div class="form-group extra-top-margin checkDateDefault">
+      <div class="form-group extra-top-margin">
         <label class="col-xs-3 control-label">OVL dat/plts:</label>
 
         <div class="col-xs-9 form-inline">
-          <th:block
-              th:include="fragments/fields :: datum ('curPkeigknd.odgkndp', 'curPkeigknd.omdkndp', 'curPkeigknd.ojrkndp')">
-          </th:block>
+          <div class="sub-form-group checkDateDefault" style="display:inline;">
+            <th:block
+                th:include="fragments/fields :: datum ('curPkeigknd.odgkndp', 'curPkeigknd.omdkndp', 'curPkeigknd.ojrkndp')">
+            </th:block>
+          </div>
 
-          <input type="text" class="form-control spacing plaats" th:field="*{curPkeigknd.oplkndp}" hsn:field="curPkeigknd.oplkndp"/>
+          <div class="sub-form-group" style="display:inline;">
+            <input type="text" class="form-control spacing plaats"
+                   th:field="*{curPkeigknd.oplkndp}" hsn:field="curPkeigknd.oplkndp"/>
+          </div>
         </div>
       </div>
 
-      <div class="form-group extra-top-margin checkDateDefault">
+      <div class="form-group extra-top-margin">
         <label class="col-xs-3 control-label">AFV dat/plts:</label>
 
         <div class="col-xs-9 form-inline">
-          <th:block
-              th:include="fragments/fields :: datum ('curPkeigknd.adgkndp', 'curPkeigknd.amdkndp', 'curPkeigknd.ajrkndp')">
-          </th:block>
+          <div class="sub-form-group checkDateDefault" style="display:inline;">
+            <th:block
+                th:include="fragments/fields :: datum ('curPkeigknd.adgkndp', 'curPkeigknd.amdkndp', 'curPkeigknd.ajrkndp')">
+            </th:block>
+          </div>
 
-          <input type="text" class="form-control spacing plaats" th:field="*{curPkeigknd.aplkndp}" hsn:field="curPkeigknd.aplkndp"/>
+          <div class="sub-form-group" style="display:inline;">
+            <input type="text" class="form-control spacing plaats"
+                   th:field="*{curPkeigknd.aplkndp}" hsn:field="curPkeigknd.aplkndp"/>
+          </div>
         </div>
       </div>
 

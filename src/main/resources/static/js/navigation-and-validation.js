@@ -9,6 +9,10 @@
  * In addition, it also sets the focus on the fist element of the first found form on the page.
  */
 (function ($) {
+    /* Validation */
+
+    var alsoShowErrorIfBlank = false;
+
     $.setError = function (isError, name, errorMessage, elemParent) {
         if (name.indexOf('.') >= 0) {
             name = name.substring(0, name.indexOf('.'));
@@ -34,21 +38,48 @@
         });
     };
 
-    $.fn.hasErrorWhen = function (condition, elemParent, name, errorMessage) {
-        if (elemParent === undefined) {
+    $.fn.hasErrorWhen = function (condition, elemParent) {
+        if (elemParent === undefined || elemParent === null) {
             elemParent = this.getParentOfFormElement();
+        }
+
+        // We will only SHOW an error when the user (partly) entered a value
+        var hasValues = true;
+        if (!alsoShowErrorIfBlank) {
+            hasValues = false;
+            elemParent.find(':input:visible').each(function () {
+                var val = $(this).val().trim();
+                if ((val.length > 0) && (parseInt(val) !== 0)) {
+                    hasValues = true;
+                }
+            });
         }
 
         var error = (condition && this.is(':enabled') && this.is(':visible'));
         if (error) {
             elemParent.addClass('has-an-error');
+
+            // Only SHOW the error when the user (partly) entered a value
+            if (hasValues) {
+                elemParent.addClass('has-error-edit');
+            }
+            else {
+                elemParent.removeClass('has-error').removeClass('has-error-edit');
+            }
         }
         else {
-            elemParent.removeClass('has-an-error');
+            elemParent.removeClass('has-an-error').removeClass('has-error').removeClass('has-error-edit');
         }
+    };
 
-        if ((name !== undefined) && (errorMessage !== undefined)) {
-            $.setError(error, name, errorMessage, elemParent);
+    var determineShowError = function (elem) {
+        var parent = elem.getParentOfFormElement();
+
+        // Make sure that the error is only SHOWN when the user is NOT changing the value in question
+        $('.has-error-edit').not(parent).removeClass('has-error-edit').addClass('has-error');
+
+        if (parent.hasClass('has-error')) {
+            parent.removeClass('has-error').addClass('has-error-edit');
         }
     };
 
@@ -154,14 +185,24 @@
         );
     };
 
-    var checkRequired = function () {
-        $('.required:visible').each(function () {
+    var checkRequired = function (elem) {
+        var elems;
+        if (elem.is('.required')) {
+            elems = elem;
+        }
+        else {
+            elems = elem.find('.required');
+        }
+
+        elems.each(function () {
             var elem = $(this);
             elem.hasErrorWhen(
                 (elem.val() === undefined) || (elem.val().trim() === '') ||
                 (!elem.hasClass('zero-allowed') && (elem.getIntegerValue() === 0))
             );
         });
+
+        $(document).trigger('changeOfState');
     };
 
     var checkErrorMessages = function () {
@@ -212,6 +253,58 @@
             byzBtn.removeAttr('disabled');
         }
     };
+
+    var init = function (forceRun) {
+        if (forceRun || !$.isRunningInit()) {
+            if (!$.isCorrection()) {
+                checkByz();
+            }
+
+            checkErrorMessages();
+            checkNextByzButton();
+        }
+    };
+
+    $(document)
+        .on('blur', '.required', function (e) {
+            checkRequired($(e.target));
+        })
+        .on('show', function (e) {
+            checkRequired($(e.target));
+        })
+        .on('focus', ':input', function (e) {
+            if (!$.isRunningInit()) {
+                determineShowError($(e.target));
+            }
+        })
+        .on('show', function () {
+            if (!$.isRunningInit()) {
+                determineShowError($(':focus'));
+            }
+        })
+        .on('blur', 'form input, form button', init)
+        .on('show hide', function (e) {
+            if (!$.isRunningInit()) {
+                // Prevent a endless loop: call init, show message, 'show' event called, back to call init ...
+                var self = $(e.target);
+                if (!self.hasClass('.messages') && (self.closest('.messages').length === 0)) {
+                    init();
+                }
+            }
+        })
+        .on('changeOfState', function () {
+            if (!$.isRunningInit()) {
+                checkErrorMessages();
+                checkNextByzButton();
+            }
+        });
+
+    $.registerInit(function (elem) {
+        init(true);
+        checkRequired(elem);
+    });
+
+    /* Navigation */
 
     $.ifTableNavigation = function (e, body) {
         var self = $(e.target);
@@ -387,7 +480,7 @@
         if (e.charCode !== 0) {
             var self = $(e.target);
             var maxLength = parseInt(self.attr('maxlength'));
-            autoFocusNext = (!isNaN(maxLength) && (self.getCaret() >= (maxLength - 1)));
+            autoFocusNext = (!self.getParentOfFormElement().hasClass('noAutoNext') && !isNaN(maxLength) && (self.getCaret() >= (maxLength - 1)));
         }
     };
 
@@ -398,19 +491,7 @@
         }
     };
 
-    var init = function () {
-        if (!$.isCorrection()) {
-            checkByz();
-        }
-        checkRequired();
-
-        checkErrorMessages();
-        checkNextByzButton();
-    };
-
     $.registerInit(function () {
-        init();
-
         // We want to ensure these are always performed last, so unbind and bind them again
         $(document)
             .off('keydown', $.determineNextFocusElem)
@@ -419,13 +500,6 @@
             .on('keyup', autoNextFocusElem)
             .off('keypress', shouldAutoNextFocusElem)
             .on('keypress', shouldAutoNextFocusElem);
-    });
-
-    $(document).on('blur', 'form input, form button', init);
-
-    $(document).on('changeOfState', function () {
-        checkErrorMessages();
-        checkNextByzButton();
     });
 
     $('form:first').submit(function () {

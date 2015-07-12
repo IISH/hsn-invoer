@@ -7,7 +7,8 @@
 <fieldset>
   <th:block layout:fragment="fields">
     <legend>
-      <span th:if="${akte.isCorrection()} == false" data-show-when="#bijlagen" data-has-values-in="n">
+      <span th:if="${akte.isCorrection()} == false" data-show-when="#bijlagen" data-has-values-in="n"
+            style="display:none;">
         GEEN
       </span>
 
@@ -24,7 +25,8 @@
     </div>
 
     <div data:show-when="${akte.isCorrection() == false} ? '#bijlagen'"
-         data:has-values-in="${akte.isCorrection() == false} ? 'j'">
+         data:has-values-in="${akte.isCorrection() == false} ? 'j'"
+         th:style="${akte.isCorrection() == false} ? 'display:none;'">
       <div class="form-group">
         <label class="col-xs-8 control-label">Uitreksels geboorteakten/doopcedullen beide huwers genoemd? j / n</label>
 

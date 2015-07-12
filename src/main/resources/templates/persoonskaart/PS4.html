@@ -14,15 +14,20 @@
         th:include="fragments/groups-of-fields :: namen ('curPkhuw.anmhuwp', 'curPkhuw.vn1huwp', 'curPkhuw.vn2huwp', 'curPkhuw.vn3huwp', false)">
     </th:block>
 
-    <div class="form-group checkDateDefault">
+    <div class="form-group">
       <label class="col-xs-3 control-label">GEB dat/plts:</label>
 
       <div class="col-xs-9 form-inline">
-        <th:block
-            th:include="fragments/fields :: datum ('curPkhuw.gdghuwp', 'curPkhuw.gmdhuwp', 'curPkhuw.gjrhuwp')">
-        </th:block>
+        <div class="sub-form-group checkDateDefault" style="display:inline;">
+          <th:block
+              th:include="fragments/fields :: datum ('curPkhuw.gdghuwp', 'curPkhuw.gmdhuwp', 'curPkhuw.gjrhuwp')">
+          </th:block>
+        </div>
 
-        <input type="text" class="form-control spacing plaats" th:field="*{curPkhuw.gplhuwp}" hsn:field="curPkhuw.gplhuwp"/>
+        <div class="sub-form-group" style="display:inline;">
+          <input type="text" class="form-control spacing plaats"
+                 th:field="*{curPkhuw.gplhuwp}" hsn:field="curPkhuw.gplhuwp"/>
+        </div>
       </div>
     </div>
 
