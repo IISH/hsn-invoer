@@ -79,10 +79,8 @@
   </div>
 
   <div class="sub-form-group datum-inschrijving spacing checkDateBevReg fullCheck"
-       data:show-when="${'#datum-inschrijving-' + rp}" data-has-values-in="j" style="display:none;">
-    <span
-          th:replace="fragments/fields :: datum ('b2[__${stat.index}__].dayOfRegistration', 'b2[__${stat.index}__].monthOfRegistration', 'b2[__${stat.index}__].yearOfRegistration')">
-    </span>
+       data:show-when="${'#datum-inschrijving-' + rp}" data-has-values-in="j" style="display:none;"
+       th:include="fragments/fields :: datum ('b2[__${stat.index}__].dayOfRegistration', 'b2[__${stat.index}__].monthOfRegistration', 'b2[__${stat.index}__].yearOfRegistration')">
   </div>
 </td>
 <td>

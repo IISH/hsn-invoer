@@ -150,7 +150,7 @@
           <input type="text" name="sequenceNumberToAddresses" class="seqNr form-control form-control-digit required"/>
         </td>
         <td style="min-width:200px;max-width:200px;">
-          <div class="dateOrder checkDateBevReg fullCheck">
+          <div class="sub-form-group dateOrder checkDateBevReg fullCheck">
             <!-- Datum -->
             <input type="text" name="dayOfAddress" class="form-control form-control-digit day"/>
             /
@@ -160,7 +160,7 @@
           </div>
         </td>
         <td style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
-          <div class="checkInterprDateBevReg">
+          <div class="sub-form-group checkInterprDateBevReg">
             <!-- INTERPR -->
             <input type="text" name="dayOfAddressAfterInterpretation" class="form-control form-control-digit day"/>
             /
