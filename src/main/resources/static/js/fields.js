@@ -340,7 +340,9 @@
             var text = allByzElem.val();
             var textParts = text.match(/.{1,55}/g); // Split into blocks of 55 chars each
             for (var i = 1; i <= 5; i++) {
-                var textPart = (textParts.length >= i) ? textParts[i - 1] : '';
+                var textPart = '';
+                if (textParts !== null)
+                    textPart = (textParts.length >= i) ? textParts[i - 1] : '';
                 elem.find('.byz' + i).val(textPart);
             }
         });

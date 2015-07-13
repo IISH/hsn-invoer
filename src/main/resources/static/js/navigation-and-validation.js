@@ -300,8 +300,8 @@
         });
 
     $.registerInit(function (elem) {
-        init(true);
         checkRequired(elem);
+        init(true);
     });
 
     /* Navigation */

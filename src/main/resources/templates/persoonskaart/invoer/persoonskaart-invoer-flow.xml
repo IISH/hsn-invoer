@@ -232,9 +232,9 @@
       <evaluate expression="persoonskaartService.prepareByz(flowScope.akte)"/>
     </on-entry>
 
-    <transition on="more" to="PSBYZ">
+    <!--<transition on="more" to="PSBYZ">
       <evaluate expression="persoonskaartService.saveByz(flowScope.akte)"/>
-    </transition>
+    </transition>-->
 
     <transition on="next" to="#{flowScope.akte.viewStateHistory.nextStateIdForPrevViewState}">
       <evaluate expression="flowScope.akte.setAllowMoreByz(false)"/>

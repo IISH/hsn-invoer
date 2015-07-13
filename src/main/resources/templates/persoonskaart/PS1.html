@@ -101,7 +101,7 @@
         </div>
 
         <div class="sub-form-group">
-          <input type="hidden" th:field="*{p7.p7oppc}" hsn:field="p7.p7oppc" data-set-value-when="#pk-voll-geconv" data-has-values-in="j"
+          <input type="hidden" th:field="*{p7.p7oppc}" data-set-value-when="#pk-voll-geconv" data-has-values-in="j"
                  data-then-value="PK-gegevens volledig meegeconverteerd" data-else-value=""/>
 
           <label class="col-xs-3 control-label">PK voll. geconv.? j / n</label>
@@ -109,7 +109,7 @@
           <div class="col-xs-2">
             <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
                    name="pk-voll-geconv" id="pk-voll-geconv" maxlength="1"
-                   th:val="${akte.p7.p7oppc.trim() == 'PK-gegevens volledig meegeconverteerd'} ? 'j' : 'n'"/>
+                   th:value="${akte.p7.p7oppc.trim() == 'PK-gegevens volledig meegeconverteerd'} ? 'j' : 'n'"/>
           </div>
         </div>
       </div>

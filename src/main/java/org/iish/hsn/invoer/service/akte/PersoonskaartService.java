@@ -276,6 +276,7 @@ public class PersoonskaartService extends AkteService {
             }
             pkknd.setOplperp("");
 
+            p7.setIdnr(pkknd.getIdnr());
             inputMetadata.saveToEntity(p7);
             p7 = p7Repository.save(p7);
             persoonskaartFlow.setP7(p7);

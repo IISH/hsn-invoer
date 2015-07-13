@@ -17,8 +17,8 @@ public class P7 extends Invoer {
     @Column(name = "P7OPOR", nullable = false) private              String p7opor = ""; // Municipality of certificate; rarely used only in case of foreign places of death
     @Column(name = "P7OPOB", nullable = false) private              String p7opob = ""; // Administrative code of the death certificate or other indication; comparable with field oakperp (to be checked); only in combination with p7opor
     @Column(name = "P7OPIO", nullable = false) private              String p7opio = ""; // indicatie onjuist; Not clear what this variable means (only sporadically content)
-    @Column(name = "P7OPPG", nullable = false, length = 50) private String p7oppg = ""; // Municipality where the Personal List was put up
-    @Column(name = "P7OPPC", nullable = false, length = 1) private  String p7oppc = ""; // Affirmation of the Personal Card was converted
+    @Column(name = "P7OPPG", nullable = false, length = 60) private String p7oppg = ""; // Municipality where the Personal List was put up
+    @Column(name = "P7OPPC", nullable = false, length = 60) private  String p7oppc = ""; // Affirmation of the Personal Card was converted
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

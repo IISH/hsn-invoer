@@ -198,9 +198,9 @@
       <evaluate expression="overlijdensAkteService.prepareByz(flowScope.akte)"/>
     </on-entry>
 
-    <transition on="more" to="OSBYZ">
+    <!--<transition on="more" to="OSBYZ">
       <evaluate expression="overlijdensAkteService.saveByz(flowScope.akte)"/>
-    </transition>
+    </transition>-->
 
     <transition on="next" to="#{flowScope.akte.viewStateHistory.nextStateIdForPrevViewState}">
       <evaluate expression="flowScope.akte.setAllowMoreByz(false)"/>
