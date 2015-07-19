@@ -27,11 +27,11 @@
                     $(document).trigger('ajax-update', [resultElem]);
 
                     var elem = $(document.getElementById(id));
-                    if (elem.val().trim().length === 0) {
-                        $('.btn-next').focus();
-                    }
-                    else if (isPrev) {
+                    if (isPrev) {
                         elem.autoPrevFocus(false);
+                    }
+                    else if (elem.val().trim().length === 0) {
+                        $('.btn-next').focus();
                     }
                     else {
                         elem.autoNextFocus(false);

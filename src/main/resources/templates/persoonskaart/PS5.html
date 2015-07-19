@@ -14,7 +14,7 @@
 
           <div class="form-group">
             <div class="sub-form-group noAutoNext"
-                 th:classappend="${(stat.index + 1) lt akte.pkadres.size()} ? 'checkDateDefault'">
+                 th:classappend="${(stat.index == 0) or ((stat.index + 1) lt akte.pkadres.size())} ? 'checkDateDefault'">
               <label class="col-xs-3 control-label">Aangiftedatum:</label>
 
               <div class="col-xs-3 form-inline"
@@ -27,7 +27,7 @@
               <div class="col-xs-2">
                 <input type="text" class="form-control form-control-digit adresRenumbering" maxlength="1"
                        data-valid-chars="v;a;n" th:field="*{pkadres[__${stat.index}__].vernum}"
-                       th:classappend="${(stat.index + 1) lt akte.pkadres.size()} ? 'required'"/>
+                       th:classappend="${(stat.index == 0) or ((stat.index + 1) lt akte.pkadres.size())} ? 'required'"/>
               </div>
             </div>
           </div>
@@ -39,7 +39,7 @@
             <label class="col-xs-3 control-label">STRAAT:</label>
 
             <div class="col-xs-5">
-              <input type="text" class="form-control" th:field="*{pkadres[__${stat.index}__].stradrp}"/>
+              <input type="text" class="form-control street" th:field="*{pkadres[__${stat.index}__].stradrp}"/>
             </div>
           </div>
 
@@ -47,7 +47,7 @@
             <label class="col-xs-3 control-label">LAND:</label>
 
             <div class="col-xs-5">
-              <input type="text" class="form-control" th:field="*{pkadres[__${stat.index}__].lndadrp}"/>
+              <input type="text" class="form-control country" th:field="*{pkadres[__${stat.index}__].lndadrp}"/>
             </div>
           </div>
         </div>

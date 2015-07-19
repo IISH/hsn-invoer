@@ -11,7 +11,7 @@
 (function ($) {
     /* Validation */
 
-    var alsoShowErrorIfBlank = false;
+    var alsoShowErrorIfBlank = true;
 
     $.setError = function (isError, name, errorMessage, elemParent) {
         if (name.indexOf('.') >= 0) {
@@ -387,6 +387,11 @@
 
             // setTimeout can also be used to make IE wait until the blur event has completed
             setTimeout(function () {
+                // If the blur caused a focus on a new element, then ignore default navigation
+                if ($(':focus').length > 0) {
+                    return;
+                }
+
                 var focusElem;
                 if (isUp || isDown) {
                     var column = self.closest('td');
@@ -460,6 +465,11 @@
 
             // setTimeout can also be used to make IE wait until the blur event has completed
             setTimeout(function () {
+                // If the blur caused a focus on a new element, then ignore default navigation
+                if ($(':focus').length > 0) {
+                    return;
+                }
+
                 var focusElem;
                 if (isPrev) {
                     focusElem = self.getPrevFormElement();

@@ -442,7 +442,7 @@ public class PersoonskaartService extends AkteService {
 
         // First add new instances to the list if necessary
         for (int i = pkadres.size(); i < totalNumber; i++) {
-            pkadres.add(i, new Pkadres(i + 1, "Nl"));
+            pkadres.add(i, new Pkadres(i + 1));
         }
 
         // Then remove the instances that fall out of range
@@ -455,7 +455,7 @@ public class PersoonskaartService extends AkteService {
         }
 
         // Always add one empty one
-        pkadres.add(totalNumber, new Pkadres(totalNumber + 1, "Nl"));
+        pkadres.add(totalNumber, new Pkadres(totalNumber + 1));
     }
 
     /**

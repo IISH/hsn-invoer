@@ -27,9 +27,8 @@ public class Pkadres extends Invoer {
     public Pkadres() {
     }
 
-    public Pkadres(int vgnradp, String lndadrp) {
+    public Pkadres(int vgnradp) {
         this.vgnradp = vgnradp;
-        this.lndadrp = lndadrp;
     }
 
     public int getIdnr() {

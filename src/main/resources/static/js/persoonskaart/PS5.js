@@ -15,6 +15,7 @@
                     $('#pkadres' + index + '\\.pladrp').val($('#pkadres' + prevIndex + '\\.pladrp').val());
                     if (code === 'v') {
                         $('#pkadres' + index + '\\.stradrp').val($('#pkadres' + prevIndex + '\\.stradrp').val());
+                        $('#pkadres' + index + '\\.lndadrp').val($('#pkadres' + prevIndex + '\\.lndadrp').val());
                     }
                 }
             });
@@ -52,6 +53,19 @@
         });
     };
 
+    var updateCountry = function (elem) {
+        var parentElem = elem.closest('.pk-adres');
+
+        var plaats = parentElem.find('.plaats');
+        var street = parentElem.find('.street');
+        var country = parentElem.find('.country');
+
+        if ((country.val().trim().length === 0) &&
+            ((plaats.val().trim().length > 0) || (street.val().trim().length > 0))) {
+            country.val('Nl');
+        }
+    };
+
     var updateAdrFields = function (elem, isNext, isPrev) {
         if (!adrAjax) {
             adrAjax = true;
@@ -73,11 +87,11 @@
 
                     var elem = $(document.getElementById(id));
                     var btnNext = $('.btn-next');
-                    if ((elem.val().trim().length === 0) && (btnNext.is(':enabled'))) {
-                        btnNext.focus();
-                    }
-                    else if (isPrev) {
+                    if (isPrev) {
                         elem.autoPrevFocus(false);
+                    }
+                    else if ((elem.val().trim().length === 0) && (btnNext.is(':enabled'))) {
+                        btnNext.focus();
                     }
                     else {
                         elem.autoNextFocus(false);
@@ -91,20 +105,12 @@
 
     $(document).on('keydown', '.year', function (e) {
         $.ifDefaultNavigation(e, function (self, isNext, isPrev) {
-            var hsnDate = self.getParentOfFormElement().getHsnDate();
             updateAdrFields(self, isNext, isPrev);
-/*
-            if (isNext && hsnDate.day.isEmptyVal() && hsnDate.month.isEmptyVal() && hsnDate.year.isEmptyVal()) {
-                e.stopImmediatePropagation();
-                self.blur();
-                setTimeout(function () {
-                    var btnNext = $('.btn-next');
-                    if (btnNext.is(':enabled')) {
-                        btnNext.focus();
-                    }
-                }, 0);
-            }*/
         });
+    });
+
+    $(document).on('blur', '.plaats, .street', function (e) {
+        updateCountry($(e.target));
     });
 
     $.registerInit(function (elem) {

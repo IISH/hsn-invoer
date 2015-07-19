@@ -13,7 +13,10 @@
       <div class="col-xs-12"
            data:geb-day="${akte.refGbh} ? ${akte.refGbh.dayOfBirth}"
            data:geb-month="${akte.refGbh} ? ${akte.refGbh.monthOfBirth}"
-           data:geb-year="${akte.refGbh} ? ${akte.refGbh.yearOfBirth}">
+           data:geb-year="${akte.refGbh} ? ${akte.refGbh.yearOfBirth}"
+           data:aktedag="${akte.ovlknd.oaktedag}"
+           data:aktemnd="${akte.ovlknd.oaktemnd}"
+           data:aktejr="${akte.ovlknd.oaktejr}">
         <div class="col-xs-2">
           <label class="control-label">Dag:</label>
           <input type="text" class="form-control day" th:field="*{ovlknd.ovldag}" hsn:field="ovlknd.ovldag"/>

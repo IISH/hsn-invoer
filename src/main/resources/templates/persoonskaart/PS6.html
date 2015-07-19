@@ -26,14 +26,14 @@
         </div>
 
         <div class="sub-form-group" style="display:inline;">
-          <input type="text" class="form-control spacing plaats"
+          <input type="text" class="form-control form-control-large spacing plaats"
                  th:field="*{curPkeigknd.gplkndp}" hsn:field="curPkeigknd.gplkndp"/>
         </div>
       </div>
     </div>
 
     <th:block th:if="${akte.pkknd.pktype != 8}">
-      <div class="form-group extra-top-margin">
+      <div class="form-group">
         <label class="col-xs-3 control-label">HUW dat/plts:</label>
 
         <div class="col-xs-9 form-inline">
@@ -44,7 +44,7 @@
           </div>
 
           <div class="sub-form-group" style="display:inline;">
-            <input type="text" class="form-control spacing plaats"
+            <input type="text" class="form-control form-control-large spacing plaats"
                    th:field="*{curPkeigknd.hplkndp}" hsn:field="curPkeigknd.hplkndp"/>
           </div>
         </div>
@@ -66,7 +66,7 @@
         </div>
       </div>
 
-      <div class="form-group extra-top-margin">
+      <div class="form-group">
         <label class="col-xs-3 control-label">OVL dat/plts:</label>
 
         <div class="col-xs-9 form-inline">
@@ -77,13 +77,13 @@
           </div>
 
           <div class="sub-form-group" style="display:inline;">
-            <input type="text" class="form-control spacing plaats"
+            <input type="text" class="form-control form-control-large spacing plaats"
                    th:field="*{curPkeigknd.oplkndp}" hsn:field="curPkeigknd.oplkndp"/>
           </div>
         </div>
       </div>
 
-      <div class="form-group extra-top-margin">
+      <div class="form-group">
         <label class="col-xs-3 control-label">AFV dat/plts:</label>
 
         <div class="col-xs-9 form-inline">
@@ -94,7 +94,7 @@
           </div>
 
           <div class="sub-form-group" style="display:inline;">
-            <input type="text" class="form-control spacing plaats"
+            <input type="text" class="form-control form-control-large spacing plaats"
                    th:field="*{curPkeigknd.aplkndp}" hsn:field="curPkeigknd.aplkndp"/>
           </div>
         </div>
@@ -103,26 +103,28 @@
       <div class="form-group extra-top-margin">
         <label class="col-xs-3 control-label">Evt. aantek:</label>
 
-        <div class="col-xs-4">
+        <div class="col-xs-5">
           <input type="text" class="form-control" th:field="*{curPkeigknd.aantek}" hsn:field="curPkeigknd.aantek"/>
         </div>
       </div>
     </th:block>
-
-    <div class="form-group extra-top-margin">
-      <label class="col-xs-10 control-label" th:if="${akte.isCorrection()} == false">Nog een kind invoeren? j /
-        n</label>
-      <label class="col-xs-10 control-label" th:if="${akte.isCorrection()}">Nog een kind aanvullen of corrigeren? j /
-        n</label>
-
-      <div class="col-xs-2">
-        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
-               name="anotherChild" id="anotherChild"/>
-      </div>
-    </div>
   </th:block>
 </fieldset>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+<span layout:fragment="navigational-form">
+  <div class="form-group">
+    <label class="col-xs-10 control-label" th:if="${akte.isCorrection()} == false">Nog een kind invoeren? j /
+      n</label>
+    <label class="col-xs-10 control-label" th:if="${akte.isCorrection()}">Nog een kind aanvullen of corrigeren? j /
+      n</label>
+
+    <div class="col-xs-2">
+      <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+             name="anotherChild" id="anotherChild"/>
+    </div>
+  </div>
+</span>
 </body>
 </html>
