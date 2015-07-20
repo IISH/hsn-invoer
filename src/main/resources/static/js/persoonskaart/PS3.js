@@ -45,21 +45,12 @@
 
     $(document).on('keydown', '.beroep', function (e) {
         $.ifDefaultNavigation(e, function (self, isNext, isPrev) {
-            if (isPrev) {
-                setPositie(self);
-                updateBrpFields(self, isNext, isPrev);
-            }
-            else if (isNext && (self.val().trim().length === 0)) {
-                e.stopImmediatePropagation();
-                self.blur();
-                setTimeout(function () {
-                    $('.btn-next').focus();
-                }, 0);
-            }
+            setPositie(self);
+            updateBrpFields(self, isNext, isPrev);
         });
     });
 
-    $(document).on('change', '.beroep', function (e) {
+    $(document).on('typeahead-change', '.beroep', function (e) {
         var self = $(e.target);
         setPositie(self);
         updateBrpFields(self, true, false);

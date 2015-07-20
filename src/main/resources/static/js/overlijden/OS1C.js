@@ -53,7 +53,8 @@
         var ovljr = $('#ovlknd\\.ovljr').getIntegerValue();
 
         $.setError(
-            (aktejr === ovljr) && ((aktemnd < ovlmnd) || ((aktemnd === ovlmnd) && (aktedag < ovldag))),
+            (aktejr < ovljr) || ((aktemnd < ovlmnd) && (aktejr === ovljr)) ||
+                ((aktejr === ovljr) && (aktemnd === ovlmnd) && (aktedag < ovldag)),
             'dagtekening',
             'Dagtekening AKTE is eerder in de tijd dan dagtekening OVERLIJDEN! ' +
             'Corrigeer of stop met deze akte!'

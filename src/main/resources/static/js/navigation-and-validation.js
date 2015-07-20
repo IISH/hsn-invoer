@@ -388,7 +388,7 @@
             // setTimeout can also be used to make IE wait until the blur event has completed
             setTimeout(function () {
                 // If the blur caused a focus on a new element, then ignore default navigation
-                if ($(':focus').length > 0) {
+                if ($(':focus').filter(':input').length > 0) {
                     return;
                 }
 
@@ -466,7 +466,7 @@
             // setTimeout can also be used to make IE wait until the blur event has completed
             setTimeout(function () {
                 // If the blur caused a focus on a new element, then ignore default navigation
-                if ($(':focus').length > 0) {
+                if ($(':focus').filter(':input').length > 0) {
                     return;
                 }
 

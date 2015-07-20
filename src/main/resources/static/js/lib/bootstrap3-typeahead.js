@@ -80,6 +80,7 @@
         this.$element
           .val(this.displayText(newVal) || newVal)
           .change();
+        this.$element.trigger('typeahead-change'); // IE fix
         this.afterSelect(newVal);
       }
       return this.hide();
