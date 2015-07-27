@@ -74,6 +74,11 @@ public class OverlijdensAkteService extends AkteService {
 
                 // Save data obtained from the reference table.
                 ovlknd.setGbpovl(refGbh.getNumberMunicipality());
+                ovlknd.setOvlsex(refGbh.getSex());
+                ovlknd.setExtract("n");
+                if ((ovlknd.getGgmovl() == null) || ovlknd.getGgmovl().trim().isEmpty()) {
+                    ovlknd.setGgmovl(refGbh.getNameMunicipality());
+                }
 
                 ovlknd.setAnmovl(refGbh.getLastName());
                 ovlknd.setTusovl(refGbh.getPrefixName());

@@ -52,9 +52,15 @@
         var ovlmnd = $('#ovlknd\\.ovlmnd').getIntegerValue();
         var ovljr = $('#ovlknd\\.ovljr').getIntegerValue();
 
+        var error = false;
+        if (!isNaN(ovldag) && (ovldag !== 0) && !isNaN(ovlmnd) && (ovlmnd !== 0) && !isNaN(ovljr) && (ovljr !== 0)) {
+            error = ((aktejr < ovljr) ||
+                ((aktemnd < ovlmnd) && (aktejr === ovljr)) ||
+                ((aktejr === ovljr) && (aktemnd === ovlmnd) && (aktedag < ovldag)))
+        }
+
         $.setError(
-            (aktejr < ovljr) || ((aktemnd < ovlmnd) && (aktejr === ovljr)) ||
-                ((aktejr === ovljr) && (aktemnd === ovlmnd) && (aktedag < ovldag)),
+            error,
             'dagtekening',
             'Dagtekening AKTE is eerder in de tijd dan dagtekening OVERLIJDEN! ' +
             'Corrigeer of stop met deze akte!'

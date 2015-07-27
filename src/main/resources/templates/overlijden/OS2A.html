@@ -38,7 +38,8 @@
       <div class="form-group" th:replace="fragments/complete-fields :: adres ('ovlknd.adrvovl')"></div>
     </div>
 
-    <div class="alert alert-danger extra-top-margin" role="alert">
+    <div class="alert alert-danger extra-top-margin" role="alert"
+         data-show-when="#ovlknd\.levvovl" data-has-values-in="j;n;o" style="display:none;">
       De gegevens moeten overeenkomen met die in de overlijdensakte !! Zo niet, dan corrigeren of stoppen.
     </div>
   </th:block>

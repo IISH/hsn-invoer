@@ -31,52 +31,37 @@
          th:include="fragments/complete-fields :: beroep ('ovlknd.brpovl', 'Beroep overledene:')"></div>
 
     <div class="form-group">
-      <div class="row">
-        <label class="col-xs-4 control-label">Burgelijke staat bij overlijden:</label>
+      <label class="col-xs-3 control-label">Burgelijke staat bij overlijden:</label>
+
+      <div class="col-xs-9">
+        <p class="form-control-static">
+          1 = ongehuwd
+        </p>
+
+        <p class="form-control-static">
+          2 = weduwnaar/weduwe
+        </p>
+
+        <p class="form-control-static">
+          3 = gescheiden
+        </p>
+
+        <p class="form-control-static">
+          5 = gehuwd
+        </p>
+
+        <p class="form-control-static">
+          6 = onbekend
+        </p>
       </div>
+    </div>
 
-      <div class="row">
-        <div class="col-xs-offset-1 col-xs-3">
-          <p class="form-control-static">
-            1 = ongehuwd
-          </p>
-        </div>
+    <div class="form-group">
+      <label class="col-xs-3 control-label">Uw keuze:</label>
 
-        <div class="col-xs-3">
-          <p class="form-control-static">
-            2 = weduwnaar/weduwe
-          </p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-offset-1 col-xs-3">
-          <p class="form-control-static">
-            3 = gescheiden
-          </p>
-        </div>
-
-        <div class="col-xs-3">
-          <p class="form-control-static">
-            5 = gehuwd
-          </p>
-        </div>
-
-        <div class="col-xs-2">
-          <p class="form-control-static">
-            6 = onbekend
-          </p>
-        </div>
-
-        <div class="col-xs-3 form-inline">
-          <div class="form-group">
-            <label class="control-label">Uw keuze:</label>
-
-            <input type="text" class="form-control form-control-digit spacing required"
-                   data:valid-chars="${akte.ovlknd.lftjovl} lt 14 ? '1;6' : '1;2;3;5;6'"
-                   th:field="*{ovlknd.brgovl}" hsn:field="ovlknd.brgovl"/>
-          </div>
-        </div>
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit spacing required" data-valid-chars="1;2;3;5;6"
+               th:field="*{ovlknd.brgovl}" hsn:field="ovlknd.brgovl"/>
       </div>
     </div>
   </th:block>
