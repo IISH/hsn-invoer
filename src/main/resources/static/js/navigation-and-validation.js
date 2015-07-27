@@ -11,7 +11,7 @@
 (function ($) {
     /* Validation */
 
-    var alsoShowErrorIfBlank = true;
+    var alsoShowErrorIfBlank = false;
 
     $.setError = function (isError, name, errorMessage, elemParent) {
         if (name.indexOf('.') >= 0) {
