@@ -216,8 +216,12 @@ textarea.form-control {
   height: 120px;
 }
 
-.has-error .form-control {
+.has-error-incorrect .form-control {
   background-color: @state-danger-bg;
+}
+
+.has-error-empty .form-control, .has-byz-empty .form-control {
+  background-color: lighten(@state-info-bg, 2%);
 }
 
 .navigational-form {

@@ -11,8 +11,6 @@
 (function ($) {
     /* Validation */
 
-    var alsoShowErrorIfBlank = false;
-
     $.setError = function (isError, name, errorMessage, elemParent) {
         if (name.indexOf('.') >= 0) {
             name = name.substring(0, name.indexOf('.'));
@@ -43,43 +41,34 @@
             elemParent = this.getParentOfFormElement();
         }
 
-        // We will only SHOW an error when the user (partly) entered a value
-        var hasValues = true;
-        if (!alsoShowErrorIfBlank) {
-            hasValues = false;
-            elemParent.find(':input:visible').each(function () {
-                var val = $(this).val().trim();
-                if ((val.length > 0) && (parseInt(val) !== 0)) {
-                    hasValues = true;
-                }
-            });
+        // Determine if there is an error
+        var error = (condition && this.is(':enabled') && this.is(':visible'));
+
+        // Determine if the field is empty
+        // In case of dates, the day, month and year have to be filled out completely
+        var allFieldsEntered = true;
+        var inputElems = elemParent.find(':input:visible');
+        if (elemParent.find('.day, .month, .year').length > 0) {
+            inputElems = inputElems.filter('.day, .month, .year');
         }
 
-        var error = (condition && this.is(':enabled') && this.is(':visible'));
-        if (error) {
-            elemParent.addClass('has-an-error');
+        inputElems.each(function () {
+            var val = $(this).val().trim();
+            if ((val.length === 0) || (parseInt(val) === 0)) {
+                allFieldsEntered = false;
+            }
+        });
 
-            // Only SHOW the error when the user (partly) entered a value
-            if (hasValues) {
-                elemParent.addClass('has-error-edit');
-            }
-            else {
-                elemParent.removeClass('has-error').removeClass('has-error-edit');
-            }
+        if (error && !allFieldsEntered) {
+            elemParent.addClass('has-an-error has-error-empty');
+            elemParent.removeClass('has-error-incorrect');
+        }
+        else if (error) {
+            elemParent.addClass('has-an-error has-error-incorrect');
+            elemParent.removeClass('has-error-empty');
         }
         else {
-            elemParent.removeClass('has-an-error').removeClass('has-error').removeClass('has-error-edit');
-        }
-    };
-
-    var determineShowError = function (elem) {
-        var parent = elem.getParentOfFormElement();
-
-        // Make sure that the error is only SHOWN when the user is NOT changing the value in question
-        $('.has-error-edit').not(parent).removeClass('has-error-edit').addClass('has-error');
-
-        if (parent.hasClass('has-error')) {
-            parent.removeClass('has-error').addClass('has-error-edit');
+            elemParent.removeClass('has-an-error has-error-empty has-error-incorrect');
         }
     };
 
@@ -157,8 +146,19 @@
     };
 
     var checkByzElement = function (elem) {
+        var value = elem.val();
+        var parent = elem.getParentOfFormElement();
         var byzOnValues = elem.getMultipleDataValues('byz');
-        return (byzOnValues.indexOf(elem.val()) < 0);
+        var isOk = (byzOnValues.indexOf(value) < 0);
+
+        if (!isOk && (value.trim().length === 0 || parseInt(value) === 0)) {
+            parent.addClass('has-byz-empty');
+        }
+        else {
+            parent.removeClass('has-byz-empty');
+        }
+
+        return isOk;
     };
 
     var checkByzElements = function (elements) {
@@ -271,16 +271,6 @@
         })
         .on('show', function (e) {
             checkRequired($(e.target));
-        })
-        .on('focus', ':input', function (e) {
-            if (!$.isRunningInit()) {
-                determineShowError($(e.target));
-            }
-        })
-        .on('show', function () {
-            if (!$.isRunningInit()) {
-                determineShowError($(':focus'));
-            }
         })
         .on('blur', 'form input, form button', init)
         .on('show hide', function (e) {
