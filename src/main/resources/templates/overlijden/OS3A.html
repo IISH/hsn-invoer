@@ -43,20 +43,20 @@
          style="display:none;" th:include="fragments/complete-fields :: handtekening ('ovlknd.hndtkv')">
     </div>
 
-    <div class="alert alert-danger" role="alert" data-show-when="#ovlknd\.extract" data-has-values-in="j"
+    <div class="alert alert-info" role="alert" data-show-when="#ovlknd\.extract" data-has-values-in="j"
          style="display:none;" th:if="${akte.isCorrection()} and (${akte.ovlknd.extract} == 'n')">
       Weet u zeker dat het om een extract gaat? <br/>
       Indien in het verleden aangevers zijn ingevoerd worden deze verwijderd. Indien vader als aangever stond genoteerd
       wordt dit gecorrigeeerd.
     </div>
 
-    <div class="alert alert-danger" role="alert" data-show-when="#ovlknd\.extract" data-has-values-in="n"
+    <div class="alert alert-info" role="alert" data-show-when="#ovlknd\.extract" data-has-values-in="n"
          style="display:none;" th:if="${akte.isCorrection()} and (${akte.ovlknd.extract} == 'j')">
       Geen extract betekent invoeren aangevers. Weet u zeker dat het niet om een extract gaat?
     </div>
   </th:block>
 </fieldset>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
 </body>
 </html>

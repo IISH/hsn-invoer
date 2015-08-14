@@ -223,13 +223,13 @@
       <input type="text" class="form-control form-control-small spacing"
              th:field="*{prevRegistration.keyToSourceRegister}" hsn:field="prevRegistration.keyToSourceRegister"/>
 
-      <input type="text" class="form-control form-control-digit spacing day"
+      <input type="text" class="form-control form-control-digit spacing day" maxlength="2"
              th:field="*{prevRegistration.dayEntryHead}" hsn:field="prevRegistration.dayEntryHead"/>
       /
-      <input type="text" class="form-control form-control-digit month"
+      <input type="text" class="form-control form-control-digit month" maxlength="2"
              th:field="*{prevRegistration.monthEntryHead}" hsn:field="prevRegistration.monthEntryHead"/>
       /
-      <input type="text" class="form-control form-control-small year"
+      <input type="text" class="form-control form-control-small year" maxlength="4"
              th:field="*{prevRegistration.yearEntryHead}" hsn:field="prevRegistration.yearEntryHead"/>
     </span>
     </div>

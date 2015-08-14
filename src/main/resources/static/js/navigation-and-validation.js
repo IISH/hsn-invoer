@@ -106,16 +106,21 @@
     };
 
     var addError = function (isError, className, btnNextClassName, onError) {
-        var message = getMessage(className);
+        var showMsg = typeof className === 'string';
+        var message = showMsg ? getMessage(className) : null;
 
         if (isError) {
             getBtnNext().addClass(btnNextClassName);
-            message = onError(getMessages(), message);
-            showMessage(message, true);
+            if (showMsg) {
+                message = onError(getMessages(), message);
+                showMessage(message, true);
+            }
         }
         else {
             getBtnNext().removeClass(btnNextClassName);
-            hideMessage(message, true);
+            if (showMsg) {
+                hideMessage(message, true);
+            }
         }
     };
 
@@ -172,17 +177,18 @@
     };
 
     var checkByz = function () {
-        addError(
-            !checkByzElements($.getDataElem('byz').filter(':visible')),
-            'byz', 'byz-required',
-            function (messages, message) {
-                var byzTextElement = $('.byz-text');
-                if (byzTextElement.length > 0) {
-                    message.text(byzTextElement.text());
-                }
-                return message;
-            }
-        );
+        // TODO: Message class 'byz'
+
+        // TODO: Message function:
+        /*function (messages, message) {
+         var byzTextElement = $('.byz-text');
+         if (byzTextElement.length > 0) {
+         message.text(byzTextElement.text());
+         }
+         return message;
+         }*/
+
+        addError(!checkByzElements($.getDataElem('byz').filter(':visible')), false, 'byz-required');
     };
 
     var checkRequired = function (elem) {

@@ -27,19 +27,23 @@
         <div class="col-xs-12">
           <div class="col-xs-3">
             <label class="control-label">Dag:</label>
-            <input type="text" class="form-control required day focus-on-success" th:field="*{huwttl.huw.hdag}" hsn:field="huwttl.huw.hdag"/>
+            <input type="text" class="form-control required day focus-on-success" maxlength="2"
+                   th:field="*{huwttl.huw.hdag}" hsn:field="huwttl.huw.hdag"/>
           </div>
           <div class="col-xs-3">
             <label class="control-label">Maand:</label>
-            <input type="text" class="form-control required month" th:field="*{huwttl.huw.hmaand}" hsn:field="huwttl.huw.hmaand"/>
+            <input type="text" class="form-control required month" maxlength="2"
+                   th:field="*{huwttl.huw.hmaand}" hsn:field="huwttl.huw.hmaand"/>
           </div>
           <div class="col-xs-3">
             <label class="control-label">Jaar:</label>
-            <input type="text" class="form-control required year" th:field="*{huwttl.huw.hjaar}" hsn:field="huwttl.huw.hjaar"/>
+            <input type="text" class="form-control required year" maxlength="4"
+                   th:field="*{huwttl.huw.hjaar}" hsn:field="huwttl.huw.hjaar"/>
           </div>
           <div class="col-xs-3">
             <label class="control-label">Uur:</label>
-            <input type="text" class="form-control required hour huw-check" th:field="*{huwttl.huur}" hsn:field="huwttl.huur"/>
+            <input type="text" class="form-control required hour huw-check" maxlength="2"
+                   th:field="*{huwttl.huur}" hsn:field="huwttl.huur"/>
           </div>
         </div>
       </div>

@@ -13,8 +13,7 @@
           <div class="form-header" th:utext="${vgnradp + 'e ADRES:'}">1e ADRES:</div>
 
           <div class="form-group">
-            <div class="sub-form-group noAutoNext"
-                 th:classappend="${(stat.index == 0) or ((stat.index + 1) lt akte.pkadres.size())} ? 'checkDateDefault'">
+            <div class="sub-form-group noAutoNext checkDateDefault"> <!--th:classappend="${(stat.index == 0) or ((stat.index + 1) lt akte.pkadres.size())} ? 'checkDateDefault'"-->
               <label class="col-xs-3 control-label">Aangiftedatum:</label>
 
               <div class="col-xs-3 form-inline"

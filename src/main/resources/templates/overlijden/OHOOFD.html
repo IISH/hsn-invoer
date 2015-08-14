@@ -5,7 +5,8 @@
 <header layout:fragment="header" th:include="layoutFragments :: header"></header>
 
 <fieldset layout:fragment="main" class="content-spacing">
-  <div class="form-main-header">OVERLIJDENS-AKTEN</div>
+  <div class="form-main-header" th:if="${levnloos} == 'n'">OVERLIJDENS-AKTEN</div>
+  <div class="form-main-header" th:if="${levnloos} != 'n'">AKTEN LEVENLOZE GEBOORTE</div>
 
   <div class="extra-top-margin default-label text-center">
     Maak een keuze uit de volgende mogelijkheden:

@@ -68,13 +68,13 @@
           </td>
           <td th:if="${akte.isCorrection()}">
             <!-- INTERPR -->
-              <span class="dayOfAddressAfterInterpretation day"
+              <span class="dayOfAddressAfterInterpretation day" maxlength="2"
                     th:utext="${akte.b6[__${stat.index}__].dayOfAddressAfterInterpretation}"></span>
             /
-              <span class="monthOfAddressAfterInterpretation month"
+              <span class="monthOfAddressAfterInterpretation month" maxlength="2"
                     th:utext="${akte.b6[__${stat.index}__].monthOfAddressAfterInterpretation}"></span>
             /
-              <span class="yearOfAddressAfterInterpretation year"
+              <span class="yearOfAddressAfterInterpretation year" maxlength="4"
                     th:utext="${akte.b6[__${stat.index}__].yearOfAddressAfterInterpretation}"></span>
           </td>
           <td>
@@ -152,21 +152,24 @@
         <td style="min-width:200px;max-width:200px;">
           <div class="sub-form-group dateOrder checkDateBevReg fullCheck">
             <!-- Datum -->
-            <input type="text" name="dayOfAddress" class="form-control form-control-digit day"/>
+            <input type="text" name="dayOfAddress" class="form-control form-control-digit day" maxlength="2"/>
             /
-            <input type="text" name="monthOfAddress" class="form-control form-control-digit month"/>
+            <input type="text" name="monthOfAddress" class="form-control form-control-digit month" maxlength="2"/>
             /
-            <input type="text" name="yearOfAddress" class="form-control form-control-small year"/>
+            <input type="text" name="yearOfAddress" class="form-control form-control-small year" maxlength="4"/>
           </div>
         </td>
         <td style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
           <div class="sub-form-group checkInterprDateBevReg">
             <!-- INTERPR -->
-            <input type="text" name="dayOfAddressAfterInterpretation" class="form-control form-control-digit day"/>
+            <input type="text" name="dayOfAddressAfterInterpretation" class="form-control form-control-digit day"
+                   maxlength="2"/>
             /
-            <input type="text" name="monthOfAddressAfterInterpretation" class="form-control form-control-digit month"/>
+            <input type="text" name="monthOfAddressAfterInterpretation" class="form-control form-control-digit month"
+                   maxlength="2"/>
             /
-            <input type="text" name="yearOfAddressAfterInterpretation" class="form-control form-control-small year"/>
+            <input type="text" name="yearOfAddressAfterInterpretation" class="form-control form-control-small year"
+                   maxlength="4"/>
           </div>
         </td>
         <td style="min-width:60px;max-width:60px;">
@@ -212,7 +215,7 @@
 </div>
 
 <div id="dateOrderWarning" class="content-spacing" style="display:none;">
-  <div class="alert alert-warning" role="alert">
+  <div class="alert alert-danger" role="alert">
     Datum is niet op chronologische volgorde.
   </div>
 </div>

@@ -20,7 +20,7 @@
     </div>
 
     <div class="form-group">
-      <label class="col-xs-3 control-label">Adres plaats overledene:</label>
+      <label class="col-xs-3 control-label">Adres plaats overlijden:</label>
 
       <div class="col-xs-5">
         <input type="text" class="form-control" th:field="*{ovlknd.ploovl}" hsn:field="ovlknd.ploovl"/>
@@ -31,37 +31,53 @@
          th:include="fragments/complete-fields :: beroep ('ovlknd.brpovl', 'Beroep overledene:')"></div>
 
     <div class="form-group">
-      <label class="col-xs-3 control-label">Burgelijke staat bij overlijden:</label>
+      <div class="row no-margin">
+        <label class="col-xs-3 control-label">Burgelijke staat overlijden:</label>
 
-      <div class="col-xs-9">
-        <p class="form-control-static">
-          1 = ongehuwd
-        </p>
-
-        <p class="form-control-static">
-          2 = weduwnaar/weduwe
-        </p>
-
-        <p class="form-control-static">
-          3 = gescheiden
-        </p>
-
-        <p class="form-control-static">
-          5 = gehuwd
-        </p>
-
-        <p class="form-control-static">
-          6 = onbekend
-        </p>
+        <div class="col-xs-3">
+          <p class="form-control-static">
+            1 = ongehuwd
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label class="col-xs-3 control-label">Uw keuze:</label>
+      <div class="row no-margin">
+        <div class="col-xs-3 col-xs-offset-3">
+          <p class="form-control-static">
+            2 = weduwnaar/weduwe
+          </p>
+        </div>
+      </div>
 
-      <div class="col-xs-2">
-        <input type="text" class="form-control form-control-digit spacing required" data-valid-chars="1;2;3;5;6"
-               th:field="*{ovlknd.brgovl}" hsn:field="ovlknd.brgovl"/>
+      <div class="row no-margin">
+        <div class="col-xs-3 col-xs-offset-3">
+          <p class="form-control-static">
+            3 = gescheiden
+          </p>
+        </div>
+      </div>
+
+      <div class="row no-margin">
+        <div class="col-xs-3 col-xs-offset-3">
+          <p class="form-control-static">
+            5 = gehuwd
+          </p>
+        </div>
+      </div>
+
+      <div class="row no-margin">
+        <div class="col-xs-3 col-xs-offset-3">
+          <p class="form-control-static">
+            6 = onbekend
+          </p>
+        </div>
+
+        <label class="col-xs-2 control-label">Uw keuze:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit spacing required" data-valid-chars="1;2;3;5;6"
+                 th:field="*{ovlknd.brgovl}" hsn:field="ovlknd.brgovl"/>
+        </div>
       </div>
     </div>
   </th:block>

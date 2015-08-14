@@ -87,10 +87,15 @@
 
                     var elem = $(document.getElementById(id));
                     var btnNext = $('.btn-next');
+
+                    var date = elem.getParentOfFormElement().getHsnDate();
+                    var dateIsEmpty = (((date.day.getValue() === 0) && (date.month.getValue() === 0) && (date.year.getValue() === 0))
+                                    || ((date.day.getValue() === -1) && (date.month.getValue() === -1) && (date.year.getValue() === -1)));
+
                     if (isPrev) {
                         elem.autoPrevFocus(false);
                     }
-                    else if ((elem.val().trim().length === 0) && (btnNext.is(':enabled'))) {
+                    else if (dateIsEmpty && btnNext.is(':enabled')) {
                         btnNext.focus();
                     }
                     else {

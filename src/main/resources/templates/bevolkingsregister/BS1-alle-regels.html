@@ -147,13 +147,13 @@
         <div class="form-group checkDateBevReg fullCheck noNeg">
           <label class="control-label">Datum expliciet hoofd:</label>
 
-          <input type="text" class="form-control form-control-digit day spacing"
+          <input type="text" class="form-control form-control-digit day spacing" maxlength="2"
                  th:value="${@bevolkingsregisterHelper.getDayFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
           /
-          <input type="text" class="form-control form-control-digit month"
+          <input type="text" class="form-control form-control-digit month" maxlength="2"
                  th:value="${@bevolkingsregisterHelper.getMonthFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
           /
-          <input type="text" class="form-control form-control-small year"
+          <input type="text" class="form-control form-control-small year" maxlength="4"
                  th:value="${@bevolkingsregisterHelper.getYearFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
         </div>
       </div>

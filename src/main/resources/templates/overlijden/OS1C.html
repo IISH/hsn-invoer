@@ -19,27 +19,32 @@
            data:aktejr="${akte.ovlknd.oaktejr}">
         <div class="col-xs-2">
           <label class="control-label">Dag:</label>
-          <input type="text" class="form-control day" th:field="*{ovlknd.ovldag}" hsn:field="ovlknd.ovldag"/>
+          <input type="text" class="form-control day" maxlength="2"
+                 th:field="*{ovlknd.ovldag}" hsn:field="ovlknd.ovldag"/>
         </div>
 
         <div class="col-xs-2">
           <label class="control-label">Maand:</label>
-          <input type="text" class="form-control month" th:field="*{ovlknd.ovlmnd}" hsn:field="ovlknd.ovlmnd"/>
+          <input type="text" class="form-control month" maxlength="2"
+                 th:field="*{ovlknd.ovlmnd}" hsn:field="ovlknd.ovlmnd"/>
         </div>
 
         <div class="col-xs-2">
           <label class="control-label">Jaar:</label>
-          <input type="text" class="form-control year" th:field="*{ovlknd.ovljr}" hsn:field="ovlknd.ovljr"/>
+          <input type="text" class="form-control year" maxlength="4"
+                 th:field="*{ovlknd.ovljr}" hsn:field="ovlknd.ovljr"/>
         </div>
 
         <div class="col-xs-2 col-xs-push-1">
           <label class="control-label">Uur:</label>
-          <input type="text" class="form-control hour" th:field="*{ovlknd.ovluur}" hsn:field="ovlknd.ovluur"/>
+          <input type="text" class="form-control hour" maxlength="2"
+                 th:field="*{ovlknd.ovluur}" hsn:field="ovlknd.ovluur"/>
         </div>
 
         <div class="col-xs-2 col-xs-push-1">
           <label class="control-label">Min:</label>
-          <input type="text" class="form-control minute" th:field="*{ovlknd.ovlmin}" hsn:field="ovlknd.ovlmin"/>
+          <input type="text" class="form-control minute" maxlength="2"
+                 th:field="*{ovlknd.ovlmin}" hsn:field="ovlknd.ovlmin"/>
         </div>
       </div>
     </div>
@@ -55,7 +60,7 @@
       </div>
 
       <div class="ageContainer" style="display: none;">
-        <div class="alert alert-warning extra-top-margin age" role="alert" th:if="${akte.isLevnloos()} == false">
+        <div class="alert alert-info extra-top-margin age" role="alert" th:if="${akte.isLevnloos()} == false">
           <div th:if="${akte.isCorrection()} == false">
             <div>De berekende leeftijd in dagen, maanden of jaren:</div>
             <div class="text-center">(corrigeer deze EXACT volgens gegevens akte!):</div>
@@ -113,7 +118,7 @@
 
     <div class="alert alert-info extra-top-margin" role="alert"
          data-show-when="#ovlknd\.ovldag" data:has-values-in="${akte.ovlknd.oaktedag}" style="display:none;">
-      Waarschuwing: Dagnr overlijden is identiek aan dagnr akte!! ( het kan wel goed zijn )
+      Waarschuwing: Dagnummer overlijden is identiek aan dagnummer akte!! ( het kan wel goed zijn )
     </div>
   </th:block>
 </fieldset>

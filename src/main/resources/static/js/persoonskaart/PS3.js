@@ -33,6 +33,9 @@
                     else if (elem.val().trim().length === 0) {
                         $('.btn-next').focus();
                     }
+                    else if ((elem.val().trim() === 'N') || (elem.val().trim() === 'Z')) {
+                        elem.closest('.form-group').find('.doorgehaald').focus();
+                    }
                     else {
                         elem.autoNextFocus(false);
                     }

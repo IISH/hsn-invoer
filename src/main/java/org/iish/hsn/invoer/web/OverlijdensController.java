@@ -1,11 +1,11 @@
 package org.iish.hsn.invoer.web;
 
 import org.iish.hsn.invoer.flow.state.OverlijdensStart;
-import org.iish.hsn.invoer.param.GeboorteOverviewParams;
 import org.iish.hsn.invoer.param.OverviewParams;
 import org.iish.hsn.invoer.service.OverviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +33,8 @@ public class OverlijdensController {
     }
 
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.GET)
-    public String main() {
+    public String main(Model model) {
+        model.addAttribute("levnloos", overlijdensStart.getLevnloos());
         return "overlijden/OHOOFD";
     }
 

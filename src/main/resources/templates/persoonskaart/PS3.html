@@ -6,7 +6,7 @@
 
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="alert alert-warning" role="alert">
+    <div class="alert alert-info" role="alert">
       Let op!! <br/>
       Geen regels overslaan <br/>
       Beroepen zoveel mogelijk op originele volgorde invoeren <br/>
@@ -42,7 +42,7 @@
               <label class="col-xs-1 control-label" style="width:20%;">Doorgehaald? j / n</label>
 
               <div class="col-xs-1" style="width:8%;">
-                <input type="text" class="form-control form-control-digit" data-valid-chars="j;n"
+                <input type="text" class="form-control form-control-digit doorgehaald" data-valid-chars="j;n"
                        maxlength="1" th:field="*{pkbrp[__${stat.index}__].dhbrppp}"
                        th:classappend="${(stat.index + 1) lt akte.pkbrp.size()} ? 'required'"/>
               </div>
