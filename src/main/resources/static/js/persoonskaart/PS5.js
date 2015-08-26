@@ -90,7 +90,7 @@
 
                     var date = elem.getParentOfFormElement().getHsnDate();
                     var dateIsEmpty = (((date.day.getValue() === 0) && (date.month.getValue() === 0) && (date.year.getValue() === 0))
-                                    || ((date.day.getValue() === -1) && (date.month.getValue() === -1) && (date.year.getValue() === -1)));
+                        || ((date.day.getValue() === -1) && (date.month.getValue() === -1) && (date.year.getValue() === -1)));
 
                     if (isPrev) {
                         elem.autoPrevFocus(false);
@@ -108,9 +108,27 @@
         }
     };
 
-    $(document).on('keydown', '.year', function (e) {
+    var updateDateFieldsIfEmpty = function (hsnDate) {
+        var day = hsnDate.day;
+        var dayIsZero = (day.isInput && (day.getValue() === 0));
+
+        if (dayIsZero) {
+            $.each(hsnDate, function (name, elem) {
+                if (dayIsZero && elem.isInput) {
+                    elem.elem.val('');
+                }
+            });
+        }
+
+        return dayIsZero;
+    };
+
+    $(document).on('keydown', '.day, .year', function (e) {
         $.ifDefaultNavigation(e, function (self, isNext, isPrev) {
-            updateAdrFields(self, isNext, isPrev);
+            var hsnDate = self.getParentOfFormElement().getHsnDate();
+            if (self.hasClass('year') || (self.hasClass('day') && isNext && updateDateFieldsIfEmpty(hsnDate))) {
+                updateAdrFields(self, isNext, isPrev);
+            }
         });
     });
 
@@ -121,6 +139,12 @@
     $.registerInit(function (elem) {
         initAddressRenumbering(elem);
         initCheckAddressOrder(elem);
+    });
+
+    $.initCheckDate('.checkAddressDate', updateDateFieldsIfEmpty, function (hsnDate) {
+        if (hsnDate.day.getValue() === 0 && hsnDate.month.getValue() === 0 && hsnDate.year.getValue() === 0)
+            return false;
+        return $.checkHsnDate(hsnDate);
     });
 })
 (jQuery);

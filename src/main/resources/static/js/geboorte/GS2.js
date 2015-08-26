@@ -49,8 +49,7 @@
         $.setError(
             (gebdag > aktedag) && (gebmnd === aktemnd) && (aktedag > 0),
             'birth-before-akte',
-            'Opletten: Het dagnummer geboorte is later dan dagnummer akte! ' +
-            'Bij einde invoer corrigeren!!!'
+            'Verkeerd dagnummer geboorte!! Later dan dagnummer akte!!'
         );
     };
 

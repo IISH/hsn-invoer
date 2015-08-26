@@ -74,7 +74,7 @@
                 }
 
                 $.getJSON('/ajax/lookup/gebakte', {idnr: idnr}, function (gebakte) {
-                    self.onFailure('In het bestand opgenomen kode: ' + gebakte.gebkode, true, true, false);
+                    self.onFailure('De akte is al ingevoerd onder kode ' + gebakte.gebkode, true, true, false);
                 }).fail(function () {
                     self.gebkndLookup();
                 });
@@ -95,8 +95,7 @@
                     self.onSuccess();
                 }
                 else {
-                    self.onFailure('U moet eerst de opgenomen geboorteakte (kode = 1) vernietigen, ' +
-                    'alvorens u de kode kunt veranderen!', true, false, true);
+                    self.onFailure('De akte met dit identificatienummer is al ingevoerd!', true, false, true);
                 }
             }).fail(function () {
                 if ($.isCorrection()) {

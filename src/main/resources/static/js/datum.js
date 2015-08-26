@@ -46,15 +46,15 @@
 
     $.prepareDate = function (hsnDate) {
         var day = hsnDate.day;
-        var dayIsZero = (day.getValue() === 0);
+        var dayIsZero = (day.isInput && (day.getValue() === 0));
 
         $.each(hsnDate, function (name, elem) {
-            if (day.isInput && dayIsZero && elem.isInput) {
+            if (dayIsZero && elem.isInput) {
                 elem.elem.val(-1);
             }
         });
 
-        if (day.isInput && dayIsZero) {
+        if (dayIsZero) {
             var parent = day.elem.getParentOfFormElement();
             var lastElement = parent.find(':input:enabled:visible:last');
             lastElement.autoNextFocus(false);
@@ -63,7 +63,7 @@
 
     $.fn.getHsnDate = function () {
         function PartOfDate(elem) {
-            var obj = {
+            return {
                 elem: elem,
                 isInput: elem.is(':input'),
                 getValue: function () {
@@ -75,8 +75,6 @@
                     return isNaN(val);
                 }
             };
-
-            return obj;
         }
 
         return {
