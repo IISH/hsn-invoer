@@ -372,6 +372,15 @@
         return true;
     };
 
+    // IE9 does not support 'maxlength' on textarea
+    var setMaxLength = function (elem, e) {
+        var length = elem.val().length;
+        var maxlength = elem.attr('maxlength');
+        if (maxlength && (length > maxlength)) {
+            elem.val(elem.val().slice(0, maxlength));
+        }
+    };
+
     $(document).on('keyup', ':input', function (e) {
         return onUppercase($(e.target));
     });
@@ -406,6 +415,11 @@
 
     $(document).on('keypress', ':input', function (e) {
         return setOverwrite($(e.target), e);
+    });
+
+    // IE9 does not support 'maxlength' on textarea
+    $(document).on('keypress blur', 'textarea', function (e) {
+        return setMaxLength($(e.target), e);
     });
 
     $.registerInit(function (elem) {
