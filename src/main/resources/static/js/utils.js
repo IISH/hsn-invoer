@@ -95,14 +95,6 @@
         return $('form:first').find('input,button,textarea');
     };
 
-    $.getFormElements = function (elem) {
-        return $.getAllFormElements(elem).filter(':visible');
-    };
-
-    $.getFormElementsEnabled = function (elem) {
-        return $.getFormElements(elem).filter(':enabled');
-    };
-
     $.getDataElemSelector = function (dataName) {
         return '[data-' + dataName + ']';
     };
@@ -128,21 +120,33 @@
     /* With selector */
 
     $.fn.getPrevFormElement = function () {
-        var formElements = $.getFormElementsEnabled(this);
-
+        var formElements = $.getAllFormElements(this);
+        var prevElement = null;
         var curIndex = formElements.index(this);
-        var newIndex = (curIndex === 0) ? formElements.length - 1 : curIndex - 1;
-
-        return formElements.eq(newIndex);
+        var startIndex = curIndex;
+        while (prevElement === null) {
+            curIndex = (curIndex === 0) ? formElements.length - 1 : curIndex - 1;
+            var elem = formElements.eq(curIndex);
+            if ((curIndex === startIndex) || elem.is(':visible:enabled')) {
+                prevElement = elem;
+            }
+        }
+        return prevElement;
     };
 
     $.fn.getNextFormElement = function () {
-        var formElements = $.getFormElementsEnabled(this);
-
+        var formElements = $.getAllFormElements(this);
+        var prevElement = null;
         var curIndex = formElements.index(this);
-        var newIndex = (curIndex === (formElements.length - 1)) ? 0 : curIndex + 1;
-
-        return formElements.eq(newIndex);
+        var startIndex = curIndex;
+        while (prevElement === null) {
+            curIndex = (curIndex === (formElements.length - 1)) ? 0 : curIndex + 1;
+            var elem = formElements.eq(curIndex);
+            if ((curIndex === startIndex) || elem.is(':visible:enabled')) {
+                prevElement = elem;
+            }
+        }
+        return prevElement;
     };
 
     $.fn.getParentOfFormElement = function () {
@@ -250,5 +254,20 @@
             this.trigger('show');
 
         return toReturn;
+    };
+
+    /* Overwrite 'val' jQuery function to send 'change' event */
+    var onVal = $.fn.val;
+    $.fn.val = function () {
+        var changeValue = (arguments.length > 0);
+        if (changeValue) {
+            var valueBefore = onVal.apply(this);
+        }
+        var result = onVal.apply(this, arguments);
+        if (changeValue) {
+            var valueAfter = onVal.apply(this);
+            if (valueBefore !== valueAfter) this.change();
+        }
+        return result;
     };
 })(jQuery);

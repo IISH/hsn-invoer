@@ -124,7 +124,7 @@
     };
 
     $(document).on('keydown', '.day, .year', function (e) {
-        $.ifDefaultNavigation(e, function (self, isNext, isPrev) {
+        $.duringNavigation(e, function (self, isNext, isPrev) {
             var hsnDate = self.getParentOfFormElement().getHsnDate();
             if (self.hasClass('year') || (self.hasClass('day') && isNext && updateDateFieldsIfEmpty(hsnDate))) {
                 updateAdrFields(self, isNext, isPrev);

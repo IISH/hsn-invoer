@@ -73,12 +73,12 @@
     };
 
     var getBtnNext = function () {
-        var crudTableBtn = $('.crud-table-container:visible .btn-save-new, .crud-table-container:visible .btn-save-update');
+        var crudTableBtn = $('.crud-table-container:visible').find('.btn-save-new, .btn-save-update');
         if (crudTableBtn.length > 0) {
             return crudTableBtn;
         }
 
-        var modalBtn = $('.modal:visible .btn-save-new, .modal:visible .btn-save-update');
+        var modalBtn = $('.modal:visible').find('.btn-save-new, .btn-save-update');
         if (modalBtn.length > 0) {
             return modalBtn;
         }
@@ -302,9 +302,9 @@
 
     /* Navigation */
 
-    $.ifTableNavigation = function (e, body) {
+    $.duringNavigation = function (e, onDefaultNavigation, onTableNavigation) {
         var self = $(e.target);
-        var formElements = $.getFormElementsEnabled();
+        var formElements = $.getAllFormElements();
 
         // Disable the enter key, unless the focused element is a button
         if ((e.which === 13) && ($.inArray(self[0], formElements.filter('input')) > -1)) {
@@ -315,37 +315,22 @@
         }
 
         // Navigation is different inside a table: use arrow keys to navigate through the cells
-        if (self.closest('table').length > 0) {
+        if ((onTableNavigation !== undefined) && (self.closest('table').length > 0)) {
             var isUp = (e.which === 38); // Arrow up
             var isDown = (e.which === 40); // Arrow down
             var isLeft = ((e.which === 9) && (e.shiftKey)); // Tab
             var isRight = ((e.which === 9) && (!e.shiftKey)); // Shift + Tab
 
             if ((isUp || isDown || isLeft || isRight) && ($.inArray(self[0], formElements) > -1)) {
-                body(self, isUp, isDown, isLeft, isRight);
+                onTableNavigation(self, isUp, isDown, isLeft, isRight);
             }
         }
-    };
-
-    $.ifDefaultNavigation = function (e, body) {
-        var self = $(e.target);
-        var formElements = $.getFormElementsEnabled();
-
-        // Disable the enter key, unless the focused element is a button
-        if ((e.which === 13) && ($.inArray(self[0], formElements.filter('input')) > -1)) {
-            if (typeof e.preventDefault === 'function') {
-                e.preventDefault();
-            }
-            return;
-        }
-
-        // Navigation is different inside a table
-        if (self.closest('table').length === 0) {
+        else if (onDefaultNavigation !== undefined) {
             var isNext = (((e.which === 9) && (!e.shiftKey)) || (e.which === 40)); // Tab or arrow down
             var isPrev = (((e.which === 9) && (e.shiftKey)) || (e.which === 38)); // Shift + Tab or arrow up
 
             if ((isNext || isPrev) && ($.inArray(self[0], formElements) > -1)) {
-                body(self, isNext, isPrev);
+                onDefaultNavigation(self, isNext, isPrev);
             }
         }
     };
@@ -373,7 +358,7 @@
     };
 
     $.determineNextFocusElem = function (e, performBlur) {
-        $.ifTableNavigation(e, function (self, isUp, isDown, isLeft, isRight) {
+        var onNavigation = function (self, determineFocusElem) {
             if (typeof e.preventDefault === 'function') {
                 e.preventDefault();
             }
@@ -388,96 +373,76 @@
                     return;
                 }
 
-                var focusElem;
-                if (isUp || isDown) {
-                    var column = self.closest('td');
-                    var row = self.closest('tr');
+                var focusElem = determineFocusElem();
+                focusElem.focus();
+                focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
+            }, 0);
+        };
 
-                    var columns = row.find('td');
-                    var rows = row.closest('tbody').find('tr');
-
-                    var columnIndex = columns.index(column);
-                    var rowIndex = rows.index(row);
-
-                    // The booleans prev and next indicate whether we should leave the table
-                    // and thus focus a previous or next element outside the table
-                    var prev, next = false;
-                    var nextRowIndex = 0;
-                    if (isUp) {
-                        nextRowIndex = rowIndex - 1;
-                        if (nextRowIndex < 0) {
-                            prev = true;
-                        }
+        $.duringNavigation(e,
+            function (self, isNext, isPrev) {
+                onNavigation(self, function () {
+                    if (isPrev) {
+                        return self.getPrevFormElement();
                     }
-                    else {
-                        nextRowIndex = rowIndex + 1;
-                        if (nextRowIndex >= rows.length) {
-                            next = true;
-                        }
-                    }
+                    return self.getNextFormElement();
+                });
+            },
+            function (self, isUp, isDown, isLeft, isRight) {
+                onNavigation(self, function () {
+                    if (isUp || isDown) {
+                        var column = self.closest('td');
+                        var row = self.closest('tr');
 
-                    if (!prev && !next) {
-                        // Sometimes there is no input element in the new column
-                        // Then keep moving to the left till a column with an input element to focus is found
-                        var focusElemFound = false;
-                        while (!focusElemFound) {
-                            var input = rows.eq(nextRowIndex).find('td').eq(columnIndex).find(':input:visible:enabled:first');
-                            if (input.length === 1) {
-                                focusElem = input;
-                                focusElemFound = true;
+                        var columns = row.find('td');
+                        var rows = row.closest('tbody').find('tr');
+
+                        var columnIndex = columns.index(column);
+                        var rowIndex = rows.index(row);
+
+                        // The booleans prev and next indicate whether we should leave the table
+                        // and thus focus a previous or next element outside the table
+                        var prev, next = false;
+                        var nextRowIndex = 0;
+                        if (isUp) {
+                            nextRowIndex = rowIndex - 1;
+                            if (nextRowIndex < 0) {
+                                prev = true;
                             }
-                            columnIndex--;
-                        }
-                    }
-                    else {
-                        var table = self.closest('table');
-                        if (prev) {
-                            focusElem = table.find(':input:first').getPrevFormElement();
                         }
                         else {
-                            focusElem = table.find(':input:last').getNextFormElement();
+                            nextRowIndex = rowIndex + 1;
+                            if (nextRowIndex >= rows.length) {
+                                next = true;
+                            }
+                        }
+
+                        if (!prev && !next) {
+                            // Sometimes there is no input element in the new column
+                            // Then keep moving to the left till a column with an input element to focus is found
+                            while (columnIndex >= 0) {
+                                var input = rows.eq(nextRowIndex).find('td').eq(columnIndex).find(':input:visible:enabled:first');
+                                if (input.length === 1) {
+                                    return input;
+                                }
+                                columnIndex--;
+                            }
+                        }
+                        else {
+                            var table = self.closest('table');
+                            if (prev) {
+                                return table.find(':input:first').getPrevFormElement();
+                            }
+                            return table.find(':input:last').getNextFormElement();
                         }
                     }
-                }
-                else if (isLeft) {
-                    focusElem = self.getPrevFormElement();
-                }
-                else {
-                    focusElem = self.getNextFormElement();
-                }
-
-                focusElem.focus();
-                focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
-            }, 0);
-        });
-
-        $.ifDefaultNavigation(e, function (self, isNext, isPrev) {
-            if (typeof e.preventDefault === 'function') {
-                e.preventDefault();
+                    else if (isLeft) {
+                        return self.getPrevFormElement();
+                    }
+                    return self.getNextFormElement();
+                });
             }
-            if (performBlur || (performBlur === undefined)) {
-                self.blur(); // Now perform the blur and all event handlers attached to this event
-            }
-
-            // setTimeout can also be used to make IE wait until the blur event has completed
-            setTimeout(function () {
-                // If the blur caused a focus on a new element, then ignore default navigation
-                if ($(':focus').filter(':input').length > 0) {
-                    return;
-                }
-
-                var focusElem;
-                if (isPrev) {
-                    focusElem = self.getPrevFormElement();
-                }
-                else {
-                    focusElem = self.getNextFormElement();
-                }
-
-                focusElem.focus();
-                focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
-            }, 0);
-        });
+        );
     };
 
     var autoFocusNext = false;
@@ -513,6 +478,12 @@
     });
 
     $(document).ready(function () {
-        $.getFormElements().first().focus();
+        $.getAllFormElements().each(function () {
+            var self = $(this);
+            if (self.is(':enabled:visible')) {
+                self.focus();
+                return false;
+            }
+        });
     });
 })(jQuery);

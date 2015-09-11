@@ -240,9 +240,7 @@
                     }
                 }
                 else {
-                    this.mainElement
-                        .val(this.value)
-                        .trigger('change');
+                    this.mainElement.val(this.value);
                 }
             },
 
@@ -256,9 +254,7 @@
         // Therefor refer to this object using the variable 'conditionalCase'.
         conditionalCase.valueElementUpdate = function () {
             if (conditionalCase.isActive) {
-                conditionalCase.mainElement
-                    .val(conditionalCase.valueElement.val())
-                    .trigger('change');
+                conditionalCase.mainElement.val(conditionalCase.valueElement.val());
             }
         };
 
@@ -300,7 +296,7 @@
         };
 
         onEvent();
-        $(document).on('keyup', onEvent);
+        $(target).change(onEvent);
     };
 
     var hasNoErrors = function (elem, target, onTrue, onFalse) {
@@ -349,9 +345,9 @@
     };
 
     var setDefaultValues = function (inputElems) {
-        inputElems.each(function () {
+        inputElems.filter('.integer-field,.is-id').each(function () {
             var self = $(this);
-            if ((self.hasClass('integer-field') || self.hasClass('is-id')) && (self.getIntegerValue() === 0)) {
+            if (self.getIntegerValue() === 0) {
                 self.val('');
             }
         });

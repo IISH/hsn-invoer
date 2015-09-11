@@ -47,7 +47,7 @@
     };
 
     $(document).on('keydown', '.beroep', function (e) {
-        $.ifDefaultNavigation(e, function (self, isNext, isPrev) {
+        $.duringNavigation(e, function (self, isNext, isPrev) {
             setPositie(self);
             updateBrpFields(self, isNext, isPrev);
         });
