@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var originalIdnrCheck = function () {
         var elem = $('#pkknd\\.idnrp');
         var value = elem.getIntegerValue();

@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     /* Utility methods */
 
     var isAllLines = function () {
@@ -251,8 +253,8 @@
                 if (relatie.length > 0) {
                     if ((container.hasClass('only-head')) || (container.find('.only-head').length > 0)) {
                         $.setError(
-                                (relVal != -3) && (relVal != 1),
-                                'rel-only-head-' + relatie.attr('id'),
+                            (relVal != -3) && (relVal != 1),
+                            'rel-only-head-' + relatie.attr('id'),
                             'Relatiecode moet 1 of -3 zijn'
                         );
                     }
@@ -431,9 +433,9 @@
                 }
 
                 $.setError(
-                        !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
+                    !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
                     'burg-stand',
-                        'Een relatie met regelnummer ' + relatie + ' is onmogelijk.'
+                    'Een relatie met regelnummer ' + relatie + ' is onmogelijk.'
                 );
                 $(document).trigger('changeOfState');
             };

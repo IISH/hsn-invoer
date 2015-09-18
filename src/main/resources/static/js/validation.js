@@ -3,6 +3,8 @@
  * And disables both the byz button and the next button in case of errors.
  */
 (function ($) {
+    'use strict';
+
     $.setError = function (isError, name, errorMessage, elemParent) {
         if (name.indexOf('.') >= 0) {
             name = name.substring(0, name.indexOf('.'));
@@ -40,7 +42,7 @@
         // In case of dates, the day, month and year have to be filled out completely
         var allFieldsEntered = true;
         var inputElems = elemParent.find(':input:visible');
-        if (elemParent.find('.day, .month, .year').length > 0) {
+        if (elemParent.find('.day, .month, .year').filter(':visible').length > 0) {
             inputElems = inputElems.filter('.day, .month, .year');
         }
 
@@ -169,17 +171,6 @@
     };
 
     var checkByz = function () {
-        // TODO: Message class 'byz'
-
-        // TODO: Message function:
-        /*function (messages, message) {
-         var byzTextElement = $('.byz-text');
-         if (byzTextElement.length > 0) {
-         message.text(byzTextElement.text());
-         }
-         return message;
-         }*/
-
         addError(!checkByzElements($.getDataElem('byz').filter(':visible')), false, 'byz-required');
     };
 

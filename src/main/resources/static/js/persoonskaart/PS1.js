@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var showDeathCause = function () {
         var toShow = $('.checkYear');
         var year = $('#pkknd\\.ojrperp').getIntegerValue();

@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var initializePlaatsPicklists = function (elem) {
         initializeAjaxPickLists(elem.find('.plaats'), 'gemnr', 'gemnaam',
             '/ajax/lookup/plaatsen', '/ajax/picklist/set/plaats', false);
@@ -84,13 +86,15 @@
                         recordsByLabel = {};
 
                         $.each(records, function (i, record) {
-                            var value = record[recordField];
-                            if (isId) {
-                                value = record[idField] + ' ' + value;
-                            }
+                            if (record !== null) {
+                                var value = record[recordField];
+                                if (isId) {
+                                    value = record[idField] + ' ' + value;
+                                }
 
-                            values.push(value);
-                            recordsByLabel[value] = record;
+                                values.push(value);
+                                recordsByLabel[value] = record;
+                            }
                         });
 
                         return process(values);
@@ -138,12 +142,7 @@
                 });
 
                 field.blur(function () {
-                    var selectedId = field.attr('data-selected').trim();
-                    var error = (selectedId === '0');
-                    field.hasErrorWhen(error);
-                    $(document).trigger('changeOfState');
-
-                    if (error) {
+                    if (field.attr('data-selected').trim() === '0') {
                         field.val('');
                         field.nextAll('p.picklist-label').first().html('&nbsp;');
                     }

@@ -2,6 +2,8 @@
  * Specifies various common code to validate dates and times.
  */
 (function ($) {
+    'use strict';
+
     $.createDateSelector = function (parentSelector) {
         var selectors = [];
         $.each({

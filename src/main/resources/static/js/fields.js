@@ -3,6 +3,8 @@
  * Deals with actions to be performed when certain values are entered in input fields.
  */
 (function ($) {
+    'use strict';
+
     var regexOnlyNumbers = /^[0-9]+$/;
 
     /**

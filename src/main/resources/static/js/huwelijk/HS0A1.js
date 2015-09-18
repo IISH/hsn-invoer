@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var checkNumberOfGetuigen = function () {
         var self = $('#huwknd\\.ngtg');
         var nrGetuigen = self.getIntegerValue();

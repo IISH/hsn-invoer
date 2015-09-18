@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var self;
 
     function FindOp(elem) {
@@ -160,11 +162,11 @@
                 }
                 else {
                     self.onFailure('Deze akte van deze persoon is reeds ingevoerd, ' +
-                    'het gaat hier om bovenstaand identificatienummer en de volgende akte: <br/>' +
-                    '<div class="text-left center-block" style="width:50%;">' +
-                    'gemeentenaam: ' + huwttl.hplts + '<br/>' +
-                    'huwelijkdsdatum: ' + huwttl.hdag + '-' + huwttl.hmaand + '-' + huwttl.hjaar + '<br/>' +
-                    'aktenummer: ' + huwttl.haktenr + '</div>', true, true, true);
+                        'het gaat hier om bovenstaand identificatienummer en de volgende akte: <br/>' +
+                        '<div class="text-left center-block" style="width:50%;">' +
+                        'gemeentenaam: ' + huwttl.hplts + '<br/>' +
+                        'huwelijkdsdatum: ' + huwttl.hdag + '-' + huwttl.hmaand + '-' + huwttl.hjaar + '<br/>' +
+                        'aktenummer: ' + huwttl.haktenr + '</div>', true, true, true);
                 }
             }).fail(function () {
                 if ($.isCorrection()) {

@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var checkLength = function (elem) {
         elem.hasErrorWhen(elem.val().length !== 3);
         $(document).trigger('changeOfState');

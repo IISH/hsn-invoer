@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var checkAge = function () {
         var self = $('#curHuwgtg\\.lftjgt');
         var age = self.getIntegerValue();

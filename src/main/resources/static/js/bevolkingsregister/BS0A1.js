@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     $(document).on('blur', '.new-key', function (e) {
         var newKeys = $('.new-key');
         var keys = [];

@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     /* Bevolkingsregister methods to be overloaded for specific cases */
 
     /**

@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var checkNotAlive = function () {
         var isAlive = $(forAllFour('#huwknd\\.lev'));
 
@@ -17,7 +19,7 @@
         var ageElem = $(forAllFour('#huwknd\\.lftj'));
         var age = ageElem.getIntegerValue();
 
-        ageElem.hasErrorWhen(age < -3 || age > 110 || (age > -1 && age < 15  && age !== 0));
+        ageElem.hasErrorWhen(age < -3 || age > 110 || (age > -1 && age < 15 && age !== 0));
         $(document).trigger('changeOfState');
     };
 

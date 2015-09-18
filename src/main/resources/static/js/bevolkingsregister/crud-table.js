@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var getVisibleCrudTableContainer = function () {
         return $('.crud-table-container:visible:first');
     };

@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var mayAddByz = function () {
         var byzBtn = $('.btn-byz');
 

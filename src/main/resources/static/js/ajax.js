@@ -3,8 +3,10 @@
  * The specified selector will be used to update the element with the resulting response from the AJAX request.
  */
 (function ($) {
-   $(document).on('blur', $.getDataElemSelector('ajax-update'), function (e) {
-       $.resetInvisibleFormElements();
+    'use strict';
+
+    $(document).on('blur', $.getDataElemSelector('ajax-update'), function (e) {
+        $.resetInvisibleFormElements();
 
         var elem = $(e.target);
 

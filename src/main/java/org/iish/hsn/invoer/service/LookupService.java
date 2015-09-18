@@ -260,7 +260,7 @@ public class LookupService {
             return Arrays.asList(plaatsRepository.findByGemnr(gemnr));
         }
         return plaatsRepository
-                .findByGemnaamLike(gemnaam.trim() + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
+                .findByGemnaamLike(gemnaam + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
     }
 
     /**
@@ -271,7 +271,7 @@ public class LookupService {
      */
     public List<Kg> findMatchingKg(String kerkgeno) {
         return kgRepository
-                .findByKerkgenoLike(kerkgeno.trim() + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
+                .findByKerkgenoLike(kerkgeno + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
     }
 
     /**
@@ -286,7 +286,7 @@ public class LookupService {
             return Arrays.asList(relatieRepository.findByRelkode(relkode));
         }
         return relatieRepository
-                .findByRelatieLike(relatie.trim() + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
+                .findByRelatieLike(relatie + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
     }
 
     /**
@@ -297,7 +297,7 @@ public class LookupService {
      */
     public List<Beroep> findMatchingBeroepen(String berpnaam) {
         return beroepRepository
-                .findByBerpnaamLike(berpnaam.trim() + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
+                .findByBerpnaamLike(berpnaam + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
     }
 
     /**
@@ -308,6 +308,6 @@ public class LookupService {
      */
     public List<Adrestp> findMatchingAdrestypes(String type) {
         return adrestpRepository
-                .findByCodeOrTypeLike(type.trim() + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
+                .findByCodeOrTypeLike(type + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
     }
 }

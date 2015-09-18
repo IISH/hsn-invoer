@@ -2,6 +2,8 @@
  * Add utility methods to the jQuery object.
  */
 (function ($) {
+    'use strict';
+
     /**
      * Initialization:
      * Runs registered initialization functions on every page load and every AJAX update.
@@ -127,7 +129,7 @@
         while (prevElement === null) {
             curIndex = (curIndex === 0) ? formElements.length - 1 : curIndex - 1;
             var elem = formElements.eq(curIndex);
-            if ((curIndex === startIndex) || elem.is(':visible:enabled')) {
+            if ((curIndex === startIndex) || elem.is(':visible:enabled:not([readonly])')) {
                 prevElement = elem;
             }
         }
@@ -142,7 +144,7 @@
         while (prevElement === null) {
             curIndex = (curIndex === (formElements.length - 1)) ? 0 : curIndex + 1;
             var elem = formElements.eq(curIndex);
-            if ((curIndex === startIndex) || elem.is(':visible:enabled')) {
+            if ((curIndex === startIndex) || elem.is(':visible:enabled:not([readonly])')) {
                 prevElement = elem;
             }
         }

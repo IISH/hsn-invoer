@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var brpAjax = false;
 
     var setPositie = function (elem) {

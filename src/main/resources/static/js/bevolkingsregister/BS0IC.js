@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var registerType;
     var allRegistrationsOfOp = [];
 
@@ -278,7 +280,7 @@
 
         if (!error && opHsnDate.year.getValue() > 0 && opHsnDate.month.getValue() > 0 && opHsnDate.day.getValue() > 0) {
             $.setError(
-                    opDate.getTime() < hfdDate.getTime(),
+                opDate.getTime() < hfdDate.getTime(),
                 'op-hfd-datum',
                 'OPdatum eerder dan Hoofddatum'
             );
@@ -301,7 +303,7 @@
 
         if (!error) {
             $.setError(
-                    opDate.getTime() < hfdDate.getTime(),
+                opDate.getTime() < hfdDate.getTime(),
                 'op-hfd-datum',
                 'OPdatum eerder dan Hoofddatum'
             );
@@ -314,7 +316,7 @@
         var volgnummer = self.getIntegerValue();
         if (!isNaN(volgnummer)) {
             $.setError(
-                    (registerType === 'A' || registerType === 'I') && (volgnummer > 1),
+                (registerType === 'A' || registerType === 'I') && (volgnummer > 1),
                 'volgnummer-op',
                 'Slechts een persoon per familie eenheid toegestaan!'
             );

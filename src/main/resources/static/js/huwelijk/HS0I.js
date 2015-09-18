@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     $.initCheckDate(
         '.checkDateTimeHuw', null, function (hsnDate) {
             var error = true;

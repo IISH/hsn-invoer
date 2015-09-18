@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var updateAnaamKind = function () {
         var anaamKind = $('#gebknd\\.anmgeb');
         if ((anaamKind.val() === undefined) || (anaamKind.val() === '')) {

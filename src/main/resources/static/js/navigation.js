@@ -6,6 +6,8 @@
  * In addition, it also sets the focus on the fist element of the first found form on the page.
  */
 (function ($) {
+    'use strict';
+
     $.duringNavigation = function (e, onDefaultNavigation, onTableNavigation) {
         var self = $(e.target);
         var formElements = $.getAllFormElements();

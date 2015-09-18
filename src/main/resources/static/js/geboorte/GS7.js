@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     $.initCheckDate(
         '.checkDate',
         function (hsnDate, elem) {

@@ -1,4 +1,6 @@
 (function ($) {
+    'use strict';
+
     var openModal = function (modal, elem) {
         $.ajax({
             url: '/bevolkingsregister/overzicht/persons',
