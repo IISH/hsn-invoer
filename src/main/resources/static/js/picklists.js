@@ -128,7 +128,7 @@
                 }
             });
 
-            field.on('change', function () {
+            field.on('typeahead-change', function () {
                 field.autoNextFocus(true);
             });
 

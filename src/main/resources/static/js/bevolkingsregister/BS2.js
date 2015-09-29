@@ -214,6 +214,9 @@
         onSaveNew($(e.target), data);
     }).on('crud-table-save-update', function (e, elems, data) {
         onSaveUpdate($(e.target), data);
+    }).ready(function () {
+        // Extend the width to create more space in case one enters all lines at once
+        $('#main').addClass('extend-width');
     });
 
     $('input.person, input.seqNr').blur(function (e) {

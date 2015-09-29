@@ -94,6 +94,7 @@
         elems.onNoEdit.show();
         elems.onEdit.hide();
 
+        elems.parent.removeClass('continued');
         elems.parent.find('.btn-update, .btn-delete').removeAttr('disabled');
 
         var row = elems.parent.find('tr.rowToUpdate');
@@ -125,6 +126,9 @@
 
         if (isNew) {
             self.trigger('crud-table-save-new', [elems, data]);
+            if (elems.parent.hasClass('continued')) {
+                openOnEdit(elems.parent.find('.btn-new'), true);
+            }
         }
         else {
             var row = elems.parent.find('tr.rowToUpdate');
@@ -142,12 +146,14 @@
         elems.table.find('.ajax-updated').replaceWith(resultElem);
         $(document).trigger('ajax-update', [resultElem]);
 
-        var row = elems.table.find('.free tr').eq(index);
-        if (row.length > 0) {
-            row.find('.btn-update:first').focus();
-        }
-        else {
-            elems.parent.find('.btn-new:first').focus();
+        if (!elems.onEdit.is(':visible')) {
+            var row = elems.table.find('.free tr').eq(index);
+            if (row.length > 0) {
+                row.find('.btn-update:first').focus();
+            }
+            else {
+                elems.parent.find('.btn-new:first').focus();
+            }
         }
     };
 
@@ -204,19 +210,15 @@
         onSave($(e.target), false);
     }).on('crud-table-ajax-success', function (e, result) {
         onAjaxSuccess($(e.target), result);
+    }).ready(function () {
+        var elem = getVisibleCrudTableContainer();
+        if (elem.hasClass('continued')) {
+            openOnEdit(elem.find('.btn-new'), true);
+        }
     });
 
     $.registerInit(function (elem) {
-        var tableScroll = function (e) {
-            var self = $(e.target);
-            var target = self.closest('.crud-table-container').find('.on-edit .free.scrollable');
-            target.scrollTop(self.scrollTop());
-            target.scrollLeft(self.scrollLeft());
-        };
-
-        var editScroll = function (e) {
-            var self = $(e.target);
-            var target = self.closest('.crud-table-container').find('.crud-table .free.scrollable');
+        var syncScroll = function (self, target) {
             target.scrollTop(self.scrollTop());
             target.scrollLeft(self.scrollLeft());
         };
@@ -225,10 +227,19 @@
             var self = $(this);
             if (self.closest('.crud-table-container').length === 1) {
                 if (self.closest('.crud-table').length === 1) {
-                    self.scroll(tableScroll);
+                    self.scroll(function () {
+                        syncScroll(self, self.closest('.crud-table-container').find('.on-edit .free.scrollable'));
+                    });
                 }
-                if (self.closest('.on-edit').length === 1) {
-                    self.scroll(editScroll);
+                var onEdit = self.closest('.on-edit');
+                if (onEdit.length === 1) {
+                    var other = self.closest('.crud-table-container').find('.crud-table .free.scrollable');
+                    self.scroll(function () {
+                        syncScroll(self, other);
+                    });
+                    onEdit.on('show', function () {
+                        syncScroll(self, other);
+                    });
                 }
             }
         });

@@ -265,7 +265,7 @@
   <input type="hidden" th:id="'b3Brp'+__${rp}__+'0.contentOfDynamicData'"
          th:name="'b3Brp['+__${rp}__+'][0].contentOfDynamicData'"/>
 
-  <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="h;o;n"
+  <input type="text" class="form-control form-control-digit required positie" maxlength="1" data-valid-chars="h;o;n"
          data:replace-in-field="'#b3Brp'+__${rp}__+'0\.contentOfDynamicData'"
          data-for-values="h:1;o:2;n:3;:0"
          th:value="${@bevolkingsregisterHelper.getPositieFromCode(akte.b3Brp[__${rp}__][0])}"/>

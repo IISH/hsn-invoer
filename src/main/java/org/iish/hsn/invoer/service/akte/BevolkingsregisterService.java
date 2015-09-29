@@ -879,6 +879,7 @@ public class BevolkingsregisterService {
 
         DataBinder binder = new DataBinder(registrationAddress);
         binder.bind(new MutablePropertyValues(data));
+        registrationAddress.setLastChangedDate();
 
         registerRegistrationAddresses(bevolkingsregisterFlow);
     }
@@ -928,9 +929,11 @@ public class BevolkingsregisterService {
         List<Person> b2 = bevolkingsregisterFlow.getB2();
         if (totalNr >= b2.size()) {
             bevolkingsregisterFlow.setNoRegels(totalNr);
+            bevolkingsregisterFlow.setCurB2Index(bevolkingsregisterFlow.getB2().size() - 1);
             for (int i = b2.size(); i < totalNr; i++) {
                 setUpPerson(bevolkingsregisterFlow);
             }
+            bevolkingsregisterFlow.setCurB2Index(-1);
         }
         else if (totalNr < bevolkingsregisterFlow.getVolgnrOP()) {
             throw new AkteException("The RP cannot be deleted.");

@@ -2,11 +2,11 @@
 <html layout:decorator="formTableLayout">
 <head></head>
 <body>
-<fieldset layout:fragment="title" th:include="bevolkingsregister/BSTITEL :: registrationBSTITEL"></fieldset>
+<fieldset layout:fragment="title" th:include="bevolkingsregister/BSTITEL :: registration-addressesBSTITEL"></fieldset>
 
 <fieldset>
 <th:block layout:fragment="table">
-<div class="crud-table-container">
+<div class="crud-table-container" th:classappend="${!akte.isCorrection()} ? 'continued'">
 <div class="crud-table">
   <div class="fixed-left-column ajax-updated" id="registrationAddresses"
        th:fragment="registrationAddresses" th:object="${akte}" data:number-of-persons="${akte.b2.size()}">

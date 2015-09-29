@@ -66,7 +66,7 @@
                 $('.typeIG').hide();
                 $('.typeNotIG').hide();
 
-                $('.fail.bron').text('De bron met deze identificatie is niet aanwezig!').show();
+                $('.fail.bron').text('De bron met dit nummer is niet aanwezig!').show();
                 $('.btn-next').addClass('bron-error');
                 $(document).trigger('changeOfState');
             });
@@ -315,15 +315,26 @@
     var checkVolgnummer = function (self) {
         var volgnummer = self.getIntegerValue();
         if (!isNaN(volgnummer)) {
+            var volgNrOpElem = $('#volgnrOP');
+            var aantalRegelsElem = $('#noRegels');
+
+            if (self.attr('id') === 'volgnrOP') {
+                aantalRegelsElem.val(volgnummer);
+            }
+
             $.setError(
                 (registerType === 'A' || registerType === 'I') && (volgnummer > 1),
                 'volgnummer-op',
                 'Slechts een persoon per familie eenheid toegestaan!'
             );
 
-            if (self.attr('id') === 'volgnrOP') {
-                $('#noRegels').val(volgnummer);
-            }
+            var volgNrOp = volgNrOpElem.getIntegerValue();
+            var aantalRegels = aantalRegelsElem.getIntegerValue();
+            $.setError(
+                !isNaN(volgNrOp) && !isNaN(aantalRegels) && (volgNrOp > aantalRegels),
+                'volgnummer-op-too-big',
+                'Volgnummer OP is hoger dan het aantal regels!'
+            );
         }
     };
 

@@ -96,7 +96,8 @@
 
             var onBlur = function () {
                 if (day.getIntegerValue() === -1 && month.getIntegerValue() === -1 && year.getIntegerValue() === -1) {
-                    toggleField.val('n').focus();
+                    toggleField.val('n');
+                    year.autoNextFocus(false);
                     onToggle();
                 }
             };
@@ -411,38 +412,36 @@
         });
     };
 
-    var registerBurgStandCheck = function (elem) {
-        if ($('#currentPerson').data('is-burg-stand-rel-fix')) {
-            elem.find(':input').not('.burg-stand-relatie, .btn-next, .modal button').attr('disabled', 'disabled');
+    var checkBurgStand = function (elem) {
+        var relatie = elem.getIntegerValue();
+        var curPerson = $('#currentPerson');
+
+        var numberOfLines = 0;
+        if (isAllLines()) {
+            numberOfLines = $('#registrationAllLines').find('tr[data-rp]:last').getIntegerDataValue('rp');
+        }
+        else if (curPerson.data('is-burg-stand-rel-fix') ||
+            ($.isCorrection() && (curPerson.getIntegerDataValue('correction-code') === 6))) {
+            numberOfLines = curPerson.getIntegerDataValue('nr-persons');
         }
 
-        elem.find('.burg-stand-relatie').each(function () {
-            var self = $(this);
+        $.setError(
+            !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
+            'burg-stand',
+            'Een relatie met regelnummer ' + relatie + ' is onmogelijk.'
+        );
+        $(document).trigger('changeOfState');
+    };
 
-            var onBlur = function () {
-                var relatie = self.getIntegerValue();
-                var curPerson = $('#currentPerson');
-
-                var numberOfLines = 0;
-                if (isAllLines()) {
-                    numberOfLines = $('#registrationAllLines').find('tr[data-rp]:last').getIntegerDataValue('rp');
-                }
-                else if (curPerson.data('is-burg-stand-rel-fix') ||
-                    ($.isCorrection() && (curPerson.getIntegerDataValue('correction-code') === 6))) {
-                    numberOfLines = curPerson.getIntegerDataValue('nr-persons');
-                }
-
-                $.setError(
-                    !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
-                    'burg-stand',
-                    'Een relatie met regelnummer ' + relatie + ' is onmogelijk.'
-                );
-                $(document).trigger('changeOfState');
-            };
-
-            onBlur();
-            self.blur(onBlur);
-        });
+    var setPositie = function (elem) {
+        var value = elem.val().trim();
+        if ((value === 'N') || (value === 'Z')) {
+            elem
+                .closest('tr,form')
+                .find('.positie')
+                .val('n')
+                .autoNextFocus(true);
+        }
     };
 
     var setNationality = function (elem) {
@@ -455,6 +454,12 @@
         var value = elem.val().trim().toLowerCase();
         var validValues = ['w', 'v', 'n', 'vw', 'wv'];
         elem.hasErrorWhen(validValues.indexOf(value) < 0);
+    };
+
+    var updateBurgRelation = function (self, elems) {
+        var relation = elems.parent.find('.valueOfRelatedPerson:last').getIntegerText();
+        relation = isNaN(relation) ? '' : relation;
+        elems.onEdit.find('input[name=valueOfRelatedPerson]').val(relation);
     };
 
     var updateNumberOfLines = function () {
@@ -643,19 +648,27 @@
         }
     }).on('focus', '#registrationAllLines input', function () {
         copyFromPrevLine();
+    }).on('typeahead-change', '.beroep', function (e) {
+        setPositie($(e.target));
+    }).on('blur', '.burg-stand-relatie', function (e) {
+        checkBurgStand($(e.target));
     }).on('blur', '.nationality', function (e) {
         setNationality($(e.target));
     }).on('blur', '.legalPlaceOfLivingInCodes', function (e) {
         checkLegalPlaceOfLivingInCodes($(e.target));
+    }).on('crud-table-new', '[data-type=BURGELIJKE_STAND]', function (e, elems) {
+        updateBurgRelation($(e.target), elems);
     }).ready(function () {
         // Extend the width to create more space in case one enters all lines at once
         if (isAllLines()) {
             $('#main').addClass('extend-width');
         }
 
-        // If the user has to fix the burg. stand relation, then immediately open the person dynamic modal
+        // If the user has to fix the burg. stand relation, then disable everything else
         if ($('#currentPerson').data('is-burg-stand-rel-fix')) {
-            // Open the person dynamic modal by triggering a F4 event
+            elem.find(':input').not('.burg-stand-relatie, .btn-next, .modal button').attr('disabled', 'disabled');
+
+            // Also immediately open the person dynamic modal, by triggering a F4 event
             var e = $.Event('keydown');
             e.which = 115; // F4
             e.keyCode = 115; // F4
@@ -668,6 +681,5 @@
         registerDateOfRegistration(elem);
         registerRelatie(elem);
         registerVolgendeInschrijvingPopup(elem);
-        registerBurgStandCheck(elem);
     });
 })(jQuery);

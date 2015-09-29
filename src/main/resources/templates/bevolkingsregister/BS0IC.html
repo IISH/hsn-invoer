@@ -32,15 +32,13 @@
 <div class="row">
   <label class="col-xs-3 text-control-label">Beginjaar register:</label>
 
-  <div class="col-xs-4">
+  <div class="col-xs-3">
     <span class="data-startYearRegister"></span>
   </div>
-</div>
 
-<div class="row">
   <label class="col-xs-3 text-control-label">Eindjaar register:</label>
 
-  <div class="col-xs-4">
+  <div class="col-xs-3">
     <span class="data-endYearRegister"></span>
   </div>
 </div>
@@ -48,15 +46,13 @@
 <div class="row">
   <label class="col-xs-3 text-control-label">Gehucht / wijk:</label>
 
-  <div class="col-xs-4">
+  <div class="col-xs-3">
     <span class="data-b1gwbg"></span>
   </div>
-</div>
 
-<div class="row">
   <label class="col-xs-3 text-control-label">Inventarisnummer:</label>
 
-  <div class="col-xs-4">
+  <div class="col-xs-3">
     <span class="data-b1ivbg"></span>
   </div>
 </div>
@@ -64,35 +60,33 @@
 <div class="row extra-top-margin">
   <label class="col-xs-3 text-control-label">Achternaam:</label>
 
-  <div class="col-xs-4">
+  <div class="col-xs-2">
     <span class="data-lastName"></span>
   </div>
-</div>
 
-<div class="row">
-  <label class="col-xs-3 text-control-label">Voornamen:</label>
+  <label class="col-xs-2 text-control-label">Voornamen:</label>
 
-  <div class="col-xs-4">
+  <div class="col-xs-2">
     <span class="data-firstName1"></span>
     <span class="data-firstName2"></span>
     <span class="data-firstName3"></span>
   </div>
+
+  <div class="sub-row">
+    <label class="col-xs-2 text-control-label">Geslacht:</label>
+
+    <div class="col-xs-1">
+      <span class="data-sex"></span>
+    </div>
+  </div>
 </div>
 
 <div class="row">
   <div class="sub-row">
-    <label class="col-xs-3 text-control-label">Geslacht:</label>
-
-    <div class="col-xs-2">
-      <span class="data-sex"></span>
-    </div>
-  </div>
-
-  <div class="sub-row">
     <label class="col-xs-3 text-control-label">Geboortedatum:</label>
 
-    <div class="col-xs-3">
-      <span class="form-control-static">
+    <div class="col-xs-2">
+      <span>
         <span class="data-dayOfBirth"></span>
         /
         <span class="data-monthOfBirth"></span>
@@ -101,41 +95,37 @@
       </span>
     </div>
   </div>
-</div>
 
-<div class="row">
-  <label class="col-xs-3 text-control-label">Geboorteplaats:</label>
+  <label class="col-xs-2 text-control-label">Geboorteplaats:</label>
 
-  <div class="col-xs-4">
+  <div class="col-xs-5">
     <span class="data-nameMunicipality"></span>
   </div>
-</div>
-
-<div class="extra-top-margin">
-  <p class="fail text-danger text-center op" style="display: none;"></p>
-
-  <p class="fail text-danger text-center bron" style="display: none;"></p>
-
-  <p class="fail text-danger text-center registration" style="display: none;"></p>
-
-  <p class="fail text-danger text-center op-registration" style="display: none;"></p>
 </div>
 
 <div class="form-group extra-top-margin">
   <label class="col-xs-3 control-label">Idnr:</label>
 
-  <div class="col-xs-4">
+  <div class="col-xs-2">
     <input type="text" class="form-control form-control-small required"
            th:field="*{b4.registrationId.keyToRP}" hsn:field="b4.registrationId.keyToRP"/>
+  </div>
+
+  <div class="col-xs-7">
+    <p class="fail text-danger op" style="display: none;"></p>
   </div>
 </div>
 
 <div class="form-group">
   <label class="col-xs-3 control-label">Bron:</label>
 
-  <div class="col-xs-4">
+  <div class="col-xs-2">
     <input type="text" class="form-control form-control-small required"
            th:field="*{b4.registrationId.keyToSourceRegister}" hsn:field="b4.registrationId.keyToSourceRegister"/>
+  </div>
+
+  <div class="col-xs-7">
+    <p class="fail text-danger bron" style="display: none;"></p>
   </div>
 </div>
 
@@ -143,14 +133,22 @@
   <label class="col-xs-3 control-label">Hoofddatum:</label>
 
   <div
-      th:replace="fragments/fields :: datum ('b4.registrationId.dayEntryHead', 'b4.registrationId.monthEntryHead', 'b4.registrationId.yearEntryHead')"></div>
+      th:replace="fragments/fields :: datum-sm ('b4.registrationId.dayEntryHead', 'b4.registrationId.monthEntryHead', 'b4.registrationId.yearEntryHead')"></div>
+
+  <div class="col-xs-6">
+    <p class="fail text-danger registration" style="display: none;"></p>
+  </div>
 </div>
 
 <th:block th:if="${akte.isCorrection()} == false">
   <div class="form-group checkDateOP noNeg">
     <label class="col-xs-3 control-label">OP-datum:</label>
 
-    <div th:replace="fragments/fields :: datum ('b4.dayEntryRP', 'b4.monthEntryRP', 'b4.yearEntryRP')"></div>
+    <div th:replace="fragments/fields :: datum-sm ('b4.dayEntryRP', 'b4.monthEntryRP', 'b4.yearEntryRP')"></div>
+
+    <div class="col-xs-6">
+      <p class="fail text-danger op-registration" style="display: none;"></p>
+    </div>
   </div>
 
   <div class="form-group">

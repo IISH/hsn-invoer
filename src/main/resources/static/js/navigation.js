@@ -75,7 +75,7 @@
             // setTimeout can also be used to make IE wait until the blur event has completed
             setTimeout(function () {
                 // If the blur caused a focus on a new element, then ignore default navigation
-                if ($(':focus').filter(':input').length > 0) {
+                if ($(':focus').filter(':input').not(self).length > 0) {
                     return;
                 }
 
@@ -96,6 +96,9 @@
             },
             function (self, isUp, isDown, isLeft, isRight) {
                 onNavigation(self, function () {
+                    var focusElem = null;
+                    var table = self.closest('table');
+
                     if (isUp || isDown) {
                         var column = self.closest('td');
                         var row = self.closest('tr');
@@ -139,17 +142,26 @@
                             }
                         }
                         else {
-                            var table = self.closest('table');
                             if (prev) {
-                                return table.find(':input:first').getPrevFormElement();
+                                focusElem = table.find(':input:first').getPrevFormElement();
                             }
-                            return table.find(':input:last').getNextFormElement();
+                            else {
+                                focusElem = table.find(':input:last').getNextFormElement();
+                            }
                         }
                     }
                     else if (isLeft) {
-                        return self.getPrevFormElement();
+                        focusElem = self.getPrevFormElement();
                     }
-                    return self.getNextFormElement();
+                    else {
+                        focusElem = self.getNextFormElement();
+                    }
+
+                    if (focusElem.closest('table').length === 0) {
+                        table.closest('.scrollable').scrollLeft(0);
+                    }
+
+                    return focusElem;
                 });
             }
         );

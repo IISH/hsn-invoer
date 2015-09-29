@@ -85,7 +85,11 @@
 
     $(document).on('hidden.bs.modal', function (e) {
         var focusElementId = $(e.target).data('focus-element-id');
-        $(document.getElementById(focusElementId)).focus();
+        var element = $(document.getElementById(focusElementId));
+        if (!element.is(':enabled:visible')) {
+            element = element.getPrevFormElement();
+        }
+        element.focus();
     });
 
     /* Without selector */

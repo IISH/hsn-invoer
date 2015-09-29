@@ -17,6 +17,13 @@
   <th:block th:include="bevolkingsregister/BSTITEL :: registration-person (${person})"></th:block>
 </fieldset>
 
+<fieldset class="title" th:fragment="registration-addressesBSTITEL">
+  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER ADRESGEGEVENS INSCHRIJVING VAN:</legend>
+  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE ADRESGEGEVENS INSCHRIJVING VAN:</legend>
+
+  <th:block th:include="bevolkingsregister/BSTITEL :: registration (${akte.b4}, ${akte.refAinb})"></th:block>
+</fieldset>
+
 <div th:fragment="registration (reg, ainb)">
   <div class="row text-left">
     <div class="col-xs-2">

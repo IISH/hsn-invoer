@@ -4,6 +4,7 @@ import org.iish.hsn.invoer.domain.invoer.Invoer;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This class handles the address attributes of a registration
@@ -35,6 +36,8 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RecordID")
     private Integer recordID;
+
+    private Date lastChangedDate = new Date();
 
     public RegistrationAddress() {
     }
@@ -164,11 +167,16 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
         this.recordID = recordID;
     }
 
+    public void setLastChangedDate() {
+        this.lastChangedDate = new Date();
+    }
+
     @Override
     public int compareTo(RegistrationAddress registrationAddress) {
-        // If the person and the sequence number are equal, then attempt to sort on date
+        // If the person, sequence number and the last change date are equal, then attempt to sort on date
         if ((this.keyToRegistrationPersons == registrationAddress.keyToRegistrationPersons) &&
-                (this.sequenceNumberToAddresses == registrationAddress.sequenceNumberToAddresses)) {
+                (this.sequenceNumberToAddresses == registrationAddress.sequenceNumberToAddresses) &&
+                this.lastChangedDate.equals(registrationAddress.lastChangedDate)) {
             if (this.yearOfAddress < registrationAddress.yearOfAddress) {
                 return -1;
             }
@@ -191,6 +199,17 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
             }
 
             return 0;
+        }
+
+        // If the person and the sequence number are equal, then sort on last change date
+        if ((this.keyToRegistrationPersons == registrationAddress.keyToRegistrationPersons) &&
+                (this.sequenceNumberToAddresses == registrationAddress.sequenceNumberToAddresses)) {
+            if (this.lastChangedDate.before(registrationAddress.lastChangedDate)) {
+                return 1;
+            }
+            if (this.lastChangedDate.after(registrationAddress.lastChangedDate)) {
+                return -1;
+            }
         }
 
         // If the persons are the same, then sort on sequence number
