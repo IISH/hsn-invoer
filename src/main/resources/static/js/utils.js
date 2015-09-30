@@ -70,33 +70,77 @@
     });
 
     /**
-     * Modal utility methods
+     * Modal and popover utility methods
      */
 
     $.getOpenedModal = function () {
         return $('.modal:visible:first');
     };
 
+    $.getLeftPopover = function () {
+        return '<span class="nav-trigger popover-left hidden"></span>';
+    };
+
+    $.getRightPopover = function () {
+        return '<span class="nav-trigger popover-right hidden"></span>';
+    };
+
     $(document).on('shown.bs.modal', function (e) {
-        $(e.target)
-            .data('focus-element-id', $(':focus').attr('id'))
-            .find(':input:first').focus();
+        if (e.namespace === 'bs.modal') {
+            $(e.target)
+                .data('focus-element-id', $(':focus').attr('id'))
+                .find(':input:enabled:visible:first')
+                .focus();
+        }
+    });
+
+    $(document).on('shown.bs.popover', function (e) {
+        if (e.namespace === 'bs.popover') {
+            $('.popover:visible:first')
+                .trigger('show')
+                .find(':input:enabled:visible:first')
+                .focus();
+        }
     });
 
     $(document).on('hidden.bs.modal', function (e) {
-        var focusElementId = $(e.target).data('focus-element-id');
-        var element = $(document.getElementById(focusElementId));
-        if (!element.is(':enabled:visible')) {
-            element = element.getPrevFormElement();
+        if (e.namespace === 'bs.modal') {
+            var focusElementId = $(e.target).data('focus-element-id');
+            var element = $(document.getElementById(focusElementId));
+            if (!element.is(':enabled:visible')) {
+                element = element.getPrevFormElement();
+            }
+            element.focus();
         }
-        element.focus();
+    });
+
+    $(document).on('show.bs.popover', function (e) {
+        if (e.namespace === 'bs.popover') {
+            var modalBackdrop = $('body > .modal-backdrop.in');
+            if (modalBackdrop.length === 0) {
+                modalBackdrop = $('<div class="modal-backdrop in"></div>')
+                    .hide()
+                    .prependTo($(this).find('body'));
+            }
+            modalBackdrop.fadeIn();
+        }
+    });
+
+    $(document).on('hide.bs.popover', function (e) {
+        if (e.namespace === 'bs.popover') {
+            $(this)
+                .find('.modal-backdrop.in')
+                .fadeOut(400, function () {
+                    $(this).remove();
+                });
+        }
     });
 
     /* Without selector */
 
     $.getAllFormElements = function (elem) {
         if (elem !== undefined) {
-            return elem.closest('form, .modal').find('input,button,textarea');
+            return elem.closest('form, .modal, .popover').find('input,button,textarea,.nav-trigger');
         }
         return $('form:first').find('input,button,textarea');
     };
@@ -133,7 +177,7 @@
         while (prevElement === null) {
             curIndex = (curIndex === 0) ? formElements.length - 1 : curIndex - 1;
             var elem = formElements.eq(curIndex);
-            if ((curIndex === startIndex) || elem.is(':visible:enabled')) {
+            if ((curIndex === startIndex) || elem.hasClass('nav-trigger') || elem.is(':visible:enabled')) {
                 prevElement = elem;
             }
         }
@@ -148,7 +192,7 @@
         while (prevElement === null) {
             curIndex = (curIndex === (formElements.length - 1)) ? 0 : curIndex + 1;
             var elem = formElements.eq(curIndex);
-            if ((curIndex === startIndex) || elem.is(':visible:enabled')) {
+            if ((curIndex === startIndex) ||  elem.hasClass('nav-trigger') || elem.is(':visible:enabled')) {
                 prevElement = elem;
             }
         }

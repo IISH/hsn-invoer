@@ -121,7 +121,8 @@
 
             // Prevent multiple popovers on the relatie elem when either the 'F4' or the 'F9' popover was selected
             var f4, f9 = false;
-            var focusPopover = false;
+
+            var determinePrevNext = false;
 
             var relatieRegel = container.find('.relatie-regel');
             var dynamicData2 = container.find('.dynamicData2');
@@ -135,7 +136,7 @@
 
             // Init popover for relation element
             relatie.popover({
-                content: relatieRegelPopup.html(),
+                content: $.getLeftPopover() + relatieRegelPopup.html() + $.getRightPopover(),
                 html: true,
                 placement: 'bottom',
                 trigger: 'manual'
@@ -164,6 +165,8 @@
 
             // Hides the popover and performs the related checks and procedures
             var hidePopover = function (popover, checkError) {
+                determinePrevNext = false;
+
                 // Check for errors first, if necessary
                 if (!checkError || (popover.find('.has-an-error').length === 0)) {
                     var focusOnRelatieElem = false; // In some cases, the focus has to go back to the relatie elem
@@ -194,13 +197,21 @@
                         setRelatieRegel(popover.find('input').getIntegerValue());
                     }
 
-                    focusPopover = false;
-                    relatie.popover('hide');
+                    if (popover.length > 0) {
+                        relatie.popover('hide');
+                    }
 
                     if (focusOnRelatieElem) {
                         relatie.focus();
                     }
+                    else {
+                        determinePrevNext = true;
+                    }
+
+                    return true;
                 }
+
+                return false;
             };
 
             // Determine what has to happen after a relation has been chosen
@@ -217,7 +228,8 @@
                     relatieDateHoofdPopup.find('.month').attr('value', parent.find('.relatieDateHoofd.month').val());
                     relatieDateHoofdPopup.find('.year').attr('value', parent.find('.relatieDateHoofd.year').val());
 
-                    relatie.data('bs.popover').options.content = relatieDateHoofdPopup.html();
+                    relatie.data('bs.popover').options.content =
+                        $.getLeftPopover() + relatieDateHoofdPopup.html() + $.getRightPopover();
                     relatie.popover('show');
                 }
                 else {
@@ -236,7 +248,8 @@
                     relatieRegelInterprPopup.find('.regel').attr('value', parent.find('.relatieRegelInterpr.regel').val());
                     relatieRegelInterprPopup.find('.kode').attr('value', parent.find('.relatieRegelInterpr.kode').val());
 
-                    relatie.data('bs.popover').options.content = relatieRegelInterprPopup.html();
+                    relatie.data('bs.popover').options.content =
+                        $.getLeftPopover() + relatieRegelInterprPopup.html() + $.getRightPopover();
                     relatie.popover('show');
                 }
                 else {
@@ -262,29 +275,18 @@
                 }
             };
 
-            // If the user wants to close the popover, determine whether this is allowed
-            // and what has to happen first by calling 'hidePopover'
-            $(document).on('focus', 'input', function (e) {
-                var popover = parent.find('.popover');
-                if ((popover.length > 0) && $.contains(popover[0], e.target)) {
-                    focusPopover = true;
-                }
-                else if (focusPopover) {
-                    hidePopover(parent.find('.popover'), true);
-                }
-            });
-
             // Bind the 'F9' key to open the 'relatie regel' popover or to close the opened relatie popover
             parent.keydown(function (e) {
                 if (e.which === 120) { // F9
                     var popover = parent.find('.popover');
-                    if (popover.is(':visible')) {
+                    if (f9 && popover.is(':visible')) {
                         hidePopover(popover, true);
                         relatie.focus();
                     }
                     else {
                         relatieRegelPopup.find(':input').attr('value', relatieRegel.val());
-                        relatie.data('bs.popover').options.content = relatieRegelPopup.html();
+                        relatie.data('bs.popover').options.content =
+                            $.getLeftPopover() + relatieRegelPopup.html() + $.getRightPopover();
                         relatie.popover('show');
 
                         f9 = true;
@@ -336,11 +338,6 @@
                 $.setError(error, 'relatie-geslacht-' + relatie.attr('id'), message);
             });
 
-            // Always close the popover if the focus is back on the relation input box, even in case of errors
-            parent.on('focus', '.relatie', function () {
-                hidePopover(parent.find('.popover'), false);
-            });
-
             // Determine what has to happen after a relation has been chosen
             parent.on('blur', '.relatie', function () {
                 onRelationChosen(false);
@@ -349,6 +346,36 @@
             // If the focus is back on the container, it must indicate that the person dynamic window (f4) is closed
             container.focus(function () {
                 f4 = false;
+            });
+
+            container.on('nav-trigger', function (e, prevField) {
+                if (prevField.closest('.popover').length === 0) {
+                    return;
+                }
+
+                var left = false;
+                var target = $(e.target);
+                if (target.hasClass('popover-left') || target.hasClass('popover-right')) {
+                    left = (target.hasClass('popover-left'));
+
+                    var popover = parent.find('.popover');
+                    if (!hidePopover(popover, true)) {
+                        (left)
+                            ? popover.find(':input:enabled:visible:last').focus()
+                            : popover.find(':input:enabled:visible:first').focus();
+                    }
+                    else {
+                        (left) ? relatie.data('nav', 'left') : relatie.data('nav', 'right');
+                    }
+                }
+            });
+
+            container.on('hidden.bs.popover', function (e) {
+                if (determinePrevNext) {
+                    (relatie.data('nav') === 'left')
+                        ? relatie.autoPrevFocus(false)
+                        : relatie.autoNextFocus(false);
+                }
             });
 
             onRelationChosen(true);
@@ -366,7 +393,7 @@
             var yearPerson = gebDatePerson.find('.year');
 
             yearPerson.popover({
-                content: popup.html(),
+                content: $.getLeftPopover() + popup.html() + $.getRightPopover(),
                 html: true,
                 placement: 'bottom',
                 trigger: 'manual'
@@ -379,7 +406,29 @@
                 else {
                     volgendeInschrijving.val(2); // No OP
                 }
-                yearPerson.popover('hide');
+                yearPerson.data('popover-closed', true);
+            });
+
+            gebDatePerson.on('nav-trigger', function (e, prevField) {
+                if (prevField.closest('.popover').length === 0) {
+                    return;
+                }
+
+                var target = $(e.target);
+                if (target.hasClass('popover-left') || target.hasClass('popover-right')) {
+                    (target.hasClass('popover-left'))
+                        ? yearPerson.data('nav', 'left')
+                        : yearPerson.data('nav', 'right');
+                    yearPerson.popover('hide');
+                }
+            });
+
+            gebDatePerson.on('hidden.bs.popover', function (e) {
+                if (e.namespace === 'bs.popover') {
+                    (yearPerson.data('nav') === 'left')
+                        ? yearPerson.autoPrevFocus(false)
+                        : yearPerson.autoNextFocus(false);
+                }
             });
 
             var onBlur = function () {
@@ -393,10 +442,13 @@
                     var yearOpVal = parseInt(gebDatePerson.attr('data-op-geb-year'));
 
                     if (dayPersonVal === dayOpVal && monthPersonVal === monthOpVal && yearPersonVal === yearOpVal) {
-                        yearPerson.popover('show');
+                        if (!yearPerson.data('popover-closed')) {
+                            yearPerson.popover('show');
+                        }
                     }
                     else {
                         volgendeInschrijving.val(2); // No OP
+                        yearPerson.removeData('popover-closed');
                     }
                 }
                 else if (gebDatePerson.data('is-op')) {

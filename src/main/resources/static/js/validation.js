@@ -255,11 +255,15 @@
     };
 
     $(document)
+        .on('blur', '.required', function (e) {
+            checkRequired($(e.target));
+        })
         .on('change', '.required', function (e) {
             var self = $(e.target);
-            //if ($(':focus').not(self).length === 0) {
+            var focus = $(':focus');
+            if (!focus.is(self)) {
                 checkRequired(self);
-            //}
+            }
         })
         .on('show', function (e) {
             checkRequired($(e.target));

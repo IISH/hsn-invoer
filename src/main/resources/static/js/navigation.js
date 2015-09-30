@@ -80,8 +80,13 @@
                 }
 
                 var focusElem = determineFocusElem();
-                focusElem.focus();
-                focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
+                if (focusElem.hasClass('nav-trigger')) {
+                    focusElem.trigger('nav-trigger', [self]);
+                }
+                else {
+                    focusElem.focus();
+                    focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
+                }
             }, 0);
         };
 
