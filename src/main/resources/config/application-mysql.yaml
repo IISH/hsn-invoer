@@ -21,6 +21,8 @@ spring:
       minEvictableIdleTimeMillis: 60000
       maxWait: 10000
       jmxEnabled: true
+      useServerPrepStmts: false
+      rewriteBatchedStatements: true
 
     reference:
       driverClassName: com.mysql.jdbc.Driver
@@ -43,9 +45,17 @@ spring:
       minEvictableIdleTimeMillis: 60000
       maxWait: 10000
       jmxEnabled: true
+      useServerPrepStmts: false
+      rewriteBatchedStatements: true
 
   jpa:
     hibernate:
       ddl-auto: none
+
 hibernate:
   dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  jdbc:
+      batch_size: 30
+      batch_versioned_data: true
+  order_inserts: true
+  order_updates: true

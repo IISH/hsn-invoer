@@ -6,7 +6,7 @@
     'use strict';
 
     $(document).on('blur', $.getDataElemSelector('ajax-update'), function (e) {
-        $.resetInvisibleFormElements();
+        $(document).resetInvisibleFormElements();
 
         var elem = $(e.target);
 

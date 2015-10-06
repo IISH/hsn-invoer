@@ -18,6 +18,8 @@ public interface PersonRepository extends Repository<Person, Integer> {
 
     Person save(Person entity);
 
+    List<Person> save(Iterable<Person> entities);
+
     void delete(Person entity);
 
     void delete(Iterable<? extends Person> entities);

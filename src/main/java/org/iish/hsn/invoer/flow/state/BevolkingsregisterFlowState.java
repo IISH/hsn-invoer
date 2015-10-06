@@ -39,6 +39,7 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
     private int            nextPersonKey     = 0; // 0 if we continue with the normal order
     private int            originalPersonKey = 0; // 0 if nextPersonKey was not used
     private List<Integer>  correctionPersons = new ArrayList<>();
+    private List<Person>   personsToRender   = new ArrayList<>();
     private RegistrationId prevRegistration  = new RegistrationId();
 
     public BevolkingsregisterFlowState(Registration b4, List<Person> b2, List<RegistrationAddress> b6,
@@ -286,6 +287,24 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
 
     public void setCorrectionPersons(List<Integer> correctionPersons) {
         this.correctionPersons = correctionPersons;
+    }
+
+    public List<Person> getPersonsToRender() {
+        return personsToRender;
+    }
+
+    public List<Person> getPersonsToRenderAndClear() {
+        List<Person> newReference = new ArrayList<>(personsToRender);
+        personsToRender.clear();
+        return newReference;
+    }
+
+    public void setPersonsToRender(List<Person> personsToRender) {
+        this.personsToRender = personsToRender;
+    }
+
+    public void addPersonToRender(Person personToRender) {
+        this.personsToRender.add(personToRender);
     }
 
     public RegistrationId getPrevRegistration() {

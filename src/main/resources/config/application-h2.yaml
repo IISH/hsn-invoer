@@ -5,11 +5,21 @@ spring:
       url: jdbc:h2:mem:invoer;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
       username: sa
       password:
+
     reference:
       driverClassName: org.h2.Driver
       url: jdbc:h2:mem:reference;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
       username: sa
       password:
+
   jpa:
     hibernate:
       ddl-auto: create-drop
+
+hibernate:
+  jdbc:
+    batch_size: 30
+    batch_versioned_data: true
+  order_inserts: true
+  order_updates: true
+

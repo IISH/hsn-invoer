@@ -25,7 +25,6 @@
         inputElems.filter('.integer-field').val(0);
         inputElems.not('.integer-field').val('');
         inputElems.filter('[data-selected]').attr('data-selected', 0);
-        inputElems.blur();
 
         elems.onEdit.find('p.picklist-label').html('&nbsp;');
         elems.parent.find('.modalMessages').hide().empty();
@@ -78,7 +77,8 @@
         });
 
         elems.parent.find('.btn-update, .btn-delete').attr('disabled', 'disabled');
-        elems.onEdit.find(':input').filter(':visible').not(':disabled').first().focus().keyup();
+        elems.onEdit.trigger('show');
+        elems.onEdit.find(':input:enabled:visible:first').change().focus();
 
         if (isNew) {
             self.trigger('crud-table-new', [elems]);
@@ -90,6 +90,7 @@
 
     var onCancel = function (self) {
         var elems = getElems();
+        var isContinued = elems.parent.hasClass('continued');
 
         elems.onNoEdit.show();
         elems.onEdit.hide();
@@ -100,10 +101,13 @@
         var row = elems.parent.find('tr.rowToUpdate');
         if (row.length > 0) {
             row.removeClass('rowToUpdate');
-            row.find('.btn-update').first().focus();
+            row.find('.btn-update:first').focus();
+        }
+        else if (isContinued) {
+            elems.onNoEdit.find('.btn-new:first').getNextFormElement().focus();
         }
         else {
-            elems.onNoEdit.find('.btn-new').first().focus();
+            elems.onNoEdit.find('.btn-new:first').focus();
         }
 
         resetValues();
@@ -117,7 +121,7 @@
     var onSave = function (self, isNew) {
         var elems = getElems();
 
-        $.resetInvisibleFormElements();
+        elems.onEdit.resetInvisibleFormElements();
         var data = getData(elems.onEdit);
 
         elems.onNoEdit.show();
@@ -131,8 +135,8 @@
             }
         }
         else {
-            var row = elems.parent.find('tr.rowToUpdate');
-            row.removeClass('rowToUpdate');
+            /*var row = elems.parent.find('tr.rowToUpdate');
+            row.removeClass('rowToUpdate');*/
 
             self.trigger('crud-table-save-update', [elems, data]);
         }
@@ -141,7 +145,7 @@
     var onAjaxSuccess = function (self, result) {
         var elems = getElems();
         var resultElem = $(result);
-        var index = elems.table.find('.free tr').index(self.closest('tr'));
+        var index = elems.table.find('.free tr').index(elems.table.find('.free tr.rowToUpdate'));
 
         elems.table.find('.ajax-updated').replaceWith(resultElem);
         $(document).trigger('ajax-update', [resultElem]);

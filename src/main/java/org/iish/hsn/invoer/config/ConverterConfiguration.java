@@ -7,7 +7,7 @@ import org.springframework.core.convert.converter.Converter;
 @Configuration
 public class ConverterConfiguration {
     @Bean
-    public Converter<String, Integer> stringToIntegerConverter() {
+     public Converter<String, Integer> stringToIntegerConverter() {
         return new Converter<String, Integer>() {
             public Integer convert(String source) {
                 try {
@@ -16,6 +16,30 @@ public class ConverterConfiguration {
                 catch (NumberFormatException nfe) {
                     return 0;
                 }
+            }
+        };
+    }
+
+    @Bean
+    public Converter<Integer, String> integerToStringConverter() {
+        return new Converter<Integer, String>() {
+            public String convert(Integer source) {
+                if ((source == null) || (source == 0)) {
+                    return "";
+                }
+                return source.toString();
+            }
+        };
+    }
+
+    @Bean
+    public Converter<String, String> stringTrimmerConverter() {
+        return new Converter<String, String>() {
+            public String convert(String source) {
+                if (source != null) {
+                    return source.trim();
+                }
+                return "";
             }
         };
     }

@@ -64,50 +64,6 @@
 
     /* BS1 specific operations */
 
-    var registerDateOfRegistration = function (elem) {
-        elem.find('.datum-inschrijving').each(function () {
-            var self = $(this);
-            var toggleField = self.getDataValueAsElem('show-when');
-
-            var day = self.find('.day');
-            var month = self.find('.month');
-            var year = self.find('.year');
-
-            var onToggle = function () {
-                if (self.is(':hidden') && toggleField.val() === 'j') {
-                    day.val('');
-                    month.val('');
-                    year.val('');
-                }
-                else if (self.is(':visible') && toggleField.val() !== 'j') {
-                    day.val(-1);
-                    month.val(-1);
-                    year.val(-1);
-                }
-            };
-
-            toggleField.keyup(onToggle);
-            day.blur(function () {
-                if ($(this).getIntegerValue() === 0) {
-                    toggleField.val('n');
-                    onToggle();
-                }
-            });
-
-            var onBlur = function () {
-                if (day.getIntegerValue() === -1 && month.getIntegerValue() === -1 && year.getIntegerValue() === -1) {
-                    toggleField.val('n');
-                    year.autoNextFocus(false);
-                    onToggle();
-                }
-            };
-
-            day.blur(onBlur);
-            month.blur(onBlur);
-            year.blur(onBlur);
-        });
-    };
-
     var registerRelatie = function (elem) {
         var elems = elem;
         if (!elem.is('tr') && !elem.hasClass('relatieElems')) {
@@ -136,7 +92,7 @@
 
             // Init popover for relation element
             relatie.popover({
-                content: $.getLeftPopover() + relatieRegelPopup.html() + $.getRightPopover(),
+                content: '',
                 html: true,
                 placement: 'bottom',
                 trigger: 'manual'
@@ -228,8 +184,7 @@
                     relatieDateHoofdPopup.find('.month').attr('value', parent.find('.relatieDateHoofd.month').val());
                     relatieDateHoofdPopup.find('.year').attr('value', parent.find('.relatieDateHoofd.year').val());
 
-                    relatie.data('bs.popover').options.content =
-                        $.getLeftPopover() + relatieDateHoofdPopup.html() + $.getRightPopover();
+                    relatie.initPopoverContent(relatieDateHoofdPopup);
                     relatie.popover('show');
                 }
                 else {
@@ -248,8 +203,7 @@
                     relatieRegelInterprPopup.find('.regel').attr('value', parent.find('.relatieRegelInterpr.regel').val());
                     relatieRegelInterprPopup.find('.kode').attr('value', parent.find('.relatieRegelInterpr.kode').val());
 
-                    relatie.data('bs.popover').options.content =
-                        $.getLeftPopover() + relatieRegelInterprPopup.html() + $.getRightPopover();
+                    relatie.initPopoverContent(relatieRegelInterprPopup);
                     relatie.popover('show');
                 }
                 else {
@@ -285,8 +239,7 @@
                     }
                     else {
                         relatieRegelPopup.find(':input').attr('value', relatieRegel.val());
-                        relatie.data('bs.popover').options.content =
-                            $.getLeftPopover() + relatieRegelPopup.html() + $.getRightPopover();
+                        relatie.initPopoverContent(relatieRegelPopup);
                         relatie.popover('show');
 
                         f9 = true;
@@ -350,6 +303,7 @@
 
             container.on('nav-trigger', function (e, prevField) {
                 if (prevField.closest('.popover').length === 0) {
+                    $('.popover:visible:first').find(':input:enabled:visible:first').focus();
                     return;
                 }
 
@@ -393,11 +347,12 @@
             var yearPerson = gebDatePerson.find('.year');
 
             yearPerson.popover({
-                content: $.getLeftPopover() + popup.html() + $.getRightPopover(),
+                content: '',
                 html: true,
                 placement: 'bottom',
                 trigger: 'manual'
             });
+            yearPerson.initPopoverContent(popup);
 
             gebDatePerson.on('blur', '.popover input', function (e) {
                 if ($(e.target).val() === 'j') {
@@ -411,6 +366,7 @@
 
             gebDatePerson.on('nav-trigger', function (e, prevField) {
                 if (prevField.closest('.popover').length === 0) {
+                    $('.popover:visible:first').find(':input:enabled:visible:first').focus();
                     return;
                 }
 
@@ -437,9 +393,9 @@
                 var yearPersonVal = yearPerson.getIntegerValue();
 
                 if (!gebDatePerson.data('is-op') && gebDatePerson.is('[data-op-geb-day]')) {
-                    var dayOpVal = parseInt(gebDatePerson.attr('data-op-geb-day'));
-                    var monthOpVal = parseInt(gebDatePerson.attr('data-op-geb-month'));
-                    var yearOpVal = parseInt(gebDatePerson.attr('data-op-geb-year'));
+                    var dayOpVal = gebDatePerson.getIntegerAttr('data-op-geb-day');
+                    var monthOpVal = gebDatePerson.getIntegerAttr('data-op-geb-month');
+                    var yearOpVal = gebDatePerson.getIntegerAttr('data-op-geb-year');
 
                     if (dayPersonVal === dayOpVal && monthPersonVal === monthOpVal && yearPersonVal === yearOpVal) {
                         if (!yearPerson.data('popover-closed')) {
@@ -464,6 +420,92 @@
         });
     };
 
+    var showDatumInschrijving = function (elem) {
+        var datumInschrijving = elem.closest('tr,form').find('.datum-inschrijving');
+        onDatumInschrijvingToggle(elem, datumInschrijving);
+
+        if (elem.val() === 'j') {
+            datumInschrijving.show();
+        }
+        else {
+            datumInschrijving.hide();
+        }
+    };
+
+    var onDatumInschrijving = function (elem) {
+        var person = elem.closest('tr,form');
+        var hasInschrijving = person.find('.has-inschrijving');
+        var datumInschrijving = person.find('.datum-inschrijving');
+        var hsnDate = datumInschrijving.getHsnDate();
+
+        if (elem.hasClass('day') && (elem.getIntegerValue() === 0)) {
+            hasInschrijving.val('n');
+            onDatumInschrijvingToggle(hasInschrijving, datumInschrijving);
+        }
+        else if (hsnDate.day.getValue() === -1 && hsnDate.month.getValue() === -1 && hsnDate.year.getValue() === -1) {
+            hasInschrijving.val('n');
+            onDatumInschrijvingToggle(hasInschrijving, datumInschrijving);
+            hsnDate.year.elem.autoNextFocus(false);
+        }
+    };
+
+    var onDatumInschrijvingToggle = function (hasInschrijvingElem, datumInschrijvingElem) {
+        var hsnDate = datumInschrijvingElem.getHsnDate();
+        if (datumInschrijvingElem.is(':hidden') && hasInschrijvingElem.val() === 'j') {
+            hsnDate.day.elem.val('');
+            hsnDate.month.elem.val('');
+            hsnDate.year.elem.val('');
+        }
+        else if (datumInschrijvingElem.is(':visible') && hasInschrijvingElem.val() !== 'j') {
+            hsnDate.day.elem.val(-1);
+            hsnDate.month.elem.val(-1);
+            hsnDate.year.elem.val(-1);
+        }
+    };
+
+    var onRelatieRegel = function (elem) {
+        if (elem.getIntegerValue() === -3) {
+            elem.closest('tr,form,.popup').find('.intr-kode').val(9);
+        }
+    };
+
+    var setPositie = function (elem) {
+        var value = elem.val().trim();
+        if ((value === 'N') || (value === 'Z')) {
+            elem
+                .closest('tr,form')
+                .find('.positie')
+                .val('n')
+                .autoNextFocus(true);
+        }
+    };
+
+    var updatePositie = function (elem) {
+        var replaceVal = 0;
+        switch (elem.val()) {
+            case 'h':
+                replaceVal = 1;
+                break;
+            case 'o':
+                replaceVal = 2;
+                break;
+            case 'n':
+                replaceVal = 3;
+                break;
+        }
+        elem.prev('input[type=hidden]').val(replaceVal);
+    };
+
+    var showBurgStandAdditional = function (elem) {
+        var burgStandToggle = elem.closest('tr,form').find('.burgStandToggle');
+        if ([2,3,5,9].indexOf(elem.getIntegerValue()) > -1) {
+            burgStandToggle.show();
+        }
+        else {
+            burgStandToggle.hide();
+        }
+    };
+
     var checkBurgStand = function (elem) {
         var relatie = elem.getIntegerValue();
         var curPerson = $('#currentPerson');
@@ -485,14 +527,16 @@
         $(document).trigger('changeOfState');
     };
 
-    var setPositie = function (elem) {
-        var value = elem.val().trim();
-        if ((value === 'N') || (value === 'Z')) {
-            elem
-                .closest('tr,form')
-                .find('.positie')
-                .val('n')
-                .autoNextFocus(true);
+    var showDatumPlaats = function (elem) {
+        var field = elem.attr('class').match(/has-([a-z]*)/)[1];
+        var toggleFields = elem.closest('tr,form')
+            .find('.' + field + '-datum, .' + field + '-plaats, .' + field + '-container');
+
+        if (elem.val() === 'j') {
+            toggleFields.show();
+        }
+        else {
+            toggleFields.hide();
         }
     };
 
@@ -544,8 +588,8 @@
                         }
                     }
                     else if (nrOfLines < currentNrOfLines) {
-                        for (var i = currentNrOfLines; i > nrOfLines; i--) {
-                            table.find('tr[data-rp=' + i + ']').remove();
+                        for (var j = currentNrOfLines; j > nrOfLines; j--) {
+                            table.find('tr[data-rp=' + j + ']').remove();
                             fixedLeftTable.find('tr:last').remove();
                         }
                     }
@@ -700,10 +744,22 @@
         }
     }).on('focus', '#registrationAllLines input', function () {
         copyFromPrevLine();
+    }).on('change', '.has-inschrijving', function (e) {
+        showDatumInschrijving($(e.target));
+    }).on('blur', '.datum-inschrijving :input', function (e) {
+        onDatumInschrijving($(e.target));
+    }).on('blur', '.regel-nr', function (e) {
+        onRelatieRegel($(e.target));
     }).on('typeahead-change', '.beroep', function (e) {
         setPositie($(e.target));
+    }).on('blur', '.positie', function (e) {
+        updatePositie($(e.target));
+    }).on('change', '.burgstand', function (e) {
+        showBurgStandAdditional($(e.target));
     }).on('blur', '.burg-stand-relatie', function (e) {
         checkBurgStand($(e.target));
+    }).on('change', '.has-herkomst, .has-vertrek, .has-overlijden', function (e) {
+        showDatumPlaats($(e.target));
     }).on('blur', '.nationality', function (e) {
         setNationality($(e.target));
     }).on('blur', '.legalPlaceOfLivingInCodes', function (e) {
@@ -730,7 +786,6 @@
     });
 
     $.registerInit(function (elem) {
-        registerDateOfRegistration(elem);
         registerRelatie(elem);
         registerVolgendeInschrijvingPopup(elem);
     });

@@ -3,8 +3,8 @@
 <head>
 </head>
 <body>
-<th:block layout:fragment="modal (modalId, b3Type, oneRecordRequired)">
-  <div th:id="${modalId}" data:type="${b3Type}" data:one-record-required="${oneRecordRequired}"
+<th:block layout:fragment="modal (modalId, b3Type, minRecords, maxRecords)">
+  <div th:id="${modalId}" data:type="${b3Type}" data:min-records="${minRecords}" data:max-records="${maxRecords}"
        class="modal personDynamicModal crud-table-container" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -250,12 +250,6 @@
             &nbsp;
           </td>
           <td class="col-xs-2">
-            <!-- Cancel -->
-            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}"
-                    data-type="RELATIE_TOV_HOOFD">
-              Annuleren
-            </button>
-
             <!-- Save -->
             <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}"
                     data-type="RELATIE_TOV_HOOFD">
@@ -265,6 +259,12 @@
             <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}"
                     data-type="RELATIE_TOV_HOOFD">
               Opslaan
+            </button>
+
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}"
+                    data-type="RELATIE_TOV_HOOFD">
+              Annuleren
             </button>
           </td>
         </tr>
@@ -293,7 +293,7 @@
         </label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required relatie-regel" data-min-value="-3"
+          <input type="text" class="form-control form-control-digit required relatie-regel regel-nr" data-min-value="-3"
                  name="valueOfRelatedPerson"/>
         </div>
       </div>
@@ -304,10 +304,8 @@
         </label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required dynamicData2"
-                 maxlength="1" name="dynamicData2"
-                 data-set-value-when="#relModal [name=valueOfRelatedPerson]"
-                 data-has-values-in="-3" data-then-value="9"/>
+          <input type="text" class="form-control form-control-digit required dynamicData2 intr-kode"
+                 maxlength="1" name="dynamicData2"/>
         </div>
       </div>
     </div>
@@ -499,13 +497,11 @@
           </td>
           <td style="min-width:60px;max-width:60px;">
             <!-- Rel -->
-            <input type="text" class="form-control form-control-digit required burg-stand-relatie"
-                   name="valueOfRelatedPerson" data-min-value="-2"
-                   data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9"/>
+            <input type="text" class="form-control form-control-digit required burg-stand-relatie burgStandToggle"
+                   maxlength="2" name="valueOfRelatedPerson" data-min-value="-2"/>
           </td>
           <td style="min-width:200px;max-width:200px;">
-            <div class="form-inline sub-form-group checkDateBevReg fullCheck"
-                 data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9">
+            <div class="form-inline sub-form-group checkDateBevReg fullCheck burgStandToggle">
               <!-- Datum -->
               <input type="text" name="dayOfMutation" class="form-control form-control-digit day" maxlength="2"/>
               /
@@ -515,8 +511,7 @@
             </div>
           </td>
           <td style="min-width:200px;max-width:200px;" th:if="${akte.isCorrection()}">
-            <div class="form-inline sub-form-group checkInterprDateBevReg"
-                 data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9">
+            <div class="form-inline sub-form-group checkInterprDateBevReg burgStandToggle">
               <!-- INTERPR -->
               <input type="text" name="dayOfMutationAfterInterpretation" class="form-control form-control-digit day"
                      maxlength="2"/>
@@ -530,16 +525,9 @@
           </td>
           <td style="min-width:300px;max-width:300px;">
             <!-- Plaats -->
-            <input type="text" class="form-control plaats" name="dynamicData2"
-                   data-show-when="#brgModal [name=contentOfDynamicData]" data-has-values-in="2;3;5;9"/>
+            <input type="text" class="form-control plaats burgStandToggle" name="dynamicData2"/>
           </td>
           <td style="min-width:150px;max-width:150px;">
-            <!-- Cancel -->
-            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}"
-                    data-type="BURGELIJKE_STAND">
-              Annuleren
-            </button>
-
             <!-- Save -->
             <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}"
                     data-type="BURGELIJKE_STAND">
@@ -549,6 +537,12 @@
             <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}"
                     data-type="BURGELIJKE_STAND">
               Opslaan
+            </button>
+
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}"
+                    data-type="BURGELIJKE_STAND">
+              Annuleren
             </button>
           </td>
         </tr>
@@ -690,12 +684,6 @@
             </div>
           </td>
           <td class="col-xs-2">
-            <!-- Cancel -->
-            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}"
-                    data-type="KERKGENOOTSCHAP">
-              Annuleren
-            </button>
-
             <!-- Save -->
             <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}"
                     data-type="KERKGENOOTSCHAP">
@@ -705,6 +693,12 @@
             <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}"
                     data-type="KERKGENOOTSCHAP">
               Opslaan
+            </button>
+
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}"
+                    data-type="KERKGENOOTSCHAP">
+              Annuleren
             </button>
           </td>
         </tr>
@@ -845,8 +839,7 @@
               <input type="hidden" name="contentOfDynamicData" class="modalContentOfDynamicData"/>
 
               <input type="text" class="form-control form-control-digit required positie" maxlength="1"
-                     name="contentOfDynamicDataCode" data-valid-chars="h;o;n"
-                     data-replace-in-field=".modalContentOfDynamicData" data-for-values="h:1;o:2;n:3;:"/>
+                     name="contentOfDynamicDataCode" data-valid-chars="h;o;n"/>
 
               <p class="form-control-static spacing">h / o / n</p>
             </div>
@@ -865,11 +858,6 @@
             </div>
           </td>
           <td class="col-xs-2">
-            <!-- Cancel -->
-            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}" data-type="BEROEP">
-              Annuleren
-            </button>
-
             <!-- Save -->
             <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}" data-type="BEROEP">
               Opslaan
@@ -877,6 +865,11 @@
 
             <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}" data-type="BEROEP">
               Opslaan
+            </button>
+
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}" data-type="BEROEP">
+              Annuleren
             </button>
           </td>
         </tr>
@@ -924,25 +917,29 @@
         <tbody>
         <tr th:each="curB3Her,stat : *{b3Her[__${rp}__]}">
           <td>
-            <span class="seqNr" th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
+            <span class="seqNr dynamicDataSequenceNumber"
+                  th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
             </span>
           </td>
           <td>
-            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dayOfMutation}"></span>
+            <span class="dayOfMutation" th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dayOfMutation}"></span>
             /
-            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].monthOfMutation}"></span>
+            <span class="monthOfMutation" th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].monthOfMutation}"></span>
             /
-            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].yearOfMutation}"></span>
+            <span class="yearOfMutation" th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].yearOfMutation}"></span>
           </td>
           <td th:if="${akte.isCorrection()}">
-            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dayOfMutationAfterInterpretation}"></span>
+            <span class="dayOfMutationAfterInterpretation"
+                  th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dayOfMutationAfterInterpretation}"></span>
             /
-            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].monthOfMutationAfterInterpretation}"></span>
+            <span class="monthOfMutationAfterInterpretation"
+                  th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].monthOfMutationAfterInterpretation}"></span>
             /
-            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].yearOfMutationAfterInterpretation}"></span>
+            <span class="yearOfMutationAfterInterpretation"
+                  th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].yearOfMutationAfterInterpretation}"></span>
           </td>
           <td>
-            <span th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dynamicData2}">
+            <span class="dynamicData2" th:utext="${akte.b3Her[__${rp}__][__${stat.index}__].dynamicData2}">
             </span>
           </td>
           <td>
@@ -1017,11 +1014,6 @@
             <input type="text" name="dynamicData2" class="form-control plaats"/>
           </td>
           <td class="col-xs-2">
-            <!-- Cancel -->
-            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}" data-type="HERKOMST">
-              Annuleren
-            </button>
-
             <!-- Save -->
             <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}" data-type="HERKOMST">
               Opslaan
@@ -1031,6 +1023,12 @@
                     data-type="HERKOMST">
               Opslaan
             </button>
+
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}" data-type="HERKOMST">
+              Annuleren
+            </button>
+
           </td>
         </tr>
         </tbody>
@@ -1077,25 +1075,29 @@
         <tbody>
         <tr th:each="curB3Ver,stat : *{b3Ver[__${rp}__]}">
           <td>
-            <span class="seqNr" th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
+            <span class="seqNr dynamicDataSequenceNumber"
+                  th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dynamicDataSequenceNumber}">
             </span>
           </td>
           <td>
-            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dayOfMutation}"></span>
+            <span class="dayOfMutation" th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dayOfMutation}"></span>
             /
-            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].monthOfMutation}"></span>
+            <span class="monthOfMutation" th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].monthOfMutation}"></span>
             /
-            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].yearOfMutation}"></span>
+            <span class="yearOfMutation" th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].yearOfMutation}"></span>
           </td>
           <td th:if="${akte.isCorrection()}">
-            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dayOfMutationAfterInterpretation}"></span>
+            <span class="dayOfMutationAfterInterpretation"
+                  th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dayOfMutationAfterInterpretation}"></span>
             /
-            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].monthOfMutationAfterInterpretation}"></span>
+            <span class="monthOfMutationAfterInterpretation"
+                  th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].monthOfMutationAfterInterpretation}"></span>
             /
-            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].yearOfMutationAfterInterpretation}"></span>
+            <span class="yearOfMutationAfterInterpretation"
+                  th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].yearOfMutationAfterInterpretation}"></span>
           </td>
           <td>
-            <span th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dynamicData2}">
+            <span class="dynamicData2" th:utext="${akte.b3Ver[__${rp}__][__${stat.index}__].dynamicData2}">
             </span>
           </td>
           <td>
@@ -1170,11 +1172,6 @@
             <input type="text" name="dynamicData2" class="form-control plaats"/>
           </td>
           <td class="col-xs-2">
-            <!-- Cancel -->
-            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}" data-type="VERTREK">
-              Annuleren
-            </button>
-
             <!-- Save -->
             <button type="button" class="btn btn-default btn-xs btn-save-new" data:person="${rp}" data-type="VERTREK">
               Opslaan
@@ -1183,6 +1180,11 @@
             <button type="button" class="btn btn-default btn-xs btn-save-update" data:person="${rp}"
                     data-type="VERTREK">
               Opslaan
+            </button>
+
+            <!-- Cancel -->
+            <button type="button" class="btn btn-default btn-xs btn-cancel" data:person="${rp}" data-type="VERTREK">
+              Annuleren
             </button>
           </td>
         </tr>

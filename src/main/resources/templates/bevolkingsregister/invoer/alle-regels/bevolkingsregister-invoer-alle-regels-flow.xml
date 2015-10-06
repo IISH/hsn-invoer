@@ -61,18 +61,21 @@
       <render fragments="#{'b3Content' + requestParameters.type}"/>
     </transition>
 
-    <transition on="refresh-persons">
+    <transition on="refresh-person">
+      <evaluate expression="flowScope.akte.addPersonToRender(flowScope.akte.b2.get(new Integer(requestParameters.person) - 1))"/>
       <render fragments="registrationAllLines"/>
     </transition>
 
     <transition on="update-number-of-persons">
-      <evaluate expression="bevolkingsregisterService.updateNrOfPersons(flowScope.akte, requestParameters.nrOfLines)"/>
+      <evaluate expression="bevolkingsregisterService.updateNrOfPersons(flowScope.akte, requestParameters.nrOfLines)"
+                result="flowScope.akte.personsToRender"/>
       <render fragments="registrationAllLines"/>
     </transition>
 
     <transition on="copy-line">
       <evaluate
           expression="bevolkingsregisterService.copyLine(flowScope.akte, requestParameters.person, requestParameters.copyLine)"/>
+      <evaluate expression="flowScope.akte.addPersonToRender(flowScope.akte.b2.get(new Integer(requestParameters.person) - 1))"/>
       <render fragments="registrationAllLines"/>
     </transition>
 

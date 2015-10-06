@@ -1,6 +1,9 @@
 (function ($) {
     'use strict';
 
+    // TODO: Prevent unwanted focus by disabling timeout in Chrome for bevolkingsregister
+    $.noTimeoutWithNav();
+
     /* Bevolkingsregister methods to be overloaded for specific cases */
 
     /**

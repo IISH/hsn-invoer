@@ -17,8 +17,12 @@
             && !elem.is('[data-valid-chars]')) {
 
             var val = elem.val();
-            elem.val(val.substr(0, 1).toUpperCase() + val.substr(1));
-            elem.setCaret(caret);
+            var firstChar = val.substr(0, 1);
+            var firstCharUpper = firstChar.toUpperCase();
+            if (firstChar !== firstCharUpper) {
+                elem.val(firstCharUpper + val.substr(1));
+                elem.setCaret(caret);
+            }
         }
     };
 
@@ -346,15 +350,6 @@
         });
     };
 
-    var setDefaultValues = function (inputElems) {
-        inputElems.filter('.integer-field,.is-id').each(function () {
-            var self = $(this);
-            if (self.getIntegerValue() === 0) {
-                self.val('');
-            }
-        });
-    };
-
     var setOverwrite = function (elem, e) {
         if (e.charCode !== 0) {
             var text = elem.val();
@@ -381,53 +376,36 @@
 
     $(document).on('keyup', ':input', function (e) {
         return onUppercase($(e.target));
-    });
-
-    $(document).on('keyup', '.submit-on-keyup', function (e) {
+    }).on('keyup', '.submit-on-keyup', function (e) {
         return onSubmitOnKeyup($(e.target));
-    });
-
-    $(document).on('keypress', '.integer-field', function (e) {
+    }).on('keypress', '.integer-field', function (e) {
         return onIntegerField($(e.target), e);
-    });
-
-    $(document).on('keypress', $.getDataElemSelector('valid-chars'), function (e) {
+    }).on('keypress', $.getDataElemSelector('valid-chars'), function (e) {
         return onValidChars($(e.target), e);
-    });
-
-    $(document).on('blur', $.getDataElemSelector('min-value'), function (e) {
+    }).on('blur', $.getDataElemSelector('min-value'), function (e) {
         onMinValue($(e.target));
-    });
-
-    $(document).on('blur', $.getDataElemSelector('max-value'), function (e) {
+    }).on('blur', $.getDataElemSelector('max-value'), function (e) {
         onMaxValue($(e.target));
-    });
-
-    $(document).on('blur', $.getDataElemSelector('replace'), function (e) {
+    }).on('blur', $.getDataElemSelector('replace'), function (e) {
         onReplace($(e.target));
-    });
-
-    $(document).on('blur', $.getDataElemSelector('replace-in-field'), function (e) {
+    }).on('blur', $.getDataElemSelector('replace-in-field'), function (e) {
         onReplaceInField($(e.target));
-    });
-
-    $(document).on('keypress', ':input', function (e) {
+    }).on('keypress', ':input', function (e) {
         return setOverwrite($(e.target), e);
-    });
-
-    // IE9 does not support 'maxlength' on textarea
-    $(document).on('keypress blur', 'textarea', function (e) {
+    }).on('keypress blur', 'textarea', function (e) {
+        // IE9 does not support 'maxlength' on textarea
         return setMaxLength($(e.target), e);
     });
 
     $.registerInit(function (elem) {
-        elem.find($.getDataElemSelector('min-value')).each(function () {
+        // TODO: Required on init? Disabled for bevolkingsregister.
+        /*elem.find($.getDataElemSelector('min-value')).each(function () {
             onMinValue($(this));
         });
 
         elem.find($.getDataElemSelector('max-value')).each(function () {
             onMaxValue($(this));
-        });
+        });*/
 
         elem.find($.getDataElemSelector('replace')).each(function () {
             onReplace($(this));
@@ -447,8 +425,6 @@
         elem.find($.getDataElemSelector('set-value-when')).each(function () {
             prepareSetValueWhen($(this));
         });
-
-        setDefaultValues(elem.find(':input'));
 
         var byz = elem.find('.bijzonderheden');
         if (byz.length > 0) {

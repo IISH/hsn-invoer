@@ -77,12 +77,13 @@
         return $('.modal:visible:first');
     };
 
-    $.getLeftPopover = function () {
-        return '<span class="nav-trigger popover-left hidden"></span>';
-    };
-
-    $.getRightPopover = function () {
-        return '<span class="nav-trigger popover-right hidden"></span>';
+    $.fn.initPopoverContent = function (content) {
+        var firstTabIndex = content.find('.form-elem:first').getIntegerAttr('tabindex') - 1;
+        var lastTabIndex = content.find('.form-elem:last').getIntegerAttr('tabindex') + 1;
+        this.data('bs.popover').options.content =
+            '<span class="nav-trigger popover-left form-elem hidden tabindex' + firstTabIndex + '" tabindex="' + firstTabIndex + '"></span>' +
+            content.html() +
+            '<span class="nav-trigger popover-right form-elem hidden tabindex' + lastTabIndex + '" tabindex="' + lastTabIndex + '"></span>';
     };
 
     $(document).on('shown.bs.modal', function (e) {
@@ -138,11 +139,8 @@
 
     /* Without selector */
 
-    $.getAllFormElements = function (elem) {
-        if (elem !== undefined) {
-            return elem.closest('form, .modal, .popover').find('input,button,textarea,.nav-trigger');
-        }
-        return $('form:first').find('input,button,textarea');
+    $.isFormElement = function (elem) {
+        return ((elem !== undefined) && elem.hasClass('form-elem') && elem.is(':enabled:visible'));
     };
 
     $.getDataElemSelector = function (dataName) {
@@ -157,47 +155,29 @@
         return $.getDataElem('is-correction').data('is-correction');
     };
 
-    $.resetInvisibleFormElements = function () {
-        var notVisibleInputElements = $.getAllFormElements()
+    $.fn.resetInvisibleFormElements = function () {
+        var notVisibleInputElements = this
+            .find('.form-elem')
             .filter(':input')
             .not(':visible')
             .not('[type=hidden]');
-
         notVisibleInputElements.filter('.integer-field').val(0);
         notVisibleInputElements.not('.integer-field').val('');
     };
 
+    /* TODO: Prevent using timeout in bevolkingsregister in Chrome */
+
+    var useTimeout = true;
+
+    $.noTimeoutWithNav = function () {
+        useTimeout = false;
+    };
+
+    $.useTimeout = function () {
+        return useTimeout;
+    };
+
     /* With selector */
-
-    $.fn.getPrevFormElement = function () {
-        var formElements = $.getAllFormElements(this);
-        var prevElement = null;
-        var curIndex = formElements.index(this);
-        var startIndex = curIndex;
-        while (prevElement === null) {
-            curIndex = (curIndex === 0) ? formElements.length - 1 : curIndex - 1;
-            var elem = formElements.eq(curIndex);
-            if ((curIndex === startIndex) || elem.hasClass('nav-trigger') || elem.is(':visible:enabled')) {
-                prevElement = elem;
-            }
-        }
-        return prevElement;
-    };
-
-    $.fn.getNextFormElement = function () {
-        var formElements = $.getAllFormElements(this);
-        var prevElement = null;
-        var curIndex = formElements.index(this);
-        var startIndex = curIndex;
-        while (prevElement === null) {
-            curIndex = (curIndex === (formElements.length - 1)) ? 0 : curIndex + 1;
-            var elem = formElements.eq(curIndex);
-            if ((curIndex === startIndex) ||  elem.hasClass('nav-trigger') || elem.is(':visible:enabled')) {
-                prevElement = elem;
-            }
-        }
-        return prevElement;
-    };
 
     $.fn.getParentOfFormElement = function () {
         return this.closest('td, .form-group, .sub-form-group');
@@ -237,6 +217,10 @@
 
     $.fn.getIntegerText = function () {
         return parseInt(this.text());
+    };
+
+    $.fn.getIntegerAttr = function (attr) {
+        return parseInt(this.attr(attr));
     };
 
     $.fn.setValue = function (val) {

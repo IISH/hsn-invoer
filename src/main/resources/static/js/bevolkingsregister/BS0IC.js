@@ -30,11 +30,13 @@
                 $('.fail.op').text('De onderzoekspersoon met deze identificatie is niet aanwezig!').show();
                 $('.btn-next').addClass('op-error');
                 $(document).trigger('changeOfState');
+                $('.person span').text('');
             });
         }
         else {
             $('.btn-next').addClass('op-error');
             $(document).trigger('changeOfState');
+            $('.person span').text('');
         }
     };
 
@@ -69,15 +71,17 @@
                 $('.fail.bron').text('De bron met dit nummer is niet aanwezig!').show();
                 $('.btn-next').addClass('bron-error');
                 $(document).trigger('changeOfState');
+                $('.register span').text('');
             });
         }
         else {
             $('.btn-next').addClass('bron-error');
             $(document).trigger('changeOfState');
+            $('.register span').text('');
         }
     };
 
-    var checkHoofdDatum = function () {
+    var checkHoofdDatum = function (e) {
         var idnr = getIdnr();
         var keyToSourceRegister = $('#b4\\.registrationId\\.keyToSourceRegister').getIntegerValue();
         var day = $('#b4\\.registrationId\\.dayEntryHead').getIntegerValue();
@@ -89,6 +93,7 @@
         var orgMonth = $.getDataElem('monthentryhead').getIntegerDataValue('monthentryhead');
         var orgYear = $.getDataElem('yearentryhead').getIntegerDataValue('yearentryhead');
 
+        var isNext = $.getCurNavigation().isNext;
         var isCorrectionOfIdentification = ($.isCorrection() && !isNaN(orgKeyToSourceRegister) &&
             !isNaN(orgDay) && !isNaN(orgMonth) && !isNaN(orgYear));
 
@@ -98,15 +103,19 @@
             $(document).trigger('changeOfState');
         };
 
-        var onSuccess = function () {
+        var onSuccess = function (elem, isNext) {
             $('.fail.registration').hide();
             $('.btn-next').removeClass('registration-error');
             $(document).trigger('changeOfState');
+
+            if ($.isCorrection() && elem.hasClass('year') && isNext) {
+                elem.getNextFormElement().focus();
+            }
         };
 
         if (isCorrectionOfIdentification && (keyToSourceRegister === orgKeyToSourceRegister) &&
             (day === orgDay) && (month === orgMonth) && (year === orgYear)) {
-            onSuccess();
+            onSuccess($(e.target), isNext);
             return;
         }
 
@@ -119,7 +128,7 @@
                 keyToRP: idnr
             }, function () {
                 if ($.isCorrection() && !isCorrectionOfIdentification) {
-                    onSuccess();
+                    onSuccess($(e.target), isNext);
                 }
                 else {
                     onError('De combinatie van bronnummer en hoofddatum is reeds ingevoerd!');
@@ -132,7 +141,7 @@
                     if (!isCorrectionOfIdentification) {
                         checkOtherRegistrations();
                     }
-                    onSuccess();
+                    onSuccess($(e.target), isNext);
                 }
             });
         }
@@ -233,15 +242,16 @@
                 nextRegistration = findRegistration(false, registrations);
                 prevRegistration = findRegistration(true, registrations.reverse());
 
+                var vorigeInschrijving = $('#vorige-inschrijving');
                 if ((prevRegistration !== null) || (nextRegistration !== null)) {
                     var reg = prevRegistration;
                     if (prevRegistration !== null) {
                         $('.vorige-inschrijving-label').text('Met vorige inschrijving?');
-                        $('#vorige-inschrijving').val('j').trigger('keyup');
+                        vorigeInschrijving.val('j');
                     }
                     else {
                         $('.vorige-inschrijving-label').text('Met latere inschrijving?');
-                        $('#vorige-inschrijving').val('n').trigger('keyup');
+                        vorigeInschrijving.val('n');
                         reg = nextRegistration;
                     }
 
@@ -251,6 +261,7 @@
                     $('#prevRegistration\\.yearEntryHead').val(reg.registrationId.yearEntryHead);
 
                     $('.group-vorige-inschrijving').show();
+                    vorigeInschrijving.change();
                 }
                 else {
                     $('.group-vorige-inschrijving').hide();
@@ -318,14 +329,14 @@
             var volgNrOpElem = $('#volgnrOP');
             var aantalRegelsElem = $('#noRegels');
 
-            if (self.attr('id') === 'volgnrOP') {
+            if ((self.attr('id') === 'volgnrOP') && isNaN(aantalRegelsElem.getIntegerValue())) {
                 aantalRegelsElem.val(volgnummer);
             }
 
             $.setError(
                 (registerType === 'A' || registerType === 'I') && (volgnummer > 1),
                 'volgnummer-op',
-                'Slechts een persoon per familie eenheid toegestaan!'
+                'In dit type bron kan slechts één persoon (de OP) worden ingevoerd.'
             );
 
             var volgNrOp = volgNrOpElem.getIntegerValue();

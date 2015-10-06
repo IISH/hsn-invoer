@@ -8,12 +8,24 @@
 (function ($) {
     'use strict';
 
+    var curNav = {
+        isNext: false,
+        isPrev: false,
+        isUp: false,
+        isDown: false,
+        isLeft: false,
+        isRight: false
+    };
+
+    $.getCurNavigation = function () {
+        return curNav;
+    };
+
     $.duringNavigation = function (e, onDefaultNavigation, onTableNavigation) {
         var self = $(e.target);
-        var formElements = $.getAllFormElements();
 
         // Disable the enter key, unless the focused element is a button
-        if ((e.which === 13) && ($.inArray(self[0], formElements.filter('input')) > -1)) {
+        if ((e.which === 13) && !self.is('button')) {
             if (typeof e.preventDefault === 'function') {
                 e.preventDefault();
             }
@@ -27,7 +39,14 @@
             var isLeft = ((e.which === 9) && (e.shiftKey)); // Tab
             var isRight = ((e.which === 9) && (!e.shiftKey)); // Shift + Tab
 
-            if ((isUp || isDown || isLeft || isRight) && ($.inArray(self[0], formElements) > -1)) {
+            if (isUp || isDown || isLeft || isRight) {
+                curNav.isUp = isUp;
+                curNav.isDown = isDown;
+                curNav.isLeft = isLeft;
+                curNav.isRight = isRight;
+                curNav.isPrev = isLeft;
+                curNav.isNext = isRight;
+
                 onTableNavigation(self, isUp, isDown, isLeft, isRight);
             }
         }
@@ -35,7 +54,10 @@
             var isNext = (((e.which === 9) && (!e.shiftKey)) || (e.which === 40)); // Tab or arrow down
             var isPrev = (((e.which === 9) && (e.shiftKey)) || (e.which === 38)); // Shift + Tab or arrow up
 
-            if ((isNext || isPrev) && ($.inArray(self[0], formElements) > -1)) {
+            if (isNext || isPrev) {
+                curNav.isPrev = isPrev;
+                curNav.isNext = isNext;
+
                 onDefaultNavigation(self, isNext, isPrev);
             }
         }
@@ -72,8 +94,7 @@
                 self.blur(); // Now perform the blur and all event handlers attached to this event
             }
 
-            // setTimeout can also be used to make IE wait until the blur event has completed
-            setTimeout(function () {
+            var afterBlur = function () {
                 // If the blur caused a focus on a new element, then ignore default navigation
                 if ($(':focus').filter(':input').not(self).length > 0) {
                     return;
@@ -87,7 +108,20 @@
                     focusElem.focus();
                     focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
                 }
-            }, 0);
+
+                // Reset current navigation
+                $.each(curNav, function (k, v) {
+                    curNav[k] = false;
+                });
+            };
+
+            // setTimeout can also be used to make IE wait until the blur event has completed
+            if ($.useTimeout()) {
+                setTimeout(afterBlur, 0);
+            }
+            else {
+                afterBlur();
+            }
         };
 
         $.duringNavigation(e,
@@ -106,7 +140,7 @@
 
                     if (isUp || isDown) {
                         var column = self.closest('td');
-                        var row = self.closest('tr');
+                        var row = column.closest('tr');
 
                         var columns = row.find('td');
                         var rows = row.closest('tbody').find('tr');
@@ -139,7 +173,7 @@
                                     .eq(nextRowIndex)
                                     .find('td')
                                     .eq(columnIndex)
-                                    .find(':input:visible:enabled:first');
+                                    .find('.form-elem:enabled:visible:first');
                                 if (input.length === 1) {
                                     return input;
                                 }
@@ -148,10 +182,10 @@
                         }
                         else {
                             if (prev) {
-                                focusElem = table.find(':input:first').getPrevFormElement();
+                                focusElem = table.find('.form-elem:first').getPrevFormElement(self);
                             }
                             else {
-                                focusElem = table.find(':input:last').getNextFormElement();
+                                focusElem = table.find('.form-elem:last').getNextFormElement(self);
                             }
                         }
                     }
@@ -177,7 +211,7 @@
     var shouldAutoNextFocusElem = function (e) {
         if (e.charCode !== 0) {
             var self = $(e.target);
-            var maxLength = parseInt(self.attr('maxlength'));
+            var maxLength = self.getIntegerAttr('maxlength');
             autoFocusNext = (!self.getParentOfFormElement().hasClass('noAutoNext') && !isNaN(maxLength) && (self.getCaret() >= (maxLength - 1)));
         }
     };
@@ -189,6 +223,76 @@
         }
     };
 
+    var initTabIndexes = function () {
+        var i = 0;
+        $('input,button,textarea,.nav-trigger').each(function () {
+            var elem = $(this);
+            var curTabIndex = elem.getIntegerAttr('tabindex');
+            elem
+                .removeClass('tabindex' + curTabIndex)
+                .attr('tabindex', i)
+                .addClass('form-elem tabindex' + i);
+            i++;
+        });
+    };
+
+    var getNewFormElement = function (elem, originalSrc, isPrev) {
+        var order = (isPrev) ? -1 : 1;
+
+        var newElement = null;
+        var curElement = elem;
+
+        var parent = originalSrc.closest('form, .modal, .popover');
+        if (parent.length === 0) {
+            var popover = $('.popover:visible:first');
+            var modal = $('.modal:visible:first');
+            var form = $('form:visible:first');
+
+            if (popover.length > 0) {
+                parent = popover;
+            }
+            else if (modal.length > 0) {
+                parent = modal;
+            }
+            else {
+                parent = form;
+            }
+        }
+
+        var nextTabIndex = elem.getIntegerAttr('tabindex') + order;
+
+        while (newElement === null) {
+            curElement = parent.find('.tabindex' + nextTabIndex);
+            if (curElement.length > 0) {
+                if (curElement.is(elem)) {
+                    newElement = originalSrc;
+                }
+                else if ($.isFormElement(curElement) || curElement.hasClass('nav-trigger')) {
+                    newElement = curElement;
+                }
+                else {
+                    nextTabIndex = nextTabIndex + order;
+                }
+            }
+            else {
+                var firstOrLast = (isPrev) ? ':last' : ':first';
+                nextTabIndex = parent.find('.form-elem' + firstOrLast).getIntegerAttr('tabindex');
+            }
+        }
+
+        return newElement;
+    };
+
+    $.fn.getPrevFormElement = function (originalSrc) {
+        originalSrc = (originalSrc === undefined) ? this : originalSrc;
+        return getNewFormElement(this, originalSrc, true);
+    };
+
+    $.fn.getNextFormElement = function (originalSrc) {
+        originalSrc = (originalSrc === undefined) ? this : originalSrc;
+        return getNewFormElement(this, originalSrc, false);
+    };
+
     $.registerInit(function () {
         // We want to ensure these are always performed last, so unbind and bind them again
         $(document)
@@ -198,19 +302,15 @@
             .on('keyup', autoNextFocusElem)
             .off('keypress', shouldAutoNextFocusElem)
             .on('keypress', shouldAutoNextFocusElem);
+
+        initTabIndexes();
     });
 
     $('form:first').submit(function () {
-        $.resetInvisibleFormElements();
+        $(document).resetInvisibleFormElements();
     });
 
     $(document).ready(function () {
-        $.getAllFormElements().each(function () {
-            var self = $(this);
-            if (self.is(':enabled:visible')) {
-                self.focus();
-                return false;
-            }
-        });
+        $('.form-elem:enabled:visible:first').focus();
     });
 })(jQuery);

@@ -66,15 +66,16 @@
         var focusElem = $(':focus');
         var personDynamic = focusElem.closest('.personDynamic');
         if (personDynamic.length > 0) {
-            $.resetInvisibleFormElements();
-
-            var form = $('form:first');
+            var row = personDynamic.closest('tr');
             var type = personDynamic.attr('data-type');
-            var data = form.serialize() + '&_eventId=refresh-person-dynamics&ajaxSource=true&type=' + type;
+
+            row.resetInvisibleFormElements();
+            var data = row.find('.form-elem').serialize() +
+                '&_eventId=refresh-person-dynamics&ajaxSource=true&type=' + type;
 
             var rp = null;
             if (personDynamic.is('td')) {
-                rp = personDynamic.closest('tr').data('rp');
+                rp = row.data('rp');
                 data += '&person=' + rp;
             }
 
@@ -94,6 +95,7 @@
                         modal.find($.getDataElemSelector('person')).data('person', rp);
                     }
                     modal.modal({keyboard: false, backdrop: 'static'});
+                    modal.find('.btn-new:first').focus();
                 }
             });
         }
@@ -102,10 +104,15 @@
     var onModalClose = function () {
         var modal = $('.modal:visible').first();
 
-        var oneRecordRequired = modal.data('one-record-required');
+        var minRecords = modal.getIntegerDataValue('min-records');
+        var maxRecords = modal.getIntegerDataValue('max-records');
+
         var numberOfRecords = modal.find('table span.seqNr').length;
-        if (oneRecordRequired && (numberOfRecords === 0)) {
-            alert('Dynamische gegevens is verplicht.');
+        if (numberOfRecords < minRecords) {
+            alert('Minimaal ' + minRecords + ' regels met dynamische gegevens is verplicht.');
+        }
+        else if ((maxRecords > 0) && (numberOfRecords > maxRecords)) {
+            alert('Maximaal ' + maxRecords + ' regels met dynamische gegevens zijn toegestaan.');
         }
         else {
             modal.find('.btn-cancel').click();
@@ -115,7 +122,8 @@
             var target = $('#registrationAllLines').find('tr[data-rp=' + rp + ']');
 
             if (target.length === 1) {
-                data._eventId = 'refresh-persons';
+                data._eventId = 'refresh-person';
+                data.person = rp;
             }
             else {
                 data._eventId = 'refresh-person-dynamic';

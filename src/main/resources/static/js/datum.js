@@ -47,19 +47,21 @@
     };
 
     $.prepareDate = function (hsnDate) {
-        var day = hsnDate.day;
-        var dayIsZero = (day.isInput && (day.getValue() === 0));
+        if ($.getCurNavigation().isNext) {
+            var day = hsnDate.day;
+            var dayIsZero = (day.isInput && (day.getValue() === 0));
 
-        $.each(hsnDate, function (name, elem) {
-            if (dayIsZero && elem.isInput) {
-                elem.elem.val(-1);
+            $.each(hsnDate, function (name, elem) {
+                if (dayIsZero && elem.isInput) {
+                    elem.elem.val(-1);
+                }
+            });
+
+            if (dayIsZero) {
+                var parent = day.elem.getParentOfFormElement();
+                var lastElement = parent.find(':input:enabled:visible:last');
+                lastElement.autoNextFocus(false);
             }
-        });
-
-        if (dayIsZero) {
-            var parent = day.elem.getParentOfFormElement();
-            var lastElement = parent.find(':input:enabled:visible:last');
-            lastElement.autoNextFocus(false);
         }
     };
 
@@ -106,20 +108,16 @@
                 var elem = $(this).find('.day, .month, .year, .minute, .hour').first();
                 doCheckDate(elem, prepare, dateCheck, false);
             });
-        });
-
-        $(document).on('blur', $.createDateSelector(selector), function (e) {
+        }).on('blur', $.createDateSelector(selector), function (e) {
             if (!$.isRunningInit()) {
                 doCheckDate($(e.target), prepare, dateCheck, true);
             }
-        });
-
-        $(document).on('show', function (e) {
+        }).on('show', function (e) {
             if (!$.isRunningInit()) {
                 var elem = $(e.target);
                 var elements = [];
                 if (elem.is(selector)) {
-                   elements = elem;
+                    elements = elem;
                 }
                 else {
                     elements = elem.find(selector);

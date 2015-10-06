@@ -13,7 +13,7 @@
     var updateBrpFields = function (elem, isNext, isPrev) {
         if (!brpAjax) {
             brpAjax = true;
-            $.resetInvisibleFormElements();
+            $(document).resetInvisibleFormElements();
 
             var id = elem.attr('id');
             var form = elem.parents('form:first');
