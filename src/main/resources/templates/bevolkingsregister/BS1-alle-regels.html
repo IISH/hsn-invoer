@@ -69,7 +69,8 @@
   <div class="sub-form-group">
     <input type="text" class="form-control form-control-digit has-inschrijving required" maxlength="1"
            data-valid-chars="j;n" th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister) == false}"
-           th:value="${@bevolkingsregisterHelper.hasInschrijfDatum(persons[__${stat.index}__])}"/>
+           th:value="${@bevolkingsregisterHelper.hasInschrijfDatum(persons[__${stat.index}__])}"
+           th:id="${'ins-datum-' + rp}"/>
 
     <p class="form-control-static" th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister)}">
       n
@@ -142,7 +143,7 @@
   <div class="relatieDateHoofdPopup" style="display:none;">
     <div class="relatieDateHoofdPopupContent">
       <div class="form-inline">
-        <div class="form-group checkDateBevReg fullCheck noNeg">
+        <div class="form-group checkDateBevReg fullCheck noNeg afterHfdDatum">
           <label class="control-label">Datum expliciet hoofd:</label>
 
           <input type="text" class="form-control form-control-digit day spacing" maxlength="2"
@@ -223,10 +224,12 @@
 <td class="personDynamic" data-type="BURGELIJKE_STAND"
     th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Rel -->
-  <input type="text" class="form-control form-control-digit required burg-stand-relatie burgStandToggle" maxlength="2"
-         data-min-value="-2" th:field="*{b3Brg[__${rp}__][0].valueOfRelatedPerson}"
-         hsn:field="b3Brg[__${rp}__][0].valueOfRelatedPerson"
-         th:style="${#arrays.contains({2,3,5,9}, akte.b3Brg[__${rp}__][0].contentOfDynamicData) == false} ? 'display:none;'"/>
+  <div class="sub-form-group burgStandToggle"
+       th:style="${#arrays.contains({2,3,5,9}, akte.b3Brg[__${rp}__][0].contentOfDynamicData) == false} ? 'display:none;'">
+    <input type="text" class="form-control form-control-digit required burg-stand-relatie" maxlength="2"
+           data-min-value="-2" th:field="*{b3Brg[__${rp}__][0].valueOfRelatedPerson}"
+           hsn:field="b3Brg[__${rp}__][0].valueOfRelatedPerson"/>
+  </div>
 </td>
 <td class="personDynamic" data-type="BURGELIJKE_STAND"
     th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
@@ -239,9 +242,11 @@
 <td class="personDynamic" data-type="BURGELIJKE_STAND"
     th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Plaats -->
-  <input type="text" class="form-control form-control-medium spacing plaats burgStandToggle"
-         th:field="*{b3Brg[__${rp}__][0].dynamicData2}" hsn:field="b3Brg[__${rp}__][0].dynamicData2"
-         th:style="${#arrays.contains({2,3,5,9}, akte.b3Brg[__${rp}__][0].contentOfDynamicData) == false} ? 'display:none;'"/>
+  <div class="sub-form-group burgStandToggle"
+       th:style="${#arrays.contains({2,3,5,9}, akte.b3Brg[__${rp}__][0].contentOfDynamicData) == false} ? 'display:none;'">
+    <input type="text" class="form-control form-control-medium spacing plaats"
+           th:field="*{b3Brg[__${rp}__][0].dynamicData2}" hsn:field="b3Brg[__${rp}__][0].dynamicData2"/>
+  </div>
 </td>
 <td class="personDynamic" data-type="KERKGENOOTSCHAP"
     th:classappend="${akte.b3Kg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
@@ -261,12 +266,13 @@
          th:name="'b3Brp['+__${rp}__+'][0].contentOfDynamicData'"/>
 
   <input type="text" class="form-control form-control-digit required positie" maxlength="1" data-valid-chars="h;o;n"
-         th:value="${@bevolkingsregisterHelper.getPositieFromCode(akte.b3Brp[__${rp}__][0])}"/>
+         th:id="${'p-' + rp}" th:value="${@bevolkingsregisterHelper.getPositieFromCode(akte.b3Brp[__${rp}__][0])}"/>
 </td>
 <td class="personDynamic" data-type="HERKOMST">
   <!-- Herkomst -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-digit has-herkomst required" maxlength="1" data-valid-chars="j;n"
+    <input type="text" class="form-control form-control-digit has-herkomst required" maxlength="1"
+           data-valid-chars="j;n" th:id="${'herkomst-' + rp}"
            th:value="${@bevolkingsregisterHelper.hasHerkomstData(akte, persons[__${stat.index}__])}"/>
   </div>
 
@@ -284,7 +290,8 @@
 <td class="personDynamic" data-type="VERTREK">
   <!-- Vertrek -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-digit has-vertrek required" maxlength="1" data-valid-chars="j;n"
+    <input type="text" class="form-control form-control-digit has-vertrek required" maxlength="1"
+           data-valid-chars="j;n" th:id="${'vertrek-' + rp}"
            th:value="${@bevolkingsregisterHelper.hasVertrekData(akte, persons[__${stat.index}__])}"/>
   </div>
 
@@ -302,7 +309,8 @@
 <td>
   <!-- Ovl dat -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-digit required has-overlijden" maxlength="1" data-valid-chars="j;n"
+    <input type="text" class="form-control form-control-digit required has-overlijden" maxlength="1"
+           data-valid-chars="j;n" th:id="${'overlijden-' + rp}"
            th:value="${@bevolkingsregisterHelper.hasOverlijdensData(persons[__${stat.index}__])}"/>
   </div>
 

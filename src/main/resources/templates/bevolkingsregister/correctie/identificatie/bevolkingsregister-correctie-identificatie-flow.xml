@@ -21,6 +21,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="finishEnd">
+      <evaluate expression="bevolkingsregisterService.registerIdentification(flowScope.akte)"/>
       <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
     </transition>
   </view-state>

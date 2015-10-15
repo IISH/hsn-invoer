@@ -31,6 +31,9 @@
                 $('.btn-next').addClass('op-error');
                 $(document).trigger('changeOfState');
                 $('.person span').text('');
+
+                checkHoofdDatum();
+                checkOtherRegistrations();
             });
         }
         else {
@@ -72,6 +75,8 @@
                 $('.btn-next').addClass('bron-error');
                 $(document).trigger('changeOfState');
                 $('.register span').text('');
+
+                checkHoofdDatum();
             });
         }
         else {
@@ -267,13 +272,13 @@
                     $('.group-vorige-inschrijving').hide();
                 }
 
-                checkVorigeInsschrijving();
+                checkVorigeInschrijving();
             });
         }
         else {
             allRegistrationsOfOp = [];
             $('.group-vorige-inschrijving').hide();
-            checkVorigeInsschrijving();
+            checkVorigeInschrijving();
         }
     };
 
@@ -289,7 +294,7 @@
         var opDate = new Date(opHsnDate.year.getValue(), opHsnDate.month.getValue() - 1, opHsnDate.day.getValue());
         var hfdDate = new Date(yearVal, monthVal - 1, dayVal);
 
-        if (!error && opHsnDate.year.getValue() > 0 && opHsnDate.month.getValue() > 0 && opHsnDate.day.getValue() > 0) {
+        if (!error) {
             $.setError(
                 opDate.getTime() < hfdDate.getTime(),
                 'op-hfd-datum',
@@ -333,11 +338,13 @@
                 aantalRegelsElem.val(volgnummer);
             }
 
-            $.setError(
-                (registerType === 'A' || registerType === 'I') && (volgnummer > 1),
-                'volgnummer-op',
-                'In dit type bron kan slechts één persoon (de OP) worden ingevoerd.'
-            );
+            var onePersonWarning = $('#onePersonWarning');
+            if ((registerType === 'A' || registerType === 'I') && (volgnummer > 1)) {
+                onePersonWarning.show();
+            }
+            else {
+                onePersonWarning.hide();
+            }
 
             var volgNrOp = volgNrOpElem.getIntegerValue();
             var aantalRegels = aantalRegelsElem.getIntegerValue();
@@ -349,11 +356,11 @@
         }
     };
 
-    var checkVorigeInsschrijving = function () {
+    var checkVorigeInschrijving = function () {
         var error = false;
         var vorigeInschrijving = $('#vorige-inschrijving');
 
-        if (vorigeInschrijving.val() === 'j') {
+        if ((vorigeInschrijving.val() === 'j') && vorigeInschrijving.is(':visible')) {
             var bron = $('#prevRegistration\\.keyToSourceRegister').getIntegerValue();
             var day = $('#prevRegistration\\.dayEntryHead').getIntegerValue();
             var month = $('#prevRegistration\\.monthEntryHead').getIntegerValue();
@@ -401,7 +408,7 @@
         }
 
         $('.group-vorige-inschrijving input').blur(function () {
-            checkVorigeInsschrijving();
+            checkVorigeInschrijving();
         });
     });
 })(jQuery);

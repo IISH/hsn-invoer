@@ -523,13 +523,11 @@ public class BevolkingsregisterService {
     }
 
     /**
-     * TODO: Unused method?
-     *
      * Registers the updated identification data.
      *
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
-    /*public void registerIdentification(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+    public void registerIdentification(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         Registration registration = bevolkingsregisterFlow.getB4();
         Person newOp = bevolkingsregisterFlow.getOp();
         RegistrationId registrationId = registration.getRegistrationId();
@@ -560,17 +558,6 @@ public class BevolkingsregisterService {
 
         for (RegistrationAddress registrationAddress : bevolkingsregisterFlow.getB6()) {
             registrationAddress.setRegistrationId(registrationId);
-        }
-    }*/
-
-    /**
-     * Register all persons from the registration.
-     *
-     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
-     */
-    public void registerPersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        for (Person person : bevolkingsregisterFlow.getB2()) {
-            registerPerson(bevolkingsregisterFlow, person);
         }
     }
 

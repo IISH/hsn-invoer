@@ -272,7 +272,7 @@
       </table>
     </div>
 
-    <div class="form-group dateHoofd extra-top-margin-sm checkDateBevReg fullCheck noNeg" style="display:none;">
+    <div class="form-group dateHoofd extra-top-margin-sm checkDateBevReg fullCheck noNeg afterHfdDatum" style="display:none;">
       <label class="col-xs-5 control-label">
         Datum expliciet hoofd:
       </label>
@@ -497,8 +497,10 @@
           </td>
           <td style="min-width:60px;max-width:60px;">
             <!-- Rel -->
-            <input type="text" class="form-control form-control-digit required burg-stand-relatie burgStandToggle"
-                   maxlength="2" name="valueOfRelatedPerson" data-min-value="-2"/>
+            <div class="sub-form-group burgStandToggle">
+              <input type="text" class="form-control form-control-digit required burg-stand-relatie"
+                     maxlength="2" name="valueOfRelatedPerson" data-min-value="-2"/>
+            </div>
           </td>
           <td style="min-width:200px;max-width:200px;">
             <div class="form-inline sub-form-group checkDateBevReg fullCheck burgStandToggle">
@@ -525,7 +527,9 @@
           </td>
           <td style="min-width:300px;max-width:300px;">
             <!-- Plaats -->
-            <input type="text" class="form-control plaats burgStandToggle" name="dynamicData2"/>
+            <div class="sub-form-group burgStandToggle">
+              <input type="text" class="form-control plaats" name="dynamicData2"/>
+            </div>
           </td>
           <td style="min-width:150px;max-width:150px;">
             <!-- Save -->

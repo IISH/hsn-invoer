@@ -1,7 +1,6 @@
 package org.iish.hsn.invoer.util;
 
 import org.iish.hsn.invoer.domain.invoer.Invoer;
-import org.iish.hsn.invoer.domain.invoer.StatusWorkOrder;
 import org.iish.hsn.invoer.domain.invoer.WorkOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;

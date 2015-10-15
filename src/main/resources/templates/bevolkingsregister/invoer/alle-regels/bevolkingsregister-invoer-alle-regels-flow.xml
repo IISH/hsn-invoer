@@ -55,9 +55,14 @@
       <render fragments="#{'b3Content' + requestParameters.type}"/>
     </transition>
 
-    <transition on="refresh-person-dynamics">
-      <evaluate expression="bevolkingsregisterService.registerPersons(flowScope.akte)"/>
+    <transition on="register-person">
       <evaluate expression="flowScope.akte.setCurB2Index(new Integer(requestParameters.person) - 1)"/>
+      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+    </transition>
+
+    <transition on="refresh-person-dynamics">
+      <evaluate expression="flowScope.akte.setCurB2Index(new Integer(requestParameters.person) - 1)"/>
+      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
       <render fragments="#{'b3Content' + requestParameters.type}"/>
     </transition>
 
@@ -79,11 +84,8 @@
       <render fragments="registrationAllLines"/>
     </transition>
 
-    <transition on="stop" to="stopEnd"/>
-
-    <transition on="next" to="BS2">
-      <evaluate expression="bevolkingsregisterService.registerPersons(flowScope.akte)"/>
-    </transition>
+    <transition on="stop" to="stopEnd" bind="false"/>
+    <transition on="next" to="BS2" bind="false"/>
   </view-state>
 
   <!-- BS2: ADRESSEN -->

@@ -135,9 +135,6 @@
             }
         }
         else {
-            /*var row = elems.parent.find('tr.rowToUpdate');
-            row.removeClass('rowToUpdate');*/
-
             self.trigger('crud-table-save-update', [elems, data]);
         }
     };

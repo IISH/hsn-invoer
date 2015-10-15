@@ -3,6 +3,8 @@ package org.iish.hsn.invoer.web;
 import org.iish.hsn.invoer.util.InputMetadata;
 import org.iish.hsn.invoer.util.NoInputMetadataCheck;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,5 +63,11 @@ public class MainController {
     @RequestMapping(value = "/backButton", method = RequestMethod.GET)
     public String backButtonPrevent() {
         return "exception/backButtonError";
+    }
+
+    @NoInputMetadataCheck
+    @RequestMapping(value = "/keepalive", method = RequestMethod.POST)
+    public ResponseEntity keepAlive() {
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

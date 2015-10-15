@@ -40,6 +40,8 @@
         var monthVal = hsnDate.month.getValue();
         var yearVal = hsnDate.year.getValue();
 
+        var date = new Date(yearVal, monthVal - 1, dayVal);
+
         if (dayVal === 0 || dayVal < -3 || dayVal > 31) {
             error = true;
         }
@@ -53,8 +55,17 @@
             error = true;
         }
         if (parent.hasClass('fullCheck') && (dayVal > 0 && monthVal > 0 && yearVal > 0)) {
-            var date = new Date(yearVal, monthVal - 1, dayVal);
             if (date.getDate() !== dayVal || date.getMonth() !== (monthVal - 1) || date.getFullYear() !== yearVal) {
+                error = true;
+            }
+        }
+        if (parent.hasClass('afterHfdDatum')) {
+            var hfdDate = new Date(
+                $('.year-hfd-datum:first').getIntegerText(),
+                $('.month-hfd-datum:first').getIntegerText() - 1,
+                $('.day-hfd-datum:first').getIntegerText()
+            );
+            if (hfdDate >= date) {
                 error = true;
             }
         }

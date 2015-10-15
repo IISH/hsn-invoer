@@ -79,13 +79,12 @@
                 seqNrElem.val(lastSeqNr + 1);
             }
         }
-        else {
-            if (blurPerson) {
-                seqNrElem.val(lastSeqNr + 1);
-            }
-            else if (seqNr > lastSeqNr) {
-                seqNrElem.val(lastSeqNr + 1);
-            }
+        else if (blurPerson || (seqNr > lastSeqNr)) {
+            seqNrElem.val(lastSeqNr + 1);
+        }
+
+        if (blurPerson && btnSaveUpdate.is(':hidden')) {
+            seqNrElem.autoNextFocus(false);
         }
     };
 
@@ -144,6 +143,15 @@
 
     var onReset = function () {
         $('#dateOrderWarning').hide();
+    };
+
+    var onNew = function (self, elems) {
+        var person = elems.onEdit.find('.person');
+        var seqNr = elems.onEdit.find('.seqNr');
+
+        person.val(0).blur();
+        seqNr.val('');
+        person.focus().setCaret(0);
     };
 
     var onUpdate = function (self, elems) {
@@ -206,6 +214,8 @@
 
     $(document).on('crud-table-reset', function (e) {
         onReset();
+    }).on('crud-table-new', function (e, elems) {
+        onNew($(e.target), elems);
     }).on('crud-table-update', function (e, elems) {
         onUpdate($(e.target), elems);
     }).on('crud-table-delete', function (e, elems, data) {

@@ -55,8 +55,8 @@ public class BevolkingsregisterHelper {
     }
 
     public boolean registrationHasMaxPersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        Ref_AINB refAinb = bevolkingsregisterFlow.getRefAinb();
-        int curPerson = bevolkingsregisterFlow.getCurPersonKey();
+        /*Ref_AINB refAinb = bevolkingsregisterFlow.getRefAinb();
+        int curPerson = bevolkingsregisterFlow.getCurPersonKey();*/
 
         // If we are in correction, there is no max as long as not all correction persons were corrected
         if (bevolkingsregisterFlow.isCorrection()) {
@@ -70,8 +70,11 @@ public class BevolkingsregisterHelper {
             }
         }
 
+        // TODO: No hard limit on number of persons allowed, also in case of an 'A' or 'I' register?
         // Only one person is allowed in case of an A or I register (correction may lead to multiple persons though)
-        return ((curPerson >= 1) && (refAinb.getTypeRegister().equals("A") || refAinb.getTypeRegister().equals("I")));
+        // return ((curPerson >= 1) && (refAinb.getTypeRegister().equals("A") || refAinb.getTypeRegister().equals("I")));
+
+        return false;
     }
 
     public List<PersonDynamic> getPersonDynamicsWithInvalidBurgStandRelatie(BevolkingsregisterFlowState
@@ -103,33 +106,6 @@ public class BevolkingsregisterHelper {
         }
 
         return relatedPersons;
-    }
-
-    // TODO
-    public int getNumberOfHoofden(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        int counter = 0;
-        List<PersonDynamic> b3Rel = bevolkingsregisterFlow.getAllB3ForType(PersonDynamic.Type.RELATIE_TOV_HOOFD);
-
-        for (PersonDynamic personDynamic : b3Rel) {
-            if (personDynamic.getContentOfDynamicData() == 1) {
-                counter++;
-            }
-        }
-
-        return counter;
-    }
-
-    public int getNumberOfHoofden(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
-        int counter = 0;
-        List<PersonDynamic> b3Rel = bevolkingsregisterFlow.getB3Rel().get(person.getRp());
-
-        for (PersonDynamic personDynamic : b3Rel) {
-            if (personDynamic.getContentOfDynamicData() == 1) {
-                counter++;
-            }
-        }
-
-        return counter;
     }
 
     public int findKeyOfRp(BevolkingsregisterFlowState bevolkingsregisterFlow) {

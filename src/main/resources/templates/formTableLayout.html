@@ -3,7 +3,7 @@
 <head></head>
 <body>
 <th:block layout:fragment="content">
-  <form th:object="${akte}" method="post" class="form-horizontal" autocomplete="off" data:is-correction="${akte.isCorrection()}">
+  <form th:object="${akte}" method="post" class="form-horizontal noResetOnSubmit" autocomplete="off" data:is-correction="${akte.isCorrection()}">
     <fieldset class="title content-spacing" layout:fragment="title"></fieldset>
 
     <fieldset>
@@ -20,6 +20,8 @@
 
     <fieldset class="content-spacing" layout:fragment="navigation"></fieldset>
   </form>
+
+  <form method="post" id="no-form" class="hidden"></form>
 </th:block>
 </body>
 </html>

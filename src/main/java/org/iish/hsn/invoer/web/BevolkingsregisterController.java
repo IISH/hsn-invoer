@@ -1,18 +1,37 @@
 package org.iish.hsn.invoer.web;
 
 import org.iish.hsn.invoer.domain.invoer.bev.Person;
+import org.iish.hsn.invoer.domain.invoer.bev.PersonDynamic;
 import org.iish.hsn.invoer.domain.invoer.bev.Registration;
 import org.iish.hsn.invoer.domain.invoer.bev.RegistrationId;
 import org.iish.hsn.invoer.exception.NotFoundException;
+import org.iish.hsn.invoer.flow.helper.BevolkingsregisterHelper;
+import org.iish.hsn.invoer.flow.state.BevolkingsregisterFlowState;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.service.OverviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.webflow.context.ExternalContextHolder;
+import org.springframework.webflow.context.servlet.DefaultFlowUrlHandler;
+import org.springframework.webflow.context.servlet.FlowUrlHandler;
+import org.springframework.webflow.context.servlet.ServletExternalContext;
+import org.springframework.webflow.execution.FlowExecution;
+import org.springframework.webflow.execution.FlowExecutionKey;
+import org.springframework.webflow.execution.repository.FlowExecutionRepository;
+import org.springframework.webflow.executor.FlowExecutor;
+import org.springframework.webflow.executor.FlowExecutorImpl;
+import org.springframework.webflow.mvc.servlet.MvcExternalContext;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +39,12 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/bevolkingsregister")
 public class BevolkingsregisterController {
-    @Autowired private LookupService   lookupService;
+    @Autowired private FlowExecutor flowExecutor;
+    @Autowired private ServletContext servletContext;
+
+    @Autowired private LookupService lookupService;
     @Autowired private OverviewService overviewService;
+    @Autowired private BevolkingsregisterHelper bevolkingsregisterHelper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String start() {
@@ -93,5 +116,35 @@ public class BevolkingsregisterController {
     @RequestMapping(value = "/overzicht", method = RequestMethod.POST)
     public String getOverviewRedirect() {
         return "redirect:/bevolkingsregister/hoofdmenu";
+    }
+
+    @RequestMapping(value = "/related-person-dynamics", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<PersonDynamic> getRelatedPersonDynamics(HttpServletRequest request, HttpServletResponse response,
+                                                                      @RequestParam(value = "person") Integer person,
+                                                                      @RequestParam(value = "type") PersonDynamic.Type type) {
+        BevolkingsregisterFlowState bevolkingsregisterFlow = getFlowState(request, response);
+        if (bevolkingsregisterFlow != null) {
+            return bevolkingsregisterHelper.getWhereRelatedPerson(bevolkingsregisterFlow, person, type);
+        }
+        return new ArrayList<>();
+    }
+
+    /**
+     * Access the bevolkingsregister flow state for use with AJAX calls with JSON response.
+     *
+     * @param request  The request.
+     * @param response The response.
+     * @return The flow state, if found in the current session.
+     */
+    private BevolkingsregisterFlowState getFlowState(HttpServletRequest request, HttpServletResponse response) {
+        FlowUrlHandler flowUrlHandler = new DefaultFlowUrlHandler();
+        ServletExternalContext servletExternalContext = new MvcExternalContext(servletContext, request, response, flowUrlHandler);
+        ExternalContextHolder.setExternalContext(servletExternalContext);
+
+        FlowExecutionRepository executionRepository = ((FlowExecutorImpl) flowExecutor).getExecutionRepository();
+        FlowExecutionKey executionKey = executionRepository.parseFlowExecutionKey(flowUrlHandler.getFlowExecutionKey(request));
+        FlowExecution flowExecution = executionRepository.getFlowExecution(executionKey);
+
+        return (BevolkingsregisterFlowState) flowExecution.getActiveSession().getScope().get("akte");
     }
 }

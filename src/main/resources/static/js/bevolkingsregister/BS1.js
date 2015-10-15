@@ -16,7 +16,13 @@
     $.getCurPerson = function () {
         var person;
         if (isAllLines()) {
-            person = getActiveRow().getIntegerDataValue('rp');
+            var modal = $('.modal:visible');
+            if (modal.length > 0) {
+                person = modal.getIntegerDataValue('rp');
+            }
+            else {
+                person = getActiveRow().getIntegerDataValue('rp');
+            }
         }
         else {
             person = $('#curPerson').getIntegerValue();
@@ -455,6 +461,15 @@
             hsnDate.day.elem.val('');
             hsnDate.month.elem.val('');
             hsnDate.year.elem.val('');
+
+            var prevRow = getActiveRow().prev();
+            if (prevRow.is('tr') && (prevRow.find('.has-inschrijving').val() === 'j')) {
+                hsnDate.day.elem.val(prevRow.find('.datum-inschrijving .day').val());
+                hsnDate.month.elem.val(prevRow.find('.datum-inschrijving .month').val());
+                hsnDate.year.elem
+                    .val(prevRow.find('.datum-inschrijving .year').val())
+                    .autoNextFocus(true);
+            }
         }
         else if (datumInschrijvingElem.is(':visible') && hasInschrijvingElem.val() !== 'j') {
             hsnDate.day.elem.val(-1);
@@ -498,7 +513,25 @@
 
     var showBurgStandAdditional = function (elem) {
         var burgStandToggle = elem.closest('tr,form').find('.burgStandToggle');
-        if ([2,3,5,9].indexOf(elem.getIntegerValue()) > -1) {
+        var value = elem.getIntegerValue();
+        if ([2,3,5,9].indexOf(value) > -1) {
+            if (isAllLines() && burgStandToggle.is(':hidden')) {
+                var data = location.search.substring(1) + '&person=' + $.getCurPerson() + '&type=BURGELIJKE_STAND';
+                $.get('/bevolkingsregister/related-person-dynamics', data, function (personDynamics) {
+                    var found = false;
+                    $.each(personDynamics, function (i, personDynamic) {
+                        if (!found && (personDynamic.contentOfDynamicData === value)) {
+                            burgStandToggle.find('.burg-stand-relatie').val(personDynamic.keyToRegistrationPersons);
+                            burgStandToggle.find('.day').val(personDynamic.dayOfMutation);
+                            burgStandToggle.find('.month').val(personDynamic.monthOfMutation);
+                            burgStandToggle.find('.year').val(personDynamic.yearOfMutation);
+                            burgStandToggle.find('.plaats').val(personDynamic.dynamicData2);
+                            found = true;
+                        }
+                    });
+                    burgStandToggle.trigger('show');
+                });
+            }
             burgStandToggle.show();
         }
         else {
@@ -688,10 +721,15 @@
         if (!$.isCorrection() && (row.data('copy-prev-person') !== 'copy-prev-person')) {
             var prevRow = row.prev();
             if (prevRow.is('tr')) {
-                row.find('.has-inschrijving').val(prevRow.find('.has-inschrijving').val());
-                row.find('.datum-inschrijving .day').val(prevRow.find('.datum-inschrijving .day').val());
-                row.find('.datum-inschrijving .month').val(prevRow.find('.datum-inschrijving .month').val());
-                row.find('.datum-inschrijving .year').val(prevRow.find('.datum-inschrijving .year').val());
+                var hasInscrhijving = prevRow.find('.has-inschrijving').val();
+                var datumInschrijving = row.find('.datum-inschrijving');
+                if (hasInscrhijving === 'j') {
+                    datumInschrijving.show();
+                }
+                datumInschrijving.find('.day').val(prevRow.find('.datum-inschrijving .day').val());
+                datumInschrijving.find('.month').val(prevRow.find('.datum-inschrijving .month').val());
+                datumInschrijving.find('.year').val(prevRow.find('.datum-inschrijving .year').val());
+                row.find('.has-inschrijving').val(hasInscrhijving);
 
                 var familyName = row.find('.lastName');
                 if (familyName.val().trim().length === 0) {
@@ -708,20 +746,39 @@
 
                 row.find('.kg').val(prevRow.find('.kg').val());
 
-                row.find('.has-herkomst').val(prevRow.find('.has-herkomst').val());
                 row.find('.herkomst-datum .day').val(prevRow.find('.herkomst-datum .day').val());
                 row.find('.herkomst-datum .month').val(prevRow.find('.herkomst-datum .month').val());
                 row.find('.herkomst-datum .year').val(prevRow.find('.herkomst-datum .year').val());
                 row.find('.herkomst-plaats').val(prevRow.find('.herkomst-plaats').val());
+                row.find('.has-herkomst').val(prevRow.find('.has-herkomst').val());
 
-                row.find('.has-vertrek').val(prevRow.find('.has-vertrek').val());
                 row.find('.vertrek-datum .day').val(prevRow.find('.vertrek-datum .day').val());
                 row.find('.vertrek-datum .month').val(prevRow.find('.vertrek-datum .month').val());
                 row.find('.vertrek-datum .year').val(prevRow.find('.vertrek-datum .year').val());
                 row.find('.vertrek-plaats').val(prevRow.find('.vertrek-plaats').val());
+                row.find('.has-vertrek').val(prevRow.find('.has-vertrek').val());
 
                 row.data('copy-prev-person', 'copy-prev-person');
             }
+        }
+    };
+
+    var registerPersons = function () {
+        $('#registrationAllLines').find('tr.register-person').each(function () {
+            var row = $(this);
+            row.resetInvisibleFormElements();
+            row.removeClass('register-person');
+            var data = row.find('.form-elem').serialize()
+                + '&_eventId=register-person&ajaxSource=true&person=' + row.data('rp');
+            $.ajax({type: 'POST', data: data});
+        });
+    };
+
+    var registerPerson = function () {
+        var row = getActiveRow();
+        if (!row.hasClass('register-person')) {
+            registerPersons();
+            row.addClass('register-person');
         }
     };
 
@@ -742,8 +799,11 @@
                 }
                 break;
         }
-    }).on('focus', '#registrationAllLines input', function () {
+    }).on('focus', '#registrationAllLines input', function (e) {
+        registerPerson();
         copyFromPrevLine();
+    }).on('focus', '.btn-next', function (e) {
+        registerPersons();
     }).on('change', '.has-inschrijving', function (e) {
         showDatumInschrijving($(e.target));
     }).on('blur', '.datum-inschrijving :input', function (e) {
@@ -767,14 +827,18 @@
     }).on('crud-table-new', '[data-type=BURGELIJKE_STAND]', function (e, elems) {
         updateBurgRelation($(e.target), elems);
     }).ready(function () {
-        // Extend the width to create more space in case one enters all lines at once
         if (isAllLines()) {
+            // Extend the width to create more space in case one enters all lines at once
             $('#main').addClass('extend-width');
+
+            // Also person registration is done via AJAX, so don't submit data on next/cancel
+            // This is done by binding the submit buttons to another empty form
+            $('form button[type=submit]').attr('form', 'no-form');
         }
 
         // If the user has to fix the burg. stand relation, then disable everything else
         if ($('#currentPerson').data('is-burg-stand-rel-fix')) {
-            elem.find(':input').not('.burg-stand-relatie, .btn-next, .modal button').attr('disabled', 'disabled');
+            $(':input').not('.burg-stand-relatie, .btn-next, .modal button').attr('disabled', 'disabled');
 
             // Also immediately open the person dynamic modal, by triggering a F4 event
             var e = $.Event('keydown');

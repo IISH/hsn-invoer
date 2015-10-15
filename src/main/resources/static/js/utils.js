@@ -32,6 +32,11 @@
 
     $(document).ready(function () {
         runInit($(document));
+
+        // Keep the session alive, call keepalive every minute
+        setInterval(function () {
+            $.post('/keepalive');
+        }, 60000);
     });
 
     $(document).on('ajax-update', function (e, elem) {
@@ -157,8 +162,7 @@
 
     $.fn.resetInvisibleFormElements = function () {
         var notVisibleInputElements = this
-            .find('.form-elem')
-            .filter(':input')
+            .find('.form-elem:input')
             .not(':visible')
             .not('[type=hidden]');
         notVisibleInputElements.filter('.integer-field').val(0);

@@ -131,7 +131,7 @@
   </div>
 </div>
 
-<div class="form-group checkDateHfd noNeg">
+<div class="form-group checkDateHfd fullCheck noNeg">
   <label class="col-xs-3 control-label">Hoofddatum:</label>
 
   <div
@@ -143,7 +143,7 @@
 </div>
 
 <th:block th:if="${akte.isCorrection()} == false">
-  <div class="form-group checkDateOP noNeg">
+  <div class="form-group checkDateOP fullCheck noNeg">
     <label class="col-xs-3 control-label">OP-datum:</label>
 
     <div th:replace="fragments/fields :: datum-sm ('b4.dayEntryRP', 'b4.monthEntryRP', 'b4.yearEntryRP')"></div>
@@ -263,6 +263,10 @@
     </div>
   </div>
 </th:block>
+
+<div id="onePersonWarning" class="alert alert-info extra-top-margin" role="alert" style="display:none;">
+  In dit type bron kan slechts één persoon (de OP) worden ingevoerd.
+</div>
 </th:block>
 </fieldset>
 

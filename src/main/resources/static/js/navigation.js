@@ -51,8 +51,8 @@
             }
         }
         else if (onDefaultNavigation !== undefined) {
-            var isNext = (((e.which === 9) && (!e.shiftKey)) || (e.which === 40)); // Tab or arrow down
-            var isPrev = (((e.which === 9) && (e.shiftKey)) || (e.which === 38)); // Shift + Tab or arrow up
+            var isNext = ((e.which === 9) && (!e.shiftKey)); // Tab
+            var isPrev = ((e.which === 9) && (e.shiftKey)); // Shift + Tab
 
             if (isNext || isPrev) {
                 curNav.isPrev = isPrev;
@@ -242,21 +242,19 @@
         var newElement = null;
         var curElement = elem;
 
-        var parent = originalSrc.closest('form, .modal, .popover');
-        if (parent.length === 0) {
-            var popover = $('.popover:visible:first');
-            var modal = $('.modal:visible:first');
-            var form = $('form:visible:first');
+        var popover = $('.popover:visible:first');
+        var modal = $('.modal:visible:first');
+        var form = $('form:visible:first');
 
-            if (popover.length > 0) {
-                parent = popover;
-            }
-            else if (modal.length > 0) {
-                parent = modal;
-            }
-            else {
-                parent = form;
-            }
+        var parent = null;
+        if (popover.length > 0) {
+            parent = popover;
+        }
+        else if (modal.length > 0) {
+            parent = modal;
+        }
+        else {
+            parent = form;
         }
 
         var nextTabIndex = elem.getIntegerAttr('tabindex') + order;
@@ -306,7 +304,7 @@
         initTabIndexes();
     });
 
-    $('form:first').submit(function () {
+    $('form:not(.noResetOnSubmit)').submit(function () {
         $(document).resetInvisibleFormElements();
     });
 
