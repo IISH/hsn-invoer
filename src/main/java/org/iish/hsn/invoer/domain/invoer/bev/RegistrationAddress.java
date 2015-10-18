@@ -37,7 +37,7 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
     @Column(name = "RecordID")
     private Integer recordID;
 
-    private Date lastChangedDate = new Date();
+    @Transient private Date lastChangedDate = new Date();
 
     public RegistrationAddress() {
     }
