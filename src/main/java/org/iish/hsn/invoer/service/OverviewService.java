@@ -79,6 +79,10 @@ public class OverviewService {
         return pkkndRepository.findAll(spec);
     }
 
+    public List<Registration> getPopulationRegisterRegistrationOverview() {
+        return getPopulationRegisterRegistrationOverview(null);
+    }
+
     public List<Registration> getPopulationRegisterRegistrationOverview(Integer idnr) {
         if ((idnr == null) || (idnr == 0)) {
             return registrationRepository.findByWorkOrder(inputMetadata.getWorkOrder());

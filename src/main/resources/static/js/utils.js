@@ -122,20 +122,24 @@
 
     $(document).on('show.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
-            var modalBackdrop = $('body > .modal-backdrop.in');
-            if (modalBackdrop.length === 0) {
-                modalBackdrop = $('<div class="modal-backdrop in"></div>')
+            // TODO: For now, don't show if a modal is opened
+            if ($('.modal:visible').length > 0)
+                return;
+
+            var popoverBackdrop = $('body > .popover-backdrop.in');
+            if (popoverBackdrop.length === 0) {
+                popoverBackdrop = $('<div class="popover-backdrop in"></div>')
                     .hide()
-                    .prependTo($(this).find('body'));
+                    .appendTo($('body'));
             }
-            modalBackdrop.fadeIn();
+            popoverBackdrop.fadeIn();
         }
     });
 
     $(document).on('hide.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
             $(this)
-                .find('.modal-backdrop.in')
+                .find('.popover-backdrop.in')
                 .fadeOut(400, function () {
                     $(this).remove();
                 });
@@ -164,7 +168,8 @@
         var notVisibleInputElements = this
             .find('.form-elem:input')
             .not(':visible')
-            .not('[type=hidden]');
+            .not('[type=hidden]')
+            .not('.noResetOnHidden');
         notVisibleInputElements.filter('.integer-field').val(0);
         notVisibleInputElements.not('.integer-field').val('');
     };

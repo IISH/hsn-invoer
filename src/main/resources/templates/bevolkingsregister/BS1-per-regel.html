@@ -281,6 +281,7 @@
              th:name="'b3Brp['+__${akte.curB2.rp}__+'][0].contentOfDynamicData'"/>
 
       <input type="text" class="form-control form-control-digit required positie" maxlength="1" data-valid-chars="h;o;n"
+             id="brp-positie"
              th:value="${@bevolkingsregisterHelper.getPositieFromCode(akte.b3Brp[__${akte.curB2.rp}__][0])}"/>
     </div>
   </div>
@@ -293,7 +294,7 @@
     <label class="col-xs-2 control-label">Herkomst? j/n</label>
 
     <div class="col-xs-1">
-      <input type="text" class="form-control form-control-digit required" id="herkomst"
+      <input type="text" class="form-control form-control-digit required has-herkomst" id="herkomst"
              maxlength="1" data-valid-chars="j;n"
              th:value="${@bevolkingsregisterHelper.hasHerkomstData(akte, akte.curB2)}"/>
     </div>
@@ -328,7 +329,7 @@
     <label class="col-xs-2 control-label">Vertrek? j/n</label>
 
     <div class="col-xs-1">
-      <input type="text" class="form-control form-control-digit required" id="vertrek"
+      <input type="text" class="form-control form-control-digit required has-vertrek" id="vertrek"
              maxlength="1" data-valid-chars="j;n"
              th:value="${@bevolkingsregisterHelper.hasVertrekData(akte, akte.curB2)}"/>
     </div>
@@ -361,7 +362,7 @@
     <label class="col-xs-2 control-label">Overlijden? j/n</label>
 
     <div class="col-xs-1">
-      <input type="text" class="form-control form-control-digit required" id="overlijden"
+      <input type="text" class="form-control form-control-digit required has-overlijden" id="overlijden"
              maxlength="1" data-valid-chars="j;n"
              th:value="${@bevolkingsregisterHelper.hasOverlijdensData(akte.curB2)}"/>
     </div>
@@ -389,7 +390,7 @@
 </div>
 
 <div class="form-group checkInterprDateBevReg overlijden-container" th:if="${akte.isCorrection()}"
-     th:style="${@bevolkingsregisterHelper.hasOverlijdensData(akte, akte.curB2) == 'n'} ? 'display:none;'">
+     th:style="${@bevolkingsregisterHelper.hasOverlijdensData(akte.curB2) == 'n'} ? 'display:none;'">
   <label class="col-xs-2 col-xs-offset-2 control-label">INTERPR:</label>
 
   <div class="col-xs-3 form-inline"
@@ -497,6 +498,7 @@
   </th:block>
 </th:block>
 
+<th:block th:replace="bevolkingsregister/overview-fragments :: overviewModal"></th:block>
 </th:block>
 </fieldset>
 

@@ -84,6 +84,16 @@ public class BevolkingsregisterController {
         }
     }
 
+    @RequestMapping(value = "/overzicht/modal", method = RequestMethod.GET)
+    public ModelAndView getOverviewModal() {
+        List<Registration> registrations = overviewService.getPopulationRegisterRegistrationOverview();
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("overview", registrations);
+
+        return new ModelAndView("bevolkingsregister/overview-fragments :: overviewTable", model);
+    }
+
     @RequestMapping(value = "/overzicht", method = RequestMethod.GET)
     public ModelAndView getOverview(@RequestParam(value = "idnr", required = false) Integer idnr) {
         List<Registration> registrations = overviewService.getPopulationRegisterRegistrationOverview(idnr);

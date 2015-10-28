@@ -201,24 +201,72 @@
           </td>
           <td colspan="2" class="col-xs-4">
             <!-- Code + Naam -->
-            <div class="form-inline">
-              <input type="text" class="form-control form-control-digit relatie is-id" name="contentOfDynamicData"
-                     data-selected="0"/>
+            <div>
+              <input type="text" class="form-control form-control-digit relatie is-id required"
+                     name="contentOfDynamicData" data-selected="0"/>
 
               <p class="form-control-static picklist-label spacing">
                 &nbsp;
               </p>
             </div>
 
-            <input type="hidden" class="dynamicData2" name="dynamicData2"/>
-            <input type="hidden" class="relatie-regel" name="valueOfRelatedPerson"/>
+            <input type="hidden" class="relatieRegelInterpr kode dynamicData2" name="dynamicData2"/>
+            <input type="hidden" class="relatieRegelInterpr regel relatie-regel" name="valueOfRelatedPerson"/>
 
             <div class="relatieRegelPopup" style="display:none;">
-              <div class="form-group">
-                <label class="control-label">Regelnr. relatie:</label>
+              <div class="form-inline">
+                <div class="form-group">
+                  <label class="control-label">Regelnr. relatie:</label>
 
-                <input type="text" class="integer-field form-control form-control-digit spacing"
-                       hsn:field="b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson"/>
+                  <input type="text" class="integer-field form-control form-control-digit spacing"
+                         hsn:field="b3Rel[__${akte.curB2.rp}__][0].valueOfRelatedPerson"/>
+                </div>
+              </div>
+            </div>
+
+            <input type="hidden" class="relatieDateHoofd day" name="dayHoofd"/>
+            <input type="hidden" class="relatieDateHoofd month" name="monthHoofd"/>
+            <input type="hidden" class="relatieDateHoofd year" name="yearHoofd"/>
+
+            <div class="relatieDateHoofdPopup" style="display:none;">
+              <div class="relatieDateHoofdPopupContent">
+                <div class="form-inline">
+                  <div class="form-group checkDateBevReg fullCheck noNeg afterHfdDatum">
+                    <label class="control-label">Datum expliciet hoofd:</label>
+
+                    <input type="text" class="form-control form-control-digit day spacing" maxlength="2"/>
+                    /
+                    <input type="text" class="form-control form-control-digit month" maxlength="2"/>
+                    /
+                    <input type="text" class="form-control form-control-small year" maxlength="4"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="relatieRegelInterprPopup" style="display:none;">
+              <div class="relatieRegelInterprPopupContent" style="width:300px">
+                <div class="form-group">
+                  <label class="col-xs-9 control-label">
+                    Regelnummer vader/moeder:
+                  </label>
+
+                  <div class="col-xs-3">
+                    <input type="text" class="form-control form-control-digit required regel regel-nr"
+                           data-min-value="-3" name="valueOfRelatedPerson"/>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-xs-9 control-label">
+                    Basis/aard interpretatie, kode:
+                  </label>
+
+                  <div class="col-xs-3">
+                    <input type="text" class="form-control form-control-digit required kode intr-kode" maxlength="1"
+                           name="dynamicData2"/>
+                  </div>
+                </div>
               </div>
             </div>
           </td>
@@ -270,44 +318,6 @@
         </tr>
         </tbody>
       </table>
-    </div>
-
-    <div class="form-group dateHoofd extra-top-margin-sm checkDateBevReg fullCheck noNeg afterHfdDatum" style="display:none;">
-      <label class="col-xs-5 control-label">
-        Datum expliciet hoofd:
-      </label>
-
-      <div class="col-xs-4 form-inline datum-expliciet-hoofd">
-        <input type="text" class="form-control form-control-digit day" name="dayHoofd" maxlength="2"/>
-        /
-        <input type="text" class="form-control form-control-digit month" name="monthHoofd" maxlength="2"/>
-        /
-        <input type="text" class="form-control form-control-small year" name="yearHoofd" maxlength="4"/>
-      </div>
-    </div>
-
-    <div class="extra-top-margin-sm regelInterpr" style="display:none;">
-      <div class="form-group">
-        <label class="col-xs-4 col-xs-offset-3 control-label">
-          Regelnummer vader/moeder:
-        </label>
-
-        <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required relatie-regel regel-nr" data-min-value="-3"
-                 name="valueOfRelatedPerson"/>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-xs-4 col-xs-offset-3 control-label">
-          Basis/aard interpretatie, kode:
-        </label>
-
-        <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required dynamicData2 intr-kode"
-                 maxlength="1" name="dynamicData2"/>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -486,7 +496,7 @@
           </td>
           <td colspan="2" style="min-width:180px;max-width:180px;">
             <!-- Code + Naam -->
-            <div class="form-inline">
+            <div>
               <input type="text" class="form-control form-control-digit burgstand is-id" name="contentOfDynamicData"
                      data-selected="0"/>
 

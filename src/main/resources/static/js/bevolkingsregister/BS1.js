@@ -102,6 +102,7 @@
                 html: true,
                 placement: 'bottom',
                 trigger: 'manual'
+                // TODO: container: 'body'
             });
 
             // Synchronizes the relatie regel
@@ -206,8 +207,13 @@
                 // Does the chosen relation require an 'regel relatie' value?
                 var shouldShow = [30, 40, 51, 52].indexOf(relatie.getIntegerValue()) >= 0;
                 if (!isInit && (relatieRegelInterprPopup.length > 0) && shouldShow) {
+                    var kodeElem = parent.find('.relatieRegelInterpr.kode');
+                    if (kodeElem.val().length > 1) {
+                        kodeElem.val('');
+                    }
+
                     relatieRegelInterprPopup.find('.regel').attr('value', parent.find('.relatieRegelInterpr.regel').val());
-                    relatieRegelInterprPopup.find('.kode').attr('value', parent.find('.relatieRegelInterpr.kode').val());
+                    relatieRegelInterprPopup.find('.kode').attr('value', kodeElem.val());
 
                     relatie.initPopoverContent(relatieRegelInterprPopup);
                     relatie.popover('show');
@@ -227,8 +233,8 @@
                 if (relatie.length > 0) {
                     if ((container.hasClass('only-head')) || (container.find('.only-head').length > 0)) {
                         $.setError(
-                            (relVal != -3) && (relVal != 1),
-                            'rel-only-head-' + relatie.attr('id'),
+                                (relVal != -3) && (relVal != 1),
+                                'rel-only-head-' + relatie.attr('id'),
                             'Relatiecode moet 1 of -3 zijn'
                         );
                     }
@@ -238,7 +244,7 @@
             // Bind the 'F9' key to open the 'relatie regel' popover or to close the opened relatie popover
             parent.keydown(function (e) {
                 if (e.which === 120) { // F9
-                    var popover = parent.find('.popover');
+                    var popover = $('.popover');
                     if (f9 && popover.is(':visible')) {
                         hidePopover(popover, true);
                         relatie.focus();
@@ -318,7 +324,7 @@
                 if (target.hasClass('popover-left') || target.hasClass('popover-right')) {
                     left = (target.hasClass('popover-left'));
 
-                    var popover = parent.find('.popover');
+                    var popover = $('.popover');
                     if (!hidePopover(popover, true)) {
                         (left)
                             ? popover.find(':input:enabled:visible:last').focus()
@@ -357,6 +363,7 @@
                 html: true,
                 placement: 'bottom',
                 trigger: 'manual'
+                // TODO: container: 'body'
             });
             yearPerson.initPopoverContent(popup);
 
@@ -514,7 +521,7 @@
     var showBurgStandAdditional = function (elem) {
         var burgStandToggle = elem.closest('tr,form').find('.burgStandToggle');
         var value = elem.getIntegerValue();
-        if ([2,3,5,9].indexOf(value) > -1) {
+        if ([2, 3, 5, 9].indexOf(value) > -1) {
             if (isAllLines() && burgStandToggle.is(':hidden')) {
                 var data = location.search.substring(1) + '&person=' + $.getCurPerson() + '&type=BURGELIJKE_STAND';
                 $.get('/bevolkingsregister/related-person-dynamics', data, function (personDynamics) {
@@ -553,9 +560,9 @@
         }
 
         $.setError(
-            !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
+                !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
             'burg-stand',
-            'Een relatie met regelnummer ' + relatie + ' is onmogelijk.'
+                'Een relatie met regelnummer ' + relatie + ' is onmogelijk.'
         );
         $(document).trigger('changeOfState');
     };

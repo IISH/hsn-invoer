@@ -105,7 +105,21 @@
     $.initCheckDate('.checkDateBevReg', $.prepareDate, $.checkDateBevReg);
     $.initCheckDate('.checkInterprDateBevReg', null, checkInterprDateBevReg);
 
-    /* Bijzonderheden modals */
+    /* Bijzonderheden and overview modals */
+
+    var onOverviewOpen = function () {
+        var modal = $('.overviewModal:first');
+        if (modal.length === 1) {
+            $.get('/bevolkingsregister/overzicht/modal', {}, function (overviewTable) {
+                modal.find('#overviewTable').replaceWith(overviewTable);
+                modal.modal({keyboard: false, backdrop: 'static'});
+            });
+        }
+    };
+
+    var onOverviewClose = function () {
+        $.getOpenedModal().modal('hide');
+    };
 
     var onPersonByzOpen = function () {
         var modal = $.getCurPersonModal();
@@ -147,23 +161,48 @@
             e.preventDefault();
             e.stopImmediatePropagation();
         }
-    });
-
-    $(document).keydown(function (e) {
+    }).on('focus', '.scrollable :input', function (e) {
+        var parent = $(e.target).getParentOfFormElement();
+        var scrollable = parent.closest('.scrollable');
+        if ((parent.length > 0) && (scrollable.length > 0)) {
+            var minLeft = parseInt(scrollable.width() / 2);
+            var position = parent.offset().left;
+            if (position > minLeft) {
+                scrollable.scrollLeft(scrollable.scrollLeft() + position - 50);
+            }
+        }
+    }).keydown(function (e) {
         var modal = $.getOpenedModal();
         var isModalVisible = (modal.length === 1);
+        var isOverviewModal = (isModalVisible && (modal.hasClass('overviewModal')));
         var isPersonByzModal = (isModalVisible && (modal.hasClass('personModal')));
         var isRegistrationByzModal = (isModalVisible && (modal.hasClass('registrationModal')));
 
         switch (e.which) {
             case 27: // Esc
-                if (isRegistrationByzModal) {
+                if (isOverviewModal) {
+                    onOverviewClose();
+                    e.preventDefault();
+                }
+                else if (isRegistrationByzModal) {
                     onRegistrationByzClose(false);
                     e.preventDefault();
                 }
                 else if (isPersonByzModal) {
                     onPersonByzClose(false);
                     e.preventDefault();
+                }
+                break;
+            case 113: // F2
+                if (e.shiftKey) {
+                    if (isOverviewModal) {
+                        onOverviewClose();
+                        e.preventDefault();
+                    }
+                    else if (!isModalVisible) {
+                        onOverviewOpen();
+                        e.preventDefault();
+                    }
                 }
                 break;
             case 116: // F5

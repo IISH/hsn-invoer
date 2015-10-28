@@ -398,15 +398,6 @@
     });
 
     $.registerInit(function (elem) {
-        // TODO: Required on init? Disabled for bevolkingsregister.
-        /*elem.find($.getDataElemSelector('min-value')).each(function () {
-            onMinValue($(this));
-        });
-
-        elem.find($.getDataElemSelector('max-value')).each(function () {
-            onMaxValue($(this));
-        });*/
-
         elem.find($.getDataElemSelector('replace')).each(function () {
             onReplace($(this));
         });

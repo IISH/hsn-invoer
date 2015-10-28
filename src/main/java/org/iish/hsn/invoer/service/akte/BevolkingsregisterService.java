@@ -869,21 +869,21 @@ public class BevolkingsregisterService {
 
         Person to = b2.get(person - 1);
         Person from = b2.get(lineToCopy - 1);
-        BeanUtils.copyProperties(from, to, "RecordID", "keyToRegistrationPersons");
+
+        to.setFirstName(from.getFirstName());
+        to.setFamilyName(from.getFamilyName());
+        to.setDayOfBirth(from.getDayOfBirth());
+        to.setMonthOfBirth(from.getMonthOfBirth());
+        to.setYearOfBirth(from.getYearOfBirth());
+        to.setPlaceOfBirth(from.getPlaceOfBirth());
+        to.setSex(from.getSex());
+        to.setNationality(from.getNationality());
 
         for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
             switch (type) {
-                case HERKOMST:
-                    Map<Integer, PersonDynamic> b3Her = bevolkingsregisterFlow.getFirstB3Her();
-                    BeanUtils.copyProperties(b3Her.get(lineToCopy), b3Her.get(person), "RecordID",
-                                             "keyToRegistrationPersons");
-                    break;
-                case VERTREK:
-                    Map<Integer, PersonDynamic> b3Ver = bevolkingsregisterFlow.getFirstB3Ver();
-                    BeanUtils.copyProperties(b3Ver.get(lineToCopy), b3Ver.get(person), "RecordID",
-                                             "keyToRegistrationPersons");
-                    break;
-                default:
+                case BEROEP:
+                case KERKGENOOTSCHAP:
+                case BURGELIJKE_STAND:
                     Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
                     List<PersonDynamic> b3To = b3.get(person);
                     List<PersonDynamic> b3From = b3.get(lineToCopy);
@@ -897,6 +897,24 @@ public class BevolkingsregisterService {
                                                  "keyToRegistrationPersons");
                     }
             }
+        }
+    }
+
+    /**
+     * Automatically add a default address if no addresses were entered.
+     *
+     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
+     */
+    public void checkAddresses(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+        List<RegistrationAddress> b6 = bevolkingsregisterFlow.getB6();
+        if (b6.isEmpty()) {
+            RegistrationAddress registrationAddress = new RegistrationAddress(0, 1);
+            registrationAddress.setDayOfAddress(-1);
+            registrationAddress.setMonthOfAddress(-1);
+            registrationAddress.setYearOfAddress(-1);
+            registrationAddress.setAddressType("ST");
+            registrationAddress.setNameOfStreet("$Geen adres$");
+            b6.add(registrationAddress);
         }
     }
 

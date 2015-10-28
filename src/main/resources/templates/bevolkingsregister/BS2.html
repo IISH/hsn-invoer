@@ -174,7 +174,7 @@
         </td>
         <td style="min-width:60px;max-width:60px;">
           <!-- Sim -->
-          <input type="text" name="synchroneNumber" class="form-control form-control-digit"/>
+          <input type="text" name="synchroneNumber" class="form-control form-control-digit integer-field"/>
         </td>
         <td style="min-width:60px;max-width:60px;">
           <!-- Type -->
@@ -228,6 +228,8 @@
         th:include="bevolkingsregister/byz-fragments :: personByz (${akte.b2[__${stat.index}__].rp})"></th:block>
   </div>
 </div>
+
+<th:block th:replace="bevolkingsregister/overview-fragments :: overviewModal"></th:block>
 </th:block>
 </fieldset>
 

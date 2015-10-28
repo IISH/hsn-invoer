@@ -60,7 +60,7 @@
             if (dayIsZero) {
                 var parent = day.elem.getParentOfFormElement();
                 var lastElement = parent.find(':input:enabled:visible:last');
-                lastElement.autoNextFocus(false);
+                lastElement.autoNextFocus(true);
             }
         }
     };

@@ -66,16 +66,19 @@
         var focusElem = $(':focus');
         var personDynamic = focusElem.closest('.personDynamic');
         if (personDynamic.length > 0) {
-            var row = personDynamic.closest('tr');
-            var type = personDynamic.attr('data-type');
+            var person = personDynamic.closest('tr');
+            if (person.length === 0) {
+                person = $('form:first');
+            }
 
-            row.resetInvisibleFormElements();
-            var data = row.find('.form-elem').serialize() +
-                '&_eventId=refresh-person-dynamics&ajaxSource=true&type=' + type;
+            person.resetInvisibleFormElements();
+            var type = personDynamic.attr('data-type');
+            var data = person.find('.form-elem').serialize() + '&_eventId=refresh-person-dynamics&ajaxSource=true&type=' + type;
+
 
             var rp = null;
             if (personDynamic.is('td')) {
-                rp = row.data('rp');
+                rp = person.data('rp');
                 data += '&person=' + rp;
             }
 

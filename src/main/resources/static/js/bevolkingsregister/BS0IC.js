@@ -379,7 +379,7 @@
             $.setError(
                 error,
                 'vorige-inschrijving',
-                'Deze combinatie van bronnummer en hoofddatum is nog niet ingevoerd!'
+                'Deze door uw opgegeven combinatie van bronnummer en hoofddatum is nog niet ingevoerd!'
             );
         }
     };

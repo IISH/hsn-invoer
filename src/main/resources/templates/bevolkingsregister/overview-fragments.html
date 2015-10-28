@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<th:block th:fragment="overviewModal" th:object="${akte}">
+  <div class="modal overviewModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <strong class="modal-title">Overzicht inschrijvingen</strong>
+        </div>
+
+        <div class="modal-body" id="overviewTable" th:fragment="overviewTable">
+          <div class="scrollable">
+            <table class="table table-condensed table-data">
+              <thead>
+              <tr>
+                <th>Idnr</th>
+                <th>OPdatum</th>
+                <th>Hoofddatum</th>
+                <th>Bronnr</th>
+                <th>Type</th>
+                <th>Plaats</th>
+                <th>Begin</th>
+                <th>Eind</th>
+                <th>Pag/Volg of GK</th>
+              </tr>
+              </thead>
+              <tbody th:if="${overview != false}">
+              <tr th:each="curBev,stat : ${overview}"
+                  th:with="ainb=${@lookupService.getRefAinb(curBev.registrationId.keyToSourceRegister, false)}">
+                <td>
+                  <!-- Idnr -->
+                  <span class="keyToRP" th:utext="${curBev.registrationId.keyToRP}"></span>
+                </td>
+                <td>
+                  <!-- OPdatum -->
+                  <span th:utext="${curBev.dayEntryRP}"></span>
+                  /
+                  <span th:utext="${curBev.monthEntryRP}"></span>
+                  /
+                  <span th:utext="${curBev.yearEntryRP}"></span>
+                </td>
+                <td>
+                  <!-- Hoofddatum -->
+                  <span class="dayEntryHead" th:utext="${curBev.registrationId.dayEntryHead}"></span>
+                  /
+                  <span class="monthEntryHead" th:utext="${curBev.registrationId.monthEntryHead}"></span>
+                  /
+                  <span class="yearEntryHead" th:utext="${curBev.registrationId.yearEntryHead}"></span>
+                </td>
+                <td>
+                  <!-- Bronnr -->
+                  <span class="keyToSourceRegister" th:utext="${curBev.registrationId.keyToSourceRegister}"></span>
+                </td>
+                <td>
+                  <!-- Type -->
+                  <span th:utext="${ainb.typeRegister}"></span>
+                </td>
+                <td>
+                  <!-- Plaats -->
+                  <span th:utext="${ainb.municipality}"></span>
+                </td>
+                <td>
+                  <!-- Begin -->
+                  <span th:utext="${ainb.startYearRegister}"></span>
+                </td>
+                <td>
+                  <!-- Eind -->
+                  <span th:utext="${ainb.endYearRegister}"></span>
+                </td>
+                <td>
+                  <!-- Pag/Volg of GK -->
+                  <span th:utext="${curBev.infoFamilyCardsSystem}"
+                        th:if="${!curBev.infoFamilyCardsSystem.trim().isEmpty()}"></span>
+
+                  <th:block th:if="${!curBev.pageNumberOfSource.trim().isEmpty()}">
+                    <span th:utext="${curBev.pageNumberOfSource}"></span>
+                    /
+                    <span th:utext="${curBev.numberOfHousehold}"></span>
+                  </th:block>
+                </td>
+              </tr>
+              <tr th:if="${overview == null || overview.size() == 0}">
+                <td colspan="10" class="text-center">EINDE BESTAND / echter niets gevonden!</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>
+</body>
+</html>
