@@ -35,6 +35,12 @@ public class MainController {
         return "redirect:/";
     }
 
+    @NoInputMetadataCheck
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return "main/login";
+    }
+
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.GET)
     public String main() {
         return "main/main";

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head></head>
+<body>
+<header layout:fragment="header" th:include="layoutFragments :: header"></header>
+
+<fieldset class="content-spacing" layout:fragment="main">
+  <div class="form-group">
+    <label class="col-xs-3 control-label">Inlognaam:</label>
+
+    <div class="col-xs-5">
+      <input type="text" class="form-control no-auto-uppercase" id="username" name="username"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-xs-3 control-label">Wachtwoord:</label>
+
+    <div class="col-xs-5">
+      <input type="password" class="form-control no-auto-uppercase" id="password" name="password"/>
+    </div>
+  </div>
+
+  <div class="clearfix">
+    <div class="pull-right">
+      <button type="submit" name="next" class="btn btn-default btn-right-spacing btn-sm btn-next">
+        Log in
+      </button>
+    </div>
+  </div>
+
+  <div class="alert alert-danger extra-top-margin" role="alert" th:if="${param.error}">
+    De combinatie inlognaam en wachtwoord is incorrect!
+  </div>
+
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${param.logout}">
+    U bent uitgelogd!
+  </div>
+</fieldset>
+
+<footer layout:fragment="footer" th:include="layoutFragments :: footer ('Login')"></footer>
+</body>
+</html>

@@ -1,0 +1,8 @@
+ldap:
+  url: ldap://
+  manager:
+    dn: cn=,dc=
+    password: 
+  search:
+    base: ou=
+    filter: cn={0}
