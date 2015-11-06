@@ -116,10 +116,8 @@
             th:include="fragments/fields :: relatie (null, 'b3Rel[__${rp}__][0].contentOfDynamicData', true)">
   </th:block>
 
-  <input type="hidden" class="relatieRegelInterpr regel relatie-regel"
-         th:field="*{b3Rel[__${rp}__][0].valueOfRelatedPerson}"/>
-  <input type="hidden" class="relatieRegelInterpr kode dynamicData2"
-         th:field="*{b3Rel[__${rp}__][0].dynamicData2}"/>
+  <input type="hidden" class="relatieRelatedHidden" th:field="*{b3Rel[__${rp}__][0].valueOfRelatedPerson}"/>
+  <input type="hidden" class="relatieDynamicHidden" th:field="*{b3Rel[__${rp}__][0].dynamicData2}"/>
 
   <div class="relatieRegelPopup" style="display:none;">
     <div class="form-inline">
@@ -141,33 +139,31 @@
          th:value="${@bevolkingsregisterHelper.getYearFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
 
   <div class="relatieDateHoofdPopup" style="display:none;">
-    <div class="relatieDateHoofdPopupContent">
-      <div class="form-inline">
-        <div class="form-group checkDateBevReg fullCheck noNeg afterHfdDatum">
-          <label class="control-label">Datum expliciet hoofd:</label>
+    <div class="form-inline relatieDateHoofdPopupContent">
+      <div class="form-group checkDateBevReg fullCheck noNeg afterHfdDatum">
+        <label class="control-label">Datum expliciet hoofd:</label>
 
-          <input type="text" class="form-control form-control-digit day spacing" maxlength="2"
-                 th:value="${@bevolkingsregisterHelper.getDayFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
-          /
-          <input type="text" class="form-control form-control-digit month" maxlength="2"
-                 th:value="${@bevolkingsregisterHelper.getMonthFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
-          /
-          <input type="text" class="form-control form-control-small year" maxlength="4"
-                 th:value="${@bevolkingsregisterHelper.getYearFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
-        </div>
+        <input type="text" class="form-control form-control-digit day spacing" maxlength="2"
+               th:value="${@bevolkingsregisterHelper.getDayFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
+        /
+        <input type="text" class="form-control form-control-digit month" maxlength="2"
+               th:value="${@bevolkingsregisterHelper.getMonthFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
+        /
+        <input type="text" class="form-control form-control-small year" maxlength="4"
+               th:value="${@bevolkingsregisterHelper.getYearFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
       </div>
     </div>
   </div>
 
   <div class="relatieRegelInterprPopup" style="display:none;">
-    <div class="relatieRegelInterprPopupContent" style="width:300px">
+    <div class="form-horizontal relatieRegelInterprPopupContent" style="width:300px">
       <div class="form-group">
         <label class="col-xs-9 control-label">
           Regelnummer vader/moeder:
         </label>
 
         <div class="col-xs-3">
-          <input type="text" class="form-control form-control-digit required regel regel-nr" data-min-value="-3"
+          <input type="text" class="form-control form-control-digit required regel" data-min-value="-3"
                  th:value="${akte.b3Rel[__${rp}__][0].valueOfRelatedPerson}"
                  hsn:field="b3Rel[__${rp}__][0].valueOfRelatedPerson"/>
         </div>
@@ -179,7 +175,7 @@
         </label>
 
         <div class="col-xs-3">
-          <input type="text" class="form-control form-control-digit required kode intr-kode" maxlength="1"
+          <input type="text" class="form-control form-control-digit required kode" maxlength="1"
                  th:value="${akte.b3Rel[__${rp}__][0].dynamicData2}" hsn:field="b3Rel[__${rp}__][0].dynamicData2"/>
         </div>
       </div>

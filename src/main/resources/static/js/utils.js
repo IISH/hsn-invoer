@@ -78,32 +78,41 @@
      * Modal and popover utility methods
      */
 
-    $.getOpenedModal = function () {
-        return $('.modal:visible:first');
-    };
+    $.fn.setPopover = function (content) {
+        var firstClass = 'nav-trigger popover-left form-elem hidden tabindex';
+        var lastClass = 'nav-trigger popover-right form-elem hidden tabindex';
 
-    $.fn.initPopoverContent = function (content) {
         var firstTabIndex = content.find('.form-elem:first').getIntegerAttr('tabindex') - 1;
         var lastTabIndex = content.find('.form-elem:last').getIntegerAttr('tabindex') + 1;
-        this.data('bs.popover').options.content =
-            '<span class="nav-trigger popover-left form-elem hidden tabindex' + firstTabIndex + '" tabindex="' + firstTabIndex + '"></span>' +
-            content.html() +
-            '<span class="nav-trigger popover-right form-elem hidden tabindex' + lastTabIndex + '" tabindex="' + lastTabIndex + '"></span>';
+
+        var popupContent = '<span class="' + firstClass + firstTabIndex + '" tabindex="' + firstTabIndex + '"></span>'
+            + content.html()
+            + '<span class="' + lastClass + lastTabIndex + '" tabindex="' + lastTabIndex + '"></span>';
+
+        if (this.data('bs.popover') === undefined) {
+            this.popover({
+                content: popupContent,
+                html: true,
+                placement: 'bottom',
+                trigger: 'manual',
+                container: 'body'
+            });
+        }
+        else {
+            this.data('bs.popover').options.content = popupContent;
+        }
+
+        return this;
+    };
+
+    $.getOpenedModal = function () {
+        return $('.modal:visible:first');
     };
 
     $(document).on('shown.bs.modal', function (e) {
         if (e.namespace === 'bs.modal') {
             $(e.target)
                 .data('focus-element-id', $(':focus').attr('id'))
-                .find(':input:enabled:visible:first')
-                .focus();
-        }
-    });
-
-    $(document).on('shown.bs.popover', function (e) {
-        if (e.namespace === 'bs.popover') {
-            $('.popover:visible:first')
-                .trigger('show')
                 .find(':input:enabled:visible:first')
                 .focus();
         }
@@ -122,10 +131,6 @@
 
     $(document).on('show.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
-            // TODO: For now, don't show if a modal is opened
-            if ($('.modal:visible').length > 0)
-                return;
-
             var popoverBackdrop = $('body > .popover-backdrop.in');
             if (popoverBackdrop.length === 0) {
                 popoverBackdrop = $('<div class="popover-backdrop in"></div>')
@@ -133,6 +138,15 @@
                     .appendTo($('body'));
             }
             popoverBackdrop.fadeIn();
+        }
+    });
+
+    $(document).on('shown.bs.popover', function (e) {
+        if (e.namespace === 'bs.popover') {
+            $('.popover:visible:first')
+                .trigger('show')
+                .find(':input:enabled:visible:first')
+                .focus();
         }
     });
 

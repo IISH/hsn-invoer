@@ -102,7 +102,14 @@
 
                 var focusElem = determineFocusElem();
                 if (focusElem.hasClass('nav-trigger')) {
-                    focusElem.trigger('nav-trigger', [self]);
+                    var popover = self.closest('.popover');
+                    if (popover.length === 0) {
+                        $('.popover:visible:first').find(':input:enabled:visible:first').focus();
+                        return;
+                    }
+                    else {
+                        focusElem.trigger('nav-trigger', [self, popover]);
+                    }
                 }
                 else {
                     focusElem.focus();

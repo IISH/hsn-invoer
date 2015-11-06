@@ -210,8 +210,8 @@
               </p>
             </div>
 
-            <input type="hidden" class="relatieRegelInterpr kode dynamicData2" name="dynamicData2"/>
-            <input type="hidden" class="relatieRegelInterpr regel relatie-regel" name="valueOfRelatedPerson"/>
+            <input type="hidden" class="relatieRelatedHidden" name="valueOfRelatedPerson"/>
+            <input type="hidden" class="relatieDynamicHidden" name="dynamicData2"/>
 
             <div class="relatieRegelPopup" style="display:none;">
               <div class="form-inline">
@@ -229,30 +229,28 @@
             <input type="hidden" class="relatieDateHoofd year" name="yearHoofd"/>
 
             <div class="relatieDateHoofdPopup" style="display:none;">
-              <div class="relatieDateHoofdPopupContent">
-                <div class="form-inline">
-                  <div class="form-group checkDateBevReg fullCheck noNeg afterHfdDatum">
-                    <label class="control-label">Datum expliciet hoofd:</label>
+              <div class="form-inline relatieDateHoofdPopupContent">
+                <div class="form-group checkDateBevReg fullCheck noNeg afterHfdDatum">
+                  <label class="control-label">Datum expliciet hoofd:</label>
 
-                    <input type="text" class="form-control form-control-digit day spacing" maxlength="2"/>
-                    /
-                    <input type="text" class="form-control form-control-digit month" maxlength="2"/>
-                    /
-                    <input type="text" class="form-control form-control-small year" maxlength="4"/>
-                  </div>
+                  <input type="text" class="form-control form-control-digit day spacing" maxlength="2"/>
+                  /
+                  <input type="text" class="form-control form-control-digit month" maxlength="2"/>
+                  /
+                  <input type="text" class="form-control form-control-small year" maxlength="4"/>
                 </div>
               </div>
             </div>
 
             <div class="relatieRegelInterprPopup" style="display:none;">
-              <div class="relatieRegelInterprPopupContent" style="width:300px">
+              <div class="form-horizontal relatieRegelInterprPopupContent" style="width:300px">
                 <div class="form-group">
                   <label class="col-xs-9 control-label">
                     Regelnummer vader/moeder:
                   </label>
 
                   <div class="col-xs-3">
-                    <input type="text" class="form-control form-control-digit required regel regel-nr"
+                    <input type="text" class="form-control form-control-digit required regel"
                            data-min-value="-3" name="valueOfRelatedPerson"/>
                   </div>
                 </div>
@@ -263,7 +261,7 @@
                   </label>
 
                   <div class="col-xs-3">
-                    <input type="text" class="form-control form-control-digit required kode intr-kode" maxlength="1"
+                    <input type="text" class="form-control form-control-digit required kode" maxlength="1"
                            name="dynamicData2"/>
                   </div>
                 </div>
