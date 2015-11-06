@@ -37,7 +37,7 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
     @Column(name = "RecordID")
     private Integer recordID;
 
-    @Transient private Date lastChangedDate = new Date();
+    @Transient private Date lastChangedDate = new Date(); // Helper variable for sorting addresses
 
     public RegistrationAddress() {
     }
@@ -212,18 +212,18 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
             }
         }
 
-        // If the persons are the same, then sort on sequence number
-        if (this.keyToRegistrationPersons == registrationAddress.keyToRegistrationPersons) {
-            if (this.sequenceNumberToAddresses < registrationAddress.sequenceNumberToAddresses) {
+        // If the sequence numbers are the same, then sort on person number
+        if (this.sequenceNumberToAddresses == registrationAddress.sequenceNumberToAddresses) {
+            if (this.keyToRegistrationPersons < registrationAddress.keyToRegistrationPersons) {
                 return -1;
             }
-            if (this.sequenceNumberToAddresses > registrationAddress.sequenceNumberToAddresses) {
+            if (this.keyToRegistrationPersons > registrationAddress.keyToRegistrationPersons) {
                 return 1;
             }
         }
 
-        // Otherwise just sort on person
-        if (this.keyToRegistrationPersons < registrationAddress.keyToRegistrationPersons) {
+        // Otherwise just sort on sequence numbers
+        if (this.sequenceNumberToAddresses < registrationAddress.sequenceNumberToAddresses) {
             return -1;
         }
         return 1;

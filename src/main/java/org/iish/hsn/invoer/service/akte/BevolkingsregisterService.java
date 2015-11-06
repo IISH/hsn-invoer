@@ -636,7 +636,7 @@ public class BevolkingsregisterService {
         updateHerkomst(bevolkingsregisterFlow, person);
         updateVertrek(bevolkingsregisterFlow, person);
 
-        registerPersonDynamics(bevolkingsregisterFlow);
+        registerPersonDynamics(bevolkingsregisterFlow, person);
     }
 
     /**
@@ -645,8 +645,16 @@ public class BevolkingsregisterService {
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
     public void registerPersonDynamics(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        Person person = bevolkingsregisterFlow.getCurB2();
+        registerPersonDynamics(bevolkingsregisterFlow, bevolkingsregisterFlow.getCurB2());
+    }
 
+    /**
+     * Register the dynamic properties of the current person from the registration.
+     *
+     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
+     * @param person                 The person to register.
+     */
+    public void registerPersonDynamics(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
         // Make sure the first relation is without a date
         List<PersonDynamic> b3Rel = bevolkingsregisterFlow.getB3Rel().get(person.getKeyToRegistrationPersons());
         for (PersonDynamic rel : b3Rel) {
@@ -925,8 +933,12 @@ public class BevolkingsregisterService {
      */
     public void saveRegistration(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         registerAndSaveRegistration(bevolkingsregisterFlow);
-        registerAndSavePersons(bevolkingsregisterFlow);
         registerAndSaveRegistrationAddresses(bevolkingsregisterFlow);
+
+        // Persons and person dynamics are already saved before, so only save during correction
+        if (bevolkingsregisterFlow.isCorrection()) {
+            registerAndSavePersons(bevolkingsregisterFlow);
+        }
     }
 
     /**
@@ -943,6 +955,31 @@ public class BevolkingsregisterService {
         personRepository.delete(registrationId, workOrder);
         personDynamicRepository.delete(registrationId, workOrder);
         registrationAddressRepository.delete(registrationId, workOrder);
+    }
+
+    /**
+     * Register and save the current person from the registration.
+     *
+     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
+     */
+    public void registerAndSavePerson(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+        Person person = bevolkingsregisterFlow.getCurB2();
+        registerPerson(bevolkingsregisterFlow, person);
+
+        inputMetadata.saveToEntity(person);
+        person = personRepository.save(person);
+        bevolkingsregisterFlow.getB2().set(person.getRp() -1, person);
+
+        // Next store input metadata and save all person dynamics (Register already happened when person was registered)
+        for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
+            Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
+            List<PersonDynamic> b3Person = b3.get(person.getRp());
+            for (PersonDynamic personDynamic : b3Person) {
+                inputMetadata.saveToEntity(personDynamic);
+            }
+            b3Person = personDynamicRepository.save(b3Person);
+            b3.put(person.getRp(), b3Person);
+        }
     }
 
     /**

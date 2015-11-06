@@ -285,21 +285,24 @@
     var checkDateHfd = function (hsnDate, elem) {
         var error = $.checkDateBevReg(hsnDate, elem);
 
-        var opHsnDate = $('.checkDateOP').getHsnDate();
+        var dateOp = $('.checkDateOP');
+        if (dateOp.length > 0) {
+            var opHsnDate = dateOp.getHsnDate();
 
-        var dayVal = hsnDate.day.getValue();
-        var monthVal = hsnDate.month.getValue();
-        var yearVal = hsnDate.year.getValue();
+            var dayVal = hsnDate.day.getValue();
+            var monthVal = hsnDate.month.getValue();
+            var yearVal = hsnDate.year.getValue();
 
-        var opDate = new Date(opHsnDate.year.getValue(), opHsnDate.month.getValue() - 1, opHsnDate.day.getValue());
-        var hfdDate = new Date(yearVal, monthVal - 1, dayVal);
+            var opDate = new Date(opHsnDate.year.getValue(), opHsnDate.month.getValue() - 1, opHsnDate.day.getValue());
+            var hfdDate = new Date(yearVal, monthVal - 1, dayVal);
 
-        if (!error) {
-            $.setError(
-                opDate.getTime() < hfdDate.getTime(),
-                'op-hfd-datum',
-                'OPdatum eerder dan Hoofddatum'
-            );
+            if (!error) {
+                $.setError(
+                    opDate.getTime() < hfdDate.getTime(),
+                    'op-hfd-datum',
+                    'OPdatum eerder dan Hoofddatum'
+                );
+            }
         }
 
         return error;
@@ -308,21 +311,24 @@
     var checkDateOP = function (hsnDate, elem) {
         var error = $.checkDateBevReg(hsnDate, elem);
 
-        var hfdHsnDate = $('.checkDateHfd').getHsnDate();
+        var dateHfd = $('.checkDateHfd');
+        if (dateHfd.length > 0) {
+            var hfdHsnDate = dateHfd.getHsnDate();
 
-        var dayVal = hsnDate.day.getValue();
-        var monthVal = hsnDate.month.getValue();
-        var yearVal = hsnDate.year.getValue();
+            var dayVal = hsnDate.day.getValue();
+            var monthVal = hsnDate.month.getValue();
+            var yearVal = hsnDate.year.getValue();
 
-        var opDate = new Date(yearVal, monthVal - 1, dayVal);
-        var hfdDate = new Date(hfdHsnDate.year.getValue(), hfdHsnDate.month.getValue() - 1, hfdHsnDate.day.getValue());
+            var opDate = new Date(yearVal, monthVal - 1, dayVal);
+            var hfdDate = new Date(hfdHsnDate.year.getValue(), hfdHsnDate.month.getValue() - 1, hfdHsnDate.day.getValue());
 
-        if (!error) {
-            $.setError(
-                opDate.getTime() < hfdDate.getTime(),
-                'op-hfd-datum',
-                'OPdatum eerder dan Hoofddatum'
-            );
+            if (!error) {
+                $.setError(
+                    opDate.getTime() < hfdDate.getTime(),
+                    'op-hfd-datum',
+                    'OPdatum eerder dan Hoofddatum'
+                );
+            }
         }
 
         return error;

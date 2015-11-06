@@ -98,7 +98,10 @@
                         modal.find($.getDataElemSelector('person')).data('person', rp);
                     }
                     modal.modal({keyboard: false, backdrop: 'static'});
-                    modal.find('.btn-new:first').click();
+
+                    if (!focusElem.hasClass('no-auto-new')) {
+                        modal.find('.btn-new:first').click();
+                    }
                 }
             });
         }

@@ -44,6 +44,11 @@ public class BevolkingsregisterHelper {
         int curPerson = bevolkingsregisterFlow.getCurPersonKey();
         int volgnrOP = bevolkingsregisterFlow.getVolgnrOP();
 
+        // No need to stay during burg stand relation fix
+        if (bevolkingsregisterFlow.isBurgStandRelFix()) {
+            return false;
+        }
+
         // If we are in correction, require another person as long as not all correction persons were corrected
         if (bevolkingsregisterFlow.isCorrection()) {
             return hasCorrectionPersons(bevolkingsregisterFlow);

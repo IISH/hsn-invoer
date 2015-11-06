@@ -806,7 +806,7 @@
             e.which = 115; // F4
             e.keyCode = 115; // F4
 
-            $('.burg-stand-relatie:first').focus().trigger(e);
+            $('.burg-stand-relatie:first').addClass('no-auto-new').focus().trigger(e);
         }
     });
 

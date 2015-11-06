@@ -57,12 +57,12 @@
 
     <transition on="register-person">
       <evaluate expression="flowScope.akte.setCurB2Index(new Integer(requestParameters.person) - 1)"/>
-      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
     </transition>
 
     <transition on="refresh-person-dynamics">
       <evaluate expression="flowScope.akte.setCurB2Index(new Integer(requestParameters.person) - 1)"/>
-      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
       <render fragments="#{'b3Content' + requestParameters.type}"/>
     </transition>
 
