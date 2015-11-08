@@ -435,15 +435,15 @@
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
-          th:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
-  <script src="../../static/js/bevolkingsregister/BS1.js" th:src="@{/js/bevolkingsregister/BS1.js}"></script>
+          th:src="@{/js/bevolkingsregister/bevolkingsregister.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+  <script src="../../static/js/bevolkingsregister/BS1.js" th:src="@{/js/bevolkingsregister/BS1.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
   <script src="../../static/js/bevolkingsregister/crud-table.js"
-          th:src="@{/js/bevolkingsregister/crud-table.js}"></script>
+          th:src="@{/js/bevolkingsregister/crud-table.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
   <script src="../../static/js/bevolkingsregister/person-dynamic.js"
-          th:src="@{/js/bevolkingsregister/person-dynamic.js}"></script>
+          th:src="@{/js/bevolkingsregister/person-dynamic.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
   <script>
     setTimeout(function () {
-      $('#please-wait,.modal-backdrop').hide();
+      $('#please-wait,.modal-backdrop').fadeOut();
     }, 0);
   </script>
 </th:block>

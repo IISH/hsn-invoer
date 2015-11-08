@@ -102,7 +102,7 @@
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/geboorte/GS7.js" th:src="@{/js/geboorte/GS7.js}"></script>
+  <script src="../../static/js/geboorte/GS7.js" th:src="@{/js/geboorte/GS7.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
 </th:block>
 </body>
 </html>

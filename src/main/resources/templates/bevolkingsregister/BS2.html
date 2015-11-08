@@ -214,7 +214,7 @@
 </div>
 </div>
 
-<div id="dateOrderWarning" class="content-spacing" style="display:none;">
+<div id="dateOrderWarning" class="content-spacing fixed-messages" style="display:none;">
   <div class="alert alert-danger" role="alert">
     Datum is niet op chronologische volgorde.
   </div>
@@ -238,11 +238,11 @@
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
-          th:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
+          th:src="@{/js/bevolkingsregister/bevolkingsregister.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
   <script src="../../static/js/bevolkingsregister/crud-table.js"
-          th:src="@{/js/bevolkingsregister/crud-table.js}"></script>
+          th:src="@{/js/bevolkingsregister/crud-table.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
   <script src="../../static/js/bevolkingsregister/BS2.js"
-          th:src="@{/js/bevolkingsregister/BS2.js}"></script>
+          th:src="@{/js/bevolkingsregister/BS2.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
 </th:block>
 </body>
 </html>

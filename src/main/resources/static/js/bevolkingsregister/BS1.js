@@ -224,11 +224,16 @@
 
         // Now validate the relation
         if ((relatie.length > 0) && (container.find('.only-head').length > 0)) {
+            var message = 'Relatiecode moet 1 of -3 zijn';
+            if (isAllLines()) {
+                message = 'Regel ' + $.getCurPerson() + ': ' + message;
+            }
+
             var relVal = relatie.getIntegerValue();
             $.setError(
                 (relVal != -3) && (relVal != 1),
                 'rel-only-head-' + relatie.attr('id'),
-                'Relatiecode moet 1 of -3 zijn'
+                message
             );
         }
     };
@@ -290,6 +295,10 @@
         else if ((sexVal === 'v') && ((male.indexOf(rel) >= 0) || (rel > 9 && rel < 19) || (rel > 59 && rel < 70))) {
             error = true;
             message = 'Geslacht is vrouwelijk en relatiekode is mannelijk van aard!';
+        }
+
+        if (isAllLines()) {
+            message = 'Regel ' + $.getCurPerson() + ': ' + message;
         }
 
         $.setError(error, 'relatie-geslacht-' + relatie.attr('id'), message);
@@ -515,10 +524,15 @@
             numberOfLines = curPerson.getIntegerDataValue('nr-persons');
         }
 
+        var message = 'Een relatie met regelnummer ' + relatie + ' is onmogelijk.';
+        if (isAllLines()) {
+            message = 'Regel ' + $.getCurPerson() + ': ' + message;
+        }
+
         $.setError(
-                !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
-            'burg-stand',
-                'Een relatie met regelnummer ' + relatie + ' is onmogelijk.'
+            !isNaN(numberOfLines) && (numberOfLines > 0) && (relatie > 0) && (relatie > numberOfLines),
+            'burg-stand-' + elem.attr('id'),
+            message
         );
         $(document).trigger('changeOfState');
     };

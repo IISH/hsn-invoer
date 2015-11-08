@@ -113,7 +113,7 @@
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/geboorte/GS0IC.js" th:src="@{/js/geboorte/GS0IC.js}"></script>
+  <script src="../../static/js/geboorte/GS0IC.js" th:src="@{/js/geboorte/GS0IC.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
 </th:block>
 </body>
 </html>

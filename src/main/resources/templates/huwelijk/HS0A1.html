@@ -83,7 +83,7 @@
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/huwelijk/HS0A1.js" th:src="@{/js/huwelijk/HS0A1.js}"></script>
+  <script src="../../static/js/huwelijk/HS0A1.js" th:src="@{/js/huwelijk/HS0A1.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
 </th:block>
 </body>
 </html>

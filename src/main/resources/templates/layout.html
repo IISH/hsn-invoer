@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <title>HSN-Invoerprogramma</title>
-  <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+  <link href="../static/css/style.css" th:href="@{/css/style.css(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}" rel="stylesheet"/>
 </head>
 <body>
 <div id="main" class="container">
@@ -15,16 +15,16 @@
 <script src="../static/js/lib/bootstrap.min.js" th:src="@{/js/lib/bootstrap.min.js}"></script>
 <script src="../static/js/lib/bootstrap3-typeahead.js" th:src="@{/js/lib/bootstrap3-typeahead.js}"></script>
 
-<script src="../static/js/utils.js" th:src="@{/js/utils.js}"></script>
-<script src="../static/js/datum.js" th:src="@{/js/datum.js}"></script>
+<script src="../static/js/utils.js" th:src="@{/js/utils.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+<script src="../static/js/datum.js" th:src="@{/js/datum.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
 
 <th:block layout:fragment="js"></th:block>
 
-<script src="../static/js/ajax.js" th:src="@{/js/ajax.js}"></script>
-<script src="../static/js/find-op.js" th:src="@{/js/find-op.js}"></script>
-<script src="../static/js/fields.js" th:src="@{/js/fields.js}"></script>
-<script src="../static/js/validation.js" th:src="@{/js/validation.js}"></script>
-<script src="../static/js/navigation.js" th:src="@{/js/navigation.js}"></script>
-<script src="../static/js/picklists.js" th:src="@{/js/picklists.js}"></script>
+<script src="../static/js/ajax.js" th:src="@{/js/ajax.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+<script src="../static/js/find-op.js" th:src="@{/js/find-op.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+<script src="../static/js/fields.js" th:src="@{/js/fields.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+<script src="../static/js/validation.js" th:src="@{/js/validation.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+<script src="../static/js/navigation.js" th:src="@{/js/navigation.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+<script src="../static/js/picklists.js" th:src="@{/js/picklists.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
 </body>
 </html>

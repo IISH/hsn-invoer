@@ -43,7 +43,7 @@
 <footer layout:fragment="footer" th:include="layoutFragments :: footer ('Voormenu')"></footer>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/main/metadata.js" th:src="@{/js/main/metadata.js}"></script>
+  <script src="../../static/js/main/metadata.js" th:src="@{/js/main/metadata.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
 </th:block>
 </body>
 </html>
