@@ -1,6 +1,6 @@
-drop table geb if exists;
+drop table if exists geb;
 
-create view geb as
+create or replace view geb as
 
 select g.recordid, g.gemnr, p.gemnaam, g.jaar, g.aktenr, g.idnr, g.gebkode, g.oversamp,
 g.ondrzko, g.opdrnri, g.opdrnr, g.datum, g.init, g.versie, g.opdrnro, g.datumo, g.inito, g.versieo
