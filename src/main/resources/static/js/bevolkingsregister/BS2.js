@@ -129,12 +129,19 @@
         var lastRow = $('#registrationAddresses').find('.free tbody tr:last-child');
 
         if (lastRow.length > 0) {
-            var names = ['keyToRegistrationPersons', 'dayOfAddress', 'monthOfAddress', 'yearOfAddress', 'synchroneNumber'];
+            var names = ['keyToRegistrationPersons', 'dayOfAddress', 'monthOfAddress', 'yearOfAddress',
+                'synchroneNumber', 'addressType', 'nameOfStreet', 'number', 'additionToNumber'];
             $.each(names, function (i, name) {
                 var value = lastRow.find('.' + name).text();
-                row.find('[name=' + name + ']').val(value);
+
+                if (name === 'addressType') {
+                    row.find('.adrestype').val(value).attr('data-selected', value);
+                }
+                else {
+                    row.find('[name=' + name + ']').val(value);
+                }
             });
-            row.find('.adrestype').val('WK').attr('data-selected', 'WK');
+            row.trigger('show');
         }
 
         determineSeqNr(true);
