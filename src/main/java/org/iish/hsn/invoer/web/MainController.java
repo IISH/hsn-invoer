@@ -22,7 +22,7 @@ public class MainController {
     }
 
     @NoInputMetadataCheck
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(params = "next", value = "/", method = RequestMethod.POST)
     public String validateInputMetadataForm(@RequestParam("init") String init, @RequestParam("ondrzk") String ondrzk,
                                             @RequestParam("opdrnr") String opdrnr) {
         inputMetadata.setInit(init.trim().toUpperCase());
@@ -33,6 +33,22 @@ public class MainController {
             return "redirect:/hoofdmenu";
         }
         return "redirect:/";
+    }
+
+    @NoInputMetadataCheck
+    @RequestMapping(params = "logout", value = "/", method = RequestMethod.POST)
+    public String logout() {
+        inputMetadata.setInit(null);
+        inputMetadata.setOndrzk(null);
+        inputMetadata.setOpdrnr(null);
+
+        return "redirect:/logout";
+    }
+
+    @NoInputMetadataCheck
+    @RequestMapping(value = "/logout/success", method = RequestMethod.GET)
+    public String logoutSuccess() {
+        return "main/logout";
     }
 
     @NoInputMetadataCheck

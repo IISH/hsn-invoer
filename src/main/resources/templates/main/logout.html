@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head></head>
+<body>
+<header layout:fragment="header" th:include="layoutFragments :: header"></header>
+
+<fieldset class="content-spacing" layout:fragment="main">
+  <div class="default-label text-center">
+    U bent uitgelogd! <br /> <br />
+    U kunt nu de applicatie sluiten met <kbd><kbd>ctrl</kbd> + <kbd>F4</kbd></kbd>
+  </div>
+</fieldset>
+
+<footer layout:fragment="footer" th:include="layoutFragments :: footer ('Logout')"></footer>
+</body>
+</html>

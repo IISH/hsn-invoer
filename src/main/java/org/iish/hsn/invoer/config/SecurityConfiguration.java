@@ -40,6 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .and()
                 .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/logout/success")
                     .permitAll();
 
         // If we are running H2 in development mode, then make sure we can always reach the H2 console
