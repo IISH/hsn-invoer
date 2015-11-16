@@ -6,7 +6,7 @@
 
   <groupId>org.iish.hsn.invoer</groupId>
   <artifactId>hsn-invoer</artifactId>
-  <version>5.00-SNAPSHOT</version>
+  <version>5.0.0</version>
 
   <packaging>war</packaging>
 
