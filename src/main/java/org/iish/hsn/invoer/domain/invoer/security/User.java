@@ -5,8 +5,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "inlognaam")})
 public class User {
-    @Column(name = "inlognaam", nullable = false, length = 30)  private String inlognaam = "";
-    @Column(name = "wachtwoord", nullable = false, length = 60) private String wachtwoord = "";
+    @Column(name = "inlognaam", nullable = false, length = 30) private String inlognaam = "";
+    @Column(name = "wachtwoord", nullable = true, length = 60) private String wachtwoord;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

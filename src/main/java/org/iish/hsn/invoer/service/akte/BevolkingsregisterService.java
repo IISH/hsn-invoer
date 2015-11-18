@@ -948,7 +948,7 @@ public class BevolkingsregisterService {
      */
     public void deleteRegistration(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         Registration b4 = bevolkingsregisterFlow.getB4();
-        WorkOrder workOrder = b4.getWorkOrder();
+        WorkOrder workOrder = inputMetadata.getWorkOrder();
         RegistrationId registrationId = b4.getRegistrationId();
 
         registrationRepository.delete(b4);

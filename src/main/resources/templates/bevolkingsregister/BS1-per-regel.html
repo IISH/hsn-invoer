@@ -282,7 +282,8 @@
 
     <div class="col-xs-3">
       <input type="hidden" th:id="'b3Brp'+__${akte.curB2.rp}__+'0.contentOfDynamicData'"
-             th:name="'b3Brp['+__${akte.curB2.rp}__+'][0].contentOfDynamicData'"/>
+             th:name="'b3Brp['+__${akte.curB2.rp}__+'][0].contentOfDynamicData'"
+             th:value="${akte.b3Brp[__${akte.curB2.rp}__][0].contentOfDynamicData}"/>
 
       <input type="text" class="form-control form-control-digit required positie" maxlength="1" data-valid-chars="h;o;n"
              id="brp-positie"

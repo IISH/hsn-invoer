@@ -3,6 +3,7 @@ package org.iish.hsn.invoer.web;
 import org.iish.hsn.invoer.util.InputMetadata;
 import org.iish.hsn.invoer.util.NoInputMetadataCheck;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,14 +11,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class MainController {
-    @Autowired
-    private InputMetadata inputMetadata;
+    @Autowired private Environment   env;
+    @Autowired private InputMetadata inputMetadata;
 
     @NoInputMetadataCheck
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String inputMetadataForm() {
+    public String inputMetadataForm(HttpServletRequest request) {
+        // Show an authorization failure message in case the user has no access
+        if (env.acceptsProfiles("ldapAuth", "dbAuth") && !request.isUserInRole("ROLE_USER"))
+            return "main/auth";
         return "main/metadata";
     }
 

@@ -1,6 +1,8 @@
 package org.iish.hsn.invoer.config;
 
+import org.iish.hsn.invoer.repository.invoer.security.UserRepository;
 import org.iish.hsn.invoer.service.security.HsnUserDetailsService;
+import org.iish.hsn.invoer.service.security.LdapAuthoritiesPopulator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +12,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 
 @Configuration
 @EnableWebMvcSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired private Environment           env;
+    @Autowired private UserRepository        userRepository;
     @Autowired private HsnUserDetailsService userDetailsService;
 
     @Value("${ldap.url:ldap://}") private               String ldapUrl;
@@ -38,6 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
+                    .defaultSuccessUrl("/auth", true)
                     .and()
                 .logout()
                     .logoutUrl("/logout")
@@ -56,28 +61,35 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // If an auth profile has been chosen, close all other requests: the user needs to be authenticated first
         if (this.env.acceptsProfiles("ldapAuth", "dbAuth")) {
-            httpSecurity.authorizeRequests().anyRequest().authenticated();
+            httpSecurity.authorizeRequests()
+                    .antMatchers("/").authenticated()
+                    .anyRequest().hasRole("USER");
         }
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         if (this.env.acceptsProfiles("ldapAuth")) {
+            DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(this.ldapUrl);
+            contextSource.setUserDn(this.ldapManagerDn);
+            contextSource.setPassword(this.ldapManagerPassword);
+            contextSource.afterPropertiesSet();
+
+            LdapAuthoritiesPopulator ldapAuthoritiesPopulator =
+                    new LdapAuthoritiesPopulator(contextSource, this.ldapSearchBase, this.userRepository);
+
             authenticationManagerBuilder
                     .ldapAuthentication()
-                        .contextSource()
-                            .url(this.ldapUrl)
-                            .managerDn(this.ldapManagerDn)
-                            .managerPassword(this.ldapManagerPassword)
-                            .and()
+                        .contextSource(contextSource)
                         .userSearchBase(this.ldapSearchBase)
-                        .userSearchFilter(this.ldapSearchFilter);
+                        .userSearchFilter(this.ldapSearchFilter)
+                        .ldapAuthoritiesPopulator(ldapAuthoritiesPopulator);
         }
 
         if (this.env.acceptsProfiles("dbAuth")) {
             authenticationManagerBuilder
                     .userDetailsService(this.userDetailsService)
-                        .passwordEncoder(new BCryptPasswordEncoder(10));
+                    .passwordEncoder(new BCryptPasswordEncoder(10));
         }
     }
 }

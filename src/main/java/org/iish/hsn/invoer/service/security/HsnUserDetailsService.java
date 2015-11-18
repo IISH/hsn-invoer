@@ -4,13 +4,14 @@ import org.iish.hsn.invoer.domain.invoer.security.User;
 import org.iish.hsn.invoer.repository.invoer.security.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Provides user details from the database for Spring Security to use.
@@ -39,7 +40,7 @@ public class HsnUserDetailsService implements UserDetailsService {
         return new UserDetails() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
-                return AuthorityUtils.NO_AUTHORITIES;
+                return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
             }
 
             @Override
