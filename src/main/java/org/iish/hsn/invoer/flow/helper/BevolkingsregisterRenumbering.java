@@ -146,7 +146,7 @@ public class BevolkingsregisterRenumbering {
                     deletedB6.add(newRegistrationAddress);
                 }
                 else {
-                    registrationAddress.setKeyToRegistrationPersons(keyNew);
+                    newRegistrationAddress.setKeyToRegistrationPersons(keyNew);
                     renumbered.getB6().add(newRegistrationAddress);
                 }
             }
