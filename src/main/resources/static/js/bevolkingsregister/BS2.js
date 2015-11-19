@@ -145,7 +145,7 @@
         }
 
         determineSeqNr(true);
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     var onReset = function () {

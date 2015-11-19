@@ -65,7 +65,7 @@
         }
 
         self.hasErrorWhen((age < 12 || age > 55) && (age != -1));
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     $(document).ready(function () {

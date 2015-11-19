@@ -416,14 +416,14 @@
   <div class="sub-form-group">
     <label class="col-xs-3 control-label">Wettig domicilie:</label>
 
-    <div class="col-xs-3">
+    <div class="col-xs-3" th:if="${akte.refAinb.typeRegister != 'C'}">
       <input type="text" class="form-control" th:field="*{curB2.legalPlaceOfLiving}"
-             hsn:field="curB2.legalPlaceOfLiving"
-             th:if="${akte.refAinb.typeRegister != 'C'}"/>
+             hsn:field="curB2.legalPlaceOfLiving"/>
+    </div>
 
+    <div class="col-xs-3" th:if="${akte.refAinb.typeRegister == 'C'}">
       <input type="text" class="form-control required legalPlaceOfLivingInCodes"
-             th:field="*{curB2.legalPlaceOfLivingInCodes}" hsn:field="curB2.legalPlaceOfLivingInCodes"
-             th:if="${akte.refAinb.typeRegister == 'C'}"/>
+             th:field="*{curB2.legalPlaceOfLivingInCodes}" hsn:field="curB2.legalPlaceOfLivingInCodes"/>
     </div>
   </div>
 </div>

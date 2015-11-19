@@ -100,7 +100,7 @@
 
             var error = dateCheck(hsnDate, elem);
             elem.hasErrorWhen(error, parent);
-            $(document).trigger('changeOfState');
+            $.triggerChangeOfState();
         };
 
         $(document).ready(function () {

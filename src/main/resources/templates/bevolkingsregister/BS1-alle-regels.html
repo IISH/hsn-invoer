@@ -329,16 +329,17 @@
 </td>
 <td>
   <!-- Wet dom -->
-  <div class="sub-form-group">
+  <div class="sub-form-group" th:if="${akte.refAinb.typeRegister != 'C'}">
     <input type="text" class="form-control form-control-medium legalPlaceOfLiving"
-           th:field="*{b2[__${rp-1}__].legalPlaceOfLiving}" hsn:field="b2[__${stat.index}__].legalPlaceOfLiving"
-           th:if="${akte.refAinb.typeRegister != 'C'}"/>
+           th:field="*{b2[__${rp-1}__].legalPlaceOfLiving}"
+           hsn:field="b2[__${stat.index}__].legalPlaceOfLiving"/>
   </div>
 
-  <div class="sub-form-group">
-    <input type="text" class="form-control form-control-medium legalPlaceOfLiving legalPlaceOfLivingInCodes required"
-           th:field="*{b2[__${rp-1}__].legalPlaceOfLivingInCodes}" hsn:field="b2[__${stat.index}__].legalPlaceOfLivingInCodes"
-           th:if="${akte.refAinb.typeRegister == 'C'}"/>
+  <div class="sub-form-group" th:if="${akte.refAinb.typeRegister == 'C'}"
+       th:classappend="${akte.b2[__${rp-1}__].legalPlaceOfLivingInCodes.trim().isEmpty()} ? 'has-an-error has-error-empty'">
+    <input type="text" class="form-control form-control-medium legalPlaceOfLiving legalPlaceOfLivingInCodes"
+           th:field="*{b2[__${rp-1}__].legalPlaceOfLivingInCodes}"
+           hsn:field="b2[__${stat.index}__].legalPlaceOfLivingInCodes"/>
   </div>
 </td>
 <td>

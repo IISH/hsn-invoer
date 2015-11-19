@@ -22,14 +22,14 @@
 
                 $('.fail.op').hide();
                 $('.btn-next').removeClass('op-error');
-                $(document).trigger('changeOfState');
+                $.triggerChangeOfState();
 
                 checkHoofdDatum();
                 checkOtherRegistrations();
             }).fail(function () {
                 $('.fail.op').text('De onderzoekspersoon met deze identificatie is niet aanwezig!').show();
                 $('.btn-next').addClass('op-error');
-                $(document).trigger('changeOfState');
+                $.triggerChangeOfState();
                 $('.person span').text('');
 
                 checkHoofdDatum();
@@ -38,7 +38,7 @@
         }
         else {
             $('.btn-next').addClass('op-error');
-            $(document).trigger('changeOfState');
+            $.triggerChangeOfState();
             $('.person span').text('');
         }
     };
@@ -64,7 +64,7 @@
 
                 $('.fail.bron').hide();
                 $('.btn-next').removeClass('bron-error');
-                $(document).trigger('changeOfState');
+                $.triggerChangeOfState();
 
                 checkHoofdDatum();
             }).fail(function () {
@@ -73,7 +73,7 @@
 
                 $('.fail.bron').text('De bron met dit nummer is niet aanwezig!').show();
                 $('.btn-next').addClass('bron-error');
-                $(document).trigger('changeOfState');
+                $.triggerChangeOfState();
                 $('.register span').text('');
 
                 checkHoofdDatum();
@@ -81,7 +81,7 @@
         }
         else {
             $('.btn-next').addClass('bron-error');
-            $(document).trigger('changeOfState');
+            $.triggerChangeOfState();
             $('.register span').text('');
         }
     };
@@ -105,13 +105,13 @@
         var onError = function (message) {
             $('.fail.registration').text(message).show();
             $('.btn-next').addClass('registration-error');
-            $(document).trigger('changeOfState');
+            $.triggerChangeOfState();
         };
 
         var onSuccess = function (elem, isNext) {
             $('.fail.registration').hide();
             $('.btn-next').removeClass('registration-error');
-            $(document).trigger('changeOfState');
+            $.triggerChangeOfState();
 
             if ($.isCorrection() && elem.hasClass('year') && isNext) {
                 elem.getNextFormElement().focus();
@@ -152,7 +152,7 @@
         }
         else {
             $('.btn-next').addClass('registration-error');
-            $(document).trigger('changeOfState');
+            $.triggerChangeOfState();
         }
     };
 
@@ -169,13 +169,13 @@
         var onError = function () {
             $('.fail.op-registration').text('Datum OP bestaat reeds!').show();
             $('.btn-next').addClass('op-registration-error');
-            $(document).trigger('changeOfState');
+            $.triggerChangeOfState();
         };
 
         var onSuccess = function () {
             $('.fail.op-registration').hide();
             $('.btn-next').removeClass('op-registration-error');
-            $(document).trigger('changeOfState');
+            $.triggerChangeOfState();
         };
 
         if (!isNaN(orgDay) && !isNaN(orgMonth) && !isNaN(orgYear) &&
@@ -201,7 +201,7 @@
         }
         else {
             $('.btn-next').addClass('op-registration-error');
-            $(document).trigger('changeOfState');
+            $.triggerChangeOfState();
         }
     };
 

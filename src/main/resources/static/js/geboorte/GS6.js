@@ -9,7 +9,7 @@
             byzBtn.removeClass('no-byz');
         }
 
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     $(document).ready(function () {

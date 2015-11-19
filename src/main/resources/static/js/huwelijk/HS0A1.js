@@ -6,7 +6,7 @@
         var nrGetuigen = self.getIntegerValue();
 
         self.hasErrorWhen(isNaN(nrGetuigen) || ((nrGetuigen < 1 || nrGetuigen > 6) && (nrGetuigen !== -5)));
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     $(document).ready(function () {

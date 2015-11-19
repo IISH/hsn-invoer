@@ -191,7 +191,7 @@
             );
         });
 
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     var checkErrorMessages = function () {
@@ -277,13 +277,14 @@
                     init();
                 }
             }
-        })
-        .on('changeOfState', function () {
-            if (!$.isRunningInit()) {
-                checkErrorMessages();
-                checkNextByzButton();
-            }
         });
+
+    $.triggerChangeOfState = function () {
+        if (!$.isRunningInit()) {
+            checkErrorMessages();
+            checkNextByzButton();
+        }
+    };
 
     $.registerInit(function (elem) {
         checkRequired(elem);

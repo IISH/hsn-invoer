@@ -188,12 +188,12 @@
         self.withOpStateElems.show();
 
         self.nextBtnElem.removeClass('op-error');
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
 
         if (autoNextElement || (autoNextElement === undefined))
             self.blur.getNextFormElement().focus();
 
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     FindOp.prototype.onTyping = function () {
@@ -205,7 +205,7 @@
         self.withOpStateElems.hide();
 
         self.nextBtnElem.addClass('op-error');
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     FindOp.prototype.onFailure = function (message, foundOp, editOp, error) {
@@ -219,7 +219,7 @@
         error ? self.nextBtnElem.addClass('op-error') : self.nextBtnElem.removeClass('op-error');
 
         self.blur.getNextFormElement().focus();
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     $(document).ready(function () {

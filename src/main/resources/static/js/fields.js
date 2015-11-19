@@ -288,7 +288,7 @@
             }
 
             if (newResult !== previousResult) {
-                $(document).trigger('changeOfState');
+                $.triggerChangeOfState();
             }
             previousResult = newResult;
         };
@@ -318,7 +318,7 @@
                 }
 
                 if (newResult !== previousResult) {
-                    $(document).trigger('changeOfState');
+                    $.triggerChangeOfState();
                 }
                 previousResult = newResult;
             };

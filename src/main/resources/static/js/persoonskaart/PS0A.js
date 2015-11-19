@@ -6,7 +6,7 @@
         var value = elem.getIntegerValue();
 
         elem.hasErrorWhen(isNaN(value) || value <= 0 || value >= 500000);
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     var typePkCheck = function () {
@@ -15,7 +15,7 @@
         var value = elem.getIntegerValue();
 
         elem.hasErrorWhen(validOptions.indexOf(value) < 0);
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     $.initCheckDate(

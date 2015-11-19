@@ -534,7 +534,7 @@
             'burg-stand-' + elem.attr('id'),
             message
         );
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     var showDatumPlaats = function (elem) {
@@ -560,6 +560,7 @@
         var value = elem.val().trim().toLowerCase();
         var validValues = ['w', 'v', 'n', 'vw', 'wv'];
         elem.hasErrorWhen(validValues.indexOf(value) < 0);
+        $.triggerChangeOfState();
     };
 
     var updateBurgRelation = function (self, elems) {
@@ -798,7 +799,7 @@
         showDatumPlaats($(e.target));
     }).on('blur', '.nationality', function (e) {
         setNationality($(e.target));
-    }).on('blur', '.legalPlaceOfLivingInCodes', function (e) {
+    }).on('change', '.legalPlaceOfLivingInCodes', function (e) {
         checkLegalPlaceOfLivingInCodes($(e.target));
     }).on('crud-table-new', '[data-type=BURGELIJKE_STAND]', function (e, elems) {
         updateBurgRelation($(e.target), elems);
