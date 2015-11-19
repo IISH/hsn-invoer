@@ -40,7 +40,7 @@
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/huwelijk/HS1.js" th:src="@{/js/huwelijk/HS1.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+  <script src="../../static/js/huwelijk/HS1.js" hsn:src="@{/js/huwelijk/HS1.js}"></script>
 </th:block>
 </body>
 </html>

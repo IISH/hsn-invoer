@@ -56,7 +56,7 @@
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/huwelijk/HS0I.js" th:src="@{/js/huwelijk/HS0I.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+  <script src="../../static/js/huwelijk/HS0I.js" hsn:src="@{/js/huwelijk/HS0I.js}"></script>
 </th:block>
 </body>
 </html>

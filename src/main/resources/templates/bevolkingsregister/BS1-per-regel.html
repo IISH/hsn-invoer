@@ -512,12 +512,12 @@
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
-          th:src="@{/js/bevolkingsregister/bevolkingsregister.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
-  <script src="../../static/js/bevolkingsregister/BS1.js" th:src="@{/js/bevolkingsregister/BS1.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+          hsn:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
+  <script src="../../static/js/bevolkingsregister/BS1.js" hsn:src="@{/js/bevolkingsregister/BS1.js}"></script>
   <script src="../../static/js/bevolkingsregister/crud-table.js"
-          th:src="@{/js/bevolkingsregister/crud-table.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+          hsn:src="@{/js/bevolkingsregister/crud-table.js}"></script>
   <script src="../../static/js/bevolkingsregister/person-dynamic.js"
-          th:src="@{/js/bevolkingsregister/person-dynamic.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+          hsn:src="@{/js/bevolkingsregister/person-dynamic.js}"></script>
 </th:block>
 </body>
 </html>

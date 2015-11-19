@@ -746,6 +746,7 @@
             row.resetInvisibleFormElements();
             row.removeClass('register-person');
             var data = row.find('.form-elem').serialize()
+                + '&b4.remarks=' + $('[name=b4\\.remarks]').val()
                 + '&_eventId=register-person&ajaxSource=true&person=' + row.data('rp');
             $.ajax({type: 'POST', data: data});
         });

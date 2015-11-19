@@ -161,7 +161,7 @@
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/persoonskaart/PS0A.js" th:src="@{/js/persoonskaart/PS0A.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+  <script src="../../static/js/persoonskaart/PS0A.js" hsn:src="@{/js/persoonskaart/PS0A.js}"></script>
 </th:block>
 </body>
 </html>

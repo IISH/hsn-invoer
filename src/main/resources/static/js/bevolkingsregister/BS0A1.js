@@ -20,7 +20,8 @@
 
         var self = $(e.target);
         if (self.hasClass('is-rp')) {
-            $.setError(self.getIntegerValue() === 0, 'rp-delete', 'OP-regel kan niet verwijderd worden.');
+            var value = self.getIntegerValue();
+            $.setError((isNaN(value) || (value === 0)), 'rp-delete', 'OP-regel kan niet verwijderd worden.');
         }
     });
 })(jQuery);
