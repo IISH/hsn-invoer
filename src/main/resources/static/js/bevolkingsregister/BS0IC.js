@@ -140,7 +140,7 @@
                 }
             }).fail(function () {
                 if ($.isCorrection() && !isCorrectionOfIdentification) {
-                    onError('Record niet aanwezig!');
+                    onError('Deze door uw opgegeven combinatie van bronnummer en hoofddatum is nog niet ingevoerd!');
                 }
                 else {
                     if (!isCorrectionOfIdentification) {

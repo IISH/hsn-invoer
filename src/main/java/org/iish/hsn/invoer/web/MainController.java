@@ -82,7 +82,7 @@ public class MainController {
             case "5":
                 return "redirect:/bevolkingsregister";
             case "s":
-                return "redirect:/";
+                return "redirect:/?exit=true";
             default:
                 return "redirect:/hoofdmenu";
         }

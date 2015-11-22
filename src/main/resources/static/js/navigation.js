@@ -32,6 +32,11 @@
             return;
         }
 
+        // Also disable navigation in case the ALT key was pressed
+        if (e.altKey) {
+            return;
+        }
+
         // Navigation is different inside a table: use arrow keys to navigate through the cells
         if ((onTableNavigation !== undefined) && (self.closest('table').length > 0)) {
             var isUp = (e.which === 38); // Arrow up
@@ -316,6 +321,12 @@
     });
 
     $(document).ready(function () {
-        $('.form-elem:enabled:visible:first').focus();
+        var focusElem = $('.focusOnReady:first');
+        if (focusElem.length > 0) {
+            focusElem.focus();
+        }
+        else {
+            $('.form-elem:enabled:visible:first').focus();
+        }
     });
 })(jQuery);

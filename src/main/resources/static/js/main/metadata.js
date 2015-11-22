@@ -12,5 +12,9 @@
         }).each(function () {
             checkLength($(this));
         });
+
+        if (window.location.search === '?exit=true') {
+            $('.btn-logout').addClass('focusOnReady');
+        }
     });
 })(jQuery);

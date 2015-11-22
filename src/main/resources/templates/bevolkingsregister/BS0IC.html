@@ -220,8 +220,12 @@
              name="vorige-inschrijving" id="vorige-inschrijving"/>
 
     <span data-show-when="#vorige-inschrijving" data-has-values-in="j">
+      <label class="control-label spacing">Bronnr.</label>
+
       <input type="text" class="form-control form-control-small spacing"
              th:field="*{prevRegistration.keyToSourceRegister}" hsn:field="prevRegistration.keyToSourceRegister"/>
+
+      <label class="control-label spacing">Hoofddatum</label>
 
       <input type="text" class="form-control form-control-digit spacing day" maxlength="2"
              th:field="*{prevRegistration.dayEntryHead}" hsn:field="prevRegistration.dayEntryHead"/>

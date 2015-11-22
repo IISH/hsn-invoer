@@ -38,7 +38,7 @@
           </tr>
           </thead>
 
-          <tbody>
+          <tbody data:no-lines="${akte.noRegels}">
           <tr th:each="person,stat : *{b2}">
             <td>
               <span class="line" th:utext="${akte.b2[__${stat.index}__].keyToRegistrationPersons}"></span>
@@ -48,8 +48,8 @@
                      th:name="'b2[' + __${stat.index}__ + '].keyToRegistrationPersons'"
                      th:id="'b2' + __${stat.index}__ + '.keyToRegistrationPersons'"
                      hsn:field="b2[__${stat.index}__].keyToRegistrationPersons"
-                     th:classappend="${akte.volgnrOP == (stat.index + 1)} ? 'is-rp'"
-                     th:value="${akte.volgnrOP == (stat.index + 1)} ? ${@bevolkingsregisterHelper.findKeyOfRp(akte)}"/>
+                     th:readonly="${@bevolkingsregisterHelper.findKeyOfRp(akte) == (stat.index + 1)} ? 'readonly'"
+                     th:value="${@bevolkingsregisterHelper.findKeyOfRp(akte) == (stat.index + 1)} ? ${akte.volgnrOP}"/>
             </td>
             <td>
               <span th:utext="${akte.b2[__${stat.index}__].familyName}"></span>

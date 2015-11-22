@@ -32,27 +32,27 @@
   <th>Ins Dat</th>
   <th>Achternaam</th>
   <th>Voornamen</th>
-  <th>G</th>
+  <th>Gesl</th>
   <th>*</th>
-  <th>Rel</th>
-  <th>Geb dat</th>
-  <th>Geb plaats</th>
-  <th>Brg</th>
+  <th>Relatie tot hoofd</th>
+  <th>Geboortedatum</th>
+  <th>Geboorteplaats</th>
+  <th>Burgelijke staat</th>
   <th>Rel</th>
   <th>Datum</th>
   <th>Plaats</th>
-  <th>Kerkg</th>
+  <th>Kerkgenootschap</th>
   <th>Beroep</th>
-  <th>P</th>
+  <th>Pos</th>
   <th>Herkomst</th>
   <th>Plaats</th>
   <th>Vertrek</th>
   <th>Plaats</th>
-  <th>Ovl dat</th>
-  <th>Plaats</th>
-  <th>Nat</th>
-  <th>Wet dom</th>
-  <th>Aanmerk</th>
+  <th>Overljdensdatum</th>
+  <th>Overlijdensplaats</th>
+  <th>Nationaliteit</th>
+  <th>Wettelijk domicilie</th>
+  <th>Aanmerkingen</th>
 </tr>
 </thead>
 <tbody th:with="persons=${akte.personsToRender.isEmpty() ? akte.b2 : akte.getPersonsToRenderAndClear()}">
@@ -207,7 +207,7 @@
 </td>
 <td>
   <!-- Geb plaats -->
-  <input type="text" class="form-control form-control-medium spacing plaats required placeOfBirth"
+  <input type="text" class="form-control form-control-medium plaats required placeOfBirth"
          th:field="*{b2[__${rp-1}__].placeOfBirth}" hsn:field="b2[__${stat.index}__].placeOfBirth"/>
 </td>
 <td class="personDynamic" data-type="BURGELIJKE_STAND"
@@ -240,20 +240,20 @@
   <!-- Plaats -->
   <div class="sub-form-group burgStandToggle"
        th:style="${#arrays.contains({2,3,5,9}, akte.b3Brg[__${rp}__][0].contentOfDynamicData) == false} ? 'display:none;'">
-    <input type="text" class="form-control form-control-medium spacing plaats"
+    <input type="text" class="form-control form-control-medium plaats"
            th:field="*{b3Brg[__${rp}__][0].dynamicData2}" hsn:field="b3Brg[__${rp}__][0].dynamicData2"/>
   </div>
 </td>
 <td class="personDynamic" data-type="KERKGENOOTSCHAP"
     th:classappend="${akte.b3Kg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Kerkg -->
-  <input type="text" class="form-control form-control-medium spacing kg required"
+  <input type="text" class="form-control form-control-medium kg required"
          th:field="*{b3Kg[__${rp}__][0].dynamicData2}" hsn:field="b3Kg[__${rp}__][0].dynamicData2"/>
 </td>
 <td class="personDynamic" data-type="BEROEP"
     th:classappend="${akte.b3Brp[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Beroep -->
-  <input type="text" class="form-control form-control-medium spacing beroep required"
+  <input type="text" class="form-control form-control-medium beroep required"
          th:field="*{b3Brp[__${rp}__][0].dynamicData2}" hsn:field="b3Brp[__${rp}__][0].dynamicData2"/>
 </td>
 <td class="personDynamic" data-type="BEROEP">

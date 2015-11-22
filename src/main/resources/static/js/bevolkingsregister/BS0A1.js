@@ -2,9 +2,10 @@
     'use strict';
 
     $(document).on('blur', '.new-key', function (e) {
+        var noLines = $.getDataElem('no-lines').getIntegerDataValue('no-lines');
         var newKeys = $('.new-key');
         var keys = [];
-        var doubleKeyError = false;
+        var doubleKeyError, maxLinesError = false;
         newKeys.each(function (i, newKey) {
             var newKeyVal = $(newKey).getIntegerValue();
             if (newKeyVal !== 0) {
@@ -14,14 +15,13 @@
                 else {
                     keys.push(newKeyVal);
                 }
+
+                if (newKeyVal > noLines) {
+                    maxLinesError = true;
+                }
             }
         });
         $.setError(doubleKeyError, 'double-keys', 'Regel bestaat reeds!');
-
-        var self = $(e.target);
-        if (self.hasClass('is-rp')) {
-            var value = self.getIntegerValue();
-            $.setError((isNaN(value) || (value === 0)), 'rp-delete', 'OP-regel kan niet verwijderd worden.');
-        }
+        $.setError(maxLinesError, 'max-lines', 'U heeft opgegeven maximaal ' + noLines + ' regels in te voeren!');
     });
 })(jQuery);
