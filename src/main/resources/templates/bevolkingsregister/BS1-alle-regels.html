@@ -58,13 +58,13 @@
 <tbody th:with="persons=${akte.personsToRender.isEmpty() ? akte.b2 : akte.getPersonsToRenderAndClear()}">
 <tr th:each="person,stat : ${persons}" th:with="rp=${persons[__${stat.index}__].rp}" data:rp="${rp}"
     data:copy-prev-person="${rp == akte.curB2.rp} ? 'copy-prev-person'">
-<td class="person-byz" data-group="inscrijf">
+<td class="person-byz" data-group="inschrijf">
   <!-- Nr -->
   <span class="line" th:utext="${persons[__${stat.index}__].keyToRegistrationPersons}"></span>
 
   <div th:replace="bevolkingsregister/byz-fragments :: personByz (${rp})"></div>
 </td>
-<td data-group="inscrijf">
+<td data-group="inschrijf">
   <!-- Ins Dat -->
   <div class="sub-form-group">
     <input type="text" class="form-control form-control-digit has-inschrijving required" maxlength="1"
