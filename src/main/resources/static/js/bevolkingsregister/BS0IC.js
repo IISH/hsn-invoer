@@ -354,9 +354,10 @@
 
             var volgNrOp = volgNrOpElem.getIntegerValue();
             var aantalRegels = aantalRegelsElem.getIntegerValue();
-            $.setError(
+            $.setErrorWithClass(
                 !isNaN(volgNrOp) && !isNaN(aantalRegels) && (volgNrOp > aantalRegels),
                 'volgnummer-op-too-big',
+                $('.fail.volgnr-op'),
                 'Volgnummer OP is hoger dan het aantal regels!'
             );
         }

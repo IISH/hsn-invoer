@@ -58,13 +58,13 @@
 <tbody th:with="persons=${akte.personsToRender.isEmpty() ? akte.b2 : akte.getPersonsToRenderAndClear()}">
 <tr th:each="person,stat : ${persons}" th:with="rp=${persons[__${stat.index}__].rp}" data:rp="${rp}"
     data:copy-prev-person="${rp == akte.curB2.rp} ? 'copy-prev-person'">
-<td class="person-byz">
+<td class="person-byz" data-group="inscrijf">
   <!-- Nr -->
   <span class="line" th:utext="${persons[__${stat.index}__].keyToRegistrationPersons}"></span>
 
   <div th:replace="bevolkingsregister/byz-fragments :: personByz (${rp})"></div>
 </td>
-<td>
+<td data-group="inscrijf">
   <!-- Ins Dat -->
   <div class="sub-form-group">
     <input type="text" class="form-control form-control-digit has-inschrijving required" maxlength="1"
@@ -82,24 +82,24 @@
        th:include="fragments/fields :: datum ('b2[__${rp-1}__].dayOfRegistration', 'b2[__${rp-1}__].monthOfRegistration', 'b2[__${rp-1}__].yearOfRegistration')">
   </div>
 </td>
-<td>
+<td data-group="persoon">
   <!-- Achternaam -->
   <input type="text" class="form-control form-control-medium required lastName"
          th:field="*{b2[__${rp-1}__].familyName}"
          hsn:field="b2[__${stat.index}__].familyName"/>
 </td>
-<td>
+<td data-group="persoon">
   <!-- Voornamen -->
   <input type="text" class="form-control form-control-medium required firstName"
          th:field="*{b2[__${rp-1}__].firstName}"
          hsn:field="b2[__${stat.index}__].firstName"/>
 </td>
-<td>
+<td data-group="persoon">
   <!-- G -->
   <input type="text" class="form-control form-control-digit required sex" data-valid-chars="m;v;o"
          th:field="*{b2[__${rp-1}__].sex}" hsn:field="b2[__${stat.index}__].sex"/>
 </td>
-<td>
+<td data-group="relatie">
   <!-- * -->
   <span class="ind" th:style="${akte.b3Rel[__${rp}__][0].valueOfRelatedPerson le 0} ? 'display:none;'">
     *
@@ -107,7 +107,7 @@
 </td>
 <td th:class="${akte.refAinb.typeRegister == 'C'} ? 'personDynamic only-head' : 'personDynamic'"
     data:type="${akte.refAinb.typeRegister != 'C'} ? 'RELATIE_TOV_HOOFD'" data:person="${rp}"
-    th:classappend="${akte.b3Rel[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
+    th:classappend="${akte.b3Rel[__${rp}__].size() > 1} ? 'multiple-person-dynamic'" data-group="relatie">
   <span th:if="${(akte.refAinb.typeRegister == 'C') and (rp == 1)}"
         th:utext="${akte.b3Rel[__${rp}__][0].contentOfDynamicData}"></span>
 
@@ -182,7 +182,7 @@
     </div>
   </div>
 </td>
-<td class="geb-date-person" data:is-op="${rp == akte.volgnrOP}"
+<td class="geb-date-person" data-group="geboorte" data:is-op="${rp == akte.volgnrOP}"
     data:op-geb-day="${akte.op != null and rp != akte.volgnrOP} ? ${akte.op.dayOfBirth}"
     data:op-geb-month="${akte.op != null and rp != akte.volgnrOP} ? ${akte.op.monthOfBirth}"
     data:op-geb-year="${akte.op != null and rp != akte.volgnrOP} ? ${akte.op.yearOfBirth}">
@@ -205,19 +205,19 @@
     </div>
   </div>
 </td>
-<td>
+<td data-group="geboorte">
   <!-- Geb plaats -->
   <input type="text" class="form-control form-control-medium plaats required placeOfBirth"
          th:field="*{b2[__${rp-1}__].placeOfBirth}" hsn:field="b2[__${stat.index}__].placeOfBirth"/>
 </td>
-<td class="personDynamic" data-type="BURGELIJKE_STAND"
+<td class="personDynamic" data-type="BURGELIJKE_STAND" data-group="burgelijk"
     th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Brg -->
   <th:block
       th:include="fragments/fields :: burgelijke-stand ('b3Brg[__${rp}__][0].contentOfDynamicData')">
   </th:block>
 </td>
-<td class="personDynamic" data-type="BURGELIJKE_STAND"
+<td class="personDynamic" data-type="BURGELIJKE_STAND" data-group="burgelijk"
     th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Rel -->
   <div class="sub-form-group burgStandToggle"
@@ -227,7 +227,7 @@
            hsn:field="b3Brg[__${rp}__][0].valueOfRelatedPerson"/>
   </div>
 </td>
-<td class="personDynamic" data-type="BURGELIJKE_STAND"
+<td class="personDynamic" data-type="BURGELIJKE_STAND" data-group="burgelijk"
     th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Datum -->
   <div class="sub-form-group checkDateBevReg fullCheck burgStandToggle"
@@ -235,7 +235,7 @@
        th:style="${#arrays.contains({2,3,5,9}, akte.b3Brg[__${rp}__][0].contentOfDynamicData) == false} ? 'display:none;'">
   </div>
 </td>
-<td class="personDynamic" data-type="BURGELIJKE_STAND"
+<td class="personDynamic" data-type="BURGELIJKE_STAND" data-group="burgelijk"
     th:classappend="${akte.b3Brg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Plaats -->
   <div class="sub-form-group burgStandToggle"
@@ -244,19 +244,19 @@
            th:field="*{b3Brg[__${rp}__][0].dynamicData2}" hsn:field="b3Brg[__${rp}__][0].dynamicData2"/>
   </div>
 </td>
-<td class="personDynamic" data-type="KERKGENOOTSCHAP"
+<td class="personDynamic" data-type="KERKGENOOTSCHAP" data-group="kg"
     th:classappend="${akte.b3Kg[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Kerkg -->
   <input type="text" class="form-control form-control-medium kg required"
          th:field="*{b3Kg[__${rp}__][0].dynamicData2}" hsn:field="b3Kg[__${rp}__][0].dynamicData2"/>
 </td>
-<td class="personDynamic" data-type="BEROEP"
+<td class="personDynamic" data-type="BEROEP" data-group="beroep"
     th:classappend="${akte.b3Brp[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- Beroep -->
   <input type="text" class="form-control form-control-medium beroep required"
          th:field="*{b3Brp[__${rp}__][0].dynamicData2}" hsn:field="b3Brp[__${rp}__][0].dynamicData2"/>
 </td>
-<td class="personDynamic" data-type="BEROEP">
+<td class="personDynamic" data-type="BEROEP" data-group="beroep">
   <!-- P -->
   <input type="hidden" th:id="'b3Brp'+__${rp}__+'0.contentOfDynamicData'"
          th:name="'b3Brp['+__${rp}__+'][0].contentOfDynamicData'"
@@ -265,7 +265,7 @@
   <input type="text" class="form-control form-control-digit required positie" maxlength="1" data-valid-chars="h;o;n"
          th:id="${'p-' + rp}" th:value="${@bevolkingsregisterHelper.getPositieFromCode(akte.b3Brp[__${rp}__][0])}"/>
 </td>
-<td class="personDynamic" data-type="HERKOMST">
+<td class="personDynamic" data-type="HERKOMST" data-group="herkomst">
   <!-- Herkomst -->
   <div class="sub-form-group">
     <input type="text" class="form-control form-control-digit has-herkomst required" maxlength="1"
@@ -278,13 +278,13 @@
        th:include="fragments/fields :: datum ('firstB3Her[__${rp}__].dayOfMutation', 'firstB3Her[__${rp}__].monthOfMutation', 'firstB3Her[__${rp}__].yearOfMutation')">
   </div>
 </td>
-<td class="personDynamic" data-type="HERKOMST">
+<td class="personDynamic" data-type="HERKOMST" data-group="herkomst">
   <!-- Plaats -->
   <input type="text" class="form-control form-control-medium plaats herkomst-plaats"
          th:style="${@bevolkingsregisterHelper.hasHerkomstData(akte, persons[__${stat.index}__]) == 'n'} ? 'display:none;'"
          th:field="*{firstB3Her[__${rp}__].dynamicData2}" hsn:field="firstB3Her[__${rp}__].dynamicData2"/>
 </td>
-<td class="personDynamic" data-type="VERTREK">
+<td class="personDynamic" data-type="VERTREK" data-group="vertrek">
   <!-- Vertrek -->
   <div class="sub-form-group">
     <input type="text" class="form-control form-control-digit has-vertrek required" maxlength="1"
@@ -297,13 +297,13 @@
        th:include="fragments/fields :: datum ('firstB3Ver[__${rp}__].dayOfMutation', 'firstB3Ver[__${rp}__].monthOfMutation', 'firstB3Ver[__${rp}__].yearOfMutation')">
   </div>
 </td>
-<td class="personDynamic" data-type="VERTREK">
+<td class="personDynamic" data-type="VERTREK" data-group="vertrek">
   <!-- Plaats -->
   <input type="text" class="form-control form-control-medium plaats vertrek-plaats"
          th:style="${@bevolkingsregisterHelper.hasVertrekData(akte, persons[__${stat.index}__]) == 'n'} ? 'display:none;'"
          th:field="*{firstB3Ver[__${rp}__].dynamicData2}" hsn:field="firstB3Ver[__${rp}__].dynamicData2"/>
 </td>
-<td>
+<td data-group="overlijden">
   <!-- Ovl dat -->
   <div class="sub-form-group">
     <input type="text" class="form-control form-control-digit required has-overlijden" maxlength="1"
@@ -316,18 +316,18 @@
        th:include="fragments/fields :: datum ('b2[__${rp-1}__].dayOfDecease', 'b2[__${rp-1}__].monthOfDecease', 'b2[__${rp-1}__].yearOfDecease')">
   </div>
 </td>
-<td>
+<td data-group="overlijden">
   <!-- Plaats -->
   <input type="text" class="form-control form-control-medium plaats overlijden-plaats"
          th:style="${@bevolkingsregisterHelper.hasOverlijdensData(persons[__${stat.index}__]) == 'n'} ? 'display:none;'"
          th:field="*{b2[__${rp-1}__].placeOfDecease}" hsn:field="b2[__${stat.index}__].placeOfDecease"/>
 </td>
-<td>
+<td data-group="overig">
   <!-- Nat -->
   <input type="text" class="form-control form-control-medium nationality"
          th:field="*{b2[__${rp-1}__].nationality}" hsn:field="b2[__${stat.index}__].nationality"/>
 </td>
-<td>
+<td data-group="overig">
   <!-- Wet dom -->
   <div class="sub-form-group" th:if="${akte.refAinb.typeRegister != 'C'}">
     <input type="text" class="form-control form-control-medium legalPlaceOfLiving"
@@ -342,7 +342,7 @@
            hsn:field="b2[__${stat.index}__].legalPlaceOfLivingInCodes"/>
   </div>
 </td>
-<td>
+<td data-group="overig">
   <!-- Aanmerk -->
   <input type="text" class="form-control form-control-medium"
          th:field="*{b2[__${rp-1}__].remarks}" hsn:field="b2[__${stat.index}__].remarks"/>
@@ -434,6 +434,12 @@
 
 <fieldset layout:fragment="navigation"
           th:include="fragments/navigation :: bev-reg-navigation (${akte}, false)"></fieldset>
+
+<span layout:fragment="navigational-form">
+  <p class="navigational status navCurPersonContainer">
+    Persoon/Regel: <span class="navCurPerson">1</span>
+  </p>
+</span>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"

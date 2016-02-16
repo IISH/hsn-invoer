@@ -761,6 +761,17 @@
         }
     };
 
+    var updateNavCurPerson = function (e) {
+        var person = parseInt($(e.target).closest('tr').getIntegerDataValue('rp'));
+        if (!isNaN(person)) {
+            $('.navCurPerson').text(person);
+            $('.navCurPersonContainer').show();
+        }
+        else {
+            $('.navCurPersonContainer').hide();
+        }
+    };
+
     $(document).keydown(function (e) {
         switch (e.which) {
             case 114: // F3
@@ -811,6 +822,11 @@
             // Also person registration is done via AJAX, so don't submit data on next/cancel
             // This is done by binding the submit buttons to another empty form
             $('form button[type=submit]').attr('form', 'no-form');
+
+            // Only required if we work with all lines on one screen
+            $(document).on('focus', ':input', function (e) {
+                updateNavCurPerson(e);
+            });
         }
 
         // If the user has to fix the burg. stand relation, then disable everything else

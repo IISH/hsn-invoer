@@ -3,6 +3,9 @@
 <head></head>
 <body>
 <fieldset th:fragment="bev-reg-navigation (akte, singlePersonScreen)">
+  <span class="pull-left navigational-form" layout:fragment="navigational-form">
+  </span>
+
   <span class="pull-right" th:with="burgstandRelFix=${singlePersonScreen and akte.isBurgStandRelFix()}">
     <th:block th:if="${akte.isCorrectionDelete()} == false">
       <button type="submit" name="_eventId_nextPerson" class="btn btn-default btn-next"

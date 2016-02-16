@@ -145,16 +145,6 @@
                     if (field.attr('data-selected').trim() === '0') {
                         field.val('');
                         field.nextAll('p.picklist-label').first().html('&nbsp;');
-
-                        /*if (values.length === 1) {
-                         var label = values[0];
-                         var record = recordsByLabel[label];
-                         if (record !== null) {
-                         field.val(record.id);
-                         field.attr('data-selected', record.id);
-                         field.nextAll('p.picklist-label').first().text(record.value);
-                         }
-                         }*/
                     }
                 });
             }

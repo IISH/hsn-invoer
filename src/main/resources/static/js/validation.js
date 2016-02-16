@@ -30,6 +30,11 @@
         });
     };
 
+    $.setErrorWithClass = function (isError, name, elem, errorMessage) {
+        addError(isError, null, name + '-error');
+        isError ? elem.text(errorMessage).show() : elem.hide();
+    };
+
     $.fn.hasErrorWhen = function (condition, elemParent) {
         if (elemParent === undefined || elemParent === null) {
             elemParent = this.getParentOfFormElement();

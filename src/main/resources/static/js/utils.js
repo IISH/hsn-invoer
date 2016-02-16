@@ -51,11 +51,11 @@
         var rows, focusIndicator;
 
         // Find out which row to make active, if there is one...
-        if (elem.is('.fixed-left-column .free tbody input, .fixed-left-column .free tbody button')) {
+        var freePart = elem.closest('.free');
+        var parent = freePart.closest('.fixed-left-column');
+        if (parent.length === 1) {
             var row = elem.closest('tr');
             var index = row.closest('tbody').find('tr').index(row);
-
-            var parent = row.closest('.fixed-left-column');
             var fixedRow = parent.find('.fixed tbody tr:nth-child(' + (index + 1) + ')');
 
             rows = row.add(fixedRow);
@@ -66,8 +66,9 @@
         }
 
         // Now de-activate all rows except the active ones
-        $('.fixed-left-column tr.active').not(rows).removeClass('active');
-        $('.fixed-left-column .fixed .glyphicon').not(focusIndicator).removeClass('glyphicon glyphicon-triangle-right');
+        var fixedLeftColumn = $('.fixed-left-column');
+        fixedLeftColumn.find('tr.active').not(rows).removeClass('active');
+        fixedLeftColumn.find('.fixed .glyphicon').not(focusIndicator).removeClass('glyphicon glyphicon-triangle-right');
     };
 
     $(document).on('focus', ':input', function (e) {
