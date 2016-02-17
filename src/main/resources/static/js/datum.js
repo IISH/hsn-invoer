@@ -5,17 +5,7 @@
     'use strict';
 
     $.createDateSelector = function (parentSelector) {
-        var selectors = [];
-        $.each({
-            day: '.day',
-            month: '.month',
-            year: '.year',
-            hour: '.hour',
-            minute: '.minute'
-        }, function (name, selector) {
-            selectors.push(parentSelector + ' ' + selector);
-        });
-        return selectors.join(',');
+        return parentSelector + ' .dateInput';
     };
 
     $.checkHsnDate = function (hsnDate) {
@@ -51,11 +41,13 @@
             var day = hsnDate.day;
             var dayIsZero = (day.isInput && (day.getValue() === 0));
 
+            var toUpdate = $();
             $.each(hsnDate, function (name, elem) {
                 if (dayIsZero && elem.isInput) {
-                    elem.elem.val(-1);
+                    toUpdate = toUpdate.add(elem.elem);
                 }
             });
+            toUpdate.val(-1);
 
             if (dayIsZero) {
                 var parent = day.elem.getParentOfFormElement();

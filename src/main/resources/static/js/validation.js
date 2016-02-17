@@ -219,11 +219,12 @@
         var byzBtn = $('.btn-byz');
 
         var hasAnError = [];
-        if ($('.modal:visible').length === 0) {
+        var modal = $('.modal:visible');
+        if (modal.length === 0) {
             hasAnError = $('.has-an-error:visible');
         }
         else {
-            hasAnError = $('.modal:visible .has-an-error:visible');
+            hasAnError = modal.find('.has-an-error:visible');
         }
 
         if (nextBtn.is('[class$=error]') || (hasAnError.length > 0)) {
@@ -250,7 +251,7 @@
 
     var init = function (forceRun) {
         if (forceRun || !$.isRunningInit()) {
-            if (!$.isCorrection()) {
+            if ($.checkByz() && !$.isCorrection()) {
                 checkByz();
             }
 
@@ -259,30 +260,34 @@
         }
     };
 
-    $(document)
-        .on('blur', '.required', function (e) {
-            checkRequired($(e.target));
-        })
-        .on('change', '.required', function (e) {
+    $(document).on('blur', '.form-elem', function (e) {
+        var elem = $(e.target);
+
+        if (elem.hasClass('required')) {
+            checkRequired(elem);
+        }
+
+        if (elem.closest('form').length > 0) {
+            init();
+        }
+    }).on('change', '.required', function (e) {
+        var self = $(e.target);
+        var focus = $(':focus');
+
+        if (!focus.is(self)) {
+            checkRequired(self);
+        }
+    }).on('show', function (e) {
+        checkRequired($(e.target));
+    }).on('show hide', function (e) {
+        if (!$.isRunningInit()) {
+            // Prevent a endless loop: call init, show message, 'show' event called, back to call init ...
             var self = $(e.target);
-            var focus = $(':focus');
-            if (!focus.is(self)) {
-                checkRequired(self);
+            if (!self.hasClass('.messages') && (self.closest('.messages').length === 0)) {
+                init();
             }
-        })
-        .on('show', function (e) {
-            checkRequired($(e.target));
-        })
-        .on('blur', 'form input, form button', init)
-        .on('show hide', function (e) {
-            if (!$.isRunningInit()) {
-                // Prevent a endless loop: call init, show message, 'show' event called, back to call init ...
-                var self = $(e.target);
-                if (!self.hasClass('.messages') && (self.closest('.messages').length === 0)) {
-                    init();
-                }
-            }
-        });
+        }
+    });
 
     $.triggerChangeOfState = function () {
         if (!$.isRunningInit()) {

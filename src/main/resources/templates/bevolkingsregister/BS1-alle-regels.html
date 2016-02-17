@@ -143,13 +143,13 @@
       <div class="form-group checkDateBevReg fullCheck noNeg afterHfdDatum">
         <label class="control-label">Datum expliciet hoofd:</label>
 
-        <input type="text" class="form-control form-control-digit day spacing" maxlength="2"
+        <input type="text" class="form-control form-control-digit day dateInput spacing" maxlength="2"
                th:value="${@bevolkingsregisterHelper.getDayFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
         /
-        <input type="text" class="form-control form-control-digit month" maxlength="2"
+        <input type="text" class="form-control form-control-digit month dateInput" maxlength="2"
                th:value="${@bevolkingsregisterHelper.getMonthFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
         /
-        <input type="text" class="form-control form-control-small year" maxlength="4"
+        <input type="text" class="form-control form-control-small year dateInput" maxlength="4"
                th:value="${@bevolkingsregisterHelper.getYearFromDateExplicietHoofd(akte.b3Rel[__${rp}__][0])}"/>
       </div>
     </div>
@@ -187,7 +187,7 @@
     data:op-geb-month="${akte.op != null and rp != akte.volgnrOP} ? ${akte.op.monthOfBirth}"
     data:op-geb-year="${akte.op != null and rp != akte.volgnrOP} ? ${akte.op.yearOfBirth}">
   <!-- Geb dat -->
-  <div class="sub-form-group checkDateBevReg fullCheck"
+  <div class="sub-form-group checkDateBevReg fullCheck geb-date-person-parent"
        th:include="fragments/fields :: datum ('b2[__${rp-1}__].dayOfBirth', 'b2[__${rp-1}__].monthOfBirth', 'b2[__${rp-1}__].yearOfBirth')">
   </div>
 
@@ -198,7 +198,7 @@
       <div class="form-group">
         <label class="control-label">Betreft het hier een volgende inschrijving van de OP? j / n:</label>
 
-        <input type="text" class="form-control form-control-digit spacing" maxlength="1"
+        <input type="text" class="form-control form-control-digit spacing is-next-rp" maxlength="1"
                data-valid-chars="j;n"
                data:person="${rp}"/>
       </div>
@@ -268,7 +268,7 @@
 <td class="personDynamic" data-type="HERKOMST" data-group="herkomst">
   <!-- Herkomst -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-digit has-herkomst required" maxlength="1"
+    <input type="text" class="form-control form-control-digit has-herkomst has-hvo required" maxlength="1"
            data-valid-chars="j;n" th:id="${'herkomst-' + rp}"
            th:value="${@bevolkingsregisterHelper.hasHerkomstData(akte, persons[__${stat.index}__])}"/>
   </div>
@@ -287,7 +287,7 @@
 <td class="personDynamic" data-type="VERTREK" data-group="vertrek">
   <!-- Vertrek -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-digit has-vertrek required" maxlength="1"
+    <input type="text" class="form-control form-control-digit has-vertrek has-hvo required" maxlength="1"
            data-valid-chars="j;n" th:id="${'vertrek-' + rp}"
            th:value="${@bevolkingsregisterHelper.hasVertrekData(akte, persons[__${stat.index}__])}"/>
   </div>
@@ -306,7 +306,7 @@
 <td data-group="overlijden">
   <!-- Ovl dat -->
   <div class="sub-form-group">
-    <input type="text" class="form-control form-control-digit required has-overlijden" maxlength="1"
+    <input type="text" class="form-control form-control-digit required has-overlijden has-hvo" maxlength="1"
            data-valid-chars="j;n" th:id="${'overlijden-' + rp}"
            th:value="${@bevolkingsregisterHelper.hasOverlijdensData(persons[__${stat.index}__])}"/>
   </div>
@@ -437,7 +437,7 @@
 
 <span layout:fragment="navigational-form">
   <p class="navigational status navCurPersonContainer">
-    Persoon/Regel: <span class="navCurPerson">1</span>
+    Persoon: <span class="navCurPerson">1</span>
   </p>
 </span>
 

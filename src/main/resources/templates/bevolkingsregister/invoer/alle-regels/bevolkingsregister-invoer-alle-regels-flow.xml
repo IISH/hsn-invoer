@@ -55,15 +55,17 @@
       <render fragments="#{'b3Content' + requestParameters.type}"/>
     </transition>
 
-    <transition on="register-person">
-      <evaluate expression="flowScope.akte.setCurB2Index(new Integer(requestParameters.person) - 1)"/>
-      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
-    </transition>
-
     <transition on="refresh-person-dynamics">
       <evaluate expression="flowScope.akte.setCurB2Index(new Integer(requestParameters.person) - 1)"/>
       <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
       <render fragments="#{'b3Content' + requestParameters.type}"/>
+    </transition>
+
+    <transition on="register-person">
+      <evaluate expression="flowScope.akte.setCurB2Index(new Integer(requestParameters.person) - 1)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
+      <evaluate expression="flowScope.akte.addPersonToRender(flowScope.akte.b2.get(new Integer(requestParameters.person) - 1))"/>
+      <render fragments="registrationAllLines"/>
     </transition>
 
     <transition on="refresh-person">

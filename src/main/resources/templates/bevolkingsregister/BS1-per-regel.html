@@ -134,13 +134,13 @@
     </label>
 
     <div class="col-xs-4 form-inline">
-      <input type="text" class="form-control form-control-digit day" maxlength="2"
+      <input type="text" class="form-control form-control-digit day dateInput" maxlength="2"
              th:value="${@bevolkingsregisterHelper.getDayFromDateExplicietHoofd(akte.b3Rel[__${akte.curB2.rp}__][0])}"/>
       /
-      <input type="text" class="form-control form-control-digit month" maxlength="2"
+      <input type="text" class="form-control form-control-digit month dateInput" maxlength="2"
              th:value="${@bevolkingsregisterHelper.getMonthFromDateExplicietHoofd(akte.b3Rel[__${akte.curB2.rp}__][0])}"/>
       /
-      <input type="text" class="form-control form-control-small year" maxlength="4"
+      <input type="text" class="form-control form-control-small year dateInput" maxlength="4"
              th:value="${@bevolkingsregisterHelper.getYearFromDateExplicietHoofd(akte.b3Rel[__${akte.curB2.rp}__][0])}"/>
     </div>
   </div>
@@ -177,7 +177,8 @@
   <label class="col-xs-2 control-label">Geb.datum/-plaats:</label>
 
   <div class="col-xs-10 form-inline">
-    <span class="sub-form-group geb-date-person checkDateBevReg fullCheck" data:is-op="${akte.curB2.rp == akte.volgnrOP}"
+    <span class="sub-form-group geb-date-person geb-date-person-parent checkDateBevReg fullCheck"
+          data:is-op="${akte.curB2.rp == akte.volgnrOP}"
           data:op-geb-day="${akte.op != null and akte.curB2.rp != akte.volgnrOP} ? ${akte.op.dayOfBirth}"
           data:op-geb-month="${akte.op != null and akte.curB2.rp != akte.volgnrOP} ? ${akte.op.monthOfBirth}"
           data:op-geb-year="${akte.op != null and akte.curB2.rp != akte.volgnrOP} ? ${akte.op.yearOfBirth}">
@@ -192,8 +193,8 @@
           <div class="form-group">
             <label class="control-label">Betreft het hier een volgende inschrijving van de OP? j / n:</label>
 
-            <input type="text" class="form-control form-control-digit spacing" maxlength="1" data-valid-chars="j;n"
-                   data:person="${akte.curB2.rp}"/>
+            <input type="text" class="form-control form-control-digit spacing"
+                   maxlength="1" data-valid-chars="j;n" data:person="${akte.curB2.rp}"/>
           </div>
         </div>
       </div>
@@ -299,7 +300,7 @@
     <label class="col-xs-2 control-label">Herkomst? j/n</label>
 
     <div class="col-xs-1">
-      <input type="text" class="form-control form-control-digit required has-herkomst" id="herkomst"
+      <input type="text" class="form-control form-control-digit required has-herkomst has-hvo" id="herkomst"
              maxlength="1" data-valid-chars="j;n"
              th:value="${@bevolkingsregisterHelper.hasHerkomstData(akte, akte.curB2)}"/>
     </div>
@@ -334,7 +335,7 @@
     <label class="col-xs-2 control-label">Vertrek? j/n</label>
 
     <div class="col-xs-1">
-      <input type="text" class="form-control form-control-digit required has-vertrek" id="vertrek"
+      <input type="text" class="form-control form-control-digit required has-vertrek has-hvo" id="vertrek"
              maxlength="1" data-valid-chars="j;n"
              th:value="${@bevolkingsregisterHelper.hasVertrekData(akte, akte.curB2)}"/>
     </div>
@@ -367,7 +368,7 @@
     <label class="col-xs-2 control-label">Overlijden? j/n</label>
 
     <div class="col-xs-1">
-      <input type="text" class="form-control form-control-digit required has-overlijden" id="overlijden"
+      <input type="text" class="form-control form-control-digit required has-overlijden has-hvo" id="overlijden"
              maxlength="1" data-valid-chars="j;n"
              th:value="${@bevolkingsregisterHelper.hasOverlijdensData(akte.curB2)}"/>
     </div>

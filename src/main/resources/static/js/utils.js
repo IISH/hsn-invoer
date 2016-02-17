@@ -37,9 +37,7 @@
         setInterval(function () {
             $.post('/keepalive');
         }, 60000);
-    });
-
-    $(document).on('ajax-update', function (e, elem) {
+    }).on('ajax-update', function (e, elem) {
         runInit(elem);
     });
 
@@ -71,7 +69,7 @@
         fixedLeftColumn.find('.fixed .glyphicon').not(focusIndicator).removeClass('glyphicon glyphicon-triangle-right');
     };
 
-    $(document).on('focus', ':input', function (e) {
+    $(document).on('focus', '.form-elem', function (e) {
         toggleActiveRow($(e.target));
     });
 
@@ -117,9 +115,7 @@
                 .find(':input:enabled:visible:first')
                 .focus();
         }
-    });
-
-    $(document).on('hidden.bs.modal', function (e) {
+    }).on('hidden.bs.modal', function (e) {
         if (e.namespace === 'bs.modal') {
             var focusElementId = $(e.target).data('focus-element-id');
             var element = $(document.getElementById(focusElementId));
@@ -128,9 +124,7 @@
             }
             element.focus();
         }
-    });
-
-    $(document).on('show.bs.popover', function (e) {
+    }).on('show.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
             var popoverBackdrop = $('body > .popover-backdrop.in');
             if (popoverBackdrop.length === 0) {
@@ -140,18 +134,14 @@
             }
             popoverBackdrop.fadeIn();
         }
-    });
-
-    $(document).on('shown.bs.popover', function (e) {
+    }).on('shown.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
             $('.popover:visible:first')
                 .trigger('show')
                 .find(':input:enabled:visible:first')
                 .focus();
         }
-    });
-
-    $(document).on('hide.bs.popover', function (e) {
+    }).on('hide.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
             $(this)
                 .find('.popover-backdrop.in')
@@ -180,13 +170,11 @@
     };
 
     $.fn.resetInvisibleFormElements = function () {
-        var notVisibleInputElements = this
-            .find('.form-elem:input')
+        this.find('.form-elem:input')
             .not(':visible')
             .not('[type=hidden]')
-            .not('.noResetOnHidden');
-        notVisibleInputElements.filter('.integer-field').val(0);
-        notVisibleInputElements.not('.integer-field').val('');
+            .not('.noResetOnHidden')
+            .valNoEvent('');
     };
 
     /* TODO: Prevent using timeout in bevolkingsregister in Chrome */
@@ -199,6 +187,16 @@
 
     $.useTimeout = function () {
         return useTimeout;
+    };
+
+    var shouldCheckByz = true;
+
+    $.dontCheckByz = function () {
+        shouldCheckByz = false;
+    };
+
+    $.checkByz = function () {
+        return shouldCheckByz;
     };
 
     /* With selector */
@@ -327,5 +325,9 @@
             if (valueBefore !== valueAfter) this.change();
         }
         return result;
+    };
+
+    $.fn.valNoEvent = function () {
+        return onVal.apply(this, arguments);
     };
 })(jQuery);

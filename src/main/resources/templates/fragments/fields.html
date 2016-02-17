@@ -4,32 +4,32 @@
 </head>
 <body>
 <div class="col-xs-4 form-inline" th:fragment="datum (dag, maand, jaar)">
-  <input type="text" class="form-control form-control-digit day" maxlength="2"
+  <input type="text" class="form-control form-control-digit day dateInput" maxlength="2"
          th:field="*{__${dag}__}" hsn:field="dag"/>
   /
-  <input type="text" class="form-control form-control-digit month" maxlength="2"
+  <input type="text" class="form-control form-control-digit month dateInput" maxlength="2"
          th:field="*{__${maand}__}" hsn:field="maand"/>
   /
-  <input type="text" class="form-control form-control-small year" maxlength="4"
+  <input type="text" class="form-control form-control-small year dateInput" maxlength="4"
          th:field="*{__${jaar}__}" hsn:field="jaar"/>
 </div>
 
 <div class="col-xs-3 form-inline" th:fragment="datum-sm (dag, maand, jaar)">
-  <input type="text" class="form-control form-control-digit day" maxlength="2"
+  <input type="text" class="form-control form-control-digit day dateInput" maxlength="2"
          th:field="*{__${dag}__}" hsn:field="dag"/>
   /
-  <input type="text" class="form-control form-control-digit month" maxlength="2"
+  <input type="text" class="form-control form-control-digit month dateInput" maxlength="2"
          th:field="*{__${maand}__}" hsn:field="maand"/>
   /
-  <input type="text" class="form-control form-control-small year" maxlength="4"
+  <input type="text" class="form-control form-control-small year dateInput" maxlength="4"
          th:field="*{__${jaar}__}" hsn:field="jaar"/>
 </div>
 
 <div class="col-xs-3 form-inline" th:fragment="tijd (uur, minuut)">
-  <input type="text" class="form-control form-control-digit hour" maxlength="2"
+  <input type="text" class="form-control form-control-digit hour dateInput" maxlength="2"
          th:field="*{__${uur}__}" hsn:field="uur"/>
   :
-  <input type="text" class="form-control form-control-digit minute" maxlength="2"
+  <input type="text" class="form-control form-control-digit minute dateInput" maxlength="2"
          th:field="*{__${minuut}__}" hsn:field="minuut"/>
 </div>
 

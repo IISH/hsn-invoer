@@ -366,7 +366,7 @@
     };
 
     // IE9 does not support 'maxlength' on textarea
-    var setMaxLength = function (elem, e) {
+    var setMaxLength = function (elem) {
         var length = elem.val().length;
         var maxlength = elem.attr('maxlength');
         if (maxlength && (length > maxlength)) {
@@ -374,28 +374,55 @@
         }
     };
 
-    $(document).on('keyup', ':input', function (e) {
-        return onUppercase($(e.target));
-    }).on('keyup', '.submit-on-keyup', function (e) {
-        return onSubmitOnKeyup($(e.target));
-    }).on('keypress', '.integer-field', function (e) {
-        return onIntegerField($(e.target), e);
-    }).on('keypress', $.getDataElemSelector('valid-chars'), function (e) {
-        return onValidChars($(e.target), e);
-    }).on('blur', $.getDataElemSelector('min-value'), function (e) {
-        onMinValue($(e.target));
-    }).on('blur', $.getDataElemSelector('max-value'), function (e) {
-        onMaxValue($(e.target));
-    }).on('blur', $.getDataElemSelector('replace'), function (e) {
-        onReplace($(e.target));
-    }).on('blur', $.getDataElemSelector('replace-in-field'), function (e) {
-        onReplaceInField($(e.target));
-    }).on('keypress', ':input', function (e) {
-        return setOverwrite($(e.target), e);
-    }).on('keypress blur', 'textarea', function (e) {
-        // IE9 does not support 'maxlength' on textarea
-        return setMaxLength($(e.target), e);
+    $(document).on('keyup', '.form-elem', function (e) {
+        var elem = $(e.target);
+
+        onUppercase(elem);
+
+        if (elem.hasClass('submit-on-keyup')) {
+            onSubmitOnKeyup(elem);
+        }
+    }).on('keypress', '.form-elem', function (e) {
+        var elem = $(e.target);
+        var allow = true;
+
+        if (elem.hasClass('integer-field')) {
+            allow = allow && onIntegerField(elem, e);
+        }
+
+        if (elem.is($.getDataElemSelector('valid-chars'))) {
+            allow = allow && onValidChars(elem, e);
+        }
+
+        allow = allow && setOverwrite(elem, e);
+
+        return allow;
+    }).on('blur', 'input', function (e) {
+        var elem = $(e.target);
+
+        if (elem.is($.getDataElemSelector('min-value'))) {
+            onMinValue(elem);
+        }
+
+        if (elem.is($.getDataElemSelector('max-value'))) {
+            onMaxValue(elem);
+        }
+
+        if (elem.is($.getDataElemSelector('replace'))) {
+            onReplace(elem);
+        }
+
+        if (elem.is($.getDataElemSelector('replace-in-field'))) {
+            onReplaceInField(elem);
+        }
     });
+
+    // IE9 does not support 'maxlength' on textarea
+    if ((window.navigator.userAgent.indexOf('MSIE ') > 0) || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+        $(document).on('keypress blur', 'textarea', function (e) {
+            return setMaxLength($(e.target));
+        });
+    }
 
     $.registerInit(function (elem) {
         elem.find($.getDataElemSelector('replace')).each(function () {

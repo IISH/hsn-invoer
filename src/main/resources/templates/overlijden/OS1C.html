@@ -19,31 +19,31 @@
            data:aktejr="${akte.ovlknd.oaktejr}">
         <div class="col-xs-2">
           <label class="control-label">Dag:</label>
-          <input type="text" class="form-control day" maxlength="2"
+          <input type="text" class="form-control day dateInput" maxlength="2"
                  th:field="*{ovlknd.ovldag}" hsn:field="ovlknd.ovldag"/>
         </div>
 
         <div class="col-xs-2">
           <label class="control-label">Maand:</label>
-          <input type="text" class="form-control month" maxlength="2"
+          <input type="text" class="form-control month dateInput" maxlength="2"
                  th:field="*{ovlknd.ovlmnd}" hsn:field="ovlknd.ovlmnd"/>
         </div>
 
         <div class="col-xs-2">
           <label class="control-label">Jaar:</label>
-          <input type="text" class="form-control year" maxlength="4"
+          <input type="text" class="form-control year dateInput" maxlength="4"
                  th:field="*{ovlknd.ovljr}" hsn:field="ovlknd.ovljr"/>
         </div>
 
         <div class="col-xs-2 col-xs-push-1">
           <label class="control-label">Uur:</label>
-          <input type="text" class="form-control hour" maxlength="2"
+          <input type="text" class="form-control hour dateInput" maxlength="2"
                  th:field="*{ovlknd.ovluur}" hsn:field="ovlknd.ovluur"/>
         </div>
 
         <div class="col-xs-2 col-xs-push-1">
           <label class="control-label">Min:</label>
-          <input type="text" class="form-control minute" maxlength="2"
+          <input type="text" class="form-control minute dateInput" maxlength="2"
                  th:field="*{ovlknd.ovlmin}" hsn:field="ovlknd.ovlmin"/>
         </div>
       </div>

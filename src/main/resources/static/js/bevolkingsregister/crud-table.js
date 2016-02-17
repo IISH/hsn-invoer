@@ -183,9 +183,7 @@
                 }
                 break;
         }
-    });
-
-    $(document).keydown(function (e) {
+    }).keydown(function (e) {
         switch (e.which) {
             case 27: // Esc
                 var btnCancel = getVisibleCrudTableContainer().find('.btn-cancel:visible:first');
@@ -195,20 +193,34 @@
                 }
                 break;
         }
-    });
+    }).on('click', 'button', function (e) {
+        var elem = $(e.target);
+        var container = elem.closest('.crud-table-container');
+        if ((container.length > 0) && (container.is(':visible'))) {
+            if (elem.hasClass('btn-new')) {
+                openOnEdit(elem, true);
+            }
 
-    $(document).on('click', '.crud-table-container:visible:first .btn-new', function (e) {
-        openOnEdit($(e.target), true);
-    }).on('click', '.crud-table-container:visible:first .btn-update', function (e) {
-        openOnEdit($(e.target), false);
-    }).on('click', '.crud-table-container:visible:first .btn-cancel', function (e) {
-        onCancel($(e.target));
-    }).on('click', '.crud-table-container:visible:first .btn-delete', function (e) {
-        onDelete($(e.target));
-    }).on('click', '.crud-table-container:visible:first .btn-save-new', function (e) {
-        onSave($(e.target), true);
-    }).on('click', '.crud-table-container:visible:first .btn-save-update', function (e) {
-        onSave($(e.target), false);
+            if (elem.hasClass('btn-update')) {
+                openOnEdit(elem, false);
+            }
+
+            if (elem.hasClass('btn-cancel')) {
+                onCancel(elem);
+            }
+
+            if (elem.hasClass('btn-delete')) {
+                onDelete(elem);
+            }
+
+            if (elem.hasClass('btn-save-new')) {
+                onSave(elem, true);
+            }
+
+            if (elem.hasClass('btn-save-update')) {
+                onSave(elem, false);
+            }
+        }
     }).on('crud-table-ajax-success', function (e, result) {
         onAjaxSuccess($(e.target), result);
     }).ready(function () {

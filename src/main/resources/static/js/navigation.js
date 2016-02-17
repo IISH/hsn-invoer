@@ -269,10 +269,11 @@
             parent = form;
         }
 
+        var allFormElems = parent.find('.form-elem');
         var nextTabIndex = elem.getIntegerAttr('tabindex') + order;
 
         while (newElement === null) {
-            curElement = parent.find('.tabindex' + nextTabIndex);
+            curElement = allFormElems.filter('.tabindex' + nextTabIndex);
             if (curElement.length > 0) {
                 if (curElement.is(elem)) {
                     newElement = originalSrc;
