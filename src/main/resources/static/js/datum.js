@@ -61,7 +61,7 @@
         function PartOfDate(elem) {
             return {
                 elem: elem,
-                isInput: elem.is(':input'),
+                isInput: elem.is('input'),
                 getValue: function () {
                     var val = this.isInput ? this.elem.getIntegerValue() : this.elem.getIntegerText();
                     return isNaN(val) ? 0 : val;
@@ -73,36 +73,40 @@
             };
         }
 
+        var dateInputs = this.find('.dateInput');
         return {
-            day: new PartOfDate(this.find('.day')),
-            month: new PartOfDate(this.find('.month')),
-            year: new PartOfDate(this.find('.year')),
-            hour: new PartOfDate(this.find('.hour')),
-            minute: new PartOfDate(this.find('.minute'))
+            day: new PartOfDate(dateInputs.filter('.day')),
+            month: new PartOfDate(dateInputs.filter('.month')),
+            year: new PartOfDate(dateInputs.filter('.year')),
+            hour: new PartOfDate(dateInputs.filter('.hour')),
+            minute: new PartOfDate(dateInputs.filter('.minute'))
         };
     };
 
     $.initCheckDate = function (selector, prepare, dateCheck) {
-        var doCheckDate = function (elem, prepare, dateCheck, runPrepare) {
-            var parent = elem.closest(selector);
+        var doCheckDate = function (elem, prepare, dateCheck, isInit, parent) {
+            parent = (parent) ? parent : elem.closest(selector);
+
             var hsnDate = parent.getHsnDate();
-            if (runPrepare && $.isFunction(prepare)) {
+            if (!isInit && $.isFunction(prepare)) {
                 prepare(hsnDate, elem);
             }
 
             var error = dateCheck(hsnDate, elem);
             elem.hasErrorWhen(error, parent);
-            $.triggerChangeOfState();
         };
 
         $(document).ready(function () {
             $(selector).each(function () {
-                var elem = $(this).find('.day, .month, .year, .minute, .hour').first();
-                doCheckDate(elem, prepare, dateCheck, false);
+                var parent = $(this);
+                var elem = parent.find('.dateInput').first();
+                doCheckDate(elem, prepare, dateCheck, true, parent);
             });
+            $.triggerChangeOfState();
         }).on('blur', $.createDateSelector(selector), function (e) {
             if (!$.isRunningInit()) {
-                doCheckDate($(e.target), prepare, dateCheck, true);
+                doCheckDate($(e.target), prepare, dateCheck, false);
+                $.triggerChangeOfState();
             }
         }).on('show', function (e) {
             if (!$.isRunningInit()) {
@@ -118,8 +122,9 @@
                 if (elements.length > 0) {
                     elements.each(function () {
                         var elem = $(this).find('.day, .month, .year, .minute, .hour').first();
-                        doCheckDate(elem, prepare, dateCheck, false);
+                        doCheckDate(elem, prepare, dateCheck, true);
                     });
+                    $.triggerChangeOfState();
                 }
             }
         });

@@ -65,7 +65,7 @@
             }
         }
 
-        // Otherwise this is the case where linea are added one by one
+        // Otherwise this is the case where lines are added one by one
         return {
             firstName: $('#curB2\\.firstName').val(),
             familyName: $('#curB2\\.familyName').val(),
@@ -150,10 +150,11 @@
             }
 
             var relatie = container.find('.relatie');
+            (focusOnRelatieElem) ? relatie.focus() : (determinePrevNext = true);
+
             if (popover.length > 0) {
                 relatie.popover('hide');
             }
-            (focusOnRelatieElem) ? relatie.focus() : (determinePrevNext = true);
 
             return true;
         }
@@ -226,7 +227,7 @@
         if ((relatie.length > 0) && (container.find('.only-head').length > 0)) {
             var message = 'Relatiecode moet 1 of -3 zijn';
             if (isAllLines()) {
-                message = 'Regel ' + $.getCurPerson() + ': ' + message;
+                message = 'Persoon ' + $.getCurPerson() + ': ' + message;
             }
 
             var relVal = relatie.getIntegerValue();
@@ -291,29 +292,19 @@
         $.setError(error, 'relatie-geslacht-' + relatie.attr('id'), message);
     };
 
-    var onRelatiePopoverNavTrigger = function (target, prevField, popover) {
-        var left = false;
-        var relatie = popover.data('bs.popover').$element;
-        var container = relatie.getPersonContainer();
+    var onRelatiePopoverNavTrigger = function (relatie, isLeft, prevField, popover) {
+        (isLeft) ? relatie.data('nav', 'left') : relatie.data('nav', 'right');
 
-        if (relatie.hasClass('relatie') && (target.hasClass('popover-left') || target.hasClass('popover-right'))) {
-            left = (target.hasClass('popover-left'));
-            if (!hidePopover(container, popover, true)) {
-                (left)
-                    ? popover.find(':input:enabled:visible:last').focus()
-                    : popover.find(':input:enabled:visible:first').focus();
-            }
-            else {
-                (left) ? relatie.data('nav', 'left') : relatie.data('nav', 'right');
-            }
+        if (!hidePopover(relatie.getPersonContainer(), popover, true)) {
+            (isLeft)
+                ? popover.find(':input:enabled:visible:last').focus()
+                : popover.find(':input:enabled:visible:first').focus();
         }
     };
 
     var onRelatiePopoverHidden = function (relatie) {
-        if (determinePrevNext && relatie.hasClass('relatie')) {
-            (relatie.data('nav') === 'left')
-                ? relatie.autoPrevFocus(false)
-                : relatie.autoNextFocus(false);
+        if (determinePrevNext) {
+            (relatie.data('nav') === 'left') ? relatie.autoPrevFocus(false) : relatie.autoNextFocus(false);
         }
     };
 
@@ -367,22 +358,13 @@
         }
     };
 
-    var onNextRpPopoverNavTrigger = function (target, prevField, popover) {
-        var yearPerson = popover.data('bs.popover').$element;
-        if (yearPerson.hasClass('year') && (target.hasClass('popover-left') || target.hasClass('popover-right'))) {
-            (target.hasClass('popover-left'))
-                ? yearPerson.data('nav', 'left')
-                : yearPerson.data('nav', 'right');
-            yearPerson.popover('hide');
-        }
+    var onNextRpPopoverNavTrigger = function (yearPerson, isLeft, prevField, popover) {
+        isLeft ? yearPerson.data('nav', 'left') : yearPerson.data('nav', 'right');
+        yearPerson.popover('hide');
     };
 
     var onNextRpPopoverHidden = function (yearPerson) {
-        if (yearPerson.hasClass('year')) {
-            (yearPerson.data('nav') === 'left')
-                ? yearPerson.autoPrevFocus(false)
-                : yearPerson.autoNextFocus(false);
-        }
+        (yearPerson.data('nav') === 'left') ? yearPerson.autoPrevFocus(false) : yearPerson.autoNextFocus(false);
     };
 
     /* Various other BS1 specific operations */
@@ -509,7 +491,7 @@
 
         var message = 'Een relatie met regelnummer ' + relatie + ' is onmogelijk.';
         if (isAllLines()) {
-            message = 'Regel ' + $.getCurPerson() + ': ' + message;
+            message = 'Persoon ' + $.getCurPerson() + ': ' + message;
         }
 
         $.setError(
@@ -898,13 +880,30 @@
     }).on('crud-table-new', '[data-type=BURGELIJKE_STAND]', function (e, elems) {
         updateBurgRelation($(e.target), elems);
     }).on('nav-trigger', function (e, prevField, popover) {
-        var elem = $(e.target);
-        onRelatiePopoverNavTrigger(elem, prevField, popover);
-        onNextRpPopoverNavTrigger(elem, prevField, popover);
+        var target = $(e.target);
+
+        if (target.hasClass('popover-left') || target.hasClass('popover-right')) {
+            var isLeft = target.hasClass('popover-left');
+            var elem = popover.data('bs.popover').$element;
+
+            if (elem.hasClass('relatie')) {
+                onRelatiePopoverNavTrigger(elem, isLeft, prevField, popover);
+            }
+
+            if (elem.hasClass('year')) {
+                onNextRpPopoverNavTrigger(elem, isLeft, prevField, popover);
+            }
+        }
     }).on('hidden.bs.popover', function (e) {
         var elem = $(e.target);
-        onRelatiePopoverHidden(elem);
-        onNextRpPopoverHidden(elem);
+
+        if (elem.hasClass('relatie')) {
+            onRelatiePopoverHidden(elem);
+        }
+
+        if (elem.hasClass('year')) {
+            onNextRpPopoverHidden(elem);
+        }
     }).ready(function () {
         if (isAllLines()) {
             // Extend the width to create more space in case one enters all lines at once

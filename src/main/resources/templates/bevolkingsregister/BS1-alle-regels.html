@@ -6,6 +6,19 @@
 
 <fieldset>
 <th:block layout:fragment="table">
+<div id="please-wait" class="modal" style="display:block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <h4>Nog even geduld!</h4>
+        <h4>Bezig om scherm op te zetten...</h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade in"></div>
+
+
 <div class="fixed-left-column">
 <div class="fixed">
   <table class="table table-condensed table-form">
@@ -417,17 +430,6 @@
   </th:block>
 </th:block>
 
-<div id="please-wait" class="modal fade in" style="display:block;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <h4>Bezig om scherm op te zetten...</h4>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal-backdrop fade in"></div>
-
 <th:block th:replace="bevolkingsregister/overview-fragments :: overviewModal"></th:block>
 </th:block>
 </fieldset>
@@ -444,15 +446,19 @@
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
           hsn:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
-  <script src="../../static/js/bevolkingsregister/BS1.js" hsn:src="@{/js/bevolkingsregister/BS1.js}"></script>
+  <script src="../../static/js/bevolkingsregister/BS1.js"
+          hsn:src="@{/js/bevolkingsregister/BS1.js}"></script>
   <script src="../../static/js/bevolkingsregister/crud-table.js"
           hsn:src="@{/js/bevolkingsregister/crud-table.js}"></script>
   <script src="../../static/js/bevolkingsregister/person-dynamic.js"
           hsn:src="@{/js/bevolkingsregister/person-dynamic.js}"></script>
+</th:block>
+
+<th:block layout:fragment="after-js">
   <script>
     setTimeout(function () {
       $('#please-wait,.modal-backdrop').fadeOut();
-    }, 0);
+    }, 200);
   </script>
 </th:block>
 </body>
