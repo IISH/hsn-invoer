@@ -933,9 +933,9 @@ public class BevolkingsregisterService {
      */
     public void saveRegistration(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         registerAndSaveRegistration(bevolkingsregisterFlow);
-        registerAndSaveRegistrationAddresses(bevolkingsregisterFlow);
+        registerAndSaveRegistrationAddresses(bevolkingsregisterFlow); // TODO: Only when addresses are changed during correction ???
 
-        // Persons and person dynamics are already saved before, so only save during correction
+        // TODO: Persons and person dynamics are already saved before, so only save during correction ???
         if (bevolkingsregisterFlow.isCorrection()) {
             registerAndSavePersons(bevolkingsregisterFlow);
         }

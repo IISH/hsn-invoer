@@ -806,7 +806,7 @@
         }
         else if (elem.closest('#registrationAllLines').length > 0) {
             registerPerson();
-            //copyFromPrevLine();
+            copyFromPrevLine();
             updateScrollPosition(elem);
         }
     }).on('change', 'input', function (e) {

@@ -53,6 +53,7 @@
             if (!allow) e.stopImmediatePropagation();
             return allow;
         }
+        return true;
     };
 
     /**
@@ -71,6 +72,7 @@
             if (!allow) e.stopImmediatePropagation();
             return allow;
         }
+        return true;
     };
 
     /**
