@@ -47,7 +47,7 @@
     </transition>
 
     <transition on="refresh-person-dynamics">
-      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
       <render fragments="#{'b3Content' + requestParameters.type}"/>
     </transition>
 
@@ -64,11 +64,11 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="nextPerson" to="nextPersonCheck">
-      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
     </transition>
 
     <transition on="next" to="nextCheck">
-      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -105,7 +105,7 @@
 
     <transition on="no" to="finishEnd">
       <evaluate expression="flowScope.akte.setBurgStandRelFix(false)"/>
-      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistration(flowScope.akte)"/>
     </transition>
   </action-state>
 

@@ -222,7 +222,7 @@
 
 <div th:replace="bevolkingsregister/byz-fragments :: registrationByz"></div>
 
-<div class=".personByzModals">
+<div class="personByzModals">
   <div th:each="person,stat : *{b2}" data:person="${akte.b2[__${stat.index}__].rp}">
     <th:block
         th:include="bevolkingsregister/byz-fragments :: personByz (${akte.b2[__${stat.index}__].rp})"></th:block>

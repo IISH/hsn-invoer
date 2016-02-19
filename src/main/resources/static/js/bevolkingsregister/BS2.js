@@ -231,6 +231,10 @@
         onSaveNew($(e.target), data);
     }).on('crud-table-save-update', function (e, elems, data) {
         onSaveUpdate($(e.target), data);
+    }).on('person-byz-save', function (e, person) {
+        var serialized = $(e.target).find('textarea').serialize();
+        var data = serialized + '&_eventId=register-person&ajaxSource=true&person=' + person;
+        $.ajax({type: 'POST', data: data});
     }).ready(function () {
         // Extend the width to create more space in case one enters all lines at once
         $('#main').addClass('extend-width');

@@ -16,7 +16,7 @@
                     keys.push(newKeyVal);
                 }
 
-                if (newKeyVal > noLines) {
+                if ((noLines > 0) && (newKeyVal > noLines)) {
                     maxLinesError = true;
                 }
             }

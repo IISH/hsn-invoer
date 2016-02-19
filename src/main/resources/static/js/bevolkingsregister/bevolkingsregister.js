@@ -135,7 +135,10 @@
 
     var onPersonByzClose = function (save) {
         var modal = $.getOpenedModal();
-        if (!save) {
+        if (save) {
+            modal.trigger('person-byz-save', [$.getCurPerson()]);
+        }
+        else {
             modal.find('textarea').val(modal.data('content'));
         }
         modal.modal('hide');

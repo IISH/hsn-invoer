@@ -22,6 +22,7 @@
 
     <transition on="next" to="nextPersonCheck">
       <evaluate expression="bevolkingsregisterService.renumberRegistrationPersons(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePersons(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -46,7 +47,7 @@
     </transition>
 
     <transition on="refresh-person-dynamics">
-      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
       <render fragments="#{'b3Content' + requestParameters.type}"/>
     </transition>
 
@@ -61,11 +62,11 @@
     </transition>
 
     <transition on="nextPerson" to="nextPersonCheck">
-      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
     </transition>
 
     <transition on="next" to="nextCheck">
-      <evaluate expression="bevolkingsregisterService.registerPerson(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -77,7 +78,7 @@
     </transition>
 
     <transition on="no" to="finishEnd">
-      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistration(flowScope.akte)"/>
     </transition>
   </action-state>
 
@@ -89,7 +90,7 @@
     </transition>
 
     <transition on="no" to="finishEnd">
-      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistration(flowScope.akte)"/>
     </transition>
   </action-state>
 

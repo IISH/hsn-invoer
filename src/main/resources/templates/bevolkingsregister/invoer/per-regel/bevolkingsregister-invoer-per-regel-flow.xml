@@ -137,11 +137,18 @@
       <render fragments="registrationAddresses"/>
     </transition>
 
+    <transition on="register-person">
+      <evaluate expression="flowScope.akte.setCurB2Index(new Integer(requestParameters.person) - 1)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
+      <render fragments="registrationAddresses"/>
+    </transition>
+
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="finishEnd">
       <evaluate expression="bevolkingsregisterService.checkAddresses(flowScope.akte)"/>
-      <evaluate expression="bevolkingsregisterService.saveRegistration(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistration(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistrationAddresses(flowScope.akte)"/>
     </transition>
   </view-state>
 
