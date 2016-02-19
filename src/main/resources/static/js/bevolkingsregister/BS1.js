@@ -89,6 +89,8 @@
 
             container.find('.relatieRelatedHidden,.regel').val(value);
             (value > 0) ? container.find('.ind').show() : container.find('.ind').hide();
+
+            onRelatieRegel(container, value);
         }
     };
 
@@ -107,9 +109,10 @@
         container.find('.relatieDynamicHidden').val(value);
     };
 
-    var onRelatieRegel = function (elem) {
-        if (elem.getIntegerValue() === -3) {
-            setRelatieKode(elem.getPersonContainer(true), 9);
+    // Also set the relatie kode if the relatie regel is undetermined
+    var onRelatieRegel = function (container, value) {
+        if (value === -3) {
+            setRelatieKode(container, 9);
         }
     };
 
@@ -240,22 +243,22 @@
     };
 
     // Bind the 'F9' key to open the 'relatie regel' popover or to close the opened relatie popover
-    var relatieOnF9 = function (relatie, e) {
+    var relatieOnF9 = function (target, e) {
         if (e.which === 120) { // F9
             var popover = $('.popover');
-            var container = relatie.getPersonContainer();
 
             if (f9 && popover.is(':visible')) {
-                hidePopover(popover, true);
-                relatie.focus();
+                hidePopover(popover.data('bs.popover').$element.getPersonContainer(), popover, true);
             }
             else {
+                var relatie = target;
+                var container = relatie.getPersonContainer();
+
                 var relatieRegelPopup = container.find('.relatieRegelPopup').first();
                 relatieRegelPopup.find(':input').attr('value', container.find('.relatieRelatedHidden').val());
 
-                relatie.setPopover(relatieRegelPopup).popover('show');
-
                 f9 = true;
+                relatie.setPopover(relatieRegelPopup).popover('show');
                 $('.popover :input:first').focus();
             }
         }
@@ -774,7 +777,7 @@
 
     $(document).keydown(function (e) {
         var target = $(e.target);
-        if (target.hasClass('relatie')) {
+        if (target.hasClass('relatie') || target.hasClass('f9-input')) {
             relatieOnF9(target, e);
         }
 
@@ -828,18 +831,7 @@
         var elem = $(e.target);
 
         if (elem.hasClass('regel')) {
-            onRelatieRegel(elem);
-
-            // Synchronize the relatie value with the other 'regel' input elems
-            if (elem.closest('.regelInterpr') > 0) {
-                setRelatieRegel($('#currentPerson'), elem.getIntegerValue());
-            }
-        }
-        else if (elem.hasClass('kode')) {
-            // Synchronize the relatie value with the other 'kode' input elems
-            if (elem.closest('.regelInterpr') > 0) {
-                setRelatieRegel($('#currentPerson'), elem.val());
-            }
+            onRelatieRegel(elem.getPersonContainer(true), elem.getIntegerValue());
         }
         else if (elem.hasClass('relatie') || elem.hasClass('sex')) {
             validateRelationSex(elem);
@@ -912,6 +904,20 @@
             // Also person registration is done via AJAX, so don't submit data on next/cancel
             // This is done by binding the submit buttons to another empty form
             $('form button[type=submit]').attr('form', 'no-form');
+        }
+        else {
+            $(document).on('blur', 'input', function (e) {
+                var elem = $(e.target);
+
+                if (elem.hasClass('regel')) {
+                    // Synchronize the relatie value with the other 'regel' input elems
+                    setRelatieRegel($('#currentPerson'), elem.getIntegerValue());
+                }
+                else if (elem.hasClass('kode')) {
+                    // Synchronize the relatie value with the other 'kode' input elems
+                    setRelatieKode($('#currentPerson'), elem.val());
+                }
+            });
         }
 
         // If the user has to fix the burg. stand relation, then disable everything else
