@@ -108,7 +108,7 @@
     };
 
     var onModalClose = function () {
-        var modal = $('.modal:visible').first();
+        var modal = $('.modal.in').first();
 
         var minRecords = modal.getIntegerDataValue('min-records');
         var maxRecords = modal.getIntegerDataValue('max-records');
@@ -158,7 +158,7 @@
     $(document).keydown(function (e) {
         var modal = $.getOpenedModal();
         var isModalVisible = (modal.length === 1);
-        var isPopupVisible = ($('.popover:visible:first').length === 1);
+        var isPopupVisible = ($('.popover.in').first().length === 1);
         var isPersonDynamicModal = (isModalVisible && (modal.hasClass('personDynamicModal')));
 
         switch (e.which) {

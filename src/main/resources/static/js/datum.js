@@ -51,7 +51,7 @@
 
             if (dayIsZero) {
                 var parent = day.elem.getParentOfFormElement();
-                var lastElement = parent.find(':input:enabled:visible:last');
+                var lastElement = parent.find('input').filter(':enabled:visible').last();
                 lastElement.autoNextFocus(true);
             }
         }
@@ -121,7 +121,7 @@
 
                 if (elements.length > 0) {
                     elements.each(function () {
-                        var elem = $(this).find('.day, .month, .year, .minute, .hour').first();
+                        var elem = $(this).find('.dateInput').first();
                         doCheckDate(elem, prepare, dateCheck, true);
                     });
                     $.triggerChangeOfState();

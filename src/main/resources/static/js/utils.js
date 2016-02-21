@@ -105,15 +105,14 @@
     };
 
     $.getOpenedModal = function () {
-        return $('.modal:visible:first');
+        return $('.modal.in').first();
     };
 
     $(document).on('shown.bs.modal', function (e) {
         if (e.namespace === 'bs.modal') {
             $(e.target)
                 .data('focus-element-id', $(':focus').attr('id'))
-                .find(':input:enabled:visible:first')
-                .focus();
+                .find('input').filter(':enabled:visible').first().focus();
         }
     }).on('hidden.bs.modal', function (e) {
         if (e.namespace === 'bs.modal') {
@@ -129,17 +128,15 @@
             var popoverBackdrop = $('body > .popover-backdrop.in');
             if (popoverBackdrop.length === 0) {
                 popoverBackdrop = $('<div class="popover-backdrop in"></div>')
-                    .hide()
+                    .hideNoEvent()
                     .appendTo($('body'));
             }
             popoverBackdrop.fadeIn();
         }
     }).on('shown.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
-            $('.popover:visible:first')
-                .trigger('show')
-                .find(':input:enabled:visible:first')
-                .focus();
+            $('.popover.in').first().trigger('show')
+                .find('input').filter(':enabled:visible').first().focus();
         }
     }).on('hide.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
@@ -275,20 +272,28 @@
         // Determine if the elements are all already hidden
         var isHidden = true;
         var isTypeahead = false;
+        var isBackdrop = false;
         this.each(function () {
-            if ($(this).css('display') !== 'none')
-                isHidden = false;
-            if ($(this).hasClass('typeahead'))
+            var elem = $(this);
+            if (elem.css('display') === 'none')
+                isHidden = true;
+            if (elem.hasClass('typeahead'))
                 isTypeahead = true;
+            if (elem[0].className.indexOf('backdrop') >= 0)
+                isBackdrop = true;
         });
 
         var toReturn = onHide.apply(this, arguments);
 
-        // Only trigger the event if at least one element was not yet hidden and is not typeahead
-        if (!isHidden && !isTypeahead)
+        // Only trigger the event if at least one element was not yet hidden and is not typeahead or a backdrop
+        if (!isHidden && !isTypeahead && !isBackdrop)
             this.trigger('hide');
 
         return toReturn;
+    };
+
+    $.fn.hideNoEvent = function () {
+        return onHide.apply(this, arguments);
     };
 
     var onShow = $.fn.show;
@@ -296,20 +301,28 @@
         // Determine if the elements are all already shown
         var isHidden = false;
         var isTypeahead = false;
+        var isBackdrop = false;
         this.each(function () {
-            if ($(this).css('display') === 'none')
+            var elem = $(this);
+            if (elem.css('display') === 'none')
                 isHidden = true;
-            if ($(this).hasClass('typeahead'))
+            if (elem.hasClass('typeahead'))
                 isTypeahead = true;
+            if (elem[0].className.indexOf('backdrop') >= 0)
+                isBackdrop = true;
         });
 
         var toReturn = onShow.apply(this, arguments);
 
-        // Only trigger the event if at least one element was not yet shown and is not typeahead
-        if (isHidden && !isTypeahead)
+        // Only trigger the event if at least one element was not yet shown and is not typeahead or a backdrop
+        if (isHidden && !isTypeahead && !isBackdrop)
             this.trigger('show');
 
         return toReturn;
+    };
+
+    $.fn.showNoEvent = function () {
+        return onShow.apply(this, arguments);
     };
 
     /* Overwrite 'val' jQuery function to send 'change' event */

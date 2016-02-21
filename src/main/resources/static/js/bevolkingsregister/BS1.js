@@ -24,7 +24,7 @@
     $.getCurPerson = function () {
         var person;
         if (isAllLines()) {
-            var modal = $('.modal:visible');
+            var modal = $('.modal.in');
             if (modal.length > 0) {
                 person = modal.getIntegerDataValue('rp');
             }
@@ -170,7 +170,7 @@
         // If the blur was caused by pressing 'F9' or when the container is not within a modal
         // and a modal is visible, don't show the popover
         if (force !== true) {
-            if (f9 || (container.closest('.modal').length === 0) && ($('.modal:visible').length > 0)) {
+            if (f9 || (container.closest('.modal').length === 0) && ($('.modal.in').length > 0)) {
                 return;
             }
         }
@@ -247,7 +247,7 @@
         if (e.which === 120) { // F9
             var popover = $('.popover');
 
-            if (f9 && popover.is(':visible')) {
+            if (f9 && popover.hasClass('in')) {
                 hidePopover(popover.data('bs.popover').$element.getPersonContainer(), popover, true);
             }
             else {
@@ -255,11 +255,11 @@
                 var container = relatie.getPersonContainer();
 
                 var relatieRegelPopup = container.find('.relatieRegelPopup').first();
-                relatieRegelPopup.find(':input').attr('value', container.find('.relatieRelatedHidden').val());
+                relatieRegelPopup.find('input').attr('value', container.find('.relatieRelatedHidden').val());
 
                 f9 = true;
                 relatie.setPopover(relatieRegelPopup).popover('show');
-                $('.popover :input:first').focus();
+                $('.popover input').first().focus();
             }
         }
     };
@@ -271,7 +271,7 @@
         var sex = container.find('.sex');
 
         var rel = relatie.getIntegerValue();
-        var sexVal = sex.is(':input') ? sex.val() : sex.text();
+        var sexVal = sex.is('input') ? sex.val() : sex.text();
 
         var error = false;
         var message = '';
@@ -300,8 +300,8 @@
 
         if (!hidePopover(relatie.getPersonContainer(), popover, true)) {
             (isLeft)
-                ? popover.find(':input:enabled:visible:last').focus()
-                : popover.find(':input:enabled:visible:first').focus();
+                ? popover.find('input').filter(':enabled:visible').last().focus()
+                : popover.find('input').filter(':enabled:visible').first().focus();
         }
     };
 
@@ -337,9 +337,9 @@
             }
         }
         else if (gebDatePerson.data('is-op')) {
-            $('[data-op-geb-day]').attr('data-op-geb-day', dayPersonVal);
-            $('[data-op-geb-month]').attr('data-op-geb-month', monthPersonVal);
-            $('[data-op-geb-year]').attr('data-op-geb-year', yearPersonVal);
+            $($.getDataElemSelector('op-geb-day')).attr('data-op-geb-day', dayPersonVal);
+            $($.getDataElemSelector('op-geb-month')).attr('data-op-geb-month', monthPersonVal);
+            $($.getDataElemSelector('op-geb-year')).attr('data-op-geb-year', yearPersonVal);
         }
     };
 
@@ -347,17 +347,17 @@
         var popover = target.closest('.popover');
         var gebDatePerson = popover.data('bs.popover').$element.closest('.geb-date-person');
         if (gebDatePerson.length > 0) {
-            var volgendeInschrijving = gebDatePerson.find('.volgende-inschrijving');
-            var yearPerson = gebDatePerson.find('.year');
-
-            if (target.val() === 'j') {
-                volgendeInschrijving.val(5); // Second OP
+            var value = target.val().trim();
+            if (value.length > 0) {
+                var volgendeInschrijving = gebDatePerson.find('.volgende-inschrijving');
+                if (value === 'j') {
+                    volgendeInschrijving.val(5); // Second OP
+                }
+                else {
+                    volgendeInschrijving.val(2); // No OP
+                }
+                gebDatePerson.find('.year').data('popover-closed', true);
             }
-            else {
-                volgendeInschrijving.val(2); // No OP
-            }
-
-            yearPerson.data('popover-closed', true);
         }
     };
 
@@ -733,10 +733,10 @@
         var person = parseInt($(e.target).closest('tr').getIntegerDataValue('rp'));
         if (!isNaN(person)) {
             $('.navCurPerson').text(person);
-            $('.navCurPersonContainer').show();
+            $('.navCurPersonContainer').showNoEvent();
         }
         else {
-            $('.navCurPersonContainer').hide();
+            $('.navCurPersonContainer').hideNoEvent();
         }
     };
 

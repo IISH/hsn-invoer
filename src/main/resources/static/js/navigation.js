@@ -109,7 +109,7 @@
                 if (focusElem.hasClass('nav-trigger')) {
                     var popover = self.closest('.popover');
                     if (popover.length === 0) {
-                        $('.popover:visible:first').find(':input:enabled:visible:first').focus();
+                        $('.popover.in').first().find('input').filter(':enabled:visible').first().focus();
                         return;
                     }
                     else {
@@ -185,7 +185,7 @@
                                     .eq(nextRowIndex)
                                     .find('td')
                                     .eq(columnIndex)
-                                    .find('.form-elem:enabled:visible:first');
+                                    .find('.form-elem').filter(':enabled:visible').first();
                                 if (input.length === 1) {
                                     return input;
                                 }
@@ -254,9 +254,9 @@
         var newElement = null;
         var curElement = elem;
 
-        var popover = $('.popover:visible:first');
-        var modal = $('.modal:visible:first');
-        var form = $('form:visible:first');
+        var popover = $('.popover.in').first();
+        var modal = $('.modal.in').first();
+        var form = $('form:visible').first();
 
         var parent = null;
         if (popover.length > 0) {

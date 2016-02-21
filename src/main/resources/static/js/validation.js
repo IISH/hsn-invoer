@@ -77,7 +77,7 @@
             return crudTableBtn;
         }
 
-        var modalBtn = $('.modal:visible').find('.btn-save-new, .btn-save-update');
+        var modalBtn = $('.modal.in').find('.btn-save-new, .btn-save-update');
         if (modalBtn.length > 0) {
             return modalBtn;
         }
@@ -90,7 +90,7 @@
     };
 
     var getMessages = function () {
-        var modal = $('.modal:visible');
+        var modal = $('.modal.in');
         if (modal.length > 0) {
             // If the modal is a crud table container, then only show messages when the user is editing
             if (!modal.is('.crud-table-container') || (modal.find('.on-edit').is(':visible'))) {
@@ -219,7 +219,7 @@
         var byzBtn = $('.btn-byz');
 
         var hasAnError = [];
-        var modal = $('.modal:visible');
+        var modal = $('.modal.in');
         if (modal.length === 0) {
             hasAnError = $('.has-an-error:visible');
         }

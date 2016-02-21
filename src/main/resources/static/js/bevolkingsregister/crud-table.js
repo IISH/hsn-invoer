@@ -2,7 +2,7 @@
     'use strict';
 
     var getVisibleCrudTableContainer = function () {
-        return $('.crud-table-container:visible:first');
+        return $('.crud-table-container').filter(':visible').first();
     };
 
     var getElems = function () {
@@ -78,7 +78,7 @@
 
         elems.parent.find('.btn-update, .btn-delete').attr('disabled', 'disabled');
         elems.onEdit.trigger('show');
-        elems.onEdit.find(':input:enabled:visible:first').change().focus();
+        elems.onEdit.find('input').filter(':enabled:visible').first().change().focus();
 
         if (isNew) {
             self.trigger('crud-table-new', [elems]);
@@ -162,21 +162,21 @@
         var char = String.fromCharCode(e.which);
         switch (char) {
             case 'b':
-                var btnNew = getVisibleCrudTableContainer().find('.btn-new:visible:first');
+                var btnNew = getVisibleCrudTableContainer().find('.btn-new').filter(':visible').first();
                 if (btnNew.length === 1) {
                     openOnEdit(btnNew, true);
                     e.preventDefault();
                 }
                 break;
             case 'c':
-                var btnCor = getVisibleCrudTableContainer().find('tr.active .btn-update:enabled:first');
+                var btnCor = getVisibleCrudTableContainer().find('tr.active .btn-update').filter(':enabled').first();
                 if (btnCor.length === 1) {
                     openOnEdit(btnCor, false);
                     e.preventDefault();
                 }
                 break;
             case 'v':
-                var btnDelete = getVisibleCrudTableContainer().find('tr.active .btn-delete:enabled:first');
+                var btnDelete = getVisibleCrudTableContainer().find('tr.active .btn-delete').filter(':enabled').first();
                 if (btnDelete.length === 1) {
                     onDelete(btnDelete);
                     e.preventDefault();
@@ -186,7 +186,7 @@
     }).keydown(function (e) {
         switch (e.which) {
             case 27: // Esc
-                var btnCancel = getVisibleCrudTableContainer().find('.btn-cancel:visible:first');
+                var btnCancel = getVisibleCrudTableContainer().find('.btn-cancel').filter(':visible').first();
                 if (btnCancel.length === 1) {
                     btnCancel.click();
                     e.preventDefault();
