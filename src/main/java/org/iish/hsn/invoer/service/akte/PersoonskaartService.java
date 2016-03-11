@@ -4,12 +4,14 @@ import org.iish.hsn.invoer.domain.invoer.Byz;
 import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
 import org.iish.hsn.invoer.domain.invoer.pk.*;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.AkteException;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.flow.state.*;
 import org.iish.hsn.invoer.repository.invoer.pk.*;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,35 +68,44 @@ public class PersoonskaartService extends AkteService {
             Pkknd pkknd = persoonskaartFlow.getPkknd();
 
             if (pkknd.getIdnr() < 500000) {
-                Ref_GBH refGbh = lookupService.getRefGbh(pkknd.getIdnr(), true);
-                persoonskaartFlow.setRefGbh(refGbh);
+                Ref_RP refRp = lookupService.getRefRp(pkknd.getIdnr(), true);
+                persoonskaartFlow.setRefRp(refRp);
 
-                pkknd.setGdgperp(refGbh.getDayOfBirth());
-                pkknd.setGmdperp(refGbh.getMonthOfBirth());
-                pkknd.setGjrperp(refGbh.getYearOfBirth());
+                pkknd.setGdgperp(refRp.getDayOfBirth());
+                pkknd.setGmdperp(refRp.getMonthOfBirth());
+                pkknd.setGjrperp(refRp.getYearOfBirth());
 
-                pkknd.setAnmperp(refGbh.getLastName());
-                pkknd.setVnm1perp(refGbh.getFirstName1());
-                pkknd.setVnm2perp(refGbh.getFirstName2());
-                pkknd.setVnm3perp(refGbh.getFirstName3());
+                pkknd.setAnmperp(refRp.getLastName());
+                pkknd.setTusperp(refRp.getPrefixName());
+
+                String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
+                pkknd.setVnm1perp(firstNames[0]);
+                pkknd.setVnm2perp(firstNames[1]);
+                pkknd.setVnm3perp(firstNames[2]);
 
                 // TODO: Next only if pktype != 7 ?
 
-                pkknd.setGslperp(refGbh.getSex());
+                pkknd.setGslperp(refRp.getSex());
 
-                pkknd.setAnmvdrp(refGbh.getLastNameFather());
-                pkknd.setVnm1vdrp(refGbh.getFirstName1Father());
-                pkknd.setVnm2vdrp(refGbh.getFirstName2Father());
-                pkknd.setVnm3vdrp(refGbh.getFirstName3Father());
+                pkknd.setAnmvdrp(refRp.getLastNameFather());
+                pkknd.setTusvdrp(refRp.getPrefixFather());
 
-                pkknd.setAnmmdrp(refGbh.getLastNameMother());
-                pkknd.setVnm1mdrp(refGbh.getFirstName1Mother());
-                pkknd.setVnm2mdrp(refGbh.getFirstName2Mother());
-                pkknd.setVnm3mdrp(refGbh.getFirstName3Mother());
+                String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
+                pkknd.setVnm1vdrp(firstNamesFather[0]);
+                pkknd.setVnm2vdrp(firstNamesFather[1]);
+                pkknd.setVnm3vdrp(firstNamesFather[2]);
+
+                pkknd.setAnmmdrp(refRp.getLastNameMother());
+                pkknd.setTusmdrp(refRp.getPrefixMother());
+
+                String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
+                pkknd.setVnm1mdrp(firstNamesMother[0]);
+                pkknd.setVnm2mdrp(firstNamesMother[1]);
+                pkknd.setVnm3mdrp(firstNamesMother[2]);
 
                 // TODO: Till here...
 
-                Plaats plaats = lookupService.getPlaats(refGbh.getNumberMunicipality(), false);
+                Plaats plaats = lookupService.getPlaats(refRp.getNumberMunicipality(), false);
                 if (plaats != null) {
                     pkknd.setGplperp(plaats.getGemnaam());
                 }
@@ -116,7 +127,7 @@ public class PersoonskaartService extends AkteService {
             Pkknd pkknd = persoonskaartFlow.getPkknd();
             int idnr = pkknd.getIdnr();
 
-            persoonskaartFlow.setRefGbh(lookupService.getRefGbh(idnr, true));
+            persoonskaartFlow.setRefRp(lookupService.getRefRp(idnr, true));
             persoonskaartFlow.setPkknd(lookupService.getPkknd(idnr, true));
 
             P7 p7 = p7Repository.findByIdnrAndWorkOrder(idnr, inputMetadata.getWorkOrder());
@@ -196,22 +207,24 @@ public class PersoonskaartService extends AkteService {
      */
     public void registerPkInformation(PersoonskaartFlowState persoonskaartFlow) {
         Pkknd pkknd = persoonskaartFlow.getPkknd();
-        Ref_GBH refGbh = persoonskaartFlow.getRefGbh();
+        Ref_RP refRp = persoonskaartFlow.getRefRp();
 
-        // If refGbh is null, the idnr should be bigger than >= 500000
-        if ((refGbh == null) || (pkknd.getIdnr() >= 500000)) {
+        // If refRp is null, the idnr should be bigger than >= 500000
+        if ((refRp == null) || (pkknd.getIdnr() >= 500000)) {
             pkknd.setGegperp("");
 
             if (!persoonskaartFlow.isCorrection()) {
                 pkknd.setAnmvdrp(pkknd.getAnmperp());
             }
         }
-        else if (!pkknd.getAnmperp().equals(refGbh.getLastName()) ||
-                 !pkknd.getVnm1perp().equals(refGbh.getFirstName1())) {
-            pkknd.setGegperp("n");
-        }
         else {
-            pkknd.setGegperp("j");
+            String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
+            if (!pkknd.getAnmperp().equals(refRp.getLastName()) || !pkknd.getVnm1perp().equals(firstNames[0])) {
+                pkknd.setGegperp("n");
+            }
+            else {
+                pkknd.setGegperp("j");
+            }
         }
     }
 
@@ -222,24 +235,26 @@ public class PersoonskaartService extends AkteService {
      */
     public void registerOuders(PersoonskaartFlowState persoonskaartFlow) {
         Pkknd pkknd = persoonskaartFlow.getPkknd();
-        Ref_GBH refGbh = persoonskaartFlow.getRefGbh();
+        Ref_RP refRp = persoonskaartFlow.getRefRp();
 
-        // If refGbh is null, the idnr should be bigger than >= 500000
-        if ((refGbh == null) || (pkknd.getIdnr() >= 500000)) {
+        // If refRp is null, the idnr should be bigger than >= 500000
+        if ((refRp == null) || (pkknd.getIdnr() >= 500000)) {
             pkknd.setGegmdrp("");
             pkknd.setGegvdrp("");
         }
         else {
-            if (!pkknd.getAnmmdrp().equals(refGbh.getLastNameMother()) ||
-                !pkknd.getVnm1mdrp().equals(refGbh.getFirstName1Mother())) {
+            String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
+            if (!pkknd.getAnmmdrp().equals(refRp.getLastNameMother()) ||
+                    !pkknd.getVnm1mdrp().equals(firstNamesMother[0])) {
                 pkknd.setGegmdrp("n");
             }
             else {
                 pkknd.setGegmdrp("j");
             }
 
-            if (!pkknd.getAnmvdrp().equals(refGbh.getLastNameFather()) ||
-                !pkknd.getVnm1vdrp().equals(refGbh.getFirstName1Father())) {
+            String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
+            if (!pkknd.getAnmvdrp().equals(refRp.getLastNameFather()) ||
+                    !pkknd.getVnm1vdrp().equals(firstNamesFather[0])) {
                 pkknd.setGegvdrp("n");
             }
             else {

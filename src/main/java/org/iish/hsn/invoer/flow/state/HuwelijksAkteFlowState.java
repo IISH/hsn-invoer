@@ -3,6 +3,7 @@ package org.iish.hsn.invoer.flow.state;
 import org.iish.hsn.invoer.domain.invoer.Byz;
 import org.iish.hsn.invoer.domain.invoer.huw.*;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.flow.helper.HuwelijksAkteViewNames;
 import org.iish.hsn.invoer.flow.helper.ViewNames;
 
@@ -14,9 +15,10 @@ import java.util.Set;
  * Holds the state of a 'huwelijks akte' (marriage certificate) during the flow.
  */
 public class HuwelijksAkteFlowState extends ByzAkteFlowState implements Serializable {
-    private Ref_GBH refGbh;
-    private Huwttl  huwttl;
-    private Huwknd  huwknd;
+    //private Ref_GBH refGbh;
+    private Ref_RP refRp;
+    private Huwttl huwttl;
+    private Huwknd huwknd;
 
     private List<Huwafk> huwafk;
     private List<Huweer> huweerGroom;
@@ -39,7 +41,8 @@ public class HuwelijksAkteFlowState extends ByzAkteFlowState implements Serializ
     private String moreOfGroom = "j";
     private String moreOfBride = "j";
 
-    public HuwelijksAkteFlowState(Huwttl huwttl, Huwknd huwknd, List<Huwafk> huwafk, List<Huweer> huweerGroom, List<Huweer> huweerBride, Huwvrknd[] huwvrknd, Huwgtg[] huwgtg, Set<Huwbyz> huwbyz) {
+    public HuwelijksAkteFlowState(Huwttl huwttl, Huwknd huwknd, List<Huwafk> huwafk, List<Huweer> huweerGroom,
+                                  List<Huweer> huweerBride, Huwvrknd[] huwvrknd, Huwgtg[] huwgtg, Set<Huwbyz> huwbyz) {
         this.huwttl = huwttl;
         this.huwknd = huwknd;
         this.huwafk = huwafk;
@@ -52,12 +55,20 @@ public class HuwelijksAkteFlowState extends ByzAkteFlowState implements Serializ
         this.curHuwvrknd = this.huwvrknd[this.curHuwvrkndIndex];
     }
 
-    public Ref_GBH getRefGbh() {
+    /*public Ref_GBH getRefGbh() {
         return refGbh;
     }
 
     public void setRefGbh(Ref_GBH refGbh) {
         this.refGbh = refGbh;
+    }*/
+
+    public Ref_RP getRefRp() {
+        return refRp;
+    }
+
+    public void setRefRp(Ref_RP refRp) {
+        this.refRp = refRp;
     }
 
     public Huwttl getHuwttl() {

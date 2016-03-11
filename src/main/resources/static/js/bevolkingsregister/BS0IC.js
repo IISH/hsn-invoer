@@ -15,8 +15,8 @@
     var checkIdnr = function () {
         var idnr = $(this).getIntegerValue();
         if (!isNaN(idnr)) {
-            $.getJSON('/ajax/lookup/gbh', {idnr: idnr}, function (gbh) {
-                $.each(gbh, function (key, value) {
+            $.getJSON('/ajax/lookup/rp', {idnr: idnr}, function (rp) {
+                $.each(rp, function (key, value) {
                     $('.data-' + key).setValue(value);
                 });
 

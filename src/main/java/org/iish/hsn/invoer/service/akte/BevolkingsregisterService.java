@@ -4,6 +4,7 @@ import org.iish.hsn.invoer.domain.invoer.WorkOrder;
 import org.iish.hsn.invoer.domain.invoer.bev.*;
 import org.iish.hsn.invoer.domain.reference.Ref_AINB;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.AkteException;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.flow.helper.BevolkingsregisterHelper;
@@ -85,8 +86,8 @@ public class BevolkingsregisterService {
         try {
             Registration b4 = bevolkingsregisterFlow.getB4();
 
-            Ref_GBH refGbh = lookupService.getRefGbh(b4.getRegistrationId().getKeyToRP(), true);
-            bevolkingsregisterFlow.setRefGbh(refGbh);
+            Ref_RP refRp = lookupService.getRefRp(b4.getRegistrationId().getKeyToRP(), true);
+            bevolkingsregisterFlow.setRefRp(refRp);
 
             Ref_AINB refAinb = lookupService.getRefAinb(b4.getRegistrationId().getKeyToSourceRegister(), true);
             bevolkingsregisterFlow.setRefAinb(refAinb);
@@ -124,7 +125,7 @@ public class BevolkingsregisterService {
         try {
             RegistrationId registrationId = bevolkingsregisterFlow.getB4().getRegistrationId();
 
-            bevolkingsregisterFlow.setRefGbh(lookupService.getRefGbh(registrationId.getKeyToRP(), true));
+            bevolkingsregisterFlow.setRefRp(lookupService.getRefRp(registrationId.getKeyToRP(), true));
             bevolkingsregisterFlow.setRefAinb(lookupService.getRefAinb(registrationId.getKeyToSourceRegister(), true));
 
             bevolkingsregisterFlow.setB4(
@@ -186,7 +187,7 @@ public class BevolkingsregisterService {
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
     public void setUpPerson(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        Ref_GBH refGbh = bevolkingsregisterFlow.getRefGbh();
+        Ref_RP refRp = bevolkingsregisterFlow.getRefRp();
         List<Person> b2 = bevolkingsregisterFlow.getB2();
         List<Integer> correctionPersons = bevolkingsregisterFlow.getCorrectionPersons();
 
@@ -229,17 +230,13 @@ public class BevolkingsregisterService {
                 // If this person is the OP, take over information from the birth certificate
                 if (person.getKeyToRegistrationPersons() == bevolkingsregisterFlow.getVolgnrOP()) {
                     person.setNatureOfPerson(Person.NatureOfPerson.FIRST_RP.getNatureOfPerson());
-
-                    String firstName =
-                            Utils.getFirstNames(refGbh.getFirstName1(), refGbh.getFirstName2(), refGbh.getFirstName3());
-
-                    person.setFamilyName(refGbh.getLastName());
-                    person.setFirstName(firstName);
-                    person.setSex(refGbh.getSex());
-                    person.setPlaceOfBirth(refGbh.getNameMunicipality());
-                    person.setDayOfBirth(refGbh.getDayOfBirth());
-                    person.setMonthOfBirth(refGbh.getMonthOfBirth());
-                    person.setYearOfBirth(refGbh.getYearOfBirth());
+                    person.setFamilyName(refRp.getLastName());
+                    person.setFirstName(refRp.getFirstName());
+                    person.setSex(refRp.getSex());
+                    person.setPlaceOfBirth(refRp.getNameMunicipality());
+                    person.setDayOfBirth(refRp.getDayOfBirth());
+                    person.setMonthOfBirth(refRp.getMonthOfBirth());
+                    person.setYearOfBirth(refRp.getYearOfBirth());
                 }
                 else {
                     person.setNatureOfPerson(Person.NatureOfPerson.NO_RP.getNatureOfPerson());
@@ -249,23 +246,15 @@ public class BevolkingsregisterService {
                 if (bevolkingsregisterFlow.getVolgnrOP() >= 3) {
                     // First one is the father
                     if (person.getKeyToRegistrationPersons() == 1) {
-                        String firstName =
-                                Utils.getFirstNames(refGbh.getFirstName1Father(), refGbh.getFirstName2Father(),
-                                                    refGbh.getFirstName3Father());
-
-                        person.setFamilyName(refGbh.getLastNameFather());
-                        person.setFirstName(firstName);
+                        person.setFamilyName(refRp.getLastNameFather());
+                        person.setFirstName(refRp.getFirstNameFather());
                         person.setSex("m");
                     }
 
                     // Second one is the mother
                     if (person.getKeyToRegistrationPersons() == 2) {
-                        String firstName =
-                                Utils.getFirstNames(refGbh.getFirstName1Mother(), refGbh.getFirstName2Mother(),
-                                                    refGbh.getFirstName3Mother());
-
-                        person.setFamilyName(refGbh.getLastNameMother());
-                        person.setFirstName(firstName);
+                        person.setFamilyName(refRp.getLastNameMother());
+                        person.setFirstName(refRp.getFirstNameMother());
                         person.setSex("v");
                     }
                 }
@@ -417,7 +406,7 @@ public class BevolkingsregisterService {
     public void renumberRegistrationPersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         BevolkingsregisterFlowState renumbered = createNewAkte();
         renumbered.setB4(bevolkingsregisterFlow.getB4());
-        renumbered.setRefGbh(bevolkingsregisterFlow.getRefGbh());
+        renumbered.setRefRp(bevolkingsregisterFlow.getRefRp());
         renumbered.setRefAinb(bevolkingsregisterFlow.getRefAinb());
 
         // First figure out how many lines we need at a minimum at this moment
@@ -1041,7 +1030,7 @@ public class BevolkingsregisterService {
                                                 firstB3Ver);
 
         bevolkingsregisterFlowState.setRefAinb(new Ref_AINB());
-        bevolkingsregisterFlowState.setRefGbh(new Ref_GBH());
+        bevolkingsregisterFlowState.setRefRp(new Ref_RP());
 
         return bevolkingsregisterFlowState;
     }

@@ -31,16 +31,16 @@
                 self.stpbLookup();
             });
         }
-        else if (self.idnrElem.hasClass('gbh-idnr') && self.idnrElem.hasClass('no-gbh-lookup')) {
+        else if (self.idnrElem.hasClass('rp-idnr') && self.idnrElem.hasClass('no-rp-lookup')) {
             self.idnrElem.blur(function () {
                 self.blur = $(this);
-                self.noRefGBHLookup();
+                self.noRefRPLookup();
             });
         }
-        else if (self.idnrElem.hasClass('gbh-idnr')) {
+        else if (self.idnrElem.hasClass('rp-idnr')) {
             self.idnrElem.blur(function () {
                 self.blur = $(this);
-                self.refGBHLookup();
+                self.refRPLookup();
             });
         }
 
@@ -110,27 +110,27 @@
         });
     };
 
-    FindOp.prototype.refGBHLookup = function () {
+    FindOp.prototype.refRPLookup = function () {
         self.withIdnr(function (idnr) {
             if (idnr < 500000) {
-                $.getJSON('/ajax/lookup/gbh', {idnr: idnr}, function () {
-                    if (self.idnrElem.hasClass('only-gbh-lookup')) {
+                $.getJSON('/ajax/lookup/rp', {idnr: idnr}, function () {
+                    if (self.idnrElem.hasClass('only-rp-lookup')) {
                         self.onSuccess();
                     }
                     else {
-                        self.noRefGBHLookup();
+                        self.noRefRPLookup();
                     }
                 }).fail(function () {
                     self.onFailure('De onderzoekspersoon met deze identificatie is niet aanwezig!', false, false, true);
                 });
             }
             else {
-                self.noRefGBHLookup();
+                self.noRefRPLookup();
             }
         });
     };
 
-    FindOp.prototype.noRefGBHLookup = function () {
+    FindOp.prototype.noRefRPLookup = function () {
         self.withIdnr(function (idnr) {
             $.getJSON('/ajax/lookup/' + self.lookup, {idnr: idnr}, function () {
                 if ($.isCorrection()) {
@@ -223,6 +223,6 @@
     };
 
     $(document).ready(function () {
-        new FindOp($('.stpb-idnr, .gbh-idnr'));
+        new FindOp($('.stpb-idnr, .rp-idnr'));
     });
 })(jQuery);

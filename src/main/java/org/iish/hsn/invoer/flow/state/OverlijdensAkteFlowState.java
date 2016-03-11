@@ -6,6 +6,7 @@ import org.iish.hsn.invoer.domain.invoer.ovl.Ovlbyz;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlech;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlknd;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.flow.helper.OverlijdensAkteViewNames;
 import org.iish.hsn.invoer.flow.helper.ViewNames;
 
@@ -16,7 +17,8 @@ import java.util.Set;
  * Holds the state of a 'overlijdens akte' (death certificate) during the flow.
  */
 public class OverlijdensAkteFlowState extends ByzAkteFlowState implements Serializable {
-    private Ref_GBH     refGbh;
+    //private Ref_GBH     refGbh;
+    private Ref_RP      refRp;
     private Ovlknd      ovlknd;
     private Ovlagv[]    ovlagv;
     private Ovlech[]    ovlech;
@@ -41,12 +43,20 @@ public class OverlijdensAkteFlowState extends ByzAkteFlowState implements Serial
         this.curOvlech = this.ovlech[this.curOvlechIndex];
     }
 
-    public Ref_GBH getRefGbh() {
+    /*public Ref_GBH getRefGbh() {
         return refGbh;
     }
 
     public void setRefGbh(Ref_GBH refGbh) {
         this.refGbh = refGbh;
+    }*/
+
+    public Ref_RP getRefRp() {
+        return refRp;
+    }
+
+    public void setRefRp(Ref_RP refRp) {
+        this.refRp = refRp;
     }
 
     public Ovlknd getOvlknd() {
