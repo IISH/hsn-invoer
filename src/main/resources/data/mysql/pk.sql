@@ -1,6 +1,6 @@
 CREATE TABLE `p7` (
 
-`RecordID` int(11) NOT NULL AUTO_INCREMENT,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
 `IDNR` int(11) NOT NULL,
 `IDNRP` int(11) NOT NULL,
 `P7IDBG` int(11) NOT NULL,
@@ -22,14 +22,14 @@ CREATE TABLE `p7` (
 `VERSIEO` varchar(5) NOT NULL,
 `OPDRNRI` varchar(3) NOT NULL,
 
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_fgm2n358y1pl3s23fxnx2jhh3` (`IDNR`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_h546yp3h6shgek69ugtgsdfr3` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `p8` (
 
-`RecordID` int(11) NOT NULL AUTO_INCREMENT,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
 `IDNR` int(11) NOT NULL,
 `IDNRP` int(11) NOT NULL,
 `P8TPNR` int(11) NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE `p8` (
 `VERSIEO` varchar(5) NOT NULL,
 `OPDRNRI` varchar(3) NOT NULL,
 
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_cnrdkj9v8bepq01k6h5onm6ok` (`IDNR`,`P8TPNR`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_2payahmjo9b9t0x8ilgi0vn95` (`IDNR`),
   KEY `UK_c6lwpv7b00vt9vuncgtahw9do` (`ONDRZKO`,`OPDRNRI`)
@@ -76,7 +76,7 @@ CREATE TABLE `p8` (
 
 CREATE TABLE `pkadres` (
 
-`RecordID` int(11) NOT NULL AUTO_INCREMENT,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
 `IDNR` int(11) NOT NULL,
 `VGNRADP` int(11) NOT NULL,
 `DGADRP` int(11) NOT NULL,
@@ -97,7 +97,7 @@ CREATE TABLE `pkadres` (
 `VERSIEO` varchar(5) NOT NULL,
 `OPDRNRI` varchar(3) NOT NULL,
 
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_8wvj8mb1yj23s67tlwlwwh7xo` (`IDNR`,`VGNRADP`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_j29sdchqdn44idsqcvj0we90x` (`IDNR`),
   KEY `UK_c92yl9a157a9yggom66tf6m1s` (`ONDRZKO`,`OPDRNRI`)
@@ -105,7 +105,7 @@ CREATE TABLE `pkadres` (
 
 CREATE TABLE `pkbrp` (
 
-`RecordID` int(11) NOT NULL AUTO_INCREMENT,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
 `IDNR` int(11) NOT NULL,
 `VGNRBRP` int(11) NOT NULL,
 `BRPPOSP` varchar(1) NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE `pkbrp` (
 `VERSIEO` varchar(5) NOT NULL,
 `OPDRNRI` varchar(3) NOT NULL,
 
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_f6t0py8vdpldug0o82iodvxhj` (`IDNR`,`VGNRBRP`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_3o863beqgvg1ln7j85cm1y29u` (`IDNR`),
   KEY `UK_7oswfjahgrpbhp70fdjobx0m2` (`ONDRZKO`,`OPDRNRI`)
@@ -130,7 +130,7 @@ CREATE TABLE `pkbrp` (
 
 CREATE TABLE `pkbyz` (
 
-`RecordID` int(11) NOT NULL AUTO_INCREMENT,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
 `IDNR` int(11) NOT NULL,
 `BYZNR` int(11) NOT NULL,
 `BYZ` varchar(55) NOT NULL,
@@ -146,12 +146,12 @@ CREATE TABLE `pkbyz` (
 `VERSIEO` varchar(5) NOT NULL,
 `OPDRNRI` varchar(3) NOT NULL,
 
-  PRIMARY KEY (`RecordID`)
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `pkeigknd` (
 
-`RecordID` int(11) NOT NULL AUTO_INCREMENT,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
 `IDNR` int(11) NOT NULL,
 `VGNRKDP` int(11) NOT NULL,
 `ANMKNDP` varchar(50) NOT NULL,
@@ -195,7 +195,7 @@ CREATE TABLE `pkeigknd` (
 `VERSIEO` varchar(5) NOT NULL,
 `OPDRNRI` varchar(3) NOT NULL,
 
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_1suqo8rohshobs4724y5hgc9` (`IDNR`,`VGNRKDP`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_mfwlgabhej3ae37ry05k4d63f` (`IDNR`),
   KEY `UK_4eweoa75t9ijau8ittwtd5uhx` (`ONDRZKO`,`OPDRNRI`)
@@ -203,7 +203,7 @@ CREATE TABLE `pkeigknd` (
 
 CREATE TABLE `pkhuw` (
 
-`RecordID` int(11) NOT NULL AUTO_INCREMENT,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
 `IDNR` int(11) NOT NULL,
 `VNRHUWP` int(11) NOT NULL,
 `ANMHUWP` varchar(50) NOT NULL,
@@ -250,7 +250,7 @@ CREATE TABLE `pkhuw` (
 `VERSIEO` varchar(5) NOT NULL,
 `OPDRNRI` varchar(3) NOT NULL,
 
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_sqa1haf626houq3b2tbse44k` (`IDNR`,`VNRHUWP`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_6ng9yc5sjc3d5m18qs95aog89` (`IDNR`),
   KEY `UK_dyr06p3hh4ugaoqe8wwfihldy` (`ONDRZKO`,`OPDRNRI`)
@@ -258,7 +258,7 @@ CREATE TABLE `pkhuw` (
 
 CREATE TABLE `pkknd` (
 
-`RecordID` int(11) NOT NULL AUTO_INCREMENT,
+`ID` int(11) NOT NULL AUTO_INCREMENT,
 `IDNR` int(11) NOT NULL,
 `IDNRP` int(11) NOT NULL,
 `GAKTNRP` varchar(8) NOT NULL,
@@ -335,7 +335,7 @@ CREATE TABLE `pkknd` (
 `VERSIEO` varchar(5) NOT NULL,
 `OPDRNRI` varchar(3) NOT NULL,
 
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_h615ebgx8cbvry3ji85fi4w44` (`IDNR`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_98vafeo4vqp4ajn3g1hgh3vl5` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

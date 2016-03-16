@@ -22,8 +22,8 @@ public class P7 extends Invoer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RecordID")
-    private Integer recordID;
+    @Column(name = "ID")
+    private Integer id;
 
     public int getIdnr() {
         return idnr;
@@ -105,11 +105,11 @@ public class P7 extends Invoer {
         this.p7oppc = p7oppc;
     }
 
-    public Integer getRecordID() {
-        return recordID;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRecordID(Integer recordID) {
-        this.recordID = recordID;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -10,8 +10,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RecordID")
-    private Integer recordID;
+    @Column(name = "ID")
+    private Integer id;
 
     public String getInlognaam() {
         return inlognaam;

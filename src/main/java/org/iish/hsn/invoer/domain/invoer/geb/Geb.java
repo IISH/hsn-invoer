@@ -15,7 +15,7 @@ public class Geb extends Invoer {
     @Column(name = "GEBKODE", nullable = false) private  long   gebkode; // long, as MySQL turns this into a bigint
     @Column(name = "OVERSAMP", nullable = false) private String oversamp = "";
 
-    @Id @Column(name = "RecordID") private Integer recordID;
+    @Id @Column(name = "ID") private Integer id;
 
     public int getGemnr() {
         return gemnr;
@@ -45,7 +45,7 @@ public class Geb extends Invoer {
         return oversamp;
     }
 
-    public Integer getRecordID() {
-        return recordID;
+    public Integer getId() {
+        return id;
     }
 }

@@ -1,5 +1,5 @@
 CREATE TABLE `huwafk` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `HDAG` int(11) NOT NULL,
   `HMAAND` int(11) NOT NULL,
@@ -20,14 +20,14 @@ CREATE TABLE `huwafk` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_3stoeb0qpbd49a2wkloetheul` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`,`HWAKNR`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_q0finurhrlvj6d3r8cqn45dyw` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
 CREATE TABLE `huwbyz` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `HDAG` int(11) NOT NULL,
   `HMAAND` int(11) NOT NULL,
@@ -45,14 +45,14 @@ CREATE TABLE `huwbyz` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   KEY `UK_pjis9os0582y1x7eh1qr8yvtd` (`IDNR`),
   KEY `UK_fguaqmtk846w5nipc83bl9uum` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
 CREATE TABLE `huweer` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `HDAG` int(11) NOT NULL,
   `HMAAND` int(11) NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE `huweer` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_ed9qs6phpm3wy5wr0wj0s4s6w` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`,`VLGNREH`,`HUWER`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_cr1rw6qfr261xoh9gx79e4x7j` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`),
   KEY `UK_jkjfqcplsd736hq6ytov46vym` (`ONDRZKO`,`OPDRNRI`)
@@ -83,7 +83,7 @@ CREATE TABLE `huweer` (
 
 
 CREATE TABLE `huwgtg` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `HDAG` int(11) NOT NULL,
   `HMAAND` int(11) NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE `huwgtg` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_c40hcvqexfr0t4v11u34m05sf` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`,`VLGNRGT`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_b2ddqsdldd5rqsg20fkv8ifr0` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`),
   KEY `UK_bts9crhheyv81ysynayid07sa` (`ONDRZKO`,`OPDRNRI`)
@@ -118,7 +118,7 @@ CREATE TABLE `huwgtg` (
 
 
 CREATE TABLE `huwknd` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `HGEMNR` int(11) NOT NULL,
   `HAKTENR` int(11) NOT NULL,
@@ -238,14 +238,14 @@ CREATE TABLE `huwknd` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_ehudt9cet0e5fwi68vc3s3ipj` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_8647f3nf773x1o41wvitsskty` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
 CREATE TABLE `huwttl` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `HGEMNR` int(11) NOT NULL,
   `HAKTENR` int(11) NOT NULL,
@@ -264,13 +264,13 @@ CREATE TABLE `huwttl` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_7i9nhq2xmhqnl3wgrytv6dfbe` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
 CREATE TABLE `huwvrknd` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `HDAG` int(11) NOT NULL,
   `HMAAND` int(11) NOT NULL,
@@ -306,7 +306,7 @@ CREATE TABLE `huwvrknd` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_111cqh12gbxv3n42s3i0t2w5x` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`,`VLGNRVK`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_fewk6w01wrdu53ar94ib9nfmm` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`),
   KEY `UK_cq4kxejmbt6qj9kepdydw3gjh` (`ONDRZKO`,`OPDRNRI`)

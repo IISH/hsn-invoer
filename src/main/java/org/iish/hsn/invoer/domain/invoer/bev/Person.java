@@ -66,8 +66,8 @@ public class Person extends Invoer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RecordID")
-    private Integer recordID;
+    @Column(name = "ID")
+    private Integer id;
 
     public Person() {
     }
@@ -329,11 +329,11 @@ public class Person extends Invoer implements Serializable {
         this.remarks2 = remarks2;
     }
 
-    public Integer getRecordID() {
-        return recordID;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRecordID(Integer recordID) {
-        this.recordID = recordID;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

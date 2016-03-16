@@ -73,7 +73,7 @@ public class BevolkingsregisterRenumbering {
 
             // If the new key is 0 or does not fit in the new list, then remove the person from the list
             if ((keyNew == 0) || (keyNew > renumbered.getB2().size())) {
-                if (newPerson.getRecordID() != null) {
+                if (newPerson.getId() != null) {
                     deletedB2.add(newPerson);
                 }
 
@@ -128,7 +128,7 @@ public class BevolkingsregisterRenumbering {
 
     private void deletePersonDynamic(PersonDynamic personDynamic) {
         // If it has no record id, it is not stored in the database, so just forget about it
-        if (personDynamic.getRecordID() != null) {
+        if (personDynamic.getId() != null) {
             PersonDynamic newPersonDynamic = new PersonDynamic();
             BeanUtils.copyProperties(personDynamic, newPersonDynamic);
             deletedB3.add(newPersonDynamic);
@@ -142,7 +142,7 @@ public class BevolkingsregisterRenumbering {
                 BeanUtils.copyProperties(registrationAddress, newRegistrationAddress);
 
                 // If it has no record id and will be deleted, it is not stored in the database, so just forget about it
-                if (isDeleted && (newRegistrationAddress.getRecordID() != null)) {
+                if (isDeleted && (newRegistrationAddress.getId() != null)) {
                     deletedB6.add(newRegistrationAddress);
                 }
                 else {

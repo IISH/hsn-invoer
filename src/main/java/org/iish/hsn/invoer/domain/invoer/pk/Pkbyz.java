@@ -9,14 +9,14 @@ import javax.persistence.*;
 public class Pkbyz extends Byz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RecordID")
-    private Integer recordID;
+    @Column(name = "ID")
+    private Integer id;
 
-    public Integer getRecordID() {
-        return recordID;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRecordID(Integer recordID) {
-        this.recordID = recordID;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

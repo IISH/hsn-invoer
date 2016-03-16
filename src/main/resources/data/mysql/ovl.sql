@@ -1,5 +1,5 @@
 CREATE TABLE `ovlagv` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `VLGNRAG` int(11) NOT NULL,
   `ANMAGV` varchar(50) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE `ovlagv` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_hvjwjokbm9swnfrkimi5joxoj` (`IDNR`,`VLGNRAG`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_gd3gapg9i41v6yho2pg6rob7b` (`IDNR`),
   KEY `UK_2a5uqu3r1mmg65l3bnsq8eru9` (`ONDRZKO`,`OPDRNRI`)
@@ -30,7 +30,7 @@ CREATE TABLE `ovlagv` (
 
 
 CREATE TABLE `ovlbyz` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `BYZNR` int(11) NOT NULL,
   `BYZ` varchar(55) NOT NULL,
@@ -45,14 +45,14 @@ CREATE TABLE `ovlbyz` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   KEY `UK_g01c8i05bbuc3454lx7umovip` (`IDNR`),
   KEY `UK_tr755jq0xr65v9tcpfxl1ia87` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
 CREATE TABLE `ovlech` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `VLGECH` int(11) NOT NULL,
   `ANMEOVL` varchar(50) NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE `ovlech` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_g6lrwyiq2eui5fmuj079ni0h3` (`IDNR`,`VLGECH`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_6opis1mn3rkw1fvmp4e272f82` (`IDNR`),
   KEY `UK_b15fvtdq3iy81p6p86oyv2cv7` (`ONDRZKO`,`OPDRNRI`)
@@ -82,7 +82,7 @@ CREATE TABLE `ovlech` (
 
 
 CREATE TABLE `ovlknd` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `OACGEMNR` int(11) NOT NULL,
   `OACGEMNM` varchar(50) NOT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE `ovlknd` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   UNIQUE KEY `UK_p0rw3ucvnug9jh48i8a9yruy8` (`IDNR`,`ONDRZKO`,`OPDRNRI`),
   KEY `UK_2ek4vlfqb3btplgc9lhvs4fl` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

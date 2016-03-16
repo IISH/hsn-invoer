@@ -20,8 +20,8 @@ public class Plaats {
     @Column(name = "EUCLIDMIDX", nullable = false) private           Integer euclidmidx;
     @Column(name = "EUCLIDMIDY", nullable = false) private           Integer euclidmidy;
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "RecordID")
-    private Integer recordID;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID")
+    private Integer id;
 
     public WorkOrder getWorkOrder() {
         return workOrder;
@@ -103,11 +103,11 @@ public class Plaats {
         this.euclidmidy = euclidmidy;
     }
 
-    public Integer getRecordID() {
-        return recordID;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRecordID(Integer recordID) {
-        this.recordID = recordID;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

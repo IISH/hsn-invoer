@@ -1,5 +1,5 @@
 CREATE TABLE `b2` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `B1IDBG` int(11) NOT NULL,
   `B2DIBG` int(11) NOT NULL,
   `B2MIBG` int(11) NOT NULL,
@@ -45,14 +45,14 @@ CREATE TABLE `b2` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   KEY `UK_dicjtkptfhehv3ujmgcw1ajen` (`IDNR`,`B1IDBG`,`B2DIBG`,`B2MIBG`,`B2JIBG`,`B2RNBG`),
   KEY `UK_qb9sapnkimuneip3q8dev0fjv` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
 CREATE TABLE `b3` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `B1IDBG` int(11) NOT NULL,
   `B2DIBG` int(11) NOT NULL,
   `B2MIBG` int(11) NOT NULL,
@@ -81,14 +81,14 @@ CREATE TABLE `b3` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   KEY `UK_lv516kgn8ylqj0furwaktn24a` (`IDNR`,`B1IDBG`,`B2DIBG`,`B2MIBG`,`B2JIBG`,`B2RNBG`),
   KEY `UK_sl7i9jpuungusgmqmnlchoxfj` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
 CREATE TABLE `b4` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `B1IDBG` int(11) NOT NULL,
   `B2DIBG` int(11) NOT NULL,
   `B2MIBG` int(11) NOT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE `b4` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   KEY `UK_o3gdrhily3trco1liwhan0eix` (`IDNR`,`B1IDBG`,`B2DIBG`,`B2MIBG`,`B2JIBG`),
   KEY `UK_kjn6pmvcfevbq599287g1stvg` (`ONDRZKO`,`OPDRNRI`),
   KEY `UK_50a1m82wv7ehvqj8hk9v7wyq5` (`B2FDBG`,`B2FMBG`,`B2FJBG`)
@@ -120,7 +120,7 @@ CREATE TABLE `b4` (
 
 
 CREATE TABLE `b6` (
-  `RecordID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `B1IDBG` int(11) NOT NULL,
   `B2DIBG` int(11) NOT NULL,
   `B2MIBG` int(11) NOT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE `b6` (
   `INITO` varchar(3) NOT NULL,
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`RecordID`),
+  PRIMARY KEY (`ID`),
   KEY `UK_hqqfcia9v7ow3qgx7y4t7m438` (`IDNR`,`B1IDBG`,`B2DIBG`,`B2MIBG`,`B2JIBG`),
   KEY `UK_546waj78jau43cvq8ek1lgrtv` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
