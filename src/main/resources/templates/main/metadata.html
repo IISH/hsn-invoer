@@ -33,9 +33,13 @@
   </div>
 
   <div class="pull-right">
-    <button type="submit" name="next" class="btn btn-default btn-right-spacing btn-sm btn-next">
+    <button type="submit" name="next" class="btn btn-default btn-sm btn-next">
       OKE
       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </button>
+
+    <button type="submit" name="logout" class="btn btn-default btn-right-spacing btn-sm btn-logout">
+      Afsluiten / Uitloggen
     </button>
   </div>
 </fieldset>
@@ -43,7 +47,7 @@
 <footer layout:fragment="footer" th:include="layoutFragments :: footer ('Voormenu')"></footer>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/main/metadata.js" th:src="@{/js/main/metadata.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+  <script src="../../static/js/main/metadata.js" hsn:src="@{/js/main/metadata.js}"></script>
 </th:block>
 </body>
 </html>

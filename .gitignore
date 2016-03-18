@@ -4,10 +4,6 @@
 *.war
 *.ear
 
-# SQL
-*.sql
-!invoer.sql
-
 # IntelliJ
 /.idea
 *.iws

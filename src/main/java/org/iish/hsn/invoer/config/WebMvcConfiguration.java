@@ -5,6 +5,7 @@ import org.iish.hsn.invoer.util.CachingInterceptor;
 import org.iish.hsn.invoer.util.InputMetadata;
 import org.iish.hsn.invoer.util.InputMetadataInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,9 @@ import java.util.Collections;
 
 @Configuration
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
+    @Value("${random-to-static-source:false}")
+    private boolean randomToStaticSource;
+
     @Autowired
     private InputMetadata inputMetadata;
 
@@ -52,7 +56,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         for (IDialect dialect : this.dialects) {
             engine.addDialect(dialect);
         }
-        engine.addDialect(new HSNThymeleafDialect());
+        engine.addDialect(new HSNThymeleafDialect(randomToStaticSource));
         return engine;
     }
 

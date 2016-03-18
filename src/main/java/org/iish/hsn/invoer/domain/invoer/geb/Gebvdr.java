@@ -31,7 +31,7 @@ public class Gebvdr extends Invoer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RecordID")
+    @Column(name = "ID")
     private Integer recordID;
 
     public int getIdnr() {
@@ -178,11 +178,11 @@ public class Gebvdr extends Invoer implements Serializable {
         this.g5vogo = g5vogo;
     }
 
-    public Integer getRecordID() {
+    public Integer getId() {
         return recordID;
     }
 
-    public void setRecordID(Integer recordID) {
+    public void setId(Integer id) {
         this.recordID = recordID;
     }
 }

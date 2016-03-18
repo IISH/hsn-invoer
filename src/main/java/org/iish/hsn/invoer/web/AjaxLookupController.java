@@ -12,6 +12,7 @@ import org.iish.hsn.invoer.domain.invoer.pk.Pkknd;
 import org.iish.hsn.invoer.domain.reference.Ref_AINB;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
 import org.iish.hsn.invoer.domain.invoer.geb.Stpb;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.service.LookupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,14 @@ public class AjaxLookupController {
         return lookupService.getStpb(idnr, true);
     }
 
-    @RequestMapping(value = "/gbh", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@RequestMapping(value = "/gbh", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Ref_GBH getRefGbh(@RequestParam Integer idnr) throws NotFoundException {
         return lookupService.getRefGbh(idnr, true);
+    }*/
+
+    @RequestMapping(value = "/rp", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Ref_RP gerRefRP(@RequestParam Integer idnr) throws NotFoundException {
+        return lookupService.getRefRp(idnr, true);
     }
 
     @RequestMapping(value = "/ainb", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

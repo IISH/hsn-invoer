@@ -34,8 +34,8 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RecordID")
-    private Integer recordID;
+    @Column(name = "ID")
+    private Integer id;
 
     @Transient private Date lastChangedDate = new Date(); // Helper variable for sorting addresses
 
@@ -159,12 +159,12 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
         this.additionToNumber = additionToNumber;
     }
 
-    public Integer getRecordID() {
-        return recordID;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRecordID(Integer recordID) {
-        this.recordID = recordID;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setLastChangedDate() {

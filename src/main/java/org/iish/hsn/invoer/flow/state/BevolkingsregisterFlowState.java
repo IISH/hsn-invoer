@@ -3,6 +3,7 @@ package org.iish.hsn.invoer.flow.state;
 import org.iish.hsn.invoer.domain.invoer.bev.*;
 import org.iish.hsn.invoer.domain.reference.Ref_AINB;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
 
 import java.io.Serializable;
 import java.util.*;
@@ -11,7 +12,8 @@ import java.util.*;
  * Holds the state of a 'bevolkingsregister' during the flow.
  */
 public class BevolkingsregisterFlowState extends AkteFlowState implements Serializable {
-    private Ref_GBH  refGbh;
+    //private Ref_GBH     refGbh;
+    private Ref_RP   refRp;
     private Ref_AINB refAinb;
 
     private Registration b4;
@@ -105,12 +107,20 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
         return b3;
     }
 
-    public Ref_GBH getRefGbh() {
+    /*public Ref_GBH getRefGbh() {
         return refGbh;
     }
 
     public void setRefGbh(Ref_GBH refGbh) {
         this.refGbh = refGbh;
+    }*/
+
+    public Ref_RP getRefRp() {
+        return refRp;
+    }
+
+    public void setRefRp(Ref_RP refRp) {
+        this.refRp = refRp;
     }
 
     public Ref_AINB getRefAinb() {

@@ -3,6 +3,7 @@ package org.iish.hsn.invoer.flow.state;
 import org.iish.hsn.invoer.domain.invoer.Byz;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
 import org.iish.hsn.invoer.domain.invoer.pk.*;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.flow.helper.PersoonskaartViewNames;
 import org.iish.hsn.invoer.flow.helper.ViewNames;
 
@@ -14,15 +15,16 @@ import java.util.Set;
  * Holds the state of a 'persoonskaart' (person card) during the flow.
  */
 public class PersoonskaartFlowState extends ByzAkteFlowState implements Serializable {
-    private Ref_GBH refGbh;
-    private Pkknd pkknd;
-    private P7 p7;
-    private P8 p8Origin;
-    private P8 p8CurWhereabouts;
+    //private Ref_GBH     refGbh;
+    private Ref_RP refRp;
+    private Pkknd  pkknd;
+    private P7     p7;
+    private P8     p8Origin;
+    private P8     p8CurWhereabouts;
 
-    private List<Pkbrp> pkbrp;
-    private List<Pkhuw> pkhuw;
-    private List<Pkadres> pkadres;
+    private List<Pkbrp>    pkbrp;
+    private List<Pkhuw>    pkhuw;
+    private List<Pkadres>  pkadres;
     private List<Pkeigknd> pkeigknd;
 
     private Set<Pkbyz> pkbyz;
@@ -34,8 +36,8 @@ public class PersoonskaartFlowState extends ByzAkteFlowState implements Serializ
     private int curPkeigkndIndex = -1;
 
     private String anotherMarriage = "j";
-    private String addAddresses = "j";
-    private String anotherChild = "j";
+    private String addAddresses    = "j";
+    private String anotherChild    = "j";
 
     public PersoonskaartFlowState(Pkknd pkknd, P7 p7, P8 p8Origin, P8 p8CurWhereabouts, List<Pkbrp> pkbrp,
                                   List<Pkhuw> pkhuw, List<Pkadres> pkadres, List<Pkeigknd> pkeigknd, Set<Pkbyz> pkbyz) {
@@ -50,12 +52,20 @@ public class PersoonskaartFlowState extends ByzAkteFlowState implements Serializ
         this.pkbyz = pkbyz;
     }
 
-    public Ref_GBH getRefGbh() {
+    /*public Ref_GBH getRefGbh() {
         return refGbh;
     }
 
     public void setRefGbh(Ref_GBH refGbh) {
         this.refGbh = refGbh;
+    }*/
+
+    public Ref_RP getRefRp() {
+        return refRp;
+    }
+
+    public void setRefRp(Ref_RP refRp) {
+        this.refRp = refRp;
     }
 
     public Pkknd getPkknd() {

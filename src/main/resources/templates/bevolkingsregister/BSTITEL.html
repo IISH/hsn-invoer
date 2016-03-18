@@ -4,8 +4,19 @@
 </head>
 <body>
 <fieldset class="title" th:fragment="registrationBSTITEL">
-  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER GEGEVENS BEVOLKINGSREGISTER VAN:</legend>
-  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE GEGEVENS BEVOLKINGSREGISTER VAN:</legend>
+  <legend align="center" th:if="${akte.isCorrection()} == false and ${flowRequestContext.currentState.id} != 'BS0A1'">
+    INVOER GEGEVENS BEVOLKINGSREGISTER VAN:
+  </legend>
+  <legend align="center" th:if="${akte.isCorrection()} and ${flowRequestContext.currentState.id} != 'BS0A1'">
+    CORRECTIE GEGEVENS BEVOLKINGSREGISTER VAN:
+  </legend>
+
+  <legend align="center" th:if="${akte.isCorrection()} == false and ${flowRequestContext.currentState.id} == 'BS0A1'">
+    SAMENSTELLING INVOER HUISHOUDEN VAN:
+  </legend>
+  <legend align="center" th:if="${akte.isCorrection()} and ${flowRequestContext.currentState.id} == 'BS0A1'">
+    SAMENSTELLING CORRECTIE HUISHOUDEN VAN:
+  </legend>
 
   <th:block th:include="bevolkingsregister/BSTITEL :: registration (${akte.b4}, ${akte.refAinb})"></th:block>
 </fieldset>

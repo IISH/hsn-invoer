@@ -37,9 +37,7 @@
         setInterval(function () {
             $.post('/keepalive');
         }, 60000);
-    });
-
-    $(document).on('ajax-update', function (e, elem) {
+    }).on('ajax-update', function (e, elem) {
         runInit(elem);
     });
 
@@ -51,11 +49,11 @@
         var rows, focusIndicator;
 
         // Find out which row to make active, if there is one...
-        if (elem.is('.fixed-left-column .free tbody input, .fixed-left-column .free tbody button')) {
+        var freePart = elem.closest('.free');
+        var parent = freePart.closest('.fixed-left-column');
+        if (parent.length === 1) {
             var row = elem.closest('tr');
             var index = row.closest('tbody').find('tr').index(row);
-
-            var parent = row.closest('.fixed-left-column');
             var fixedRow = parent.find('.fixed tbody tr:nth-child(' + (index + 1) + ')');
 
             rows = row.add(fixedRow);
@@ -66,11 +64,12 @@
         }
 
         // Now de-activate all rows except the active ones
-        $('.fixed-left-column tr.active').not(rows).removeClass('active');
-        $('.fixed-left-column .fixed .glyphicon').not(focusIndicator).removeClass('glyphicon glyphicon-triangle-right');
+        var fixedLeftColumn = $('.fixed-left-column');
+        fixedLeftColumn.find('tr.active').not(rows).removeClass('active');
+        fixedLeftColumn.find('.fixed .glyphicon').not(focusIndicator).removeClass('glyphicon glyphicon-triangle-right');
     };
 
-    $(document).on('focus', ':input', function (e) {
+    $(document).on('focus', '.form-elem', function (e) {
         toggleActiveRow($(e.target));
     });
 
@@ -106,19 +105,16 @@
     };
 
     $.getOpenedModal = function () {
-        return $('.modal:visible:first');
+        return $('.modal.in').first();
     };
 
     $(document).on('shown.bs.modal', function (e) {
         if (e.namespace === 'bs.modal') {
             $(e.target)
                 .data('focus-element-id', $(':focus').attr('id'))
-                .find(':input:enabled:visible:first')
-                .focus();
+                .find('input').filter(':enabled:visible').first().focus();
         }
-    });
-
-    $(document).on('hidden.bs.modal', function (e) {
+    }).on('hidden.bs.modal', function (e) {
         if (e.namespace === 'bs.modal') {
             var focusElementId = $(e.target).data('focus-element-id');
             var element = $(document.getElementById(focusElementId));
@@ -127,30 +123,22 @@
             }
             element.focus();
         }
-    });
-
-    $(document).on('show.bs.popover', function (e) {
+    }).on('show.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
             var popoverBackdrop = $('body > .popover-backdrop.in');
             if (popoverBackdrop.length === 0) {
                 popoverBackdrop = $('<div class="popover-backdrop in"></div>')
-                    .hide()
+                    .hideNoEvent()
                     .appendTo($('body'));
             }
             popoverBackdrop.fadeIn();
         }
-    });
-
-    $(document).on('shown.bs.popover', function (e) {
+    }).on('shown.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
-            $('.popover:visible:first')
-                .trigger('show')
-                .find(':input:enabled:visible:first')
-                .focus();
+            $('.popover.in').first().trigger('show')
+                .find('input').filter(':enabled:visible').first().focus();
         }
-    });
-
-    $(document).on('hide.bs.popover', function (e) {
+    }).on('hide.bs.popover', function (e) {
         if (e.namespace === 'bs.popover') {
             $(this)
                 .find('.popover-backdrop.in')
@@ -179,13 +167,11 @@
     };
 
     $.fn.resetInvisibleFormElements = function () {
-        var notVisibleInputElements = this
-            .find('.form-elem:input')
+        this.find('.form-elem:input')
             .not(':visible')
             .not('[type=hidden]')
-            .not('.noResetOnHidden');
-        notVisibleInputElements.filter('.integer-field').val(0);
-        notVisibleInputElements.not('.integer-field').val('');
+            .not('.noResetOnHidden')
+            .valNoEvent('');
     };
 
     /* TODO: Prevent using timeout in bevolkingsregister in Chrome */
@@ -198,6 +184,16 @@
 
     $.useTimeout = function () {
         return useTimeout;
+    };
+
+    var shouldCheckByz = true;
+
+    $.dontCheckByz = function () {
+        shouldCheckByz = false;
+    };
+
+    $.checkByz = function () {
+        return shouldCheckByz;
     };
 
     /* With selector */
@@ -276,20 +272,28 @@
         // Determine if the elements are all already hidden
         var isHidden = true;
         var isTypeahead = false;
+        var isBackdrop = false;
         this.each(function () {
-            if ($(this).css('display') !== 'none')
-                isHidden = false;
-            if ($(this).hasClass('typeahead'))
+            var elem = $(this);
+            if (elem.css('display') === 'none')
+                isHidden = true;
+            if (elem.hasClass('typeahead'))
                 isTypeahead = true;
+            if (elem[0].className.indexOf('backdrop') >= 0)
+                isBackdrop = true;
         });
 
         var toReturn = onHide.apply(this, arguments);
 
-        // Only trigger the event if at least one element was not yet hidden and is not typeahead
-        if (!isHidden && !isTypeahead)
+        // Only trigger the event if at least one element was not yet hidden and is not typeahead or a backdrop
+        if (!isHidden && !isTypeahead && !isBackdrop)
             this.trigger('hide');
 
         return toReturn;
+    };
+
+    $.fn.hideNoEvent = function () {
+        return onHide.apply(this, arguments);
     };
 
     var onShow = $.fn.show;
@@ -297,20 +301,28 @@
         // Determine if the elements are all already shown
         var isHidden = false;
         var isTypeahead = false;
+        var isBackdrop = false;
         this.each(function () {
-            if ($(this).css('display') === 'none')
+            var elem = $(this);
+            if (elem.css('display') === 'none')
                 isHidden = true;
-            if ($(this).hasClass('typeahead'))
+            if (elem.hasClass('typeahead'))
                 isTypeahead = true;
+            if (elem[0].className.indexOf('backdrop') >= 0)
+                isBackdrop = true;
         });
 
         var toReturn = onShow.apply(this, arguments);
 
-        // Only trigger the event if at least one element was not yet shown and is not typeahead
-        if (isHidden && !isTypeahead)
+        // Only trigger the event if at least one element was not yet shown and is not typeahead or a backdrop
+        if (isHidden && !isTypeahead && !isBackdrop)
             this.trigger('show');
 
         return toReturn;
+    };
+
+    $.fn.showNoEvent = function () {
+        return onShow.apply(this, arguments);
     };
 
     /* Overwrite 'val' jQuery function to send 'change' event */
@@ -326,5 +338,9 @@
             if (valueBefore !== valueAfter) this.change();
         }
         return result;
+    };
+
+    $.fn.valNoEvent = function () {
+        return onVal.apply(this, arguments);
     };
 })(jQuery);

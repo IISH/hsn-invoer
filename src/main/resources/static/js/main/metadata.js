@@ -3,7 +3,7 @@
 
     var checkLength = function (elem) {
         elem.hasErrorWhen(elem.val().length !== 3);
-        $(document).trigger('changeOfState');
+        $.triggerChangeOfState();
     };
 
     $(document).ready(function () {
@@ -12,5 +12,9 @@
         }).each(function () {
             checkLength($(this));
         });
+
+        if (window.location.search === '?exit=true') {
+            $('.btn-logout').addClass('focusOnReady');
+        }
     });
 })(jQuery);

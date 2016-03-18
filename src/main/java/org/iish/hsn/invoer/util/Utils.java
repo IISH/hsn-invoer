@@ -3,6 +3,7 @@ package org.iish.hsn.invoer.util;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -54,6 +55,23 @@ public class Utils {
             voornamen += " " + firstName3.trim();
         }
         return voornamen;
+    }
+
+    /**
+     * Divides the first names up into three parts.
+     *
+     * @param firstName First name.
+     * @return First names seperated in three parts.
+     */
+    public static String[] getFirstNames(String firstName) {
+        String[] firstNames = firstName.split("\\s", 3);
+        firstNames = Arrays.copyOf(firstNames, 3);
+        for (int i = 0; i < 3; i++) {
+            if (firstNames[i] == null) {
+                firstNames[i] = "";
+            }
+        }
+        return firstNames;
     }
 
     /**

@@ -6,6 +6,7 @@ import org.iish.hsn.invoer.domain.invoer.ovl.Ovlbyz;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlech;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlknd;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.AkteException;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.flow.state.*;
@@ -15,6 +16,7 @@ import org.iish.hsn.invoer.repository.invoer.ovl.OvlechRepository;
 import org.iish.hsn.invoer.repository.invoer.ovl.OvlkndRepository;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,35 +72,41 @@ public class OverlijdensAkteService extends AkteService {
 
             // If the OP has a birth certificate, (not stillborn) then take over data from the birth certificate.
             if (!overlijdensAkteFlow.isLevnloos()) {
-                Ref_GBH refGbh = lookupService.getRefGbh(ovlknd.getIdnr(), true);
+                Ref_RP refRp = lookupService.getRefRp(ovlknd.getIdnr(), true);
 
                 // Save data obtained from the reference table.
-                ovlknd.setGbpovl(refGbh.getNumberMunicipality());
-                ovlknd.setOvlsex(refGbh.getSex());
+                ovlknd.setGbpovl(refRp.getNumberMunicipality());
+                ovlknd.setOvlsex(refRp.getSex());
                 ovlknd.setExtract("n");
                 if ((ovlknd.getGgmovl() == null) || ovlknd.getGgmovl().trim().isEmpty()) {
-                    ovlknd.setGgmovl(refGbh.getNameMunicipality());
+                    ovlknd.setGgmovl(refRp.getNameMunicipality());
                 }
 
-                ovlknd.setAnmovl(refGbh.getLastName());
-                ovlknd.setTusovl(refGbh.getPrefixName());
-                ovlknd.setVrn1ovl(refGbh.getFirstName1());
-                ovlknd.setVrn2ovl(refGbh.getFirstName2());
-                ovlknd.setVrn3ovl(refGbh.getFirstName3());
+                ovlknd.setAnmovl(refRp.getLastName());
+                ovlknd.setTusovl(refRp.getPrefixName());
 
-                ovlknd.setAnmvovl(refGbh.getLastNameFather());
-                ovlknd.setTusvovl(refGbh.getPrefixFather());
-                ovlknd.setVrn1vovl(refGbh.getFirstName1Father());
-                ovlknd.setVrn2vovl(refGbh.getFirstName2Father());
-                ovlknd.setVrn3vovl(refGbh.getFirstName3Father());
+                String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
+                ovlknd.setVrn1ovl(firstNames[0]);
+                ovlknd.setVrn2ovl(firstNames[1]);
+                ovlknd.setVrn3ovl(firstNames[2]);
 
-                ovlknd.setAnmmovl(refGbh.getLastNameMother());
-                ovlknd.setTusmovl(refGbh.getPrefixMother());
-                ovlknd.setVrn1movl(refGbh.getFirstName1Mother());
-                ovlknd.setVrn2movl(refGbh.getFirstName2Mother());
-                ovlknd.setVrn3movl(refGbh.getFirstName3Mother());
+                ovlknd.setAnmvovl(refRp.getLastNameFather());
+                ovlknd.setTusvovl(refRp.getPrefixFather());
 
-                overlijdensAkteFlow.setRefGbh(refGbh);
+                String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
+                ovlknd.setVrn1vovl(firstNamesFather[0]);
+                ovlknd.setVrn2vovl(firstNamesFather[1]);
+                ovlknd.setVrn3vovl(firstNamesFather[2]);
+
+                ovlknd.setAnmmovl(refRp.getLastNameMother());
+                ovlknd.setTusmovl(refRp.getPrefixMother());
+
+                String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
+                ovlknd.setVrn1movl(firstNamesMother[0]);
+                ovlknd.setVrn2movl(firstNamesMother[1]);
+                ovlknd.setVrn3movl(firstNamesMother[2]);
+
+                overlijdensAkteFlow.setRefRp(refRp);
             }
             else {
                 ovlknd.setLevvovl("j");
@@ -121,11 +129,11 @@ public class OverlijdensAkteService extends AkteService {
             Ovlknd ovlknd = overlijdensAkteFlow.getOvlknd();
             int idnr = ovlknd.getIdnr();
 
-            Ref_GBH refGbh = lookupService.getRefGbh(idnr, false);
-            overlijdensAkteFlow.setRefGbh(refGbh);
+            Ref_RP refRp = lookupService.getRefRp(idnr, false);
+            overlijdensAkteFlow.setRefRp(refRp);
 
             // TODO: If we edit an OP of which we cannot find a birth certificate, we assume it is a stillborn
-            if (refGbh == null) {
+            if (refRp == null) {
                 overlijdensAkteFlow.setLevnloos(true);
             }
 

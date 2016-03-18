@@ -10,12 +10,12 @@ public class Beroep {
     @Embedded private WorkOrder workOrder;
 
     @Column(name = "BERPNAAM", nullable = false, length = 50) private String berpnaam = "";
-    @Column(name = "NWINLST", nullable = false, length = 1) private   String nwinlst = "";
+    @Column(name = "NWINLST", nullable = false, length = 1) private   String nwinlst  = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RecordID")
-    private Integer recordID;
+    @Column(name = "ID")
+    private Integer id;
 
     public WorkOrder getWorkOrder() {
         return workOrder;
@@ -41,11 +41,11 @@ public class Beroep {
         this.nwinlst = nwinlst;
     }
 
-    public Integer getRecordID() {
-        return recordID;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRecordID(Integer recordID) {
-        this.recordID = recordID;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -4,6 +4,7 @@ import org.iish.hsn.invoer.domain.invoer.Byz;
 import org.iish.hsn.invoer.domain.invoer.WorkOrder;
 import org.iish.hsn.invoer.domain.invoer.huw.*;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.AkteException;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.flow.state.AkteFlowState;
@@ -13,6 +14,7 @@ import org.iish.hsn.invoer.flow.state.ViewStateHistory;
 import org.iish.hsn.invoer.repository.invoer.huw.*;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,13 +70,13 @@ public class HuwelijksAkteService extends AkteService {
             Huwttl huwttl = huwelijksAkteFlow.getHuwttl();
             Huwknd huwknd = huwelijksAkteFlow.getHuwknd();
 
-            Ref_GBH refGbh = lookupService.getRefGbh(huwttl.getIdnr(), true);
+            Ref_RP refRp = lookupService.getRefRp(huwttl.getIdnr(), true);
 
             Huw huw = huwttl.getHuw();
 
-            int gebdag = refGbh.getDayOfBirth();
-            int gebmnd = refGbh.getMonthOfBirth();
-            int gebjr = refGbh.getYearOfBirth();
+            int gebdag = refRp.getDayOfBirth();
+            int gebmnd = refRp.getMonthOfBirth();
+            int gebjr = refRp.getYearOfBirth();
 
             double dayOfBirth = (gebjr * 365.25) + ((gebmnd - 1) * 30.5) + gebdag;
             double dayOfMarriage = (huw.getHjaar() * 365.25) + ((huw.getHmaand() - 1) * 30.5) + huw.getHdag();
@@ -86,53 +88,65 @@ public class HuwelijksAkteService extends AkteService {
             huwknd.setIdnr(huwttl.getIdnr());
             huwknd.setHuur(huwttl.getHuur());
 
-            huwknd.setGebsex(refGbh.getSex());
-            if (refGbh.getSex().equals("m")) {
-                huwknd.setAnmhm(refGbh.getLastName());
-                huwknd.setTushm(refGbh.getPrefixName());
-                huwknd.setVrn1hm(refGbh.getFirstName1());
-                huwknd.setVrn2hm(refGbh.getFirstName2());
-                huwknd.setVrn3hm(refGbh.getFirstName3());
+            huwknd.setGebsex(refRp.getSex());
+            if (refRp.getSex().equals("m")) {
+                huwknd.setAnmhm(refRp.getLastName());
+                huwknd.setTushm(refRp.getPrefixName());
 
-                huwknd.setGebplnhm(refGbh.getNumberMunicipality());
-                huwknd.setGebplhm(refGbh.getNameMunicipality());
+                String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
+                huwknd.setVrn1hm(firstNames[0]);
+                huwknd.setVrn2hm(firstNames[1]);
+                huwknd.setVrn3hm(firstNames[2]);
 
-                huwknd.setAnmvrhm(refGbh.getLastNameFather());
-                huwknd.setTusvrhm(refGbh.getPrefixFather());
-                huwknd.setVrn1vrhm(refGbh.getFirstName1Father());
-                huwknd.setVrn2vrhm(refGbh.getFirstName2Father());
-                huwknd.setVrn3vrhm(refGbh.getFirstName3Father());
+                huwknd.setGebplnhm(refRp.getNumberMunicipality());
+                huwknd.setGebplhm(refRp.getNameMunicipality());
 
-                huwknd.setAnmmrhm(refGbh.getLastNameMother());
-                huwknd.setTusmrhm(refGbh.getPrefixMother());
-                huwknd.setVrn1mrhm(refGbh.getFirstName1Mother());
-                huwknd.setVrn2mrhm(refGbh.getFirstName2Mother());
-                huwknd.setVrn3mrhm(refGbh.getFirstName3Mother());
+                huwknd.setAnmvrhm(refRp.getLastNameFather());
+                huwknd.setTusvrhm(refRp.getPrefixFather());
+
+                String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
+                huwknd.setVrn1vrhm(firstNamesFather[0]);
+                huwknd.setVrn2vrhm(firstNamesFather[1]);
+                huwknd.setVrn3vrhm(firstNamesFather[2]);
+
+                huwknd.setAnmmrhm(refRp.getLastNameMother());
+                huwknd.setTusmrhm(refRp.getPrefixMother());
+
+                String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
+                huwknd.setVrn1mrhm(firstNamesMother[0]);
+                huwknd.setVrn2mrhm(firstNamesMother[1]);
+                huwknd.setVrn3mrhm(firstNamesMother[2]);
 
                 huwknd.setLftjhm(years);
             }
 
-            if (refGbh.getSex().equals("v")) {
-                huwknd.setAnmhv(refGbh.getLastName());
-                huwknd.setTushv(refGbh.getPrefixName());
-                huwknd.setVrn1hv(refGbh.getFirstName1());
-                huwknd.setVrn2hv(refGbh.getFirstName2());
-                huwknd.setVrn3hv(refGbh.getFirstName3());
+            if (refRp.getSex().equals("v")) {
+                huwknd.setAnmhv(refRp.getLastName());
+                huwknd.setTushv(refRp.getPrefixName());
 
-                huwknd.setGebplnhv(refGbh.getNumberMunicipality());
-                huwknd.setGebplhv(refGbh.getNameMunicipality());
+                String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
+                huwknd.setVrn1hv(firstNames[0]);
+                huwknd.setVrn2hv(firstNames[1]);
+                huwknd.setVrn3hv(firstNames[2]);
 
-                huwknd.setAnmvrhv(refGbh.getLastNameFather());
-                huwknd.setTusvrhv(refGbh.getPrefixFather());
-                huwknd.setVrn1vrhv(refGbh.getFirstName1Father());
-                huwknd.setVrn2vrhv(refGbh.getFirstName2Father());
-                huwknd.setVrn3vrhv(refGbh.getFirstName3Father());
+                huwknd.setGebplnhv(refRp.getNumberMunicipality());
+                huwknd.setGebplhv(refRp.getNameMunicipality());
 
-                huwknd.setAnmmrhv(refGbh.getLastNameMother());
-                huwknd.setTusmrhv(refGbh.getPrefixMother());
-                huwknd.setVrn1mrhv(refGbh.getFirstName1Mother());
-                huwknd.setVrn2mrhv(refGbh.getFirstName2Mother());
-                huwknd.setVrn3mrhv(refGbh.getFirstName3Mother());
+                huwknd.setAnmvrhv(refRp.getLastNameFather());
+                huwknd.setTusvrhv(refRp.getPrefixFather());
+
+                String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
+                huwknd.setVrn1vrhv(firstNamesFather[0]);
+                huwknd.setVrn2vrhv(firstNamesFather[1]);
+                huwknd.setVrn3vrhv(firstNamesFather[2]);
+
+                huwknd.setAnmmrhv(refRp.getLastNameMother());
+                huwknd.setTusmrhv(refRp.getPrefixMother());
+
+                String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
+                huwknd.setVrn1mrhv(firstNamesMother[0]);
+                huwknd.setVrn2mrhv(firstNamesMother[1]);
+                huwknd.setVrn3mrhv(firstNamesMother[2]);
 
                 huwknd.setLftjhv(years);
             }
@@ -147,7 +161,7 @@ public class HuwelijksAkteService extends AkteService {
                 huwelijksAkteFlow.setCurHuwgtgIndex(0);
             }
 
-            huwelijksAkteFlow.setRefGbh(refGbh);
+            huwelijksAkteFlow.setRefRp(refRp);
         }
         catch (NotFoundException nfe) {
             throw new AkteException(nfe);
@@ -167,7 +181,7 @@ public class HuwelijksAkteService extends AkteService {
             Huw huw = huwttl.getHuw();
             WorkOrder workOrder = inputMetadata.getWorkOrder();
 
-            huwelijksAkteFlow.setRefGbh(lookupService.getRefGbh(idnr, true));
+            huwelijksAkteFlow.setRefRp(lookupService.getRefRp(idnr, true));
             huwelijksAkteFlow.setHuwttl(lookupService.getHuwttl(idnr, huw, true));
 
             huwelijksAkteFlow.setHuwknd(huwkndRepository.findByIdnrAndHuwAndWorkOrder(idnr, huw, workOrder));
@@ -247,7 +261,7 @@ public class HuwelijksAkteService extends AkteService {
      * @param viewStateId       The view state id calling this method.
      */
     public void registerBruidBruidegomAndParents(HuwelijksAkteFlowState huwelijksAkteFlow, String viewStateId) {
-        Ref_GBH refGbh = huwelijksAkteFlow.getRefGbh();
+        Ref_RP refRp = huwelijksAkteFlow.getRefRp();
         Huwknd huwknd = huwelijksAkteFlow.getHuwknd();
 
         // Update the address of the mother with the address filled in for the father
@@ -261,24 +275,27 @@ public class HuwelijksAkteService extends AkteService {
         // Compare entered names with those from the birth certificate
         if (viewStateId.equals("HS2Vm")) {
             if (huwknd.getGebsex().equals("m")) {
-                if (!huwknd.getAnmhm().equals(refGbh.getLastName()) ||
-                    !huwknd.getVrn1hm().equals(refGbh.getFirstName1())) {
+                String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
+                if (!huwknd.getAnmhm().equals(refRp.getLastName()) ||
+                    !huwknd.getVrn1hm().equals(firstNames[0])) {
                     huwknd.setGeghuw("n");
                 }
                 else {
                     huwknd.setGeghuw("j");
                 }
 
-                if (!huwknd.getAnmvrhm().equals(refGbh.getLastNameFather()) ||
-                    !huwknd.getVrn1vrhm().equals(refGbh.getFirstName1Father())) {
+                String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
+                if (!huwknd.getAnmvrhm().equals(refRp.getLastNameFather()) ||
+                    !huwknd.getVrn1vrhm().equals(firstNamesFather[0])) {
                     huwknd.setGegvr("n");
                 }
                 else {
                     huwknd.setGegvr("j");
                 }
 
-                if (!huwknd.getAnmmrhm().equals(refGbh.getLastNameMother()) ||
-                    !huwknd.getVrn1mrhm().equals(refGbh.getFirstName1Mother())) {
+                String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
+                if (!huwknd.getAnmmrhm().equals(refRp.getLastNameMother()) ||
+                    !huwknd.getVrn1mrhm().equals(firstNamesMother[0])) {
                     huwknd.setGegmr("n");
                 }
                 else {
@@ -286,24 +303,27 @@ public class HuwelijksAkteService extends AkteService {
                 }
             }
             else if (huwknd.getGebsex().equals("v")) {
-                if (!huwknd.getAnmhv().equals(refGbh.getLastName()) ||
-                    !huwknd.getVrn1hv().equals(refGbh.getFirstName1())) {
+                String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
+                if (!huwknd.getAnmhv().equals(refRp.getLastName()) ||
+                    !huwknd.getVrn1hv().equals(firstNames[0])) {
                     huwknd.setGeghuw("n");
                 }
                 else {
                     huwknd.setGeghuw("j");
                 }
 
-                if (!huwknd.getAnmvrhv().equals(refGbh.getLastNameFather()) ||
-                    !huwknd.getVrn1vrhv().equals(refGbh.getFirstName1Father())) {
+                String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
+                if (!huwknd.getAnmvrhv().equals(refRp.getLastNameFather()) ||
+                    !huwknd.getVrn1vrhv().equals(firstNamesFather[0])) {
                     huwknd.setGegvr("n");
                 }
                 else {
                     huwknd.setGegvr("j");
                 }
 
-                if (!huwknd.getAnmmrhv().equals(refGbh.getLastNameMother()) ||
-                    !huwknd.getVrn1mrhv().equals(refGbh.getFirstName1Mother())) {
+                String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
+                if (!huwknd.getAnmmrhv().equals(refRp.getLastNameMother()) ||
+                    !huwknd.getVrn1mrhv().equals(firstNamesMother[0])) {
                     huwknd.setGegmr("n");
                 }
                 else {

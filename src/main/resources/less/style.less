@@ -170,7 +170,7 @@ form {
   padding: @padding-small-vertical @padding-small-horizontal;
   font-size: @font-size-base;
   line-height: @line-height-small;
-  min-height: (@line-height-computed + @font-size-base);
+  min-height: @input-height-small;
 }
 
 .form-group {
@@ -224,11 +224,11 @@ textarea.form-control {
   background-color: lighten(@state-info-bg, 2%);
 }
 
-.navigational-form {
-  margin-left: 80px;
+p.scherm {
+  margin-right: 80px;
 }
 
-p.scherm {
+p.scherm, p.navigational {
   margin: 7px 0;
 }
 
@@ -350,4 +350,8 @@ p.scherm {
   width: 60%;
   bottom: 20px;
   left: 20%;
+}
+
+.status {
+  font-style: italic;
 }

@@ -19,7 +19,6 @@ public class InputMetadata implements Serializable {
 
     private String ondrzk;
     private String opdrnr;
-    //private String arch; // TODO: Required?
     private String init;
 
     @Value("${application.version}") private String version;
@@ -40,14 +39,6 @@ public class InputMetadata implements Serializable {
         this.opdrnr = opdrnr;
     }
 
-    /*public String getArch() {
-        return arch;
-    }
-
-    public void setArch(String arch) {
-        this.arch = arch;
-    }*/
-
     public String getInit() {
         return init;
     }
@@ -63,7 +54,6 @@ public class InputMetadata implements Serializable {
     public boolean isValid() {
         return ((ondrzk != null) && (ondrzk.length() == 3) &&
                 (opdrnr != null) && (opdrnr.length() == 3) &&
-               /* (arch != null) && (arch.length() == 1) &&*/
                 (init != null) && (init.length() == 3));
     }
 
@@ -73,7 +63,6 @@ public class InputMetadata implements Serializable {
 
     public void saveToEntity(Invoer invoer) {
         invoer.setOpdrnr(opdrnr);
-        //invoer.setArch(arch);
         invoer.setInit(init);
         invoer.setVersie(version);
         invoer.setDatum(DATE_TIME_FORMAT.format(new Date()));
@@ -82,7 +71,6 @@ public class InputMetadata implements Serializable {
         if ((invoer.getOpdrnro() == null) || invoer.getOpdrnro().trim().isEmpty()) {
             invoer.setWorkOrder(getWorkOrder());
             invoer.setOpdrnro(opdrnr);
-            //invoer.setArcho(arch);
             invoer.setInito(init);
             invoer.setVersieo(version);
             invoer.setDatumo(DATE_TIME_FORMAT.format(new Date()));

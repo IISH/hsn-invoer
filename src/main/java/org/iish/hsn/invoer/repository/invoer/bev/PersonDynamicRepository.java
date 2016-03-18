@@ -25,6 +25,8 @@ public interface PersonDynamicRepository extends Repository<PersonDynamic, Integ
 
     List<PersonDynamic> save(Iterable<PersonDynamic> entities);
 
+    void delete(PersonDynamic entity);
+
     void delete(Iterable<? extends PersonDynamic> entities);
 
     @Modifying

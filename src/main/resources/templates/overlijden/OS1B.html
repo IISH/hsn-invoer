@@ -14,31 +14,31 @@
       <div class="col-xs-12">
         <div class="col-xs-2">
           <label class="control-label">Dag:</label>
-          <input type="text" class="form-control day" data-replace=":0" maxlength="2"
+          <input type="text" class="form-control day dateInput" data-replace=":0" maxlength="2"
                  th:field="*{ovlknd.oaktedag}" hsn:field="ovlknd.oaktedag"/>
         </div>
 
         <div class="col-xs-2">
           <label class="control-label">Maand:</label>
-          <input type="text" class="form-control month" data-replace=":0" maxlength="2"
+          <input type="text" class="form-control month dateInput" data-replace=":0" maxlength="2"
                  th:field="*{ovlknd.oaktemnd}" hsn:field="ovlknd.oaktemnd"/>
         </div>
 
         <div class="col-xs-2">
           <label class="control-label">Jaar:</label>
-          <input type="text" class="form-control year" data-replace=":0" maxlength="4"
+          <input type="text" class="form-control year dateInput" data-replace=":0" maxlength="4"
                  th:field="*{ovlknd.oaktejr}" hsn:field="ovlknd.oaktejr"/>
         </div>
 
         <div class="col-xs-2 col-xs-offset-1">
           <label class="control-label">Uur:</label>
-          <input type="text" class="form-control hour" data-replace=":0" maxlength="2"
+          <input type="text" class="form-control hour dateInput" data-replace=":0" maxlength="2"
                  th:field="*{ovlknd.oakteuur}" hsn:field="ovlknd.oakteuur"/>
         </div>
 
         <div class="col-xs-2">
           <label class="control-label">Min:</label>
-          <input type="text" class="form-control minute" data-replace=":0" maxlength="2"
+          <input type="text" class="form-control minute dateInput" data-replace=":0" maxlength="2"
                  th:field="*{ovlknd.oaktemin}" hsn:field="ovlknd.oaktemin"/>
         </div>
       </div>
@@ -64,7 +64,7 @@
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/overlijden/OS1B.js" th:src="@{/js/overlijden/OS1B.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+  <script src="../../static/js/overlijden/OS1B.js" hsn:src="@{/js/overlijden/OS1B.js}"></script>
 </th:block>
 </body>
 </html>

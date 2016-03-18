@@ -49,14 +49,14 @@
                     e.preventDefault();
                     break;
                 case 114: // F3
-                    if (!modal.is(':visible')) {
+                    if (!modal.hasClass('in')) {
                         openModal(modal, $(':focus').closest('tr'));
                         e.preventDefault();
                     }
                     break;
             }
         }
-        else if ((e.which == 27) && modal.is(':visible')) { // Esc
+        else if ((e.which == 27) && modal.hasClass('in')) { // Esc
             closeModal(modal);
             e.preventDefault();
         }

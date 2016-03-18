@@ -70,9 +70,7 @@
     <label class="col-xs-2 text-control-label">Voornamen:</label>
 
     <div class="col-xs-2">
-      <span class="data-firstName1"></span>
-      <span class="data-firstName2"></span>
-      <span class="data-firstName3"></span>
+      <span class="data-firstName"></span>
     </div>
 
     <div class="sub-row">
@@ -114,7 +112,7 @@
   </div>
 
   <div class="col-xs-7">
-    <p class="fail text-danger op" style="display: none;"></p>
+    <p class="form-control-static fail text-danger op" style="display: none;"></p>
   </div>
 </div>
 
@@ -127,7 +125,7 @@
   </div>
 
   <div class="col-xs-7">
-    <p class="fail text-danger bron" style="display: none;"></p>
+    <p class="form-control-static fail text-danger bron" style="display: none;"></p>
   </div>
 </div>
 
@@ -138,7 +136,7 @@
       th:replace="fragments/fields :: datum-sm ('b4.registrationId.dayEntryHead', 'b4.registrationId.monthEntryHead', 'b4.registrationId.yearEntryHead')"></div>
 
   <div class="col-xs-6">
-    <p class="fail text-danger registration" style="display: none;"></p>
+    <p class="form-control-static fail text-danger registration" style="display: none;"></p>
   </div>
 </div>
 
@@ -149,16 +147,20 @@
     <div th:replace="fragments/fields :: datum-sm ('b4.dayEntryRP', 'b4.monthEntryRP', 'b4.yearEntryRP')"></div>
 
     <div class="col-xs-6">
-      <p class="fail text-danger op-registration" style="display: none;"></p>
+      <p class="form-control-static fail text-danger op-registration" style="display: none;"></p>
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-xs-3 control-label">Volgnummer OP:</label>
 
-    <div class="col-xs-4">
+    <div class="col-xs-1">
       <input type="text" class="form-control form-control-digit required"
              maxlength="2" data-min-value="0" name="volgnrOP" id="volgnrOP"/>
+    </div>
+
+    <div class="col-xs-8">
+      <p class="form-control-static fail text-danger volgnr-op" style="display: none;"></p>
     </div>
   </div>
 
@@ -220,16 +222,20 @@
              name="vorige-inschrijving" id="vorige-inschrijving"/>
 
     <span data-show-when="#vorige-inschrijving" data-has-values-in="j">
+      <label class="control-label spacing">Bronnr.</label>
+
       <input type="text" class="form-control form-control-small spacing"
              th:field="*{prevRegistration.keyToSourceRegister}" hsn:field="prevRegistration.keyToSourceRegister"/>
 
-      <input type="text" class="form-control form-control-digit spacing day" maxlength="2"
+      <label class="control-label spacing">Hoofddatum</label>
+
+      <input type="text" class="form-control form-control-digit spacing day dateInput" maxlength="2"
              th:field="*{prevRegistration.dayEntryHead}" hsn:field="prevRegistration.dayEntryHead"/>
       /
-      <input type="text" class="form-control form-control-digit month" maxlength="2"
+      <input type="text" class="form-control form-control-digit month dateInput" maxlength="2"
              th:field="*{prevRegistration.monthEntryHead}" hsn:field="prevRegistration.monthEntryHead"/>
       /
-      <input type="text" class="form-control form-control-small year" maxlength="4"
+      <input type="text" class="form-control form-control-small year dateInput" maxlength="4"
              th:field="*{prevRegistration.yearEntryHead}" hsn:field="prevRegistration.yearEntryHead"/>
     </span>
     </div>
@@ -276,8 +282,8 @@
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
-          th:src="@{/js/bevolkingsregister/bevolkingsregister.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
-  <script src="../../static/js/bevolkingsregister/BS0IC.js" th:src="@{/js/bevolkingsregister/BS0IC.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+          hsn:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
+  <script src="../../static/js/bevolkingsregister/BS0IC.js" hsn:src="@{/js/bevolkingsregister/BS0IC.js}"></script>
 </th:block>
 </body>
 </html>

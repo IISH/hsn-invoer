@@ -4,6 +4,7 @@ import org.iish.hsn.invoer.domain.invoer.WorkOrder;
 import org.iish.hsn.invoer.domain.invoer.bev.*;
 import org.iish.hsn.invoer.domain.reference.Ref_AINB;
 import org.iish.hsn.invoer.domain.reference.Ref_GBH;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.AkteException;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.flow.helper.BevolkingsregisterHelper;
@@ -85,8 +86,8 @@ public class BevolkingsregisterService {
         try {
             Registration b4 = bevolkingsregisterFlow.getB4();
 
-            Ref_GBH refGbh = lookupService.getRefGbh(b4.getRegistrationId().getKeyToRP(), true);
-            bevolkingsregisterFlow.setRefGbh(refGbh);
+            Ref_RP refRp = lookupService.getRefRp(b4.getRegistrationId().getKeyToRP(), true);
+            bevolkingsregisterFlow.setRefRp(refRp);
 
             Ref_AINB refAinb = lookupService.getRefAinb(b4.getRegistrationId().getKeyToSourceRegister(), true);
             bevolkingsregisterFlow.setRefAinb(refAinb);
@@ -96,7 +97,8 @@ public class BevolkingsregisterService {
             if (prevRegistration.getKeyToSourceRegister() > 0 && prevRegistration.getDayEntryHead() > 0 &&
                     prevRegistration.getMonthEntryHead() > 0 && prevRegistration.getYearEntryHead() > 0) {
                 setUpWithPrevRegistration(bevolkingsregisterFlow);
-            } else {
+            }
+            else {
                 // Already set up all persons if the user will enter all persons at once
                 if (!bevolkingsregisterFlow.isOneLineEach()) {
                     for (int i = 0; i < bevolkingsregisterFlow.getNoRegels(); i++) {
@@ -107,7 +109,8 @@ public class BevolkingsregisterService {
 
             // Now make sure we reset the person pointer
             bevolkingsregisterFlow.setCurB2Index(-1);
-        } catch (NotFoundException nfe) {
+        }
+        catch (NotFoundException nfe) {
             throw new AkteException(nfe);
         }
     }
@@ -122,7 +125,7 @@ public class BevolkingsregisterService {
         try {
             RegistrationId registrationId = bevolkingsregisterFlow.getB4().getRegistrationId();
 
-            bevolkingsregisterFlow.setRefGbh(lookupService.getRefGbh(registrationId.getKeyToRP(), true));
+            bevolkingsregisterFlow.setRefRp(lookupService.getRefRp(registrationId.getKeyToRP(), true));
             bevolkingsregisterFlow.setRefAinb(lookupService.getRefAinb(registrationId.getKeyToSourceRegister(), true));
 
             bevolkingsregisterFlow.setB4(
@@ -184,7 +187,7 @@ public class BevolkingsregisterService {
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
     public void setUpPerson(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        Ref_GBH refGbh = bevolkingsregisterFlow.getRefGbh();
+        Ref_RP refRp = bevolkingsregisterFlow.getRefRp();
         List<Person> b2 = bevolkingsregisterFlow.getB2();
         List<Integer> correctionPersons = bevolkingsregisterFlow.getCorrectionPersons();
 
@@ -227,17 +230,13 @@ public class BevolkingsregisterService {
                 // If this person is the OP, take over information from the birth certificate
                 if (person.getKeyToRegistrationPersons() == bevolkingsregisterFlow.getVolgnrOP()) {
                     person.setNatureOfPerson(Person.NatureOfPerson.FIRST_RP.getNatureOfPerson());
-
-                    String firstName =
-                            Utils.getFirstNames(refGbh.getFirstName1(), refGbh.getFirstName2(), refGbh.getFirstName3());
-
-                    person.setFamilyName(refGbh.getLastName());
-                    person.setFirstName(firstName);
-                    person.setSex(refGbh.getSex());
-                    person.setPlaceOfBirth(refGbh.getNameMunicipality());
-                    person.setDayOfBirth(refGbh.getDayOfBirth());
-                    person.setMonthOfBirth(refGbh.getMonthOfBirth());
-                    person.setYearOfBirth(refGbh.getYearOfBirth());
+                    person.setFamilyName(refRp.getLastName());
+                    person.setFirstName(refRp.getFirstName());
+                    person.setSex(refRp.getSex());
+                    person.setPlaceOfBirth(refRp.getNameMunicipality());
+                    person.setDayOfBirth(refRp.getDayOfBirth());
+                    person.setMonthOfBirth(refRp.getMonthOfBirth());
+                    person.setYearOfBirth(refRp.getYearOfBirth());
                 }
                 else {
                     person.setNatureOfPerson(Person.NatureOfPerson.NO_RP.getNatureOfPerson());
@@ -247,23 +246,15 @@ public class BevolkingsregisterService {
                 if (bevolkingsregisterFlow.getVolgnrOP() >= 3) {
                     // First one is the father
                     if (person.getKeyToRegistrationPersons() == 1) {
-                        String firstName =
-                                Utils.getFirstNames(refGbh.getFirstName1Father(), refGbh.getFirstName2Father(),
-                                                    refGbh.getFirstName3Father());
-
-                        person.setFamilyName(refGbh.getLastNameFather());
-                        person.setFirstName(firstName);
+                        person.setFamilyName(refRp.getLastNameFather());
+                        person.setFirstName(refRp.getFirstNameFather());
                         person.setSex("m");
                     }
 
                     // Second one is the mother
                     if (person.getKeyToRegistrationPersons() == 2) {
-                        String firstName =
-                                Utils.getFirstNames(refGbh.getFirstName1Mother(), refGbh.getFirstName2Mother(),
-                                                    refGbh.getFirstName3Mother());
-
-                        person.setFamilyName(refGbh.getLastNameMother());
-                        person.setFirstName(firstName);
+                        person.setFamilyName(refRp.getLastNameMother());
+                        person.setFirstName(refRp.getFirstNameMother());
                         person.setSex("v");
                     }
                 }
@@ -415,7 +406,7 @@ public class BevolkingsregisterService {
     public void renumberRegistrationPersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         BevolkingsregisterFlowState renumbered = createNewAkte();
         renumbered.setB4(bevolkingsregisterFlow.getB4());
-        renumbered.setRefGbh(bevolkingsregisterFlow.getRefGbh());
+        renumbered.setRefRp(bevolkingsregisterFlow.getRefRp());
         renumbered.setRefAinb(bevolkingsregisterFlow.getRefAinb());
 
         // First figure out how many lines we need at a minimum at this moment
@@ -467,7 +458,7 @@ public class BevolkingsregisterService {
         personDynamicRepository.delete(bevolkingsregisterRenumbering.getDeletedB3());
         registrationAddressRepository.delete(bevolkingsregisterRenumbering.getDeletedB6());
 
-        // Also loop over the persons to make sure the intial dynamic properties records are created
+        // Also loop over the persons to make sure the initial dynamic properties records are created
         // Also make sure the nature of the person is still correct
         for (Person person : bevolkingsregisterFlow.getB2()) {
             if (bevolkingsregisterFlow.isCorrection()) {
@@ -559,15 +550,6 @@ public class BevolkingsregisterService {
         for (RegistrationAddress registrationAddress : bevolkingsregisterFlow.getB6()) {
             registrationAddress.setRegistrationId(registrationId);
         }
-    }
-
-    /**
-     * Register the current person from the registration.
-     *
-     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
-     */
-    public void registerPerson(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        registerPerson(bevolkingsregisterFlow, bevolkingsregisterFlow.getCurB2());
     }
 
     /**
@@ -754,7 +736,10 @@ public class BevolkingsregisterService {
 
         Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
         List<PersonDynamic> b3ForPerson = b3.get(person);
-        b3ForPerson.remove(sequenceNumber - 1);
+
+        PersonDynamic toRemove = b3ForPerson.get(sequenceNumber - 1);
+        b3ForPerson.remove(toRemove);
+        personDynamicRepository.delete(toRemove);
 
         // Renumber the sequence numbers
         int newSequenceNumber = 1;
@@ -843,9 +828,11 @@ public class BevolkingsregisterService {
                 newPersons.add(b2.get(i));
             }
             bevolkingsregisterFlow.setCurB2Index(-1);
-        } else if (totalNr < bevolkingsregisterFlow.getVolgnrOP()) {
+        }
+        else if (totalNr < bevolkingsregisterFlow.getVolgnrOP()) {
             throw new AkteException("The RP cannot be deleted.");
-        } else {
+        }
+        else {
             bevolkingsregisterFlow.setNoRegels(totalNr);
             for (int i = totalNr; i < orgSize; i++) {
                 b2.get(i).setKeyToRegistrationPersons(0);
@@ -927,34 +914,31 @@ public class BevolkingsregisterService {
     }
 
     /**
-     * Saves the complete registration.
-     *
-     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
-     */
-    public void saveRegistration(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        registerAndSaveRegistration(bevolkingsregisterFlow);
-        registerAndSaveRegistrationAddresses(bevolkingsregisterFlow);
-
-        // Persons and person dynamics are already saved before, so only save during correction
-        if (bevolkingsregisterFlow.isCorrection()) {
-            registerAndSavePersons(bevolkingsregisterFlow);
-        }
-    }
-
-    /**
      * Deletes the current bevolkingsregister registration.
      *
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
     public void deleteRegistration(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         Registration b4 = bevolkingsregisterFlow.getB4();
-        WorkOrder workOrder = b4.getWorkOrder();
+        WorkOrder workOrder = inputMetadata.getWorkOrder();
         RegistrationId registrationId = b4.getRegistrationId();
 
         registrationRepository.delete(b4);
         personRepository.delete(registrationId, workOrder);
         personDynamicRepository.delete(registrationId, workOrder);
         registrationAddressRepository.delete(registrationId, workOrder);
+    }
+
+    /**
+     * Register and save the registration.
+     *
+     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
+     */
+    public void registerAndSaveRegistration(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+        Registration b4 = bevolkingsregisterFlow.getB4();
+        inputMetadata.saveToEntity(b4);
+        b4 = registrationRepository.save(b4);
+        bevolkingsregisterFlow.setB4(b4);
     }
 
     /**
@@ -968,7 +952,7 @@ public class BevolkingsregisterService {
 
         inputMetadata.saveToEntity(person);
         person = personRepository.save(person);
-        bevolkingsregisterFlow.getB2().set(person.getRp() -1, person);
+        bevolkingsregisterFlow.getB2().set(person.getRp() - 1, person);
 
         // Next store input metadata and save all person dynamics (Register already happened when person was registered)
         for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
@@ -983,23 +967,11 @@ public class BevolkingsregisterService {
     }
 
     /**
-     * Register and save the registration.
-     *
-     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
-     */
-    private void registerAndSaveRegistration(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        Registration b4 = bevolkingsregisterFlow.getB4();
-        inputMetadata.saveToEntity(b4);
-        b4 = registrationRepository.save(b4);
-        bevolkingsregisterFlow.setB4(b4);
-    }
-
-    /**
      * Register and save all persons from the registration.
      *
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
-    private void registerAndSavePersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+    public void registerAndSavePersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         // First register, store input metadata and save all persons
         List<Person> persons = new ArrayList<>(bevolkingsregisterFlow.getB2());
         for (Person person : persons) {
@@ -1021,7 +993,7 @@ public class BevolkingsregisterService {
      *
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
-    private void registerAndSaveRegistrationAddresses(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+    public void registerAndSaveRegistrationAddresses(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         registerRegistrationAddresses(bevolkingsregisterFlow);
         List<RegistrationAddress> b6 = bevolkingsregisterFlow.getB6();
 
@@ -1058,7 +1030,7 @@ public class BevolkingsregisterService {
                                                 firstB3Ver);
 
         bevolkingsregisterFlowState.setRefAinb(new Ref_AINB());
-        bevolkingsregisterFlowState.setRefGbh(new Ref_GBH());
+        bevolkingsregisterFlowState.setRefRp(new Ref_RP());
 
         return bevolkingsregisterFlowState;
     }

@@ -24,8 +24,8 @@ public class Gebgtg extends Invoer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RecordID")
-    private Integer recordID;
+    @Column(name = "ID")
+    private Integer id;
 
     public Gebgtg() {
     }

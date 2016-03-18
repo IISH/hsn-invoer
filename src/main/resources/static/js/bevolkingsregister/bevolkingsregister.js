@@ -3,6 +3,7 @@
 
     // TODO: Prevent unwanted focus by disabling timeout in Chrome for bevolkingsregister
     $.noTimeoutWithNav();
+    $.dontCheckByz();
 
     /* Bevolkingsregister methods to be overloaded for specific cases */
 
@@ -134,7 +135,10 @@
 
     var onPersonByzClose = function (save) {
         var modal = $.getOpenedModal();
-        if (!save) {
+        if (save) {
+            modal.trigger('person-byz-save', [$.getCurPerson()]);
+        }
+        else {
             modal.find('textarea').val(modal.data('content'));
         }
         modal.modal('hide');
@@ -160,16 +164,6 @@
         if (!confirm('Wilt u deze inschrijving verwijderen?')) {
             e.preventDefault();
             e.stopImmediatePropagation();
-        }
-    }).on('focus', '.scrollable :input', function (e) {
-        var parent = $(e.target).getParentOfFormElement();
-        var scrollable = parent.closest('.scrollable');
-        if ((parent.length > 0) && (scrollable.length > 0)) {
-            var minLeft = parseInt(scrollable.width() / 2);
-            var position = parent.offset().left;
-            if (position > minLeft) {
-                scrollable.scrollLeft(scrollable.scrollLeft() + position - 50);
-            }
         }
     }).keydown(function (e) {
         var modal = $.getOpenedModal();

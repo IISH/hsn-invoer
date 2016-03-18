@@ -5,3 +5,5 @@ spring:
     show-sql: false # Debug already shows SQL, if debug = false, you might want to set this back to true
   thymeleaf:
     cache: false
+
+random-to-static-source: true

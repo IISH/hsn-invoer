@@ -2,7 +2,7 @@
     'use strict';
 
     var getVisibleCrudTableContainer = function () {
-        return $('.crud-table-container:visible:first');
+        return $('.crud-table-container').filter(':visible').first();
     };
 
     var getElems = function () {
@@ -78,7 +78,7 @@
 
         elems.parent.find('.btn-update, .btn-delete').attr('disabled', 'disabled');
         elems.onEdit.trigger('show');
-        elems.onEdit.find(':input:enabled:visible:first').change().focus();
+        elems.onEdit.find('input').filter(':enabled:visible').first().change().focus();
 
         if (isNew) {
             self.trigger('crud-table-new', [elems]);
@@ -162,53 +162,65 @@
         var char = String.fromCharCode(e.which);
         switch (char) {
             case 'b':
-                var btnNew = getVisibleCrudTableContainer().find('.btn-new:visible:first');
+                var btnNew = getVisibleCrudTableContainer().find('.btn-new').filter(':visible').first();
                 if (btnNew.length === 1) {
                     openOnEdit(btnNew, true);
                     e.preventDefault();
                 }
                 break;
             case 'c':
-                var btnCor = getVisibleCrudTableContainer().find('tr.active .btn-update:enabled:first');
+                var btnCor = getVisibleCrudTableContainer().find('tr.active .btn-update').filter(':enabled').first();
                 if (btnCor.length === 1) {
                     openOnEdit(btnCor, false);
                     e.preventDefault();
                 }
                 break;
             case 'v':
-                var btnDelete = getVisibleCrudTableContainer().find('tr.active .btn-delete:enabled:first');
+                var btnDelete = getVisibleCrudTableContainer().find('tr.active .btn-delete').filter(':enabled').first();
                 if (btnDelete.length === 1) {
                     onDelete(btnDelete);
                     e.preventDefault();
                 }
                 break;
         }
-    });
-
-    $(document).keydown(function (e) {
+    }).keydown(function (e) {
         switch (e.which) {
             case 27: // Esc
-                var btnCancel = getVisibleCrudTableContainer().find('.btn-cancel:visible:first');
+                var btnCancel = getVisibleCrudTableContainer().find('.btn-cancel').filter(':visible').first();
                 if (btnCancel.length === 1) {
                     btnCancel.click();
                     e.preventDefault();
                 }
                 break;
         }
-    });
+    }).on('click', 'button', function (e) {
+        var elem = $(e.target);
+        var container = elem.closest('.crud-table-container');
+        if ((container.length > 0) && (container.is(':visible'))) {
+            if (elem.hasClass('btn-new')) {
+                openOnEdit(elem, true);
+            }
 
-    $(document).on('click', '.crud-table-container:visible:first .btn-new', function (e) {
-        openOnEdit($(e.target), true);
-    }).on('click', '.crud-table-container:visible:first .btn-update', function (e) {
-        openOnEdit($(e.target), false);
-    }).on('click', '.crud-table-container:visible:first .btn-cancel', function (e) {
-        onCancel($(e.target));
-    }).on('click', '.crud-table-container:visible:first .btn-delete', function (e) {
-        onDelete($(e.target));
-    }).on('click', '.crud-table-container:visible:first .btn-save-new', function (e) {
-        onSave($(e.target), true);
-    }).on('click', '.crud-table-container:visible:first .btn-save-update', function (e) {
-        onSave($(e.target), false);
+            if (elem.hasClass('btn-update')) {
+                openOnEdit(elem, false);
+            }
+
+            if (elem.hasClass('btn-cancel')) {
+                onCancel(elem);
+            }
+
+            if (elem.hasClass('btn-delete')) {
+                onDelete(elem);
+            }
+
+            if (elem.hasClass('btn-save-new')) {
+                onSave(elem, true);
+            }
+
+            if (elem.hasClass('btn-save-update')) {
+                onSave(elem, false);
+            }
+        }
     }).on('crud-table-ajax-success', function (e, result) {
         onAjaxSuccess($(e.target), result);
     }).ready(function () {

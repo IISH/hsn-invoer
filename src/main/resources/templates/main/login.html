@@ -32,10 +32,6 @@
   <div class="alert alert-danger extra-top-margin" role="alert" th:if="${param.error}">
     De combinatie inlognaam en wachtwoord is incorrect!
   </div>
-
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${param.logout}">
-    U bent uitgelogd!
-  </div>
 </fieldset>
 
 <footer layout:fragment="footer" th:include="layoutFragments :: footer ('Login')"></footer>

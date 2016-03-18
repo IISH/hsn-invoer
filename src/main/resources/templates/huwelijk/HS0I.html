@@ -16,7 +16,7 @@
       <label class="col-xs-7 control-label">HSN-identificatienummer huwende onderzoekspersoon:</label>
 
       <div class="col-xs-4">
-        <input type="text" class="form-control gbh-idnr only-gbh-lookup required" th:field="*{huwttl.idnr}" hsn:field="huwttl.idnr"/>
+        <input type="text" class="form-control rp-idnr only-rp-lookup required" th:field="*{huwttl.idnr}" hsn:field="huwttl.idnr"/>
       </div>
     </div>
 
@@ -27,22 +27,22 @@
         <div class="col-xs-12">
           <div class="col-xs-3">
             <label class="control-label">Dag:</label>
-            <input type="text" class="form-control required day focus-on-success" maxlength="2"
+            <input type="text" class="form-control day dateInput focus-on-success" maxlength="2"
                    th:field="*{huwttl.huw.hdag}" hsn:field="huwttl.huw.hdag"/>
           </div>
           <div class="col-xs-3">
             <label class="control-label">Maand:</label>
-            <input type="text" class="form-control required month" maxlength="2"
+            <input type="text" class="form-control month dateInput" maxlength="2"
                    th:field="*{huwttl.huw.hmaand}" hsn:field="huwttl.huw.hmaand"/>
           </div>
           <div class="col-xs-3">
             <label class="control-label">Jaar:</label>
-            <input type="text" class="form-control required year" maxlength="4"
+            <input type="text" class="form-control year dateInput" maxlength="4"
                    th:field="*{huwttl.huw.hjaar}" hsn:field="huwttl.huw.hjaar"/>
           </div>
           <div class="col-xs-3">
             <label class="control-label">Uur:</label>
-            <input type="text" class="form-control required hour huw-check" maxlength="2"
+            <input type="text" class="form-control hour dateInput huw-check" maxlength="2"
                    th:field="*{huwttl.huur}" hsn:field="huwttl.huur"/>
           </div>
         </div>
@@ -56,7 +56,7 @@
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (true, true)"></fieldset>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/huwelijk/HS0I.js" th:src="@{/js/huwelijk/HS0I.js(r=${T(org.apache.commons.lang.RandomStringUtils).randomAlphanumeric(10)})}"></script>
+  <script src="../../static/js/huwelijk/HS0I.js" hsn:src="@{/js/huwelijk/HS0I.js}"></script>
 </th:block>
 </body>
 </html>
