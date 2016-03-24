@@ -10,7 +10,7 @@ import java.io.Serializable;
  * This class contains data of one RP row of reference data.
  */
 @Entity
-@Table(name = "hsnrp")
+@Table(name = "HSNRP")
 public class Ref_RP implements Serializable {
     @Id @Column(name = "Id") private int id;
 
