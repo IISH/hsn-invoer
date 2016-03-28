@@ -2,7 +2,6 @@ package org.iish.hsn.invoer.flow.state;
 
 import org.iish.hsn.invoer.domain.invoer.Byz;
 import org.iish.hsn.invoer.domain.invoer.huw.*;
-import org.iish.hsn.invoer.domain.reference.Ref_GBH;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.flow.helper.HuwelijksAkteViewNames;
 import org.iish.hsn.invoer.flow.helper.ViewNames;
@@ -15,7 +14,6 @@ import java.util.Set;
  * Holds the state of a 'huwelijks akte' (marriage certificate) during the flow.
  */
 public class HuwelijksAkteFlowState extends ByzAkteFlowState implements Serializable {
-    //private Ref_GBH refGbh;
     private Ref_RP refRp;
     private Huwttl huwttl;
     private Huwknd huwknd;

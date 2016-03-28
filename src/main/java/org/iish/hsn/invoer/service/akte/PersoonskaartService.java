@@ -2,7 +2,6 @@ package org.iish.hsn.invoer.service.akte;
 
 import org.iish.hsn.invoer.domain.invoer.Byz;
 import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
-import org.iish.hsn.invoer.domain.reference.Ref_GBH;
 import org.iish.hsn.invoer.domain.invoer.pk.*;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.AkteException;

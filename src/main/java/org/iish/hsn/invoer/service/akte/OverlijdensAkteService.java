@@ -5,7 +5,6 @@ import org.iish.hsn.invoer.domain.invoer.ovl.Ovlagv;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlbyz;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlech;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlknd;
-import org.iish.hsn.invoer.domain.reference.Ref_GBH;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.AkteException;
 import org.iish.hsn.invoer.exception.NotFoundException;

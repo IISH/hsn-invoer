@@ -1,5 +1,7 @@
 package org.iish.hsn.invoer.domain.reference;
 
+import org.iish.hsn.invoer.util.NullSafeUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,153 +16,89 @@ import java.io.Serializable;
 public class Ref_AINB implements Serializable {
     @Id @Column(name = "B1IDBG", nullable = false) private int keyToSourceRegister;
 
-    @Column(name = "CONTROLE", nullable = false) private String controle;
-    @Column(name = "B1BGBG", nullable = false) private   int    b1bgbg;
-    @Column(name = "GEMNAAM", nullable = false) private  String municipality;
-    @Column(name = "PROVNR", nullable = false) private   int    provinceNumber;
-    @Column(name = "B1ABBG", nullable = false) private   String typeRegister;
-    @Column(name = "B1BJBG", nullable = false) private   int    startYearRegister;
-    @Column(name = "B1BJBGCR", nullable = false) private int    startYearRegisterCorrected;
-    @Column(name = "B1EJBG", nullable = false) private   int    endYearRegister;
-    @Column(name = "B1EJBGCR", nullable = false) private int    endYearRegisterCorrected;
-    @Column(name = "B1GWBG", nullable = false) private   String b1gwbg;
-    @Column(name = "B1IVBG", nullable = false) private   String b1ivbg;
+    @Column(name = "CONTROLE") private String  controle;
+    @Column(name = "B1BGBG") private   Integer b1bgbg;
+    @Column(name = "GEMNAAM") private  String  municipality;
+    @Column(name = "PROVNR") private   Integer provinceNumber;
+    @Column(name = "B1ABBG") private   String  typeRegister;
+    @Column(name = "B1BJBG") private   Integer startYearRegister;
+    @Column(name = "B1BJBGCR") private Integer startYearRegisterCorrected;
+    @Column(name = "B1EJBG") private   Integer endYearRegister;
+    @Column(name = "B1EJBGCR") private Integer endYearRegisterCorrected;
+    @Column(name = "B1GWBG") private   String  b1gwbg;
+    @Column(name = "B1IVBG") private   String  b1ivbg;
 
-    @Column(name = "DATUM", nullable = false) private  String datum;
-    @Column(name = "NWBRON", nullable = false) private String nwbron;
-    @Column(name = "INIT", nullable = false) private   String init;
-    @Column(name = "VERSIE", nullable = false) private String versie;
+    @Column(name = "DATUM") private  String datum;
+    @Column(name = "NWBRON") private String nwbron;
+    @Column(name = "INIT") private   String init;
+    @Column(name = "VERSIE") private String versie;
 
     public int getKeyToSourceRegister() {
         return keyToSourceRegister;
     }
 
-    public void setKeyToSourceRegister(int keyToSourceRegister) {
-        this.keyToSourceRegister = keyToSourceRegister;
-    }
-
     public String getControle() {
-        return controle;
+        return NullSafeUtils.getString(controle);
     }
 
-    public void setControle(String controle) {
-        this.controle = controle;
-    }
-
-    public int getB1bgbg() {
-        return b1bgbg;
-    }
-
-    public void setB1bgbg(int b1bgbg) {
-        this.b1bgbg = b1bgbg;
+    public Integer getB1bgbg() {
+        return NullSafeUtils.getInteger(b1bgbg);
     }
 
     public String getMunicipality() {
-        return municipality;
+        return NullSafeUtils.getString(municipality);
     }
 
-    public void setMunicipality(String municipality) {
-        this.municipality = municipality;
-    }
-
-    public int getProvinceNumber() {
-        return provinceNumber;
-    }
-
-    public void setProvinceNumber(int provinceNumber) {
-        this.provinceNumber = provinceNumber;
+    public Integer getProvinceNumber() {
+        return NullSafeUtils.getInteger(provinceNumber);
     }
 
     public String getTypeRegister() {
-        return typeRegister;
+        return NullSafeUtils.getString(typeRegister);
     }
 
-    public void setTypeRegister(String typeRegister) {
-        this.typeRegister = typeRegister;
+    public Integer getStartYearRegister() {
+        return NullSafeUtils.getInteger(startYearRegister);
     }
 
-    public int getStartYearRegister() {
-        return startYearRegister;
+    public Integer getStartYearRegisterCorrected() {
+        return NullSafeUtils.getInteger(startYearRegisterCorrected);
     }
 
-    public void setStartYearRegister(int startYearRegister) {
-        this.startYearRegister = startYearRegister;
+    public Integer getEndYearRegister() {
+        return NullSafeUtils.getInteger(endYearRegister);
     }
 
-    public int getStartYearRegisterCorrected() {
-        return startYearRegisterCorrected;
-    }
-
-    public void setStartYearRegisterCorrected(int startYearRegisterCorrected) {
-        this.startYearRegisterCorrected = startYearRegisterCorrected;
-    }
-
-    public int getEndYearRegister() {
-        return endYearRegister;
-    }
-
-    public void setEndYearRegister(int endYearRegister) {
-        this.endYearRegister = endYearRegister;
-    }
-
-    public int getEndYearRegisterCorrected() {
-        return endYearRegisterCorrected;
-    }
-
-    public void setEndYearRegisterCorrected(int endYearRegisterCorrected) {
-        this.endYearRegisterCorrected = endYearRegisterCorrected;
+    public Integer getEndYearRegisterCorrected() {
+        return NullSafeUtils.getInteger(endYearRegisterCorrected);
     }
 
     public String getB1gwbg() {
-        return b1gwbg;
-    }
-
-    public void setB1gwbg(String b1gwbg) {
-        this.b1gwbg = b1gwbg;
+        return NullSafeUtils.getString(b1gwbg);
     }
 
     public String getB1ivbg() {
-        return b1ivbg;
-    }
-
-    public void setB1ivbg(String b1ivbg) {
-        this.b1ivbg = b1ivbg;
+        return NullSafeUtils.getString(b1ivbg);
     }
 
     public String getDatum() {
-        return datum;
-    }
-
-    public void setDatum(String datum) {
-        this.datum = datum;
+        return NullSafeUtils.getString(datum);
     }
 
     public String getNwbron() {
-        return nwbron;
-    }
-
-    public void setNwbron(String nwbron) {
-        this.nwbron = nwbron;
+        return NullSafeUtils.getString(nwbron);
     }
 
     public String getInit() {
-        return init;
-    }
-
-    public void setInit(String init) {
-        this.init = init;
+        return NullSafeUtils.getString(init);
     }
 
     public String getVersie() {
-        return versie;
-    }
-
-    public void setVersie(String versie) {
-        this.versie = versie;
+        return NullSafeUtils.getString(versie);
     }
 
     public String getBron() {
-        switch (typeRegister.toUpperCase()) {
+        switch (getTypeRegister().toUpperCase()) {
             case "A":
                 return "Alleenstaande register 1840-1940";
             case "B":
