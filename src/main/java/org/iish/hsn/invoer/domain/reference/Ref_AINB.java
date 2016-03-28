@@ -41,7 +41,7 @@ public class Ref_AINB implements Serializable {
         return NullSafeUtils.getString(controle);
     }
 
-    public Integer getB1bgbg() {
+    public int getB1bgbg() {
         return NullSafeUtils.getInteger(b1bgbg);
     }
 
@@ -49,7 +49,7 @@ public class Ref_AINB implements Serializable {
         return NullSafeUtils.getString(municipality);
     }
 
-    public Integer getProvinceNumber() {
+    public int getProvinceNumber() {
         return NullSafeUtils.getInteger(provinceNumber);
     }
 
@@ -57,19 +57,19 @@ public class Ref_AINB implements Serializable {
         return NullSafeUtils.getString(typeRegister);
     }
 
-    public Integer getStartYearRegister() {
+    public int getStartYearRegister() {
         return NullSafeUtils.getInteger(startYearRegister);
     }
 
-    public Integer getStartYearRegisterCorrected() {
+    public int getStartYearRegisterCorrected() {
         return NullSafeUtils.getInteger(startYearRegisterCorrected);
     }
 
-    public Integer getEndYearRegister() {
+    public int getEndYearRegister() {
         return NullSafeUtils.getInteger(endYearRegister);
     }
 
-    public Integer getEndYearRegisterCorrected() {
+    public int getEndYearRegisterCorrected() {
         return NullSafeUtils.getInteger(endYearRegisterCorrected);
     }
 
