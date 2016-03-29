@@ -11,7 +11,6 @@ import org.iish.hsn.invoer.domain.invoer.ovl.Ovlknd;
 import org.iish.hsn.invoer.domain.invoer.pick.*;
 import org.iish.hsn.invoer.domain.invoer.pk.Pkknd;
 import org.iish.hsn.invoer.domain.reference.Ref_AINB;
-import org.iish.hsn.invoer.domain.reference.Ref_GBH;
 import org.iish.hsn.invoer.domain.invoer.geb.Stpb;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.NotFoundException;
@@ -23,7 +22,6 @@ import org.iish.hsn.invoer.repository.invoer.ovl.OvlkndRepository;
 import org.iish.hsn.invoer.repository.invoer.pick.*;
 import org.iish.hsn.invoer.repository.invoer.pk.PkkndRepository;
 import org.iish.hsn.invoer.repository.reference.Ref_AINBRepository;
-import org.iish.hsn.invoer.repository.reference.Ref_GBHRepository;
 import org.iish.hsn.invoer.repository.invoer.geb.StpbRepository;
 import org.iish.hsn.invoer.repository.reference.Ref_RPRepository;
 import org.iish.hsn.invoer.util.InputMetadata;
@@ -40,7 +38,6 @@ import java.util.List;
 public class LookupService {
     @Autowired private InputMetadata          inputMetadata;
     @Autowired private StpbRepository         stpbRepository;
-    //@Autowired private Ref_GBHRepository      refGbhRepository;
     @Autowired private Ref_RPRepository       refRpRepository;
     @Autowired private Ref_AINBRepository     refAinbRepository;
     @Autowired private GebakteRepository      gebakteRepository;
@@ -70,22 +67,6 @@ public class LookupService {
         }
         return stpb;
     }
-
-    /**
-     * Returns the ref_gbh for the given id number.
-     *
-     * @param idnr           The id number.
-     * @param throwException Whether to throw an exception if not found or to return null.
-     * @return The ref_gbh.
-     * @throws NotFoundException Thrown if the record was not found.
-     */
-    /*public Ref_GBH getRefGbh(int idnr, boolean throwException) throws NotFoundException {
-        Ref_GBH refGbh = refGbhRepository.findByIdnr(idnr);
-        if ((refGbh == null) && throwException) {
-            throw new NotFoundException("Ref_GBH with idnr " + idnr + " could not be found!");
-        }
-        return refGbh;
-    }*/
 
     /**
      * Returns the ref_rp for the given id number.

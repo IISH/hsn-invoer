@@ -1,231 +1,144 @@
 package org.iish.hsn.invoer.domain.reference;
 
+import org.iish.hsn.invoer.util.NullSafeUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 
 /**
  * This class contains data of one RP row of reference data.
  */
 @Entity
-@Table(name = "hsnrp")
+@Table(name = "HSNRP")
 public class Ref_RP implements Serializable {
-    @Id @Column(name = "Id") private int id;
+    @Id
+    @Column(name = "Id")
+    private int id;
 
-    @Column(name = "IDNR", nullable = false) private      int idnr;
-    @Column(name = "ID_origin", nullable = false) private int idOrigin;
+    @Column(name = "IDNR") private      Integer idnr;
+    @Column(name = "ID_origin") private Integer idOrigin;
 
-    @Column(name = "Project", nullable = false) private String project;
+    @Column(name = "Project") private String project;
 
-    @Column(name = "Gemnr", nullable = false) private int numberMunicipality;
+    @Column(name = "Gemnr") private Integer numberMunicipality;
 
-    @Column(name = "Valid_day", nullable = false) private   int validDay;
-    @Column(name = "Valid_month", nullable = false) private int validMonth;
-    @Column(name = "Valid_year", nullable = false) private  int validYear;
+    @Column(name = "Valid_day") private   Integer validDay;
+    @Column(name = "Valid_month") private Integer validMonth;
+    @Column(name = "Valid_year") private  Integer validYear;
 
-    @Column(name = "RP_family", nullable = false) private    String lastName;
-    @Column(name = "RP_prefix", nullable = false) private    String prefixName;
-    @Column(name = "RP_firstname", nullable = false) private String firstName;
+    @Column(name = "RP_family") private    String lastName;
+    @Column(name = "RP_prefix") private    String prefixName;
+    @Column(name = "RP_firstname") private String firstName;
 
-    @Column(name = "RP_B_DAY", nullable = false) private   int dayOfBirth;
-    @Column(name = "RP_B_MONTH", nullable = false) private int monthOfBirth;
-    @Column(name = "RP_B_YEAR", nullable = false) private  int yearOfBirth;
+    @Column(name = "RP_B_DAY") private   Integer dayOfBirth;
+    @Column(name = "RP_B_MONTH") private Integer monthOfBirth;
+    @Column(name = "RP_B_YEAR") private  Integer yearOfBirth;
 
-    @Column(name = "RP_B_SEX", nullable = false) private   String sex;
-    @Column(name = "RP_B_PLACE", nullable = false) private String nameMunicipality;
-    @Column(name = "RP_B_PROV", nullable = false) private  int    cohortNumber;
+    @Column(name = "RP_B_SEX") private   String  sex;
+    @Column(name = "RP_B_PLACE") private String  nameMunicipality;
+    @Column(name = "RP_B_PROV") private  Integer cohortNumber;
 
-    @Column(name = "MO_family", nullable = false) private    String lastNameMother;
-    @Column(name = "MO_prefix", nullable = false) private    String prefixMother;
-    @Column(name = "MO_firstname", nullable = false) private String firstNameMother;
+    @Column(name = "MO_family") private    String lastNameMother;
+    @Column(name = "MO_prefix") private    String prefixMother;
+    @Column(name = "MO_firstname") private String firstNameMother;
 
-    @Column(name = "FA_family", nullable = false) private    String lastNameFather;
-    @Column(name = "FA_prefix", nullable = false) private    String prefixFather;
-    @Column(name = "FA_firstname", nullable = false) private String firstNameFather;
+    @Column(name = "FA_family") private    String lastNameFather;
+    @Column(name = "FA_prefix") private    String prefixFather;
+    @Column(name = "FA_firstname") private String firstNameFather;
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getIdnr() {
-        return idnr;
-    }
-
-    public void setIdnr(int idnr) {
-        this.idnr = idnr;
+        return NullSafeUtils.getInteger(idnr);
     }
 
     public int getIdOrigin() {
-        return idOrigin;
-    }
-
-    public void setIdOrigin(int idOrigin) {
-        this.idOrigin = idOrigin;
+        return NullSafeUtils.getInteger(idOrigin);
     }
 
     public String getProject() {
-        return project;
-    }
-
-    public void setProject(String project) {
-        this.project = project;
+        return NullSafeUtils.getString(project);
     }
 
     public int getNumberMunicipality() {
-        return numberMunicipality;
-    }
-
-    public void setNumberMunicipality(int numberMunicipality) {
-        this.numberMunicipality = numberMunicipality;
+        return NullSafeUtils.getInteger(numberMunicipality);
     }
 
     public int getValidDay() {
-        return validDay;
-    }
-
-    public void setValidDay(int validDay) {
-        this.validDay = validDay;
+        return NullSafeUtils.getInteger(validDay);
     }
 
     public int getValidMonth() {
-        return validMonth;
-    }
-
-    public void setValidMonth(int validMonth) {
-        this.validMonth = validMonth;
+        return NullSafeUtils.getInteger(validMonth);
     }
 
     public int getValidYear() {
-        return validYear;
-    }
-
-    public void setValidYear(int validYear) {
-        this.validYear = validYear;
+        return NullSafeUtils.getInteger(validYear);
     }
 
     public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+        return NullSafeUtils.getString(lastName);
     }
 
     public String getPrefixName() {
-        return prefixName;
-    }
-
-    public void setPrefixName(String prefixName) {
-        this.prefixName = prefixName;
+        return NullSafeUtils.getString(prefixName);
     }
 
     public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        return NullSafeUtils.getString(firstName);
     }
 
     public int getDayOfBirth() {
-        return dayOfBirth;
-    }
-
-    public void setDayOfBirth(int dayOfBirth) {
-        this.dayOfBirth = dayOfBirth;
+        return NullSafeUtils.getInteger(dayOfBirth);
     }
 
     public int getMonthOfBirth() {
-        return monthOfBirth;
-    }
-
-    public void setMonthOfBirth(int monthOfBirth) {
-        this.monthOfBirth = monthOfBirth;
+        return NullSafeUtils.getInteger(monthOfBirth);
     }
 
     public int getYearOfBirth() {
-        return yearOfBirth;
-    }
-
-    public void setYearOfBirth(int yearOfBirth) {
-        this.yearOfBirth = yearOfBirth;
+        return NullSafeUtils.getInteger(yearOfBirth);
     }
 
     public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
+        return NullSafeUtils.getString(sex);
     }
 
     public String getNameMunicipality() {
-        return nameMunicipality;
-    }
-
-    public void setNameMunicipality(String nameMunicipality) {
-        this.nameMunicipality = nameMunicipality;
+        return NullSafeUtils.getString(nameMunicipality);
     }
 
     public int getCohortNumber() {
-        return cohortNumber;
-    }
-
-    public void setCohortNumber(int cohortNumber) {
-        this.cohortNumber = cohortNumber;
+        return NullSafeUtils.getInteger(cohortNumber);
     }
 
     public String getLastNameMother() {
-        return lastNameMother;
-    }
-
-    public void setLastNameMother(String lastNameMother) {
-        this.lastNameMother = lastNameMother;
+        return NullSafeUtils.getString(lastNameMother);
     }
 
     public String getPrefixMother() {
-        return prefixMother;
-    }
-
-    public void setPrefixMother(String prefixMother) {
-        this.prefixMother = prefixMother;
+        return NullSafeUtils.getString(prefixMother);
     }
 
     public String getFirstNameMother() {
-        return firstNameMother;
-    }
-
-    public void setFirstNameMother(String firstNameMother) {
-        this.firstNameMother = firstNameMother;
+        return NullSafeUtils.getString(firstNameMother);
     }
 
     public String getLastNameFather() {
-        return lastNameFather;
-    }
-
-    public void setLastNameFather(String lastNameFather) {
-        this.lastNameFather = lastNameFather;
+        return NullSafeUtils.getString(lastNameFather);
     }
 
     public String getPrefixFather() {
-        return prefixFather;
-    }
-
-    public void setPrefixFather(String prefixFather) {
-        this.prefixFather = prefixFather;
+        return NullSafeUtils.getString(prefixFather);
     }
 
     public String getFirstNameFather() {
-        return firstNameFather;
-    }
-
-    public void setFirstNameFather(String firstNameFather) {
-        this.firstNameFather = firstNameFather;
+        return NullSafeUtils.getString(firstNameFather);
     }
 }

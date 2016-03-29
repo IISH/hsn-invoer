@@ -1,7 +1,6 @@
 package org.iish.hsn.invoer.flow.state;
 
 import org.iish.hsn.invoer.domain.invoer.Byz;
-import org.iish.hsn.invoer.domain.reference.Ref_GBH;
 import org.iish.hsn.invoer.domain.invoer.pk.*;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.flow.helper.PersoonskaartViewNames;
@@ -15,7 +14,6 @@ import java.util.Set;
  * Holds the state of a 'persoonskaart' (person card) during the flow.
  */
 public class PersoonskaartFlowState extends ByzAkteFlowState implements Serializable {
-    //private Ref_GBH     refGbh;
     private Ref_RP refRp;
     private Pkknd  pkknd;
     private P7     p7;
