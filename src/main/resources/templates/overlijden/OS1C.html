@@ -54,7 +54,7 @@
         <label class="col-xs-4 control-label">Aantal uren geleefd:</label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit" data-replace=":0"
+          <input type="text" class="form-control form-control-digit"
                  th:field="*{ovlknd.laaug}" hsn:field="ovlknd.laaug"/>
         </div>
       </div>
@@ -62,7 +62,7 @@
       <div class="ageContainer" style="display: none;">
         <div class="alert alert-info extra-top-margin age" role="alert" th:if="${akte.isLevnloos()} == false">
           <div th:if="${akte.isCorrection()} == false">
-            <div>De berekende leeftijd in dagen, maanden of jaren:</div>
+            <div>De berekende leeftijd in dagen, weken, maanden en/of jaren:</div>
             <div class="text-center">(corrigeer deze EXACT volgens gegevens akte!):</div>
           </div>
 
@@ -70,13 +70,8 @@
 
           <div class="row text-center">
             <div class="col-xs-3">
-              <label class="control-label">Dagen:</label>
-              <input type="text" class="form-control" th:field="*{ovlknd.lftdovl}" hsn:field="ovlknd.lftdovl"/>
-            </div>
-
-            <div class="col-xs-3">
-              <label class="control-label">Weken:</label>
-              <input type="text" class="form-control" th:field="*{ovlknd.lftwovl}" hsn:field="ovlknd.lftwovl"/>
+              <label class="control-label">Jaren:</label>
+              <input type="text" class="form-control" th:field="*{ovlknd.lftjovl}" hsn:field="ovlknd.lftjovl"/>
             </div>
 
             <div class="col-xs-3">
@@ -85,8 +80,13 @@
             </div>
 
             <div class="col-xs-3">
-              <label class="control-label">Jaren:</label>
-              <input type="text" class="form-control" th:field="*{ovlknd.lftjovl}" hsn:field="ovlknd.lftjovl"/>
+              <label class="control-label">Weken:</label>
+              <input type="text" class="form-control" th:field="*{ovlknd.lftwovl}" hsn:field="ovlknd.lftwovl"/>
+            </div>
+
+            <div class="col-xs-3">
+              <label class="control-label">Dagen:</label>
+              <input type="text" class="form-control" th:field="*{ovlknd.lftdovl}" hsn:field="ovlknd.lftdovl"/>
             </div>
           </div>
         </div>

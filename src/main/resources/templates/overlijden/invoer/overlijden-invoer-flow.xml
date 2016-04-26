@@ -31,7 +31,7 @@
     <transition on="byz" to="OSBYZ"/>
   </view-state>
 
-  <!-- OS1B: AKTE GEGEVENS -->
+  <!-- OS1B: AKTEGEGEVENS -->
   <view-state id="OS1B" view="overlijden/OS1B" model="akte">
     <transition on="stop" to="stopEnd"/>
 

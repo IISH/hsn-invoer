@@ -38,7 +38,7 @@
     <transition on="next" to="OS1B"/>
   </view-state>
 
-  <!-- OS1B: AKTE GEGEVENS -->
+  <!-- OS1B: AKTEGEGEVENS -->
   <view-state id="OS1B" view="overlijden/OS1B" model="akte">
     <transition on="stop" to="stopEnd"/>
 
@@ -107,7 +107,8 @@
   </action-state>
 
   <action-state id="firstEchtgenootCheck">
-    <evaluate expression="({1,6}).contains(new Integer(flowScope.akte.ovlknd.brgovl))"/>
+    <evaluate expression="(flowScope.akte.ovlknd.brgovl.isEmpty() == false)
+                           and ({1,6}).contains(new Integer(flowScope.akte.ovlknd.brgovl))"/>
 
     <transition on="yes" to="OS5COR1"/>
     <transition on="no" to="addEchtgenootCheck"/>
@@ -122,7 +123,8 @@
   </view-state>
 
   <action-state id="secondEchtgenootCheck">
-    <evaluate expression="({1,6}).contains(new Integer(flowScope.akte.ovlknd.brgovl)) and
+    <evaluate expression="(flowScope.akte.ovlknd.brgovl.isEmpty() == false) and
+                          ({1,6}).contains(new Integer(flowScope.akte.ovlknd.brgovl)) and
                           (flowScope.akte.ovlknd.mreovl > 0)"/>
 
     <transition on="yes" to="OS5COR2"/>
@@ -139,7 +141,8 @@
 
   <action-state id="addEchtgenootCheck">
     <evaluate
-        expression="({2,3,5}).contains(new Integer(flowScope.akte.ovlknd.brgovl)) and
+        expression="(flowScope.akte.ovlknd.brgovl.isEmpty() == false) and
+                    ({2,3,5}).contains(new Integer(flowScope.akte.ovlknd.brgovl)) and
                     (flowScope.akte.isLevnloos() == false)"/>
 
     <transition on="yes" to="OS5"/>

@@ -38,7 +38,8 @@
     </div>
 
     <div class="alert alert-info extra-top-margin" role="alert"
-         data-show-when="#ovlknd\.levmovl" data-has-values-in="j;n;o" style="display:none;">
+         data-show-when="#ovlknd\.levmovl" data-has-values-in="j;n;o" style="display:none;"
+         th:if="${akte.isLevnloos()} == false">
       De gegevens van de moeder moeten overeenkomen met die in de overlijdensakte !! Zo niet, dan corrigeren of stoppen.
     </div>
   </th:block>
