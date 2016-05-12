@@ -18,7 +18,7 @@ public class Pkhuw extends Invoer {
     @Column(name = "VN2HUWP", nullable = false, length = 20) private String vn2huwp = "";    // 2nd firstname spouse
     @Column(name = "VN3HUWP", nullable = false, length = 30) private String vn3huwp = "";    // 3rd firstname spouse
 
-    @Column(name = "BRPHUWP", nullable = false, length = 50) private String brphuwp = "";    // profession spouse
+    @Column(name = "BRPHUWP", nullable = false, length = 254) private String brphuwp = "";    // profession spouse
 
     @Column(name = "GDGHUWP", nullable = false) private   int gdghuwp;                  // day of birth spouse
     @Column(name = "GMDHUWP", nullable = false) private   int gmdhuwp;                  // month of birth spouse

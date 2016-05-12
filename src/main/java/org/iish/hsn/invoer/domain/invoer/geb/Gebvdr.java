@@ -10,23 +10,23 @@ import java.io.Serializable;
        uniqueConstraints = {@UniqueConstraint(columnNames = {"IDNR", "ONDRZKO", "OPDRNRI"})},
        indexes = {@Index(columnList = "ONDRZKO, OPDRNRI")})
 public class Gebvdr extends Invoer implements Serializable {
-    @Column(name = "IDNR", nullable = false) private                int    idnr;
-    @Column(name = "GEGVR", nullable = false, length = 1) private   String gegvr = "";
-    @Column(name = "ANMVR", nullable = false, length = 50) private  String anmvr = "";
-    @Column(name = "TUSVR", nullable = false, length = 10) private  String tusvr = "";
+    @Column(name = "IDNR", nullable = false) private int idnr;
+    @Column(name = "GEGVR", nullable = false, length = 1) private   String gegvr  = "";
+    @Column(name = "ANMVR", nullable = false, length = 50) private  String anmvr  = "";
+    @Column(name = "TUSVR", nullable = false, length = 10) private  String tusvr  = "";
     @Column(name = "VRN1VR", nullable = false, length = 20) private String vrn1vr = "";
     @Column(name = "VRN2VR", nullable = false, length = 20) private String vrn2vr = "";
     @Column(name = "VRN3VR", nullable = false, length = 30) private String vrn3vr = "";
-    @Column(name = "LFTVR", nullable = false) private               int    lftvr;
-    @Column(name = "BRPVR", nullable = false, length = 50) private  String brpvr = "";
+    @Column(name = "LFTVR", nullable = false) private int lftvr;
+    @Column(name = "BRPVR", nullable = false, length = 254) private String brpvr = "";
     @Column(name = "ADRVR", nullable = false, length = 50) private  String adrvr = "";
-    @Column(name = "G5OOSD", nullable = false) private              int    g5oosd;
-    @Column(name = "G5OOSM", nullable = false) private              int    g5oosm;
-    @Column(name = "G5OOSJ", nullable = false) private              int    g5oosj;
+    @Column(name = "G5OOSD", nullable = false) private int g5oosd;
+    @Column(name = "G5OOSM", nullable = false) private int g5oosm;
+    @Column(name = "G5OOSJ", nullable = false) private int g5oosj;
     @Column(name = "G5OOGS", nullable = false, length = 50) private String g5oogs = "";
-    @Column(name = "G5VOOD", nullable = false) private              int    g5vood;
-    @Column(name = "G5VOOM", nullable = false) private              int    g5voom;
-    @Column(name = "G5VOOJ", nullable = false) private              int    g5vooj;
+    @Column(name = "G5VOOD", nullable = false) private int g5vood;
+    @Column(name = "G5VOOM", nullable = false) private int g5voom;
+    @Column(name = "G5VOOJ", nullable = false) private int g5vooj;
     @Column(name = "G5VOGO", nullable = false, length = 50) private String g5vogo = "";
 
     @Id

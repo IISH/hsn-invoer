@@ -16,18 +16,18 @@ public class Huwgtg extends Invoer implements Serializable {
 
     @Embedded private Huw huw = new Huw();
 
-    @Column(name = "VLGNRGT", nullable = false) private             int    vlgnrgt;
-    @Column(name = "ANMGT", nullable = false, length = 50) private  String anmgt = "";
-    @Column(name = "TUSGT", nullable = false, length = 10) private  String tusgt = "";
+    @Column(name = "VLGNRGT", nullable = false) private int vlgnrgt;
+    @Column(name = "ANMGT", nullable = false, length = 50) private  String anmgt  = "";
+    @Column(name = "TUSGT", nullable = false, length = 10) private  String tusgt  = "";
     @Column(name = "VRN1GT", nullable = false, length = 20) private String vrn1gt = "";
     @Column(name = "VRN2GT", nullable = false, length = 20) private String vrn2gt = "";
     @Column(name = "VRN3GT", nullable = false, length = 30) private String vrn3gt = "";
-    @Column(name = "LFTJGT", nullable = false) private              int    lftjgt;
-    @Column(name = "BRPGT", nullable = false, length = 50) private  String brpgt = "";
-    @Column(name = "ADRGT", nullable = false, length = 50) private  String adrgt = "";
-    @Column(name = "HNDGT", nullable = false, length = 1) private   String hndgt = "";
+    @Column(name = "LFTJGT", nullable = false) private int lftjgt;
+    @Column(name = "BRPGT", nullable = false, length = 254) private String brpgt  = "";
+    @Column(name = "ADRGT", nullable = false, length = 50) private  String adrgt  = "";
+    @Column(name = "HNDGT", nullable = false, length = 1) private   String hndgt  = "";
     @Column(name = "RELWIE", nullable = false, length = 1) private  String relwie = "";
-    @Column(name = "RELGT", nullable = false, length = 50) private  String relgt = "";
+    @Column(name = "RELGT", nullable = false, length = 50) private  String relgt  = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
