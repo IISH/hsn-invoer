@@ -21,6 +21,16 @@
         return curNav;
     };
 
+    var lockNavigation = false;
+    
+    $.lockNavigation = function () {
+        lockNavigation = true; 
+    };
+
+    $.unlockNavigation = function () {
+        lockNavigation = false;
+    };
+
     $.duringNavigation = function (e, onDefaultNavigation, onTableNavigation) {
         var self = $(e.target);
 
@@ -102,6 +112,11 @@
             var afterBlur = function () {
                 // If the blur caused a focus on a new element, then ignore default navigation
                 if ($(':focus').filter(':input').not(self).length > 0) {
+                    return;
+                }
+                
+                // If navigation is locked, then return as well
+                if (lockNavigation) {
                     return;
                 }
 

@@ -448,8 +448,7 @@ public class PersoonskaartService extends AkteService {
         // First check how many we need
         int totalNumber = 0;
         for (Pkadres curPkadres : pkadres) {
-            if (((curPkadres.getDgadrp() == -1) && (curPkadres.getMdadrp() == -1) && (curPkadres.getJradrp() == -1)) ||
-                ((curPkadres.getDgadrp() == 0)  && (curPkadres.getMdadrp() == 0)  && (curPkadres.getJradrp() == 0))) {
+            if ((curPkadres.getDgadrp() == 0)  && (curPkadres.getMdadrp() == 0)  && (curPkadres.getJradrp() == 0)) {
                 break;
             }
             totalNumber++;
