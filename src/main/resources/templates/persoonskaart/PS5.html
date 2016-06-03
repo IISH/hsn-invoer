@@ -13,7 +13,7 @@
           <div class="form-header" th:utext="${vgnradp + 'e ADRES:'}">1e ADRES:</div>
 
           <div class="form-group">
-            <div class="sub-form-group noAutoNext checkAddressDate">
+            <div class="sub-form-group checkAddressDate">
               <label class="col-xs-3 control-label">Aangiftedatum:</label>
 
               <div class="col-xs-3 form-inline"
@@ -21,7 +21,7 @@
             </div>
 
             <div class="sub-form-group" th:if="${vgnradp > 1}">
-              <label class="col-xs-4 control-label">vernum/annex/niet rel v / a / n</label>
+              <label class="col-xs-4 control-label">vernum/annex/niet rel &nbsp;&nbsp;&nbsp; v / a / n</label>
 
               <div class="col-xs-2">
                 <input type="text" class="form-control form-control-digit adresRenumbering" maxlength="1"

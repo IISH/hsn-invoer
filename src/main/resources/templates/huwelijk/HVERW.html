@@ -4,7 +4,7 @@
 <body>
 <fieldset class="title" layout:fragment="title">
   <div class="form-main-header">
-    VERWIJDER PROGRAMMA HUWELIJKSAKTEN
+    VERWIJDER HUWELIJKSAKTEN
   </div>
 </fieldset>
 
@@ -12,8 +12,10 @@
   <th:block layout:fragment="fields">
     <div class="alert alert-info" role="alert">
       <th:block th:if="${akte.huwknd.gebsex == 'm'}">
-        <div>Het gaat om <span
+        <div>
+          Het gaat om <span
             th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.huwknd.anmhm , akte.huwknd.tushm, akte.huwknd.vrn1hm, akte.huwknd.vrn2hm, akte.huwknd.vrn3hm)}"></span>
+          <th:block th:if="${akte.refRp}">met identificatienummer <span th:utext="${akte.refRp.idnr}"></span></th:block>
         </div>
         <div>Gehuwd met <span
             th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.huwknd.anmhv , akte.huwknd.tushv, akte.huwknd.vrn1hv, akte.huwknd.vrn2hv, akte.huwknd.vrn3hv)}"></span>
@@ -21,8 +23,10 @@
       </th:block>
 
       <th:block th:if="${akte.huwknd.gebsex == 'v'}">
-        <div>Het gaat om <span
+        <div>
+          Het gaat om <span
             th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.huwknd.anmhv , akte.huwknd.tushv, akte.huwknd.vrn1hv, akte.huwknd.vrn2hv, akte.huwknd.vrn3hv)}"></span>
+          <th:block th:if="${akte.refRp}">met identificatienummer <span th:utext="${akte.refRp.idnr}"></span></th:block>
         </div>
         <div>Gehuwd met <span
             th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.huwknd.anmhm , akte.huwknd.tushm, akte.huwknd.vrn1hm, akte.huwknd.vrn2hm, akte.huwknd.vrn3hm)}"></span>
@@ -31,7 +35,7 @@
     </div>
 
     <div class="form-group form-inline text-center extra-top-margin">
-      <label class="control-label">Alles van de akte of kaart verdwijnt dus!! Bevestig met 'bewust':</label>
+      <label class="control-label">Alle ingevoerde gegevens van deze bron zullen worden verwijderd! Bevestig met 'bewust':</label>
 
       <input type="text" class="form-control form-control-small required spacing no-auto-uppercase"
              id="bewust" name="bewust"/>

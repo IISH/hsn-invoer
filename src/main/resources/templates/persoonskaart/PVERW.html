@@ -4,20 +4,22 @@
 <body>
 <fieldset class="title" layout:fragment="title">
   <div class="form-main-header">
-    VERWIJDER PROGRAMMA PERSOONSKAARTEN
+    VERWIJDER PERSOONSKAARTEN
   </div>
 </fieldset>
 
 <fieldset>
   <th:block layout:fragment="fields">
     <div class="alert alert-info" role="alert">
-      <div>Het gaat om <span
+      <div>
+        Het gaat om <span
           th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.pkknd.anmperp , akte.pkknd.tusperp, akte.pkknd.vnm1perp, akte.pkknd.vnm2perp, akte.pkknd.vnm3perp)}"></span>
+        <th:block th:if="${akte.refRp}">met identificatienummer <span th:utext="${akte.refRp.idnr}"></span></th:block>
       </div>
     </div>
 
     <div class="form-group form-inline text-center extra-top-margin">
-      <label class="control-label">Alles van de akte of kaart verdwijnt dus!! Bevestig met 'bewust':</label>
+      <label class="control-label">Alle ingevoerde gegevens van deze bron zullen worden verwijderd! Bevestig met 'bewust':</label>
 
       <input type="text" class="form-control form-control-small required spacing no-auto-uppercase"
              id="bewust" name="bewust"/>

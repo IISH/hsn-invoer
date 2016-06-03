@@ -5,24 +5,22 @@
 <fieldset class="title" layout:fragment="title">
   <th:block th:if="${akte.isCorrectionDelete()}">
     <div class="form-main-header">
-      VERWIJDER PROGRAMMA OVERLIJDENS-AKTEN
+      VERWIJDER OVERLIJDENSAKTEN
     </div>
   </th:block>
 
   <th:block th:if="${akte.isCorrectionDelete()} == false">
-    <legend align="center">CORRECTIE VAN OVERLIJDENS-AKTEN</legend>
+    <legend align="center">CORRECTIE VAN OVERLIJDENSAKTEN</legend>
   </th:block>
 </fieldset>
 
 <fieldset>
   <th:block layout:fragment="fields">
-    <legend class="text-center" align="center">Allereerst wordt de akte of kaart geindentificeerd!</legend>
-
     <div class="form-group">
       <label class="col-xs-6 control-label">Identificatienummer:</label>
 
       <div class="col-xs-4">
-        <input type="text" class="form-control rp-idnr no-rph-lookup required" data-lookup="ovlknd"
+        <input type="text" class="form-control rp-idnr no-rp-lookup required" data-lookup="ovlknd"
                th:field="*{ovlknd.idnr}" hsn:field="ovlknd.idnr"/>
       </div>
     </div>

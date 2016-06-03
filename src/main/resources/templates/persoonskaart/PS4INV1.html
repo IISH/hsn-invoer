@@ -16,6 +16,15 @@
                maxlength="1" id="anotherMarriage" name="anotherMarriage"/>
       </div>
     </div>
+
+    <div class="alert alert-warning extra-top-margin" role="alert" th:if="${akte.pkhuw.size()} gt 0">
+      Bij eerste invoer zijn er wel huwelijken ingevoerd!!! Aantal:
+      <th:block th:utext="${akte.pkhuw.size()}">0</th:block>
+      <br/>
+      Deze worden verwijderd als u nu voor 'n' kiest! U kunt ze daarna eventueel wel opnieuw invoeren.
+      <br/>
+      Als u nu voor 'j' kiest kunt u de huwelijken één voor één corrigeren en eventueel nieuwe huwelijken toevoegen.
+    </div>
   </th:block>
 </fieldset>
 

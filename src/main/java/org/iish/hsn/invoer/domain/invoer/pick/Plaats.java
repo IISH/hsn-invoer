@@ -10,15 +10,15 @@ import javax.persistence.*;
 public class Plaats {
     @Embedded private WorkOrder workOrder;
 
-    @Column(name = "GEMNR", nullable = false) private                Integer gemnr;
-    @Column(name = "PROVNR", nullable = false) private               Integer provnr;
-    @Column(name = "REGNR", nullable = false) private                Integer regnr;
+    @Column(name = "GEMNR", nullable = false) private                int gemnr;
+    @Column(name = "PROVNR", nullable = false) private               int provnr;
+    @Column(name = "REGNR", nullable = false) private                int regnr;
     @Column(name = "GEMNAAM", nullable = false, length = 50) private String  gemnaam;
     @Column(name = "NWINLST", nullable = false, length = 1) private  String  nwinlst;
     @Column(name = "REGIO", nullable = false, length = 20) private   String  regio;
-    @Column(name = "WAGENINGEN", nullable = false) private           Integer wageningen;
-    @Column(name = "EUCLIDMIDX", nullable = false) private           Integer euclidmidx;
-    @Column(name = "EUCLIDMIDY", nullable = false) private           Integer euclidmidy;
+    @Column(name = "WAGENINGEN", nullable = false) private           int wageningen;
+    @Column(name = "EUCLIDMIDX", nullable = false) private           int euclidmidx;
+    @Column(name = "EUCLIDMIDY", nullable = false) private           int euclidmidy;
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID")
     private Integer id;
@@ -31,27 +31,27 @@ public class Plaats {
         this.workOrder = workOrder;
     }
 
-    public Integer getGemnr() {
+    public int getGemnr() {
         return gemnr;
     }
 
-    public void setGemnr(Integer gemnr) {
+    public void setGemnr(int gemnr) {
         this.gemnr = gemnr;
     }
 
-    public Integer getProvnr() {
+    public int getProvnr() {
         return provnr;
     }
 
-    public void setProvnr(Integer provnr) {
+    public void setProvnr(int provnr) {
         this.provnr = provnr;
     }
 
-    public Integer getRegnr() {
+    public int getRegnr() {
         return regnr;
     }
 
-    public void setRegnr(Integer regnr) {
+    public void setRegnr(int regnr) {
         this.regnr = regnr;
     }
 
@@ -79,27 +79,27 @@ public class Plaats {
         this.regio = regio;
     }
 
-    public Integer getWageningen() {
+    public int getWageningen() {
         return wageningen;
     }
 
-    public void setWageningen(Integer wageningen) {
+    public void setWageningen(int wageningen) {
         this.wageningen = wageningen;
     }
 
-    public Integer getEuclidmidx() {
+    public int getEuclidmidx() {
         return euclidmidx;
     }
 
-    public void setEuclidmidx(Integer euclidmidx) {
+    public void setEuclidmidx(int euclidmidx) {
         this.euclidmidx = euclidmidx;
     }
 
-    public Integer getEuclidmidy() {
+    public int getEuclidmidy() {
         return euclidmidy;
     }
 
-    public void setEuclidmidy(Integer euclidmidy) {
+    public void setEuclidmidy(int euclidmidy) {
         this.euclidmidy = euclidmidy;
     }
 

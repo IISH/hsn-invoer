@@ -5,7 +5,7 @@
 <fieldset class="title" layout:fragment="title">
   <th:block th:if="${akte.isCorrectionDelete()}">
     <div class="form-main-header">
-      VERWIJDER PROGRAMMA PERSOONSKAARTEN
+      VERWIJDER PERSOONSKAARTEN
     </div>
   </th:block>
 
@@ -16,13 +16,11 @@
 
 <fieldset>
   <th:block layout:fragment="fields">
-    <legend class="text-center" align="center">Allereerst wordt de akte of kaart geindentificeerd!</legend>
-
     <div class="form-group">
       <label class="col-xs-6 control-label">Identificatienummer:</label>
 
       <div class="col-xs-4">
-        <input type="text" data-lookup="pkknd" class="form-control rp-idnr required"
+        <input type="text" data-lookup="pkknd" class="form-control rp-idnr allow-large-idnrs required"
                th:field="*{pkknd.idnr}" hsn:field="pkknd.idnr"/>
       </div>
     </div>

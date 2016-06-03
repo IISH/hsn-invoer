@@ -28,6 +28,7 @@ public class PicklistService {
             plaatsEntity = new Plaats();
             plaatsEntity.setGemnaam(plaats.trim());
             plaatsEntity.setNwinlst("j");
+            plaatsEntity.setRegio("");
             plaatsEntity.setWorkOrder(workOrder);
 
             plaatsRepository.save(plaatsEntity);

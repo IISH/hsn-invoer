@@ -63,7 +63,7 @@
 
     FindOp.prototype.stpbLookup = function () {
         self.withIdnr(function (idnr) {
-            $.getJSON('/ajax/lookup/stpb', {idnr: idnr}, function (stpb) {
+            self.serverCall('/ajax/lookup/stpb', {idnr: idnr}, function (stpb) {
                 $('.gemeente').text(stpb.gemeente);
                 $('.jaar').text(stpb.jaar);
                 $('.aktenr').text(stpb.aktenr);
@@ -80,7 +80,7 @@
                 }).fail(function () {
                     self.gebkndLookup();
                 });
-            }).fail(function () {
+            }, function () {
                 self.onFailure('Nummer niet gevonden!', false, false, true);
             });
         });
@@ -88,7 +88,7 @@
 
     FindOp.prototype.gebkndLookup = function () {
         self.withIdnr(function (idnr) {
-            $.getJSON('/ajax/lookup/gebknd', {idnr: idnr}, function (gebknd) {
+            self.serverCall('/ajax/lookup/gebknd', {idnr: idnr}, function (gebknd) {
                 if ($.isCorrection()) {
                     $('.day').val(gebknd.aktedag);
                     $('.month').val(gebknd.aktemnd);
@@ -99,7 +99,7 @@
                 else {
                     self.onFailure('De akte met dit identificatienummer is al ingevoerd!', true, false, true);
                 }
-            }).fail(function () {
+            }, function () {
                 if ($.isCorrection()) {
                     self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, false, true);
                 }
@@ -112,34 +112,34 @@
 
     FindOp.prototype.refRPLookup = function () {
         self.withIdnr(function (idnr) {
-            if (idnr < 500000) {
-                $.getJSON('/ajax/lookup/rp', {idnr: idnr}, function () {
+            if ((idnr >= 500000) && self.idnrElem.hasClass('allow-large-idnrs')) {
+                self.noRefRPLookup();
+            }
+            else {
+                self.serverCall('/ajax/lookup/rp', {idnr: idnr}, function () {
                     if (self.idnrElem.hasClass('only-rp-lookup')) {
                         self.onSuccess();
                     }
                     else {
                         self.noRefRPLookup();
                     }
-                }).fail(function () {
+                }, function () {
                     self.onFailure('De onderzoekspersoon met deze identificatie is niet aanwezig!', false, false, true);
                 });
-            }
-            else {
-                self.noRefRPLookup();
             }
         });
     };
 
     FindOp.prototype.noRefRPLookup = function () {
         self.withIdnr(function (idnr) {
-            $.getJSON('/ajax/lookup/' + self.lookup, {idnr: idnr}, function () {
+            self.serverCall('/ajax/lookup/' + self.lookup, {idnr: idnr}, function () {
                 if ($.isCorrection()) {
                     self.onSuccess();
                 }
                 else {
                     self.onFailure('De akte of kaart met deze identificatie is reeds ingevoerd!', true, false, true);
                 }
-            }).fail(function () {
+            }, function () {
                 if ($.isCorrection()) {
                     self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, false, true);
                 }
@@ -156,7 +156,7 @@
             var month = $('.month').val();
             var year = $('.year').val();
 
-            $.getJSON('/ajax/lookup/huwttl', {idnr: idnr, hdag: day, hmaand: month, hjaar: year}, function (huwttl) {
+            self.serverCall('/ajax/lookup/huwttl', {idnr: idnr, hdag: day, hmaand: month, hjaar: year}, function (huwttl) {
                 if ($.isCorrection()) {
                     self.onSuccess();
                 }
@@ -168,7 +168,7 @@
                         'huwelijkdsdatum: ' + huwttl.hdag + '-' + huwttl.hmaand + '-' + huwttl.hjaar + '<br/>' +
                         'aktenummer: ' + huwttl.haktenr + '</div>', true, true, true);
                 }
-            }).fail(function () {
+            }, function () {
                 if ($.isCorrection()) {
                     self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, true, true);
                 }
@@ -220,6 +220,32 @@
 
         self.blur.getNextFormElement().focus();
         $.triggerChangeOfState();
+    };
+
+    FindOp.prototype.serverCall = function (url, params, onSuccess, onFailure) {
+        $.lockNavigation();
+
+        /* TODO: In case a spinner is required
+        var formGroup = self.blur.closest('.form-group').addClass('has-feedback');
+        var icon = $('<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate form-control-feedback" ' +
+            'aria-hidden="true"></span>').appendTo(self.blur.parent());
+
+        var removeIcon = function () {
+            icon.remove();
+            formGroup.removeClass('formGroup');
+        };*/
+
+        $.getJSON(url, params, function () {
+            $.unlockNavigation();
+            //removeIcon();
+
+            onSuccess.apply(arguments);
+        }).fail(function () {
+            $.unlockNavigation();
+            //removeIcon();
+            
+            onFailure.apply(arguments);
+        });
     };
 
     $(document).ready(function () {

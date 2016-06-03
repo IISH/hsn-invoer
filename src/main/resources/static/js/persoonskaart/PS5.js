@@ -91,8 +91,8 @@
                     var btnNext = $('.btn-next');
 
                     var date = elem.getParentOfFormElement().getHsnDate();
-                    var dateIsEmpty = (((date.day.getValue() === 0) && (date.month.getValue() === 0) && (date.year.getValue() === 0))
-                        || ((date.day.getValue() === -1) && (date.month.getValue() === -1) && (date.year.getValue() === -1)));
+                    var dateIsEmpty = ((date.day.getValue() === 0) && (date.month.getValue() === 0) 
+                        && (date.year.getValue() === 0));
 
                     if (isPrev) {
                         elem.autoPrevFocus(false);
@@ -125,13 +125,13 @@
         return dayIsZero;
     };
 
-    $(document).on('keydown', '.day, .year', function (e) {
-        $.duringNavigation(e, function (self, isNext, isPrev) {
-            var hsnDate = self.getParentOfFormElement().getHsnDate();
-            if (self.hasClass('year') || (self.hasClass('day') && isNext && updateDateFieldsIfEmpty(hsnDate))) {
-                updateAdrFields(self, isNext, isPrev);
-            }
-        });
+    $(document).on('blur', '.day, .year', function (e) {
+        var self = $(e.target);
+        var hsnDate = self.getParentOfFormElement().getHsnDate();
+        var curNav = $.getCurNavigation();
+        if (self.hasClass('year') || (self.hasClass('day') && curNav.isNext && updateDateFieldsIfEmpty(hsnDate))) {
+            updateAdrFields(self, curNav.isNext, curNav.isPrev);
+        }
     });
 
     $(document).on('blur', '.plaats, .street', function (e) {
