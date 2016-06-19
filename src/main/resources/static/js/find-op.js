@@ -165,7 +165,7 @@
                         'het gaat hier om bovenstaand identificatienummer en de volgende akte: <br/>' +
                         '<div class="text-left center-block" style="width:50%;">' +
                         'gemeentenaam: ' + huwttl.hplts + '<br/>' +
-                        'huwelijkdsdatum: ' + huwttl.hdag + '-' + huwttl.hmaand + '-' + huwttl.hjaar + '<br/>' +
+                        'huwelijkdsdatum: ' + huwttl.huw.hdag + '-' + huwttl.huw.hmaand + '-' + huwttl.huw.hjaar + '<br/>' +
                         'aktenummer: ' + huwttl.haktenr + '</div>', true, true, true);
                 }
             }, function () {
@@ -173,7 +173,7 @@
                     self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, true, true);
                 }
                 else {
-                    self.onSuccess(false);
+                    self.onSuccess();
                 }
             });
         });
@@ -239,12 +239,12 @@
             $.unlockNavigation();
             //removeIcon();
 
-            onSuccess.apply(arguments);
+            onSuccess.apply(this, arguments);
         }).fail(function () {
             $.unlockNavigation();
             //removeIcon();
             
-            onFailure.apply(arguments);
+            onFailure.apply(this, arguments);
         });
     };
 
