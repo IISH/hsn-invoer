@@ -396,7 +396,9 @@
             allow = allow && onValidChars(elem, e);
         }
 
-        allow = allow && setOverwrite(elem, e);
+        if (!elem.is('textarea')) {
+            allow = allow && setOverwrite(elem, e);
+        }
 
         return allow;
     }).on('blur', 'input', function (e) {
