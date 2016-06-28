@@ -15,8 +15,7 @@
 
     <div class="col-xs-3 text-left">
       Achternaam: <br/>
-      <span th:utext="${akte.pkknd.anmperp} ? ${akte.pkknd.anmperp}"></span>
-      <span th:utext="${akte.pkknd.tusperp} ? ${akte.pkknd.tusperp}"></span>
+      <span th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteLastName(akte.pkknd.anmperp, akte.pkknd.tusperp)}"></span>
     </div>
 
     <div class="col-xs-3 text-left">

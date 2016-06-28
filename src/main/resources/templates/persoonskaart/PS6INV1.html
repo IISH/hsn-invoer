@@ -16,15 +16,6 @@
                id="anotherChild" name="anotherChild"/>
       </div>
     </div>
-
-    <div class="alert alert-warning extra-top-margin" role="alert" th:if="${akte.pkeigknd.size()} gt 0">
-      Bij eerste invoer zijn er wel kinderen ingevoerd!!! Aantal:
-      <th:block th:utext="${akte.pkeigknd.size()}">0</th:block>
-      <br/>
-      Deze worden verwijderd als u nu voor 'n' kiest! U kunt ze daarna eventueel wel opnieuw invoeren.
-      <br/>
-      Als u nu voor 'j' kiest kunt u de kinderen één voor één corrigeren en eventueel nieuwe kinderen toevoegen.
-    </div>
   </th:block>
 </fieldset>
 

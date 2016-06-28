@@ -263,7 +263,7 @@
   <action-state id="sixthCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
-    <transition on="0" to="PS6INV1"/>
+    <transition on="0" to="PS6COR1"/>
     <transition on="1" to="seventhCorrectionCodeCheck"/>
     <transition on="2" to="seventhCorrectionCodeCheck"/>
     <transition on="3" to="seventhCorrectionCodeCheck"/>
@@ -271,25 +271,41 @@
     <transition on="5" to="seventhCorrectionCodeCheck"/>
     <transition on="6" to="seventhCorrectionCodeCheck"/>
     <transition on="7" to="seventhCorrectionCodeCheck"/>
-    <transition on="8" to="PS6INV1"/>
+    <transition on="8" to="PS6COR1"/>
     <transition on="9" to="seventhCorrectionCodeCheck"/>
   </action-state>
 
-  <!-- PS6INV1: KIND TOEVOEGEN? -->
-  <view-state id="PS6INV1" view="persoonskaart/PS6INV1" model="akte">
-    <transition on="next" to="childCorrectionCheck"/>
+  <!-- PS6COR1: KIND CORRECTIE? -->
+  <view-state id="PS6COR1" view="persoonskaart/PS6COR1" model="akte">
+    <transition on="next" to="childCorrectionCheck1"/>
   </view-state>
 
-  <action-state id="childCorrectionCheck">
-    <evaluate expression="(flowScope.akte.anotherChild == 'n') and
-                          (flowScope.akte.pkeigknd.size() > 0)"/>
+  <action-state id="childCorrectionCheck1">
+    <evaluate expression="(requestParameters.corChild == 'j')"/>
 
-    <transition on="yes" to="PS6COR1"/>
-    <transition on="no" to="childCheck"/>
+    <transition on="yes" to="childCorrectionCheck2"/>
+    <transition on="no" to="seventhCorrectionCodeCheck"/>
   </action-state>
 
-  <!-- PS6COR1: KINDEREN VERWIJDERD, TOCH TOEVOEGEN? -->
-  <view-state id="PS6COR1" view="persoonskaart/PS6COR1" model="akte">
+  <action-state id="childCorrectionCheck2">
+    <evaluate expression="(flowScope.akte.pkeigknd.size() > 0) and (requestParameters.delChild == 'j')"/>
+
+    <transition on="yes" to="PS6COR2"/>
+    <transition on="no" to="childCorrectionCheck3"/>
+  </action-state>
+
+  <action-state id="childCorrectionCheck3">
+    <evaluate expression="flowScope.akte.pkeigknd.size() > 0"/>
+
+    <transition on="yes" to="PS6">
+      <evaluate expression="persoonskaartService.createKind(flowScope.akte)"/>
+    </transition>
+
+    <transition on="no" to="seventhCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- PS6COR2: KINDEREN VERWIJDERD, TOCH TOEVOEGEN? -->
+  <view-state id="PS6COR2" view="persoonskaart/PS6COR2" model="akte">
     <transition on="next" to="childCheck">
       <evaluate expression="persoonskaartService.deleteKinderen(flowScope.akte)"/>
     </transition>
