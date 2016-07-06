@@ -86,18 +86,42 @@
            th:include="fragments/complete-fields :: plaats ('curPkhuw.aplhuwp', 'Plaats van afvoer:')">
       </div>
     </th:block>
-
-    <div class="form-group extra-top-margin">
-      <label class="col-xs-10 control-label">Nog een huwelijk invoeren ? j / n</label>
-
-      <div class="col-xs-2">
-        <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
-               name="anotherMarriage" id="anotherMarriage"/>
-      </div>
-    </div>
   </th:block>
 </fieldset>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, true)"></fieldset>
+
+<span layout:fragment="navigational-form">
+  <div class="form-group">
+    <label class="col-xs-10 control-label" th:if="${akte.isCorrection()} == false">
+      Nog een huwelijk invoeren? j / n
+    </label>
+
+    <label class="col-xs-10 control-label"
+           th:if="${akte.isCorrection()} and ${akte.curPkhuw.vnrhuwp lt akte.pkhuw.size()}">
+      Volgende huwelijken verwijderen? j / n
+    </label>
+
+    <label class="col-xs-10 control-label"
+           th:if="${akte.isCorrection()} and ${akte.curPkhuw.vnrhuwp ge akte.pkhuw.size()}">
+      Nog een huwelijk toevoegen? j / n
+    </label>
+
+    <div class="col-xs-2"
+         th:if="${akte.isCorrection() == false} or ${akte.curPkhuw.vnrhuwp ge akte.pkhuw.size()}">
+      <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+             name="anotherMarriage" id="anotherMarriage"/>
+    </div>
+
+    <div class="col-xs-2"
+         th:if="${akte.isCorrection()} and ${akte.curPkhuw.vnrhuwp lt akte.pkhuw.size()}">
+      <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+             name="delMarriage" id="delMarriage"/>
+
+      <input type="hidden" name="anotherMarriage" data-set-value-when="#delMarriage" data-has-values-in="j"
+             data-then-value="n" data-else-value="j"/>
+    </div>
+  </div>
+</span>
 </body>
 </html>

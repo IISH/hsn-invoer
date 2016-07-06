@@ -8,7 +8,9 @@
   <th:block layout:fragment="fields">
     <div th:if="${akte.huwknd.erken} == 'j'">
       <div class="alert alert-info" role="alert">
-        Er zijn reeds voorkinderen ingevoerd
+        Er zijn reeds
+        <th:block th:utext="${akte.huwvrknd.length}">0</th:block>
+        voorkinderen ingevoerd
       </div>
 
       <div class="form-group extra-top-margin">

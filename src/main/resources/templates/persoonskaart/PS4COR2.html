@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout" xmlns:th="http://www.w3.org/1999/html">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="alert alert-info" role="alert">
+     De <th:block th:utext="${akte.pkhuw.size()}">0</th:block> ingevoerde huwelijk(en) worden nu verwijderd!
+    </div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-8 control-label">
+        Wilt u ze alsnog weer opnieuw invoeren?  j / n
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n" maxlength="1"
+               id="anotherMarriage" name="anotherMarriage"/>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation (false, false)"></fieldset>
+</body>
+</html>

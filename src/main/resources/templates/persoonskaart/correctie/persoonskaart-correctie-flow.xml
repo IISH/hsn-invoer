@@ -130,33 +130,49 @@
   <action-state id="fourthCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
-    <transition on="0" to="PS4INV1"/>
+    <transition on="0" to="PS4COR1"/>
     <transition on="1" to="fifthCorrectionCodeCheck"/>
     <transition on="2" to="fifthCorrectionCodeCheck"/>
     <transition on="3" to="fifthCorrectionCodeCheck"/>
     <transition on="4" to="fifthCorrectionCodeCheck"/>
-    <transition on="5" to="PS4INV1"/>
+    <transition on="5" to="PS4COR1"/>
     <transition on="6" to="fifthCorrectionCodeCheck"/>
-    <transition on="7" to="PS4INV1"/>
+    <transition on="7" to="PS4COR1"/>
     <transition on="8" to="fifthCorrectionCodeCheck"/>
     <transition on="9" to="fifthCorrectionCodeCheck"/>
   </action-state>
 
-  <!-- PS4INV1: HUWELIJK TOEVOEGEN? -->
-  <view-state id="PS4INV1" view="persoonskaart/PS4INV1" model="akte">
-    <transition on="next" to="marriageCorrectionCheck"/>
+  <!-- PS4COR1: HUWELIJK CORRECTIE? -->
+  <view-state id="PS4COR1" view="persoonskaart/PS4COR1" model="akte">
+    <transition on="next" to="marriageCorrectionCheck1"/>
   </view-state>
 
-  <action-state id="marriageCorrectionCheck">
-    <evaluate expression="(flowScope.akte.anotherMarriage == 'n') and
-                          (flowScope.akte.pkhuw.size() > 0)"/>
+  <action-state id="marriageCorrectionCheck1">
+    <evaluate expression="(requestParameters.corMarriage == 'j')"/>
 
-    <transition on="yes" to="PS4COR1"/>
-    <transition on="no" to="marriageCheck"/>
+    <transition on="yes" to="marriageCorrectionCheck2"/>
+    <transition on="no" to="fifthCorrectionCodeCheck"/>
   </action-state>
 
-  <!-- PS4COR1: HUWELIJKEN VERWIJDERD, TOCH TOEVOEGEN? -->
-  <view-state id="PS4COR1" view="persoonskaart/PS4COR1" model="akte">
+  <action-state id="marriageCorrectionCheck2">
+    <evaluate expression="(flowScope.akte.pkhuw.size() > 0) and (requestParameters.delMarriage == 'j')"/>
+
+    <transition on="yes" to="PS4COR2"/>
+    <transition on="no" to="marriageCorrectionCheck3"/>
+  </action-state>
+
+  <action-state id="marriageCorrectionCheck3">
+    <evaluate expression="flowScope.akte.pkhuw.size() > 0"/>
+
+    <transition on="yes" to="PS4">
+      <evaluate expression="persoonskaartService.createHuwelijk(flowScope.akte)"/>
+    </transition>
+
+    <transition on="no" to="fifthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!--PS4COR2: HUWELIJKEN VERWIJDERD, TOCH TOEVOEGEN? -->
+  <view-state id="PS4COR2" view="persoonskaart/PS4COR2" model="akte">
     <transition on="next" to="marriageCheck">
       <evaluate expression="persoonskaartService.deleteMarriages(flowScope.akte)"/>
     </transition>

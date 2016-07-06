@@ -26,21 +26,27 @@
 
         if (self.idnrElem.hasClass('stpb-idnr')) {
             self.idnrElem.blur(function () {
-                self.isTyping = false;
-                self.blur = $(this);
-                self.stpbLookup();
+                if ($.getCurNavigation().isNext) {
+                    self.isTyping = false;
+                    self.blur = $(this);
+                    self.stpbLookup();
+                }
             });
         }
         else if (self.idnrElem.hasClass('rp-idnr') && self.idnrElem.hasClass('no-rp-lookup')) {
             self.idnrElem.blur(function () {
-                self.blur = $(this);
-                self.noRefRPLookup();
+                if ($.getCurNavigation().isNext) {
+                    self.blur = $(this);
+                    self.noRefRPLookup();
+                }
             });
         }
         else if (self.idnrElem.hasClass('rp-idnr')) {
             self.idnrElem.blur(function () {
-                self.blur = $(this);
-                self.refRPLookup();
+                if ($.getCurNavigation().isNext) {
+                    self.blur = $(this);
+                    self.refRPLookup();
+                }
             });
         }
 
@@ -49,8 +55,10 @@
         }
 
         self.huwCheckElem.blur(function () {
-            self.blur = $(this);
-            self.marriageLookup();
+            if ($.getCurNavigation().isNext) {
+                self.blur = $(this);
+                self.marriageLookup();
+            }
         });
     }
 
@@ -218,8 +226,8 @@
         editOp ? self.withOpStateElems.show() : self.withOpStateElems.hide();
         error ? self.nextBtnElem.addClass('op-error') : self.nextBtnElem.removeClass('op-error');
 
-        self.blur.getNextFormElement().focus();
         $.triggerChangeOfState();
+        self.blur.getNextFormElement().focus();
     };
 
     FindOp.prototype.serverCall = function (url, params, onSuccess, onFailure) {

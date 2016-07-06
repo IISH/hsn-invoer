@@ -376,6 +376,13 @@
         }
     };
 
+    var updateScrollPosition = function (elem) {
+        var parent = elem.closest('.complete-focus');
+        if (parent.length > 0) {
+            parent.get(0).scrollIntoView({block: 'end', behavior: 'smooth'});
+        }
+    };
+
     $(document).on('keyup', '.form-elem', function (e) {
         var elem = $(e.target);
 
@@ -419,6 +426,8 @@
         if (elem.is($.getDataElemSelector('replace-in-field'))) {
             onReplaceInField(elem);
         }
+
+        updateScrollPosition(elem);
     });
 
     // IE9 does not support 'maxlength' on textarea
