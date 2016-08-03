@@ -158,17 +158,10 @@
     <evaluate expression="(flowScope.akte.pkhuw.size() > 0) and (requestParameters.delMarriage == 'j')"/>
 
     <transition on="yes" to="PS4COR2"/>
-    <transition on="no" to="marriageCorrectionCheck3"/>
-  </action-state>
 
-  <action-state id="marriageCorrectionCheck3">
-    <evaluate expression="flowScope.akte.pkhuw.size() > 0"/>
-
-    <transition on="yes" to="PS4">
+    <transition on="no" to="PS4">
       <evaluate expression="persoonskaartService.createHuwelijk(flowScope.akte)"/>
     </transition>
-
-    <transition on="no" to="fifthCorrectionCodeCheck"/>
   </action-state>
 
   <!--PS4COR2: HUWELIJKEN VERWIJDERD, TOCH TOEVOEGEN? -->
@@ -307,17 +300,10 @@
     <evaluate expression="(flowScope.akte.pkeigknd.size() > 0) and (requestParameters.delChild == 'j')"/>
 
     <transition on="yes" to="PS6COR2"/>
-    <transition on="no" to="childCorrectionCheck3"/>
-  </action-state>
 
-  <action-state id="childCorrectionCheck3">
-    <evaluate expression="flowScope.akte.pkeigknd.size() > 0"/>
-
-    <transition on="yes" to="PS6">
+    <transition on="no" to="PS6">
       <evaluate expression="persoonskaartService.createKind(flowScope.akte)"/>
     </transition>
-
-    <transition on="no" to="seventhCorrectionCodeCheck"/>
   </action-state>
 
   <!-- PS6COR2: KINDEREN VERWIJDERD, TOCH TOEVOEGEN? -->
