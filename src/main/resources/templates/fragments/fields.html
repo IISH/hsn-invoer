@@ -50,6 +50,11 @@
   </th:block>
 </div>
 
+<div class="col-xs-5" th:fragment="kindrelatie (relatie, requiredField)">
+  <input type="text" class="form-control kindrelatie" th:field="*{__${relatie}__}" hsn:field="relatie"
+         th:classappend="${requiredField} ? 'required'"/>
+</div>
+
 <div class="col-xs-5" th:fragment="beroep (beroep, requiredField)">
   <input type="text" class="form-control beroep" th:field="*{__${beroep}__}" hsn:field="beroep"
          th:classappend="${requiredField} ? 'required'"/>

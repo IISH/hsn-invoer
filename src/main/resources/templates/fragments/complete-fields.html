@@ -31,6 +31,12 @@
   <div th:replace="fragments/fields :: relatie (__${relatie}__, __${relatieId}__, __${onId}__)"></div>
 </div>
 
+<div class="form-group" th:fragment="kindrelatie (relatie, label)">
+  <label class="col-xs-3 control-label" th:utext="${label}">Relatie:</label>
+
+  <div th:replace="fragments/fields :: kindrelatie (__${relatie}__, false)"></div>
+</div>
+
 <div th:fragment="handtekening (hndag)">
   <th:block th:with="hndagVal=${__${'akte.' + hndag}__}">
     <input type="hidden" data-set-value-when="#handtekening-zetten" data-has-values-in="j"

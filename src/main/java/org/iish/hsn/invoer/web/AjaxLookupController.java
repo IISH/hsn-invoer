@@ -108,6 +108,11 @@ public class AjaxLookupController {
         return lookupService.findMatchingRelaties(keyword, id);
     }
 
+    @RequestMapping(value = "/kindrelaties", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<KindRelatie> getKindRelaties(@RequestParam String keyword) {
+        return lookupService.findMatchingKindRelaties(keyword);
+    }
+
     @RequestMapping(value = "/kerkgenootschappen", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Kg> getKerkGenootschappen(@RequestParam String keyword) {
         return lookupService.findMatchingKg(keyword);

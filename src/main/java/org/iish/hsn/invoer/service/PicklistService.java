@@ -1,25 +1,20 @@
 package org.iish.hsn.invoer.service;
 
 import org.iish.hsn.invoer.domain.invoer.WorkOrder;
-import org.iish.hsn.invoer.domain.invoer.pick.Beroep;
-import org.iish.hsn.invoer.domain.invoer.pick.Kg;
-import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
-import org.iish.hsn.invoer.domain.invoer.pick.Relatie;
-import org.iish.hsn.invoer.repository.invoer.pick.BeroepRepository;
-import org.iish.hsn.invoer.repository.invoer.pick.KgRepository;
-import org.iish.hsn.invoer.repository.invoer.pick.PlaatsRepository;
-import org.iish.hsn.invoer.repository.invoer.pick.RelatieRepository;
+import org.iish.hsn.invoer.domain.invoer.pick.*;
+import org.iish.hsn.invoer.repository.invoer.pick.*;
 import org.iish.hsn.invoer.util.InputMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PicklistService {
-    @Autowired private InputMetadata     inputMetadata;
-    @Autowired private PlaatsRepository  plaatsRepository;
-    @Autowired private BeroepRepository  beroepRepository;
-    @Autowired private RelatieRepository relatieRepository;
-    @Autowired private KgRepository      kgRepository;
+    @Autowired private InputMetadata         inputMetadata;
+    @Autowired private PlaatsRepository      plaatsRepository;
+    @Autowired private BeroepRepository      beroepRepository;
+    @Autowired private RelatieRepository     relatieRepository;
+    @Autowired private KindRelatieRepository kindRelatieRepository;
+    @Autowired private KgRepository          kgRepository;
 
     public void setPlaats(String plaats) {
         WorkOrder workOrder = inputMetadata.getWorkOrder();
@@ -58,6 +53,20 @@ public class PicklistService {
             relatieEntity.setWorkOrder(workOrder);
 
             relatieRepository.save(relatieEntity);
+        }
+    }
+
+    public void setKindRelatie(String relatie) {
+        WorkOrder workOrder = inputMetadata.getWorkOrder();
+        KindRelatie kindRelatieEntity =
+                kindRelatieRepository.findByRelatie(relatie.trim(), WorkOrder.EMPTY_WORKORDER, workOrder);
+        if (kindRelatieEntity == null) {
+            kindRelatieEntity = new KindRelatie();
+            kindRelatieEntity.setRelatie(relatie.trim());
+            kindRelatieEntity.setNwinlst("j");
+            kindRelatieEntity.setWorkOrder(workOrder);
+
+            kindRelatieRepository.save(kindRelatieEntity);
         }
     }
 

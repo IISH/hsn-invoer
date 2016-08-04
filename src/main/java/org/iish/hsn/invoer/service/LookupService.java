@@ -49,6 +49,7 @@ public class LookupService {
     @Autowired private PlaatsRepository       plaatsRepository;
     @Autowired private BeroepRepository       beroepRepository;
     @Autowired private RelatieRepository      relatieRepository;
+    @Autowired private KindRelatieRepository  kindRelatieRepository;
     @Autowired private KgRepository           kgRepository;
     @Autowired private AdrestpRepository      adrestpRepository;
 
@@ -286,6 +287,17 @@ public class LookupService {
             return Arrays.asList(relatieRepository.findByRelkode(relkode));
         }
         return relatieRepository
+                .findByRelatieLike(relatie + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
+    }
+
+    /**
+     * Returns the matching kind relaties for the given relatie.
+     *
+     * @param relatie The relatie.
+     * @return The matching kind relaties.
+     */
+    public List<KindRelatie> findMatchingKindRelaties(String relatie) {
+        return kindRelatieRepository
                 .findByRelatieLike(relatie + "%", WorkOrder.EMPTY_WORKORDER, inputMetadata.getWorkOrder());
     }
 

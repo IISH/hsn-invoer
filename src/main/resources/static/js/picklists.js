@@ -16,6 +16,11 @@
             '/ajax/lookup/relaties', '/ajax/picklist/set/relatie', false);
     };
 
+    var initializeKindRelatiePicklists = function (elem) {
+        initializeAjaxPickLists(elem.find('.kindrelatie'), null, 'relatie',
+            '/ajax/lookup/kindrelaties', '/ajax/picklist/set/kindrelatie', false);
+    };
+
     var initializeKerkGenootschapPicklists = function (elem) {
         initializeAjaxPickLists(elem.find('.kg'), null, 'kerkgeno',
             '/ajax/lookup/kerkgenootschappen', '/ajax/picklist/set/kerkgenootschap', false);
@@ -168,6 +173,7 @@
         initializePlaatsPicklists(elem);
         initializeBeroepPicklists(elem);
         initializeRelatiePicklists(elem);
+        initializeKindRelatiePicklists(elem);
         initializeBurgStandPicklists(elem);
         initializeKerkGenootschapPicklists(elem);
         initializeAdresTypePicklists(elem);
