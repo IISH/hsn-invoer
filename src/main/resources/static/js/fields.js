@@ -181,18 +181,6 @@
                 return false;
             }
         );
-
-        hasNoErrors(
-            elem, showWhen,
-            function () {
-                elem.show();
-                return true;
-            },
-            function () {
-                elem.hide();
-                return false;
-            }
-        );
     };
 
     /**
@@ -305,29 +293,6 @@
 
         onEvent();
         $(target).change(onEvent);
-    };
-
-    var hasNoErrors = function (elem, target, onTrue, onFalse) {
-        var previousResult = null;
-        if (elem.data('has-no-errors') !== undefined) {
-            var onEvent = function () {
-                var newResult = null;
-                if (target.hasClass('has-an-error')) {
-                    newResult = onFalse();
-                }
-                else {
-                    newResult = onTrue();
-                }
-
-                if (newResult !== previousResult) {
-                    $.triggerChangeOfState();
-                }
-                previousResult = newResult;
-            };
-
-            onEvent();
-            $(document).blur(onEvent);
-        }
     };
 
     var prepareByz = function (elem) {
