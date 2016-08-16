@@ -14,6 +14,7 @@
         self.withoutOpElems = $('.without-op');
         self.withOpStateElems = $('.with-op-state');
         self.huwCheckElem = $('.huw-check');
+        self.militieCheckElem = $('.militie-check');
         self.nextBtnElem = $('.btn-next');
         self.lookup = elem.getDataValue('lookup');
 
@@ -58,6 +59,17 @@
             if ($.getCurNavigation().isNext) {
                 self.blur = $(this);
                 self.marriageLookup();
+            }
+        });
+
+        if (!self.militieCheckElem.is(':input')) {
+            self.militieCheckElem = self.militieCheckElem.find(':input:last');
+        }
+
+        self.militieCheckElem.blur(function () {
+            if ($.getCurNavigation().isNext) {
+                self.blur = $(this);
+                self.militionLookup();
             }
         });
     }
@@ -187,6 +199,30 @@
         });
     };
 
+    FindOp.prototype.militionLookup = function () {
+        self.withIdnr(function (idnr) {
+            var year = $('.year').val();
+            var seq = $('.seq').val();
+
+            self.serverCall('/ajax/lookup/m0', {idnr: idnr, year: year, seq: seq}, function (militie) {
+                if ($.isCorrection()) {
+                    self.onSuccess();
+                }
+                else {
+                    self.onFailure('Het miltitieregister van deze persoon is reeds ingevoerd, ' +
+                        'het gaat hier om bovenstaand identificatienummer en ...', true, true, true);
+                }
+            }, function () {
+                if ($.isCorrection()) {
+                    self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, true, true);
+                }
+                else {
+                    self.onSuccess();
+                }
+            });
+        });
+    };
+    
     FindOp.prototype.onSuccess = function (autoNextElement) {
         self.failElem.hide();
 

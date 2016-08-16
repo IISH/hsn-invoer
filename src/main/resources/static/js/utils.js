@@ -33,6 +33,14 @@
     $(document).ready(function () {
         runInit($(document));
 
+        if ($('#view').length > 0) {
+            var hsnCanvas = new HsnCanvas('view', false);
+            var image = sessionStorage.getItem('image');
+            if (image !== null) {
+                hsnCanvas.loadImage(image);
+            }
+        }
+
         // Keep the session alive, call keepalive every minute
         setInterval(function () {
             $.post('/keepalive');
@@ -112,7 +120,7 @@
         if (e.namespace === 'bs.modal') {
             $(e.target)
                 .data('focus-element-id', $(':focus').attr('id'))
-                .find('input').filter(':enabled:visible').first().focus();
+                .find('.form-elem').filter(':enabled:visible').first().focus();
         }
     }).on('hidden.bs.modal', function (e) {
         if (e.namespace === 'bs.modal') {

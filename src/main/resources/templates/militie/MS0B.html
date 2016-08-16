@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">GEGEVENS REGISTER:</div>
+
+    <div class="form-group extra-top-margin">
+      <div class="row">
+        <label class="col-xs-3 control-label">
+          Type register:
+        </label>
+
+        <label class="col-xs-5 control-label left">
+          1 = Alfabetische naamlijst
+        </label>
+      </div>
+
+      <div class="row">
+        <label class="col-xs-offset-3 col-xs-5 control-label left">
+          2 = Lotingsregister
+        </label>
+      </div>
+
+      <div class="row">
+        <label class="col-xs-offset-3 col-xs-5 control-label left">
+          3 = Klapper
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit integer-field required" maxlength="1"
+                 data-valid-chars="1;2;3" th:field="*{mil.type}" hsn:field="mil.type"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" th:include="fragments/complete-fields :: plaats ('mil.municipality', 'Gemeente:')"></div>
+
+    <div class="form-group">
+      <label class="col-xs-3 control-label">Inventaris nummer:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control" th:field="*{mil.invNumber}" hsn:field="mil.invNumber"/>
+      </div>
+    </div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+
+<fieldset layout:fragment="navigation"
+          th:include="fragments/navigation :: navigation-byz-modal (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
+</th:block>
+</body>
+</html>

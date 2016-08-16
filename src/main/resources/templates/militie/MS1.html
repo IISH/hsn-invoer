@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">GEGEVENS LOTELING:</div>
+
+    <div class="extra-top-margin" th:include="fragments/groups-of-fields :: namen-nieuw ('milReg.familyName', 'milReg.firstName')">
+    </div>
+
+    <th:block th:if="${akte.is1862() or akte.isOtherYear()}">
+      <div class="form-group extra-top-margin"
+           th:include="fragments/complete-fields :: plaats ('milReg.placeOfBirth', 'Geboorteplaats:')"></div>
+    </th:block>
+
+    <div class="form-group checkDateDefault" th:classappend="${akte.is1817()} ? 'extra-top-margin'">
+      <label class="col-xs-3 control-label">Geboortedatum:</label>
+
+      <div th:replace="fragments/fields :: datum ('milReg.dayOfBirth', 'milReg.monthOfBirth', 'milReg.yearOfBirth')"></div>
+    </div>
+
+    <th:block th:if="${akte.is1817()}">
+      <div class="form-group"
+           th:include="fragments/complete-fields :: plaats ('milReg.placeOfBirth', 'Geboorteplaats:')"></div>
+    </th:block>
+
+    <div class="form-group extra-top-margin"
+         th:include="fragments/complete-fields :: plaats ('milReg.placeOfLiving', ${akte.is1817() ? 'Verblijfplaats:' : 'Woonplaats:'})"></div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
+</th:block>
+</body>
+</html>

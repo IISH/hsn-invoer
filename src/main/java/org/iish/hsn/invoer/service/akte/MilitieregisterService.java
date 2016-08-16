@@ -1,0 +1,235 @@
+package org.iish.hsn.invoer.service.akte;
+
+import org.iish.hsn.invoer.domain.invoer.mil.Milition;
+import org.iish.hsn.invoer.domain.invoer.mil.MilitionId;
+import org.iish.hsn.invoer.domain.invoer.mil.MilitionRegistration;
+import org.iish.hsn.invoer.domain.invoer.mil.Verdict;
+import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
+import org.iish.hsn.invoer.exception.AkteException;
+import org.iish.hsn.invoer.exception.NotFoundException;
+import org.iish.hsn.invoer.flow.state.MilitieregisterFlowState;
+import org.iish.hsn.invoer.repository.invoer.mil.MilitionRegistrationRepository;
+import org.iish.hsn.invoer.repository.invoer.mil.MilitionRepository;
+import org.iish.hsn.invoer.repository.invoer.mil.VerdictRepository;
+import org.iish.hsn.invoer.service.LookupService;
+import org.iish.hsn.invoer.util.InputMetadata;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Deals with the preparation and storage of various elements of the 'militieregister'.
+ */
+@Service
+public class MilitieregisterService {
+    @Autowired private InputMetadata inputMetadata;
+    @Autowired private LookupService lookupService;
+    @Autowired private MilitionRepository militionRepository;
+    @Autowired private MilitionRegistrationRepository militionRegistrationRepository;
+    @Autowired private VerdictRepository verdictRepository;
+
+    /**
+     * Creates a new militieregister flow state for new input with all required domain objects.
+     *
+     * @return A new militieregister flow state.
+     */
+    public MilitieregisterFlowState createNewAkteForNewInput() {
+        MilitieregisterFlowState militieregisterFlow = createNewAkte();
+        militieregisterFlow.setCorrection(false);
+        return militieregisterFlow;
+    }
+
+    /**
+     * Creates a new militieregister flow state for correction with all required domain objects.
+     *
+     * @return A new militieregister flow state.
+     */
+    public MilitieregisterFlowState createNewAkteForCorrection() {
+        MilitieregisterFlowState militieregisterFlow = createNewAkte();
+        militieregisterFlow.setCorrection(true);
+        return militieregisterFlow;
+    }
+
+    /**
+     * Link the OP (onderzoekspersoon, research person) of whom the user has the milition register.
+     *
+     * @param militieregisterFlow The milition register flow state.
+     * @throws AkteException Thrown when the OP was not found in the reference table.
+     */
+    public void registerOP(MilitieregisterFlowState militieregisterFlow) throws AkteException {
+        try {
+            Milition milition = militieregisterFlow.getMil();
+            MilitionRegistration militionRegistration = militieregisterFlow.getMilReg();
+
+            Ref_RP refRp = lookupService.getRefRp(milition.getIdnr(), true);
+            militieregisterFlow.setRefRp(refRp);
+
+            militionRegistration.setIdnr(milition.getIdnr());
+            militionRegistration.setMilitionId(milition.getMilitionId());
+
+            militionRegistration.setDayOfBirth(refRp.getDayOfBirth());
+            militionRegistration.setMonthOfBirth(refRp.getMonthOfBirth());
+            militionRegistration.setYearOfBirth(refRp.getYearOfBirth());
+
+            militionRegistration.setFamilyName(refRp.getLastName());
+            militionRegistration.setFirstName(refRp.getFirstName());
+
+            militionRegistration.setFamilyNameFather(refRp.getLastNameFather());
+            militionRegistration.setFirstNameFather(refRp.getFirstNameFather());
+
+            militionRegistration.setFamilyNameMother(refRp.getLastNameMother());
+            militionRegistration.setFirstNameMother(refRp.getFirstNameMother());
+
+            Plaats plaats = lookupService.getPlaats(refRp.getNumberMunicipality(), false);
+            if (plaats != null) {
+                milition.setMunicipality(plaats.getGemnaam());
+            }
+        }
+        catch (NotFoundException nfe) {
+            throw new AkteException(nfe);
+        }
+    }
+
+    /**
+     * Link the OP (onderzoekspersoon, research person) of whom the user has to edit the milition register.
+     *
+     * @param militieregisterFlow The milition register flow state.
+     * @throws AkteException Thrown when the OP was not found in the reference table.
+     */
+    public void editOP(MilitieregisterFlowState militieregisterFlow) throws AkteException {
+        try {
+            Milition milition = militieregisterFlow.getMil();
+            MilitionId militionId = milition.getMilitionId();
+
+            militieregisterFlow.setRefRp(lookupService.getRefRp(milition.getIdnr(), true));
+            militieregisterFlow.setMil(lookupService.getMilition(milition.getIdnr(), militionId, true));
+
+            milition = militionRepository.findByIdnrAndMilitionIdAndWorkOrder(
+                    milition.getIdnr(), militionId, inputMetadata.getWorkOrder());
+            if (milition != null) {
+                militieregisterFlow.setMil(milition);
+            }
+
+            MilitionRegistration militionRegistration =
+                    militionRegistrationRepository.findByIdnrAndMilitionIdAndWorkOrder(
+                            milition.getIdnr(), militionId, inputMetadata.getWorkOrder());
+            if (militionRegistration != null) {
+                militieregisterFlow.setMilReg(militionRegistration);
+            }
+
+            List<Verdict> verdicts = verdictRepository.findByIdnrAndMilitionIdAndWorkOrder(
+                    milition.getIdnr(), militionId, inputMetadata.getWorkOrder());
+            if (verdicts != null) {
+                for (Verdict verdict : verdicts) {
+                    militieregisterFlow.getVerdict().put(Verdict.Type.getType(verdict.getType()), verdict);
+                }
+            }
+        }
+        catch (NotFoundException nfe) {
+            throw new AkteException(nfe);
+        }
+    }
+
+    /**
+     * Process the scan, called after screen MS0A.
+     *
+     * @param militieregisterFlow The milition register flow state.
+     */
+    public void processScan(MilitieregisterFlowState militieregisterFlow) {
+        // TODO
+    }
+
+    /**
+     * Persists the milition record to the database.
+     *
+     * @param militieregisterFlow The milition register flow state.
+     */
+    public void saveMil(MilitieregisterFlowState militieregisterFlow) {
+        Milition mil = militieregisterFlow.getMil();
+        inputMetadata.saveToEntity(mil);
+        mil = militionRepository.save(mil);
+        militieregisterFlow.setMil(mil);
+
+        saveMilReg(militieregisterFlow);
+    }
+
+    /**
+     * Persists the milition registration record to the database.
+     *
+     * @param militieregisterFlow The militie register flow state.
+     */
+    public void saveMilReg(MilitieregisterFlowState militieregisterFlow) {
+        MilitionRegistration milReg = militieregisterFlow.getMilReg();
+        inputMetadata.saveToEntity(milReg);
+        milReg = militionRegistrationRepository.save(milReg);
+        militieregisterFlow.setMilReg(milReg);
+    }
+
+    /**
+     * Process the verdicts, called after view state MS6.
+     *
+     * @param militieregisterFlow The militie register flow state.
+     */
+    public void processVerdicts(MilitieregisterFlowState militieregisterFlow) {
+        for (Verdict verdict : militieregisterFlow.getVerdict().values()) {
+            if ((verdict.getDayOfVerdict() == 0) && (verdict.getMonthOfVerdict() == 0)
+                    && (verdict.getYearOfVerdict() == 0)) {
+                verdictRepository.delete(verdict);
+            }
+            else {
+                verdict.setIdnr(militieregisterFlow.getMil().getIdnr());
+                verdict.setMilitionId(militieregisterFlow.getMil().getMilitionId());
+
+                inputMetadata.saveToEntity(verdict);
+                verdict = verdictRepository.save(verdict);
+                militieregisterFlow.getVerdict().put(Verdict.Type.getType(verdict.getType()), verdict);
+            }
+        }
+
+        saveMilReg(militieregisterFlow);
+    }
+
+    /**
+     * Deletes the current militie register.
+     *
+     * @param militieregisterFlow The militie register flow state.
+     */
+    public void deleteAkte(MilitieregisterFlowState militieregisterFlow) {
+        militionRepository.delete(militieregisterFlow.getMil());
+        militionRegistrationRepository.delete(militieregisterFlow.getMilReg());
+        verdictRepository.delete(militieregisterFlow.getVerdict().values());
+    }
+
+    /**
+     * Deletes the current militie register.
+     *
+     * @param militieregisterFlow The militie register flow state.
+     * @param bewust              Confirmation of the user to delete the akte.
+     */
+    public void deleteAkte(MilitieregisterFlowState militieregisterFlow, String bewust) {
+        if ((bewust != null) && bewust.trim().equalsIgnoreCase("bewust")) {
+            deleteAkte(militieregisterFlow);
+        }
+    }
+
+    /**
+     * Creates a new militieregister flow state with all required domain objects.
+     *
+     * @return A new militieregister flow state.
+     */
+    private MilitieregisterFlowState createNewAkte() {
+        Milition milition = new Milition();
+        MilitionRegistration militionRegistration = new MilitionRegistration();
+
+        Map<Verdict.Type, Verdict> verdict = new HashMap<>();
+        for (Verdict.Type type : Verdict.Type.values()) {
+            verdict.put(type, new Verdict(type.getType()));
+        }
+
+        return new MilitieregisterFlowState(milition, militionRegistration, verdict);
+    }
+}

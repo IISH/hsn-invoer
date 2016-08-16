@@ -6,15 +6,6 @@
 
 <fieldset class="content-spacing" layout:fragment="main">
   <div class="form-group">
-    <label class="col-xs-5 control-label">Tik hier uw initialen:</label>
-
-    <div class="col-xs-2">
-      <input type="text" class="form-control form-control-small" id="init" name="init" maxlength="3"
-             style="text-transform:uppercase;"/>
-    </div>
-  </div>
-
-  <div class="form-group">
     <label class="col-xs-5 control-label">Afkorting onderzoek:</label>
 
     <div class="col-xs-2">
@@ -32,16 +23,20 @@
     </div>
   </div>
 
-  <div class="pull-right">
-    <button type="submit" name="next" class="btn btn-default btn-sm btn-next">
-      OKE
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    </button>
+  <div class="clearfix">
+    <div class="pull-right">
+      <button type="submit" name="next" class="btn btn-default btn-sm btn-next">
+        OKE
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      </button>
 
-    <button type="submit" name="logout" class="btn btn-default btn-right-spacing btn-sm btn-logout">
-      Afsluiten / Uitloggen
-    </button>
+      <button type="submit" name="logout" class="btn btn-default btn-right-spacing btn-sm btn-logout">
+        Afsluiten / Uitloggen
+      </button>
+    </div>
   </div>
+
+  <div class="alert alert-danger extra-top-margin messages clearfix" role="alert" style="display:none;"></div>
 </fieldset>
 
 <footer layout:fragment="footer" th:include="layoutFragments :: footer ('Voormenu')"></footer>

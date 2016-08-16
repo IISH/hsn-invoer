@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html layout:decorator="layout">
+<head></head>
+<body>
+<div layout:fragment="content">
+  <form method="post" class="form-horizontal">
+    <fieldset class="content-spacing">
+      <div class="form-group">
+        <label class="col-xs-7 control-label" th:if="${akte.isCorrection()} == false">
+          Nog een register invoeren? j / n
+        </label>
+
+        <label class="col-xs-7 control-label" th:if="${akte.isCorrection()}">
+          Nog een correctie? j / n
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+                 maxlength="1" id="anotherFlow" name="anotherFlow"/>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="content-spacing" th:include="fragments/navigation :: navigation-byz-modal (false, false)"></fieldset>
+  </form>
+</div>
+</body>
+</html>

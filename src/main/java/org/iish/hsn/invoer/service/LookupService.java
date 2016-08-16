@@ -7,6 +7,8 @@ import org.iish.hsn.invoer.domain.invoer.geb.Gebakte;
 import org.iish.hsn.invoer.domain.invoer.geb.Gebknd;
 import org.iish.hsn.invoer.domain.invoer.huw.Huw;
 import org.iish.hsn.invoer.domain.invoer.huw.Huwttl;
+import org.iish.hsn.invoer.domain.invoer.mil.Milition;
+import org.iish.hsn.invoer.domain.invoer.mil.MilitionId;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlknd;
 import org.iish.hsn.invoer.domain.invoer.pick.*;
 import org.iish.hsn.invoer.domain.invoer.pk.Pkknd;
@@ -18,6 +20,7 @@ import org.iish.hsn.invoer.repository.invoer.bev.RegistrationRepository;
 import org.iish.hsn.invoer.repository.invoer.geb.GebakteRepository;
 import org.iish.hsn.invoer.repository.invoer.geb.GebkndRepository;
 import org.iish.hsn.invoer.repository.invoer.huw.HuwttlRepository;
+import org.iish.hsn.invoer.repository.invoer.mil.MilitionRepository;
 import org.iish.hsn.invoer.repository.invoer.ovl.OvlkndRepository;
 import org.iish.hsn.invoer.repository.invoer.pick.*;
 import org.iish.hsn.invoer.repository.invoer.pk.PkkndRepository;
@@ -46,6 +49,7 @@ public class LookupService {
     @Autowired private HuwttlRepository       huwttlRepository;
     @Autowired private PkkndRepository        pkkndRepository;
     @Autowired private RegistrationRepository registrationRepository;
+    @Autowired private MilitionRepository     militionRepository;
     @Autowired private PlaatsRepository       plaatsRepository;
     @Autowired private BeroepRepository       beroepRepository;
     @Autowired private RelatieRepository      relatieRepository;
@@ -231,6 +235,24 @@ public class LookupService {
      */
     public List<Registration> getRegistrationsOfOp(int idnr) {
         return registrationRepository.findByOP(idnr, inputMetadata.getWorkOrder());
+    }
+
+    /**
+     * Returns the milition (m0) for the given milition id.
+     *
+     * @param idnr The idnr.
+     * @param militionId The milition id.
+     * @param throwException Whether to throw an exception if not found or to return null.
+     * @return The milition (m0).
+     * @throws NotFoundException Thrown if the record was not found.
+     */
+    public Milition getMilition(int idnr, MilitionId militionId, boolean throwException) throws NotFoundException {
+        Milition milition =
+                militionRepository.findByIdnrAndMilitionIdAndWorkOrder(idnr, militionId, inputMetadata.getWorkOrder());
+        if ((milition == null) && throwException) {
+            throw new NotFoundException("Milition with id " + militionId + " could not be found!");
+        }
+        return milition;
     }
 
     /**

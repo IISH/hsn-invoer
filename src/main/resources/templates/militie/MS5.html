@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">REDENEN/BEZWAREN OPGEGEVEN BIJ MILITIECOMMISSARIS/COMMISSIE:</div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-5 control-label">Redenen tot vrijstelling:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control" th:field="*{milReg.reasonsExcempion}" hsn:field="milReg.reasonsExcempion"/>
+      </div>
+    </div>
+
+    <div class="form-group" th:if="${!akte.is1862()}">
+      <label class="col-xs-5 control-label">Redenen ongeschiktheid:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control" th:field="*{milReg.reasonsInapplicability}" hsn:field="milReg.reasonsInapplicability"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-5 control-label">Advies:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control" th:field="*{milReg.advice}" hsn:field="milReg.advice"/>
+      </div>
+    </div>
+
+    <div class="form-header letter-spacing extra-top-margin">GRONDEN OPGEGEVEN BIJ MILITIERAAD:</div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-5 control-label">Gronden vrijstelling:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control" th:field="*{milReg.motiveExcempion}" hsn:field="milReg.motiveExcempion"/>
+      </div>
+    </div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
+</th:block>
+</body>
+</html>

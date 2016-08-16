@@ -6,6 +6,8 @@ import org.iish.hsn.invoer.domain.invoer.geb.Gebakte;
 import org.iish.hsn.invoer.domain.invoer.geb.Gebknd;
 import org.iish.hsn.invoer.domain.invoer.huw.Huw;
 import org.iish.hsn.invoer.domain.invoer.huw.Huwttl;
+import org.iish.hsn.invoer.domain.invoer.mil.Milition;
+import org.iish.hsn.invoer.domain.invoer.mil.MilitionId;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlknd;
 import org.iish.hsn.invoer.domain.invoer.pick.*;
 import org.iish.hsn.invoer.domain.invoer.pk.Pkknd;
@@ -89,6 +91,11 @@ public class AjaxLookupController {
     @RequestMapping(value = "/b4/op/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Registration> getRegistrationsForOP(int idnr) throws NotFoundException {
         return lookupService.getRegistrationsOfOp(idnr);
+    }
+
+    @RequestMapping(value = "/m0", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Milition getMilition(int idnr, MilitionId militionId) throws NotFoundException {
+        return lookupService.getMilition(idnr, militionId, true);
     }
 
     @RequestMapping(value = "/plaatsen", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

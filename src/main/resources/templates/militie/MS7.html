@@ -1,0 +1,152 @@
+<!doctype html>
+<html layout:decorator="formViewLayout">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">AANSTELLING:</div>
+
+    <div class="form-group extra-top-margin">
+      <div class="row">
+        <label class="col-xs-3 control-label">
+          Aanstelling:
+        </label>
+
+        <label class="col-xs-5 control-label left">
+          v = Loteling is vrijgesteld
+        </label>
+      </div>
+
+      <div class="row">
+        <label class="col-xs-offset-3 col-xs-5 control-label left">
+          z = Loteling dient zelf
+        </label>
+      </div>
+
+      <div class="row">
+        <label class="col-xs-offset-3 col-xs-5 control-label left">
+          p = Loteling heeft plaatsvervanger aangesteld
+        </label>
+      </div>
+
+      <div class="row">
+        <label class="col-xs-offset-3 col-xs-5 control-label left">
+          w = Loteling heeft nummer verwisseld
+        </label>
+      </div>
+
+      <div class="row">
+        <label class="col-xs-offset-3 col-xs-5 control-label left">
+          n = Niet van toepassing
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="v;z;p;w;n"
+                 th:field="*{milReg.substitute}" hsn:field="milReg.substitute"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="extra-top-margin" data-show-when="#milReg\.substitute" data-has-values-in="v" style="display:none;"
+         th:if="${!akte.is1817()}">
+      <div class="form-group">
+        <label class="col-xs-7 control-label">Vrijstelling wegens ziekelijke gesteldheid? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" id="ziek" class="form-control form-control-digit required"
+                 data-valid-chars="j;n" maxlength="1"
+                 th:value="${@militieregisterHelper.getVrijstellingWegensZiekte(akte.milReg, akte.isCorrection())}"/>
+        </div>
+      </div>
+
+      <div class="form-group" data-show-when="#ziekte" data-has-values-in="j" style="display:none;">
+        <label class="col-xs-3 control-label">Nummer uit het regelement:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-small integer-field"
+                 th:field="*{milReg.numberRegulationIllness}" hsn:field="milReg.numberRegulationIllness"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="extra-top-margin" data-show-when="#milReg\.substitute" data-has-values-in="z" style="display:none;">
+      <div class="form-group" th:if="${!akte.is1817()}">
+        <label class="col-xs-7 control-label">Heeft loteling voor zeemilitie aangeleverd? j / n / o</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
+                 maxlength="1" th:field="*{milReg.inNaval}" hsn:field="milReg.inNaval"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label">Korps / Positie inlijving:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{milReg.positionAnnexation}" hsn:field="milReg.positionAnnexation"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label">Datum van inlijving:</label>
+
+        <div th:replace="fragments/fields :: datum ('milReg.dayOfAnnexation', 'milReg.monthOfAnnexation', 'milReg.yearOfAnnexation')"></div>
+      </div>
+    </div>
+
+    <div class="extra-top-margin" data-show-when="#milReg\.substitute" data-has-values-in="p;w" style="display:none;">
+      <div class="form-group" th:if="${!akte.is1817()}">
+        <label class="col-xs-3 control-label">Achternaam:</label>
+
+        <div class="col-xs-4">
+          <input type="text" class="form-control"
+                 th:field="*{milReg.familyNameSubstitute}" hsn:field="milReg.familyNameSubstitute"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${!akte.is1817()}">
+        <label class="col-xs-3 control-label">Voornamen:</label>
+
+        <div class="col-xs-4">
+          <input type="text" class="form-control"
+                 th:field="*{milReg.firstNameSubstitute}" hsn:field="milReg.firstNameSubstitute"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label">Nummer op register AA:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-small integer-field"
+                 th:field="*{milReg.substituteNumber}" hsn:field="milReg.substituteNumber"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-header letter-spacing extra-top-margin">AANMERKINGEN:</div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-3 control-label">Aamerkingen:</label>
+
+      <div class="col-xs-6">
+        <textarea class="form-control form-control-small" th:field="*{milReg.remarks}" hsn:field="milReg.remarks">
+        </textarea>
+      </div>
+    </div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<fieldset class="title" th:fragment="MSTITEL-TOP">
+  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER MILITIEREGISTER VAN:</legend>
+  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE MILITIEREGISTER VAN:</legend>
+
+  <div class="row">
+    <div class="col-xs-offset-1 col-xs-2 text-left">
+      Idnr: <br/>
+      <span th:utext="${akte.mil.idnr} ? ${akte.mil.idnr}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Jaar: <br/>
+      <span th:utext="${akte.mil.militionId.year} ? ${akte.mil.militionId.year}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Achternaam: <br/>
+      <span th:utext="${akte.milReg.familyName} ? ${akte.milReg.familyName}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Voornaam: <br/>
+      <span th:utext="${akte.milReg.firstName} ? ${akte.milReg.firstName}"></span>
+    </div>
+  </div>
+</fieldset>
+
+<div th:fragment="MSTITEL-SIDE">
+  <div class="form-header text-center" th:if="${akte.isCorrection()} == false">INVOER MILITIEREGISTER VAN:</div>
+  <div class="form-header text-center" th:if="${akte.isCorrection()}">CORRECTIE MILITIEREGISTER VAN:</div>
+
+  <div class="row extra-top-margin-sm">
+    <div class="col-xs-offset-1 col-xs-2 text-left">
+      Idnr: <br/>
+      <span th:utext="${akte.mil.idnr} ? ${akte.mil.idnr}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Jaar: <br/>
+      <span th:utext="${akte.mil.militionId.year} ? ${akte.mil.militionId.year}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Achternaam: <br/>
+      <span th:utext="${akte.milReg.familyName} ? ${akte.milReg.familyName}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Voornaam: <br/>
+      <span th:utext="${akte.milReg.firstName} ? ${akte.milReg.firstName}"></span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-TOP"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <textarea class="form-control" rows="8" th:field="*{milReg.byz}" hsn:field="milReg.byz">
+    </textarea>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, false)"></fieldset>
+</body>
+</html>

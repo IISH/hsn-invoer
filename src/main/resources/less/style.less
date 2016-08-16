@@ -2,15 +2,27 @@
 
 @form-group-margin-bottom: 5px;
 
+html, body {
+  height: 100%;
+}
+
 #main {
   position: relative;
   width: 900px;
-  margin-top: 10px;
+  padding-top: 10px;
+
+  &.two-column {
+    width: 1500px;
+  }
 
   &.extend-width {
     width: 100%;
     min-width: 900px;
   }
+}
+
+#view-container {
+  margin-bottom: 20px;
 }
 
 body {
@@ -44,6 +56,18 @@ header {
   fieldset {
     display: table-column; // Fixes scrollbar issues within a fieldset in Firefox
   }
+}
+
+canvas {
+  border: 1px solid #adadad;
+}
+
+/*.fields-divider {
+  border-right: 1px solid #adadad;
+}*/
+
+.info {
+  font-size: 80%;
 }
 
 fieldset {
@@ -194,7 +218,7 @@ form {
   &:extend(.clearfix all);
 }
 
-.form-control {
+.form-control:not(textarea) {
   &.form-control-digit {
     width: 40px;
   }
@@ -214,6 +238,10 @@ form {
 
 textarea.form-control {
   height: 120px;
+
+  &.form-control-small {
+    height: 80px;
+  }
 }
 
 .has-error-incorrect .form-control {
