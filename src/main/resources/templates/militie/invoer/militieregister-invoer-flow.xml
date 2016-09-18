@@ -20,7 +20,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="MS0B">
-      <evaluate expression="militieregisterService.processScan(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.processScan(flowScope.akte, requestParameters.scanData)"/>
     </transition>
   </view-state>
 

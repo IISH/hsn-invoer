@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html layout:decorator="formViewLayout">
+<html layout:decorator="formViewLayout"
+      th:with="imageUrl=${'/militie/scan?idnr=' + akte.mil.idnr + '&amp;year=' + akte.mil.militionId.year + '&amp;seq=' + akte.mil.militionId.seq + '&amp;crop=true'}">
 <head></head>
 <body>
 <fieldset>

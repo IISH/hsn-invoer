@@ -33,11 +33,26 @@
     $(document).ready(function () {
         runInit($(document));
 
-        if ($('#view').length > 0) {
+        var viewElem = $('#view');
+        if (viewElem.length > 0) {
             var hsnCanvas = new HsnCanvas('view', false);
-            var image = sessionStorage.getItem('image');
+            var image = sessionStorage.getItem('hsnScan');
             if (image !== null) {
                 hsnCanvas.loadImage(image);
+            }
+            else {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if ((this.readyState === 4) && (this.status === 200)) {
+                        $.imageBlobToDataUrl(this.response, function (dataUrl) {
+                            sessionStorage.setItem('hsnScan', dataUrl);
+                            hsnCanvas.loadImage(dataUrl);
+                        });
+                    }
+                };
+                xhr.open('GET', viewElem.data('image-url'));
+                xhr.responseType = 'blob';
+                xhr.send();
             }
         }
 
@@ -180,6 +195,14 @@
             .not('[type=hidden]')
             .not('.noResetOnHidden')
             .valNoEvent('');
+    };
+
+    $.imageBlobToDataUrl = function (blob, callback) {
+        var reader = new FileReader();
+        reader.onload = function (evt) {
+            callback(evt.target.result);
+        };
+        reader.readAsDataURL(blob);
     };
 
     /* TODO: Prevent using timeout in bevolkingsregister in Chrome */

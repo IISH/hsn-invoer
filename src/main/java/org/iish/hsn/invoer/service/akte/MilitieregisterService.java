@@ -1,5 +1,6 @@
 package org.iish.hsn.invoer.service.akte;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.iish.hsn.invoer.domain.invoer.mil.Milition;
 import org.iish.hsn.invoer.domain.invoer.mil.MilitionId;
 import org.iish.hsn.invoer.domain.invoer.mil.MilitionRegistration;
@@ -13,10 +14,13 @@ import org.iish.hsn.invoer.repository.invoer.mil.MilitionRegistrationRepository;
 import org.iish.hsn.invoer.repository.invoer.mil.MilitionRepository;
 import org.iish.hsn.invoer.repository.invoer.mil.VerdictRepository;
 import org.iish.hsn.invoer.service.LookupService;
+import org.iish.hsn.invoer.service.scan.MilitionScan;
+import org.iish.hsn.invoer.service.scan.ScansService;
 import org.iish.hsn.invoer.util.InputMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +35,7 @@ public class MilitieregisterService {
     @Autowired private MilitionRepository militionRepository;
     @Autowired private MilitionRegistrationRepository militionRegistrationRepository;
     @Autowired private VerdictRepository verdictRepository;
+    @Autowired private ScansService scansService;
 
     /**
      * Creates a new militieregister flow state for new input with all required domain objects.
@@ -138,9 +143,23 @@ public class MilitieregisterService {
      * Process the scan, called after screen MS0A.
      *
      * @param militieregisterFlow The milition register flow state.
+     * @param scanData            The cropped scan, base64 encoded.
      */
-    public void processScan(MilitieregisterFlowState militieregisterFlow) {
-        // TODO
+    public void processScan(MilitieregisterFlowState militieregisterFlow, String scanData) throws AkteException {
+        try {
+            Milition milition = militieregisterFlow.getMil();
+            MilitionId militionId = milition.getMilitionId();
+            MilitionScan militionScan = scansService.getMilitionScan(
+                    milition.getIdnr(), militionId.getYear(), militionId.getSeq());
+
+            ObjectMapper mapper = new ObjectMapper();
+            byte[] scan = mapper.convertValue(scanData.replaceFirst("data:image/jpeg;base64,", ""), byte[].class);
+
+            militionScan.saveCroppedScan(scan);
+        }
+        catch (IOException ioe) {
+            throw new AkteException(ioe);
+        }
     }
 
     /**

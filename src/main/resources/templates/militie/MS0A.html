@@ -23,8 +23,12 @@
     </div>
 
     <div class="extra-top-margin">
-      <canvas id="cutter" height="500"></canvas>
+      <canvas id="cutter" height="500"
+              data:image-url="${'/militie/scan?idnr=' + akte.mil.idnr + '&amp;year=' + akte.mil.militionId.year + '&amp;seq=' + akte.mil.militionId.seq}">
+      </canvas>
     </div>
+
+    <input type="hidden" name="scanData" id="scanData" value=""/>
 
     <div th:replace="militie/byz-fragment :: byzModal"></div>
   </th:block>

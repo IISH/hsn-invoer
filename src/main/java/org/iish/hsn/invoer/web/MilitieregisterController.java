@@ -2,14 +2,25 @@ package org.iish.hsn.invoer.web;
 
 import org.iish.hsn.invoer.param.OverviewParams;
 import org.iish.hsn.invoer.service.OverviewService;
+import org.iish.hsn.invoer.service.scan.ScansService;
+import org.iish.hsn.invoer.service.scan.MilitionScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +28,7 @@ import java.util.Map;
 @RequestMapping(value = "/militie")
 public class MilitieregisterController {
     @Autowired private OverviewService overviewService;
+    @Autowired private ScansService scansService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String start() {
@@ -73,5 +85,25 @@ public class MilitieregisterController {
     @RequestMapping(value = "/overzicht", method = RequestMethod.POST)
     public String getOverviewRedirect() {
         return "redirect:/militie/hoofdmenu";
+    }
+
+    @RequestMapping(value = "/scan", method = RequestMethod.GET)
+    public @ResponseBody ResponseEntity<ByteArrayResource> getScan(
+            @RequestParam("idnr") int idnr, @RequestParam("year") int year, @RequestParam("seq") int seq,
+            @RequestParam(value = "main", required = false) boolean main,
+            @RequestParam(value = "crop", required = false) boolean crop) throws IOException {
+        MilitionScan militionScan = scansService.getMilitionScan(idnr, year, seq);
+
+        Path scanPath = militionScan.getScan();
+        if (main)
+            scanPath = militionScan.getMainScan();
+        if (crop)
+            scanPath = militionScan.getCroppedScan();
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.parseMediaType(Files.probeContentType(scanPath)));
+        ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(scanPath));
+
+        return new ResponseEntity<>(byteArrayResource, responseHeaders, HttpStatus.OK);
     }
 }
