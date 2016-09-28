@@ -97,7 +97,9 @@
     </div>
 
     <div class="extra-top-margin" data-show-when="#milReg\.substitute" data-has-values-in="p;w" style="display:none;">
-      <div class="form-group" th:if="${!akte.is1817()}">
+      <div class="form-header">GEGEVENS PLAATSVERVANGER:</div>
+
+      <div class="form-group extra-top-margin" th:if="${!akte.is1817()}">
         <label class="col-xs-3 control-label">Achternaam:</label>
 
         <div class="col-xs-4">
@@ -115,7 +117,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" th:classappend="${akte.is1817()} ? 'extra-top-margin'">
         <label class="col-xs-3 control-label">Nummer op register AA:</label>
 
         <div class="col-xs-2">

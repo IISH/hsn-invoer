@@ -14,7 +14,7 @@ public class Milition extends Invoer implements Serializable {
 
     @Column(name = "TYPE", nullable = false, length = 1) private String type = "";
     @Column(name = "GEMNAAM", nullable = false, length = 50) private String municipality;
-    @Column(name = "INVNR", nullable = false) private int invNumber;
+    @Column(name = "INVNR", nullable = false, length = 10) private String invNumber;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,11 +53,11 @@ public class Milition extends Invoer implements Serializable {
         this.municipality = municipality;
     }
 
-    public int getInvNumber() {
+    public String getInvNumber() {
         return invNumber;
     }
 
-    public void setInvNumber(int invNumber) {
+    public void setInvNumber(String invNumber) {
         this.invNumber = invNumber;
     }
 

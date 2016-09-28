@@ -2,7 +2,6 @@
     'use strict';
 
     var plaats = [
-        'mil.municipality',
         'milReg.placeOfBirth',
         'milReg.placeOfLiving',
         'milReg.placeParents',
