@@ -3,7 +3,6 @@ package org.iish.hsn.invoer.service.scan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service

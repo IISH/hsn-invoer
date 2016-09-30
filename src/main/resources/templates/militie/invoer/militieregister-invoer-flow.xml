@@ -18,10 +18,7 @@
   <!-- MS0A: SCAN -->
   <view-state id="MS0A" view="militie/MS0A" model="akte">
     <transition on="stop" to="stopEnd"/>
-
-    <transition on="next" to="MS0B">
-      <evaluate expression="militieregisterService.processScan(flowScope.akte, requestParameters.scanData)"/>
-    </transition>
+    <transition on="next" to="MS0B"/>
   </view-state>
 
   <!-- MS0B: GEGEVENS REGISTER -->

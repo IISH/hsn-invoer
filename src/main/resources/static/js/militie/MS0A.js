@@ -51,18 +51,10 @@
         xhr.responseType = 'blob';
         xhr.send();
 
-        var submit = false;
-        $('form:first').submit(function (e) {
-            if (!submit) {
-                submit = true;
-                e.preventDefault();
-
-                hsnCanvas.createNewImage(function (dataUrl) {
-                    sessionStorage.setItem('hsnScan', dataUrl);
-                    $('#scanData').val(dataUrl);
-                    $('form:first .btn-next').click();
-                });
-            }
+        $('form:first').submit(function () {
+            hsnCanvas.createNewImage(function (dataUrl) {
+                sessionStorage.setItem('hsnScan', dataUrl);
+            });
         });
     });
 })(jQuery, PDFJS);

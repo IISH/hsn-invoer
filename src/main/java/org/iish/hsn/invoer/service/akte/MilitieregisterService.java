@@ -140,29 +140,6 @@ public class MilitieregisterService {
     }
 
     /**
-     * Process the scan, called after screen MS0A.
-     *
-     * @param militieregisterFlow The milition register flow state.
-     * @param scanData            The cropped scan, base64 encoded.
-     */
-    public void processScan(MilitieregisterFlowState militieregisterFlow, String scanData) throws AkteException {
-        try {
-            Milition milition = militieregisterFlow.getMil();
-            MilitionId militionId = milition.getMilitionId();
-            MilitionScan militionScan = scansService.getMilitionScan(
-                    milition.getIdnr(), militionId.getYear(), militionId.getSeq());
-
-            ObjectMapper mapper = new ObjectMapper();
-            byte[] scan = mapper.convertValue(scanData.replaceFirst("data:image/jpeg;base64,", ""), byte[].class);
-
-            militionScan.saveCroppedScan(scan);
-        }
-        catch (IOException ioe) {
-            throw new AkteException(ioe);
-        }
-    }
-
-    /**
      * Persists the milition record to the database.
      *
      * @param militieregisterFlow The milition register flow state.

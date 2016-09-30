@@ -40,20 +40,6 @@
             if (image !== null) {
                 hsnCanvas.loadImage(image);
             }
-            else {
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
-                    if ((this.readyState === 4) && (this.status === 200)) {
-                        $.imageBlobToDataUrl(this.response, function (dataUrl) {
-                            sessionStorage.setItem('hsnScan', dataUrl);
-                            hsnCanvas.loadImage(dataUrl);
-                        });
-                    }
-                };
-                xhr.open('GET', viewElem.data('image-url'));
-                xhr.responseType = 'blob';
-                xhr.send();
-            }
         }
 
         // Keep the session alive, call keepalive every minute

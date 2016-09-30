@@ -88,18 +88,12 @@ public class MilitieregisterController {
     }
 
     @RequestMapping(value = "/scan", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<ByteArrayResource> getScan(
-            @RequestParam("idnr") int idnr, @RequestParam("year") int year, @RequestParam("seq") int seq,
-            @RequestParam(value = "main", required = false) boolean main,
-            @RequestParam(value = "crop", required = false) boolean crop) throws IOException {
+    public @ResponseBody ResponseEntity<ByteArrayResource> getScan(@RequestParam("idnr") int idnr,
+                                                                   @RequestParam("year") int year,
+                                                                   @RequestParam("seq") int seq) throws IOException {
         MilitionScan militionScan = scansService.getMilitionScan(idnr, year, seq);
 
         Path scanPath = militionScan.getScan();
-        if (main)
-            scanPath = militionScan.getMainScan();
-        if (crop)
-            scanPath = militionScan.getCroppedScan();
-
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.parseMediaType(Files.probeContentType(scanPath)));
         ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(scanPath));
