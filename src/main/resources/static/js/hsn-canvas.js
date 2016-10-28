@@ -1,39 +1,54 @@
 var HsnCanvas = (function ($, fabric) {
     'use strict';
 
+    var State = {
+        SELECTION: 1,
+        ACTION: 2,
+        LINE: 3
+    };
+
     return function (canvasId, allowCutting) {
         var canvas = new fabric.Canvas(canvasId);
 
         var image = null;
         var lines = [];
 
-        var curLine = null;
+        var state = State.SELECTION;
         var activeLine = null;
-        var noKeyup = false;
+        var newImagePositionCallbacks = [];
 
         setUpCanvasInteraction();
 
-        this.loadImage = function (dataUrl) {
+        this.loadImage = function (dataUrl, position) {
             var img = document.createElement('img');
             img.onload = function () {
                 image = new fabric.Image(img).set({originX: 'center', originY: 'center'});
-                //image.resizeFilters.push(new fabric.Image.filters.Resize({resizeType: 'lanczos', lanczosLobes: 2}));
-                image.selectable = false;
-
                 canvas.add(image);
-                image.scaleToWidth(canvas.width).center().setCoords();
+
+                if ($.isPlainObject(position)) {
+                    image.set(position).setCoords();
+                }
+                else {
+                    image.scaleToWidth(canvas.width).center().setCoords();
+                }
+
                 canvas.renderAll();
 
                 setUpNavigation();
+                setUpImageInteraction();
             };
             img.src = dataUrl;
+        };
+
+        this.onNewImagePosition = function (callback) {
+            newImagePositionCallbacks.push(callback);
         };
 
         this.createNewImage = function (callback) {
             var imgs = [];
             var newHeight = 0;
 
-            scaleAll(1 / image.scaleX); // image.filter[0].scaleX
+            scaleAll(1 / image.scaleX);
 
             var copy = true;
             var prevX = 0;
@@ -84,76 +99,26 @@ var HsnCanvas = (function ($, fabric) {
         };
 
         function setUpNavigation() {
-            var keyCodes = [37, 38, 39, 40, 187, 189];
+            var keyCodes = [35, 36, 37, 38, 39, 40];
             if (allowCutting !== false) {
                 keyCodes.push(13);
                 keyCodes.push(46);
             }
 
             $(document).keydown(function (e) {
-                if ((curLine === null) && e.ctrlKey && (keyCodes.indexOf(e.keyCode) >= 0)) {
+                if ((state === State.SELECTION) && (e.keyCode === 17)) {
+                    toActionState();
+                }
+
+                if ((state !== State.SELECTION) && (keyCodes.indexOf(e.keyCode) >= 0)) {
                     e.preventDefault();
 
-                    if (activeLine !== null) {
-                        switch (e.keyCode) {
-                            case 38: // Up
-                                if (image.getBoundingRect().top < (activeLine.getBoundingRect().top - 1)) {
-                                    activeLine.top -= 1;
-                                }
-                                break;
-                            case 40: // Down
-                                if ((image.getBoundingRect().top + image.getBoundingRect().height) >
-                                    (activeLine.getBoundingRect().top + activeLine.getBoundingRect().height + 1)) {
-                                    activeLine.top += 1;
-                                }
-                                break;
-                            case 46: // Delete
-                                lines.splice(lines.indexOf(activeLine), 1);
-                                activeLine.remove();
-                                activeLine = null;
-                                break;
-                            case 13: // Enter
-                                activeLine.stroke = 'blue';
-                                activeLine = null;
-                                noKeyup = true;
-                                break;
-                        }
+                    if (state === State.LINE) {
+                        moveLine(e.keyCode);
                     }
                     else {
-                        switch (e.keyCode) {
-                            case 37: // Left
-                                image.left -= 5;
-                                lines.forEach(function (line) {
-                                    line.left -= 5;
-                                });
-                                break;
-                            case 38: // Up
-                                image.top -= 5;
-                                lines.forEach(function (line) {
-                                    line.top -= 5;
-                                });
-                                break;
-                            case 39: // Right
-                                image.left += 5;
-                                lines.forEach(function (line) {
-                                    line.left += 5;
-                                });
-                                break;
-                            case 40: // Down
-                                image.top += 5;
-                                lines.forEach(function (line) {
-                                    line.top += 5;
-                                });
-                                break;
-                            case 189: // Minus
-                                if (image.scaleX > 0) {
-                                    scaleAll(1 / 1.2);
-                                }
-                                break;
-                            case 187: // Plus
-                                scaleAll(1.2);
-                                break;
-                        }
+                        moveOrScale(e.keyCode);
+                        canvas.trigger('object:modified', {target: image});
                     }
 
                     image.setCoords();
@@ -163,57 +128,192 @@ var HsnCanvas = (function ($, fabric) {
                     canvas.renderAll();
                 }
             });
+
+            $(document).keyup(function (e) {
+                if ((state === State.ACTION) && (e.keyCode === 17)) {
+                    toSelectionState();
+                }
+            });
         }
 
         function setUpCanvasInteraction() {
             canvas.setBackgroundColor({source: '/images/canvas-bg.png', repeat: 'repeat'}, function () {
                 canvas.renderAll();
             });
-
             canvas.setWidth($('.canvas-container').parent().width());
             canvas.renderAll();
+        }
 
-            canvas.on('mouse:over', function (e) {
-                e.target.hoverCursor = 'crosshair';
-            });
-
-            if (allowCutting !== false) {
-                canvas.on('mouse:up', function (o) {
-                    if ((image !== null) && (activeLine === null)) {
-                        var pointer = canvas.getPointer(o.e);
-
-                        var closestLine = null;
-                        lines.forEach(function (line) {
-                            if (Math.abs(line.top - pointer.y) <= 10) {
-                                closestLine = line;
-                            }
-                        });
-
-                        if (closestLine !== null) {
-                            closestLine.stroke = 'red';
-                            activeLine = closestLine;
-                        }
-                        else if (lines.length < 3) {
-                            var bound = image.getBoundingRect();
-                            if ((pointer.x >= bound.left) && (pointer.x <= (bound.width + bound.left)) &&
-                                (pointer.y >= bound.top) && (pointer.y <= (bound.height + bound.top))) {
-
-                                curLine = new fabric.Line([bound.left, pointer.y, bound.width + bound.left, pointer.y], {
-                                    strokeWidth: 1,
-                                    stroke: 'blue',
-                                    originX: 'center',
-                                    originY: 'center'
-                                });
-                                curLine.selectable = false;
-                                canvas.add(curLine);
-                                canvas.renderAll();
-
-                                lines.push(curLine);
-                                curLine = null;
-                            }
-                        }
+        function setUpImageInteraction() {
+            image
+                .on('selected', function () {
+                    if (state === State.SELECTION) {
+                        selectAll();
+                    }
+                })
+                .on('mouseup', function (o) {
+                    if ((state === State.ACTION) && (allowCutting !== false)) {
+                        createCutLine(canvas.getPointer(o.e));
                     }
                 });
+
+            canvas.on('object:modified', function () {
+                newImagePositionCallbacks.forEach(function (callback) {
+                    callback({
+                        top: image.top,
+                        left: image.left,
+                        scaleX: image.scaleX,
+                        scaleY: image.scaleY
+                    });
+                });
+            });
+        }
+
+        function toSelectionState() {
+            state = State.SELECTION;
+
+            image.hoverCursor = 'pointer';
+            image.selectable = true;
+
+            if (activeLine) {
+                activeLine.stroke = 'blue';
+                activeLine = null;
+            }
+
+            canvas.deactivateAll().renderAll();
+        }
+
+        function toActionState() {
+            state = State.ACTION;
+
+            if (allowCutting !== false) {
+                image.hoverCursor = 'crosshair';
+                image.selectable = false;
+            }
+
+            if (activeLine) {
+                activeLine.stroke = 'blue';
+                activeLine = null;
+            }
+
+            canvas.deactivateAll().renderAll();
+        }
+
+        function toLineState(line) {
+            state = State.LINE;
+
+            image.hoverCursor = 'crosshair';
+            image.selectable = false;
+
+            activeLine = line;
+            activeLine.stroke = 'red';
+            canvas.setActiveObject(activeLine);
+
+            canvas.deactivateAll().renderAll();
+        }
+
+        function moveLine(keyCode) {
+            switch (keyCode) {
+                case 38: // Up
+                    if (image.getBoundingRect().top < (activeLine.getBoundingRect().top - 1)) {
+                        activeLine.top -= 1;
+                    }
+                    break;
+                case 40: // Down
+                    if ((image.getBoundingRect().top + image.getBoundingRect().height) >
+                        (activeLine.getBoundingRect().top + activeLine.getBoundingRect().height + 1)) {
+                        activeLine.top += 1;
+                    }
+                    break;
+                case 46: // Delete
+                    lines.splice(lines.indexOf(activeLine), 1);
+                    activeLine.remove();
+                    toActionState();
+                    break;
+                case 13: // Enter
+                    toActionState();
+                    break;
+            }
+        }
+
+        function moveOrScale(keyCode) {
+            switch (keyCode) {
+                case 37: // Left
+                    image.left -= 5;
+                    lines.forEach(function (line) {
+                        line.left -= 5;
+                    });
+                    break;
+                case 38: // Up
+                    image.top -= 5;
+                    lines.forEach(function (line) {
+                        line.top -= 5;
+                    });
+                    break;
+                case 39: // Right
+                    image.left += 5;
+                    lines.forEach(function (line) {
+                        line.left += 5;
+                    });
+                    break;
+                case 40: // Down
+                    image.top += 5;
+                    lines.forEach(function (line) {
+                        line.top += 5;
+                    });
+                    break;
+                case 36: // Home
+                    if (image.scaleX > 0) {
+                        scaleAll(1 / 1.2);
+                    }
+                    break;
+                case 35: // End
+                    scaleAll(1.2);
+                    break;
+            }
+        }
+
+        function selectAll() {
+            canvas.deactivateAll();
+
+            var objs = canvas.getObjects().map(function (obj) {
+                return obj.set('active', true);
+            });
+
+            var group = new fabric.Group(objs, {
+                originX: 'center',
+                originY: 'center',
+                lockUniScaling: true,
+                hasRotatingPoint: false
+            });
+            group.setCoords();
+
+            canvas._currentTransform.target = group;
+            canvas.setActiveGroup(group).renderAll();
+        }
+
+        function createCutLine(pointer) {
+            var closestLine = null;
+            lines.forEach(function (line) {
+                if (Math.abs(line.top - pointer.y) <= 10) {
+                    closestLine = line;
+                }
+            });
+
+            if (closestLine !== null) {
+                toLineState(closestLine);
+            }
+            else if (lines.length < 3) {
+                var bound = image.getBoundingRect();
+                var curLine = new fabric.Line([bound.left, pointer.y, bound.width + bound.left, pointer.y], {
+                    strokeWidth: 1,
+                    stroke: 'blue',
+                    originX: 'center',
+                    originY: 'center',
+                    selectable: false
+                });
+                lines.push(curLine);
+                canvas.add(curLine).renderAll();
             }
         }
 
@@ -245,9 +345,14 @@ var HsnCanvas = (function ($, fabric) {
                 scaleX: image.scaleX * scaleFactor,
                 scaleY: image.scaleY * scaleFactor
             });
+            scaleLines(scaleFactor);
+        }
 
+        function scaleLines(scaleFactor) {
             var bound = image.setCoords().getBoundingRect();
             lines.forEach(function (line) {
+                line.scaleX = 1;
+                line.scaleY = 1;
                 line.top = line.top * scaleFactor;
                 line.left = line.left * scaleFactor;
                 line.width = bound.width;

@@ -36,10 +36,21 @@
         var viewElem = $('#view');
         if (viewElem.length > 0) {
             var hsnCanvas = new HsnCanvas('view', false);
+
             var image = sessionStorage.getItem('hsnScan');
             if (image !== null) {
-                hsnCanvas.loadImage(image);
+                try {
+                    var position = JSON.parse(sessionStorage.getItem('hsnScanPosition'));
+                    hsnCanvas.loadImage(image, position);
+                }
+                catch (err) {
+                    hsnCanvas.loadImage(image);
+                }
             }
+
+            hsnCanvas.onNewImagePosition(function (position) {
+                sessionStorage.setItem('hsnScanPosition', JSON.stringify(position));
+            });
         }
 
         // Keep the session alive, call keepalive every minute
