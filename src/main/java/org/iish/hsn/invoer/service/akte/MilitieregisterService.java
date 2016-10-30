@@ -1,8 +1,6 @@
 package org.iish.hsn.invoer.service.akte;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.iish.hsn.invoer.domain.invoer.mil.Milition;
-import org.iish.hsn.invoer.domain.invoer.mil.MilitionId;
 import org.iish.hsn.invoer.domain.invoer.mil.MilitionRegistration;
 import org.iish.hsn.invoer.domain.invoer.mil.Verdict;
 import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
@@ -73,8 +71,26 @@ public class MilitieregisterService {
             Ref_RP refRp = lookupService.getRefRp(milition.getIdnr(), true);
             militieregisterFlow.setRefRp(refRp);
 
+            List<Milition> previouslyEntered = lookupService.getMilitions(milition.getIdnr());
+            MilitionScan scan = scansService
+                    .getMilitionScanRepository()
+                    .findScanNotEntered(milition.getIdnr(), previouslyEntered);
+            if (scan == null) {
+                throw new NotFoundException("No available scan found!");
+            }
+
+            milition.setSeq(previouslyEntered.size() + 1);
+            milition.setScanA((scan.getSideA() != null) ? scan.getSideA().getFileName().toString() : "");
+            milition.setScanB((scan.getSideB() != null) ? scan.getSideB().getFileName().toString() : "");
+
+            milition.setType((scan.getType() != null) ? scan.getType() : "N");
+            if (scan.getMunicipality() != null)
+                milition.setMunicipality(scan.getMunicipality());
+            if (scan.getYear() != null)
+                milition.setYear(scan.getYear());
+
             militionRegistration.setIdnr(milition.getIdnr());
-            militionRegistration.setMilitionId(milition.getMilitionId());
+            militionRegistration.setSeq(milition.getSeq());
 
             militionRegistration.setDayOfBirth(refRp.getDayOfBirth());
             militionRegistration.setMonthOfBirth(refRp.getMonthOfBirth());
@@ -94,8 +110,8 @@ public class MilitieregisterService {
                 milition.setMunicipality(plaats.getGemnaam());
             }
         }
-        catch (NotFoundException nfe) {
-            throw new AkteException(nfe);
+        catch (NotFoundException | IOException e) {
+            throw new AkteException(e);
         }
     }
 
@@ -108,26 +124,24 @@ public class MilitieregisterService {
     public void editOP(MilitieregisterFlowState militieregisterFlow) throws AkteException {
         try {
             Milition milition = militieregisterFlow.getMil();
-            MilitionId militionId = milition.getMilitionId();
 
             militieregisterFlow.setRefRp(lookupService.getRefRp(milition.getIdnr(), true));
-            militieregisterFlow.setMil(lookupService.getMilition(milition.getIdnr(), militionId, true));
+            militieregisterFlow.setMil(lookupService.getMilition(milition.getIdnr(), milition.getSeq(), true));
 
-            milition = militionRepository.findByIdnrAndMilitionIdAndWorkOrder(
-                    milition.getIdnr(), militionId, inputMetadata.getWorkOrder());
+            milition = militionRepository.findByIdnrAndSeqAndWorkOrder(
+                    milition.getIdnr(), milition.getSeq(), inputMetadata.getWorkOrder());
             if (milition != null) {
                 militieregisterFlow.setMil(milition);
             }
 
-            MilitionRegistration militionRegistration =
-                    militionRegistrationRepository.findByIdnrAndMilitionIdAndWorkOrder(
-                            milition.getIdnr(), militionId, inputMetadata.getWorkOrder());
+            MilitionRegistration militionRegistration = militionRegistrationRepository.findByIdnrAndSeqAndWorkOrder(
+                    milition.getIdnr(), milition.getSeq(), inputMetadata.getWorkOrder());
             if (militionRegistration != null) {
                 militieregisterFlow.setMilReg(militionRegistration);
             }
 
-            List<Verdict> verdicts = verdictRepository.findByIdnrAndMilitionIdAndWorkOrder(
-                    milition.getIdnr(), militionId, inputMetadata.getWorkOrder());
+            List<Verdict> verdicts = verdictRepository.findByIdnrAndSeqAndWorkOrder(
+                    milition.getIdnr(), milition.getSeq(), inputMetadata.getWorkOrder());
             if (verdicts != null) {
                 for (Verdict verdict : verdicts) {
                     militieregisterFlow.getVerdict().put(Verdict.Type.getType(verdict.getType()), verdict);
@@ -178,7 +192,7 @@ public class MilitieregisterService {
             }
             else {
                 verdict.setIdnr(militieregisterFlow.getMil().getIdnr());
-                verdict.setMilitionId(militieregisterFlow.getMil().getMilitionId());
+                verdict.setSeq(militieregisterFlow.getMil().getSeq());
 
                 inputMetadata.saveToEntity(verdict);
                 verdict = verdictRepository.save(verdict);

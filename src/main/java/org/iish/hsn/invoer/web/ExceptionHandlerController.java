@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * Controller that handles any thrown exceptions.
@@ -30,6 +31,18 @@ public class ExceptionHandlerController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody String handleNotFoundException(NotFoundException nfe) {
         return nfe.getMessage();
+    }
+
+    /**
+     * Returns an HTTP 500 error code if the IOException is thrown.
+     *
+     * @param ioe The thrown IOException.
+     * @return The message of the exception.
+     */
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody String handleIOException(IOException ioe) {
+        return ioe.getMessage();
     }
 
     /**

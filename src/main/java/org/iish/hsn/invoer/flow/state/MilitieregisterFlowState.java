@@ -7,6 +7,7 @@ import org.iish.hsn.invoer.domain.invoer.mil.Verdict.Type;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +19,8 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     private MilitionRegistration milReg;
 
     private Map<Type, Verdict> verdict;
+
+    private boolean cropSideA = true;
 
     public MilitieregisterFlowState(Milition mil, MilitionRegistration milReg, Map<Type, Verdict> verdict) {
         this.mil = mil;
@@ -32,17 +35,25 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     }
 
     public boolean is1817() {
-        int year = mil.getMilitionId().getYear();
+        int year = mil.getYear();
         return (year >= 1817) && (year <= 1861);
     }
 
     public boolean is1862() {
-        int year = mil.getMilitionId().getYear();
+        int year = mil.getYear();
         return (year >= 1862) && (year <= 1912);
     }
 
     public boolean isOtherYear() {
         return !is1817() && !is1862();
+    }
+
+    public boolean isCropSideA() {
+        return cropSideA;
+    }
+
+    public void setCropSideA(boolean cropSideA) {
+        this.cropSideA = cropSideA;
     }
 
     public Ref_RP getRefRp() {

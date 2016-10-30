@@ -1,51 +1,59 @@
 package org.iish.hsn.invoer.service.scan;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
 
 /**
- * Represents a milition scan stored for data entry.
+ * Representation of a stored milition scan.
  */
-public class MilitionScan extends HsnScan {
-    private static final String MILITIE_ORG_PATH = "militie/";
-
+public class MilitionScan extends Scan {
     private int idnr;
-    private int year;
-    private int seq;
+    private String municipality;
+    private Integer year;
+    private String type;
 
     /**
-     * Creates a new representation of a scan.
+     * Creates a new link to a stored scan.
      *
-     * @param storage The path where the scans are stored.
-     * @param idnr    The idnr of the person.
-     * @param year    The year of the milition scan.
-     * @param seq     The sequence number.
+     * @param sideA The A side.
+     * @param sideB The B side.
+     * @param idnr  The idnr of the RP.
      */
-    public MilitionScan(Path storage, int idnr, int year, int seq) {
-        super(storage.resolve(MILITIE_ORG_PATH));
+    public MilitionScan(Path sideA, Path sideB, int idnr) {
+        super(sideA, sideB);
         this.idnr = idnr;
-        this.year = year;
-        this.seq = seq;
     }
 
     /**
-     * Find the path to the milition scan.
+     * Creates a new link to a stored scan.
      *
-     * @param root The path to scan.
-     * @return The path to the scan.
-     * @throws IOException On I/O related errors.
+     * @param sideA        The A side.
+     * @param sideB        The B side.
+     * @param idnr         The idnr of the RP.
+     * @param municipality The municipality.
+     * @param year         The year of the register.
+     * @param type         The type of the register.
      */
-    @Override
-    protected Path findScan(Path root) throws IOException {
-        Path yearFolder = root.resolve(String.valueOf(year));
-        if (Files.exists(yearFolder)) {
-            Iterator<Path> files = Files.newDirectoryStream(yearFolder, idnr + "." + seq + ".*").iterator();
-            if (files.hasNext()) {
-                return files.next();
-            }
-        }
-        return null;
+    public MilitionScan(Path sideA, Path sideB, int idnr, String municipality, Integer year, String type) {
+        super(sideA, sideB);
+        this.idnr = idnr;
+        this.municipality = municipality;
+        this.year = year;
+        this.type = type;
+    }
+
+    public int getIdnr() {
+        return idnr;
+    }
+
+    public String getMunicipality() {
+        return municipality;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public String getType() {
+        return type;
     }
 }

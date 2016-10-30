@@ -14,14 +14,11 @@ public class ScansService {
     private String storagePath;
 
     /**
-     * Obtain the milition scan from storage.
+     * Obtain the milition scan repository.
      *
-     * @param idnr The idnr of the person.
-     * @param year The year of the scan.
-     * @param seq  The sequence number.
-     * @return The scan if found.
+     * @return The milition scan repository.
      */
-    public MilitionScan getMilitionScan(int idnr, int year, int seq) {
-        return new MilitionScan(Paths.get(storagePath), idnr, year, seq);
+    public MilitionScanRepository getMilitionScanRepository() {
+        return new MilitionScanRepository(Paths.get(storagePath));
     }
 }

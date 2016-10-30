@@ -7,7 +7,6 @@ import org.iish.hsn.invoer.domain.invoer.geb.Gebknd;
 import org.iish.hsn.invoer.domain.invoer.huw.Huw;
 import org.iish.hsn.invoer.domain.invoer.huw.Huwttl;
 import org.iish.hsn.invoer.domain.invoer.mil.Milition;
-import org.iish.hsn.invoer.domain.invoer.mil.MilitionId;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlknd;
 import org.iish.hsn.invoer.domain.invoer.pick.*;
 import org.iish.hsn.invoer.domain.invoer.pk.Pkknd;
@@ -16,12 +15,15 @@ import org.iish.hsn.invoer.domain.invoer.geb.Stpb;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.service.LookupService;
+import org.iish.hsn.invoer.service.scan.MilitionScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Returns records from the database in JSON format for use in AJAX calls.
@@ -89,13 +91,23 @@ public class AjaxLookupController {
     }
 
     @RequestMapping(value = "/b4/op/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<Registration> getRegistrationsForOP(int idnr) throws NotFoundException {
+    public @ResponseBody List<Registration> getRegistrationsForOP(int idnr) {
         return lookupService.getRegistrationsOfOp(idnr);
     }
 
     @RequestMapping(value = "/m0", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Milition getMilition(int idnr, MilitionId militionId) throws NotFoundException {
-        return lookupService.getMilition(idnr, militionId, true);
+    public @ResponseBody Milition getMilition(int idnr, int seq) throws NotFoundException {
+        return lookupService.getMilition(idnr, seq, true);
+    }
+
+    @RequestMapping(value = "/m0/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<Milition> getMilitions(int idnr) {
+        return lookupService.getMilitions(idnr);
+    }
+
+    @RequestMapping(value = "/m0/scans", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Set<MilitionScan> getMilitionScans(int idnr) throws IOException {
+        return lookupService.getMilitionScans(idnr);
     }
 
     @RequestMapping(value = "/plaatsen", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

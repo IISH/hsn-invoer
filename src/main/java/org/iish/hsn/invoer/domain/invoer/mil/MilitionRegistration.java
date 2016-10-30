@@ -9,11 +9,10 @@ import java.io.Serializable;
  * This class handles the static attributes of a registration
  */
 @Entity
-@Table(name = "m1", indexes = {@Index(columnList = "IDNR, JAAR, VOLG"), @Index(columnList = "ONDRZKO, OPDRNRI")})
+@Table(name = "m1", indexes = {@Index(columnList = "IDNR, VOLG"), @Index(columnList = "ONDRZKO, OPDRNRI")})
 public class MilitionRegistration extends Invoer implements Serializable {
     @Column(name = "IDNR", nullable = false) private int idnr;
-
-    @Embedded private MilitionId militionId = new MilitionId();
+    @Column(name = "VOLG", nullable = false) private int seq;
 
     @Column(name = "ANM", nullable = false, length = 50) private String familyName = "";
     @Column(name = "VNM", nullable = false, length = 50) private String firstName = "";
@@ -102,12 +101,12 @@ public class MilitionRegistration extends Invoer implements Serializable {
         this.idnr = idnr;
     }
 
-    public MilitionId getMilitionId() {
-        return militionId;
+    public int getSeq() {
+        return seq;
     }
 
-    public void setMilitionId(MilitionId militionId) {
-        this.militionId = militionId;
+    public void setSeq(int seq) {
+        this.seq = seq;
     }
 
     public String getFamilyName() {

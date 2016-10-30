@@ -1,9 +1,13 @@
 package org.iish.hsn.invoer.web;
 
+import org.iish.hsn.invoer.domain.invoer.mil.Milition;
+import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
+import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.param.OverviewParams;
 import org.iish.hsn.invoer.service.OverviewService;
+import org.iish.hsn.invoer.service.scan.Scan;
 import org.iish.hsn.invoer.service.scan.ScansService;
-import org.iish.hsn.invoer.service.scan.MilitionScan;
+import org.iish.hsn.invoer.service.scan.MilitionScanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -88,16 +93,27 @@ public class MilitieregisterController {
     }
 
     @RequestMapping(value = "/scan", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<ByteArrayResource> getScan(@RequestParam("idnr") int idnr,
-                                                                   @RequestParam("year") int year,
-                                                                   @RequestParam("seq") int seq) throws IOException {
-        MilitionScan militionScan = scansService.getMilitionScan(idnr, year, seq);
+    public @ResponseBody ResponseEntity<ByteArrayResource> getScan(
+            @RequestParam("idnr") int idnr, @RequestParam("file") String file) throws IOException, NotFoundException {
+        Path scanPath = null;
 
-        Path scanPath = militionScan.getScan();
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setContentType(MediaType.parseMediaType(Files.probeContentType(scanPath)));
-        ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(scanPath));
+        MilitionScanRepository scanRepository = scansService.getMilitionScanRepository();
+        for (Scan scan : scanRepository.findScans(idnr)) {
+            if ((scan.getSideA() != null) && scan.getSideA().getFileName().toString().equals(file))
+                scanPath = scan.getSideA();
+            if ((scan.getSideB() != null) && scan.getSideB().getFileName().toString().equals(file))
+                scanPath = scan.getSideB();
+        }
 
-        return new ResponseEntity<>(byteArrayResource, responseHeaders, HttpStatus.OK);
+        if (scanPath != null) {
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.setContentType(MediaType.parseMediaType(Files.probeContentType(scanPath)));
+            ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(scanPath));
+
+            return new ResponseEntity<>(byteArrayResource, responseHeaders, HttpStatus.OK);
+        }
+
+        throw new NotFoundException("Milition scan for RP with idnr " + idnr +
+                " and filename " + file + " could not be found!");
     }
 }

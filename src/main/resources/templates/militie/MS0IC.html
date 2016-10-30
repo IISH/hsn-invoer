@@ -13,39 +13,25 @@
       <label class="col-xs-5 control-label">HSN-identificatienummer:</label>
 
       <div class="col-xs-4">
-        <input type="text" class="form-control rp-idnr only-rp-lookup required"
-               th:field="*{mil.idnr}" hsn:field="mil.idnr"/>
+        <input type="text" class="form-control rp-idnr m0-lookup required" th:field="*{mil.idnr}" hsn:field="mil.idnr"/>
       </div>
     </div>
 
-    <div class="with-op-state" style="display:none;">
-      <div class="form-group checkYearMilitie">
-        <label class="col-xs-5 control-label">Jaar:</label>
-
-        <div class="col-xs-4">
-          <input type="text" class="form-control year dateInput"
-                 th:field="*{mil.militionId.year}" hsn:field="mil.militionId.year"/>
-        </div>
-      </div>
-
+    <div class="with-op-state" style="display:none;" th:if="${akte.isCorrection()}">
       <div class="form-group">
         <label class="col-xs-5 control-label">Volgnummer:</label>
 
         <div class="col-xs-4">
           <input type="text" class="form-control required seq militie-check"
-                 th:field="*{mil.militionId.seq}" hsn:field="mil.militionId.seq"/>
+                 th:field="*{mil.seq}" hsn:field="mil.seq"/>
         </div>
       </div>
     </div>
 
-    <p class="fail text-danger text-center" style="display: none;"></p>
+    <p class="fail text-danger text-center extra-top-margin" style="display: none;"></p>
   </th:block>
 </fieldset>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: correction-navigation (false)"></fieldset>
-
-<th:block layout:fragment="js">
-  <script src="../../static/js/militie/MS0IC.js" hsn:src="@{/js/militie/MS0IC.js}"></script>
-</th:block>
 </body>
 </html>

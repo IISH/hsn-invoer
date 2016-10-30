@@ -35,22 +35,48 @@
 
         var viewElem = $('#view');
         if (viewElem.length > 0) {
-            var hsnCanvas = new HsnCanvas('view', false);
+            var loadImage = function () {
+                var scanSide = sessionStorage.getItem('hsnScanSide');
+                scanSide = (scanSide === null) ? 'A' : scanSide;
 
-            var image = sessionStorage.getItem('hsnScan');
-            if (image !== null) {
-                try {
-                    var position = JSON.parse(sessionStorage.getItem('hsnScanPosition'));
-                    hsnCanvas.loadImage(image, position);
+                var image = sessionStorage.getItem('hsnScan' + scanSide);
+                if (image !== null) {
+                    try {
+                        var position = JSON.parse(sessionStorage.getItem('hsnScanPosition' + scanSide));
+                        hsnCanvas.loadImage(image, position);
+                    }
+                    catch (err) {
+                        hsnCanvas.loadImage(image);
+                    }
                 }
-                catch (err) {
-                    hsnCanvas.loadImage(image);
-                }
-            }
+            };
+
+            var hsnCanvas = new HsnCanvas('view', false);
+            loadImage();
 
             hsnCanvas.onNewImagePosition(function (position) {
-                sessionStorage.setItem('hsnScanPosition', JSON.stringify(position));
+                var curScanSide = sessionStorage.getItem('hsnScanSide');
+                sessionStorage.setItem('hsnScanPosition' + curScanSide, JSON.stringify(position));
             });
+
+            if (sessionStorage.getItem('hsnScanB') !== null) {
+                $(document).keydown(function (e) {
+                    if (e.ctrlKey) {
+                        switch (e.which) {
+                            case 65: // A
+                                e.preventDefault();
+                                sessionStorage.setItem('hsnScanSide', 'A');
+                                loadImage();
+                                break;
+                            case 66: // B
+                                e.preventDefault();
+                                sessionStorage.setItem('hsnScanSide', 'B');
+                                loadImage();
+                                break;
+                        }
+                    }
+                });
+            }
         }
 
         // Keep the session alive, call keepalive every minute

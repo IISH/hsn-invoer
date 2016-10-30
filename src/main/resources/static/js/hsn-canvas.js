@@ -20,17 +20,21 @@ var HsnCanvas = (function ($, fabric) {
         setUpCanvasInteraction();
 
         this.loadImage = function (dataUrl, position) {
+            if (image !== null)
+                image.remove();
+
             var img = document.createElement('img');
             img.onload = function () {
                 image = new fabric.Image(img).set({originX: 'center', originY: 'center'});
+                image.hasRotatingPoint = false;
+                image.lockUniScaling = true;
+
                 canvas.add(image);
 
-                if ($.isPlainObject(position)) {
+                if ($.isPlainObject(position))
                     image.set(position).setCoords();
-                }
-                else {
+                else
                     image.scaleToWidth(canvas.width).center().setCoords();
-                }
 
                 canvas.renderAll();
 
@@ -84,7 +88,12 @@ var HsnCanvas = (function ($, fabric) {
                     loaded++;
 
                     if (loaded === imgs.length) {
-                        callback(hiddenCanvas.toDataURL('image/jpeg'));
+                        if (supportsImage('image/webp'))
+                            callback(hiddenCanvas.toDataURL('image/webp', 80));
+                        else if (supportsImage('image/jpeg'))
+                            callback(hiddenCanvas.toDataURL('image/jpeg', 80));
+                        else
+                            callback(hiddenCanvas.toDataURL('image/png'));
                     }
                 };
                 image.src = img.data;
@@ -207,7 +216,6 @@ var HsnCanvas = (function ($, fabric) {
 
             activeLine = line;
             activeLine.stroke = 'red';
-            canvas.setActiveObject(activeLine);
 
             canvas.deactivateAll().renderAll();
         }
@@ -262,34 +270,36 @@ var HsnCanvas = (function ($, fabric) {
                         line.top += 5;
                     });
                     break;
-                case 36: // Home
+                case 35: // End
                     if (image.scaleX > 0) {
                         scaleAll(1 / 1.2);
                     }
                     break;
-                case 35: // End
+                case 36: // Home
                     scaleAll(1.2);
                     break;
             }
         }
 
         function selectAll() {
-            canvas.deactivateAll();
+            if (allowCutting === true) {
+                canvas.deactivateAll();
 
-            var objs = canvas.getObjects().map(function (obj) {
-                return obj.set('active', true);
-            });
+                var objs = canvas.getObjects().map(function (obj) {
+                    return obj.set('active', true);
+                });
 
-            var group = new fabric.Group(objs, {
-                originX: 'center',
-                originY: 'center',
-                lockUniScaling: true,
-                hasRotatingPoint: false
-            });
-            group.setCoords();
+                var group = new fabric.Group(objs, {
+                    originX: 'center',
+                    originY: 'center',
+                    lockUniScaling: true,
+                    hasRotatingPoint: false
+                });
+                group.setCoords();
 
-            canvas._currentTransform.target = group;
-            canvas.setActiveGroup(group).renderAll();
+                canvas._currentTransform.target = group;
+                canvas.setActiveGroup(group).renderAll();
+            }
         }
 
         function createCutLine(pointer) {
@@ -358,6 +368,13 @@ var HsnCanvas = (function ($, fabric) {
                 line.width = bound.width;
                 line.setCoords();
             });
+        }
+
+        function supportsImage(mime) {
+            var canvas = document.createElement('canvas');
+            canvas.width = canvas.height = 1;
+            var uri = canvas.toDataURL(mime);
+            return (uri.match(mime) !== null);
         }
     };
 })(jQuery, fabric);

@@ -3,7 +3,7 @@ application:
   date: "1 augustus 2016"
 
 storage:
-  path: "/data"
+  path: "C:\\data"
 
 spring:
   mvc:

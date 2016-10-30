@@ -8,7 +8,6 @@ import org.iish.hsn.invoer.domain.invoer.geb.Gebknd;
 import org.iish.hsn.invoer.domain.invoer.huw.Huw;
 import org.iish.hsn.invoer.domain.invoer.huw.Huwttl;
 import org.iish.hsn.invoer.domain.invoer.mil.Milition;
-import org.iish.hsn.invoer.domain.invoer.mil.MilitionId;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlknd;
 import org.iish.hsn.invoer.domain.invoer.pick.*;
 import org.iish.hsn.invoer.domain.invoer.pk.Pkknd;
@@ -27,12 +26,17 @@ import org.iish.hsn.invoer.repository.invoer.pk.PkkndRepository;
 import org.iish.hsn.invoer.repository.reference.Ref_AINBRepository;
 import org.iish.hsn.invoer.repository.invoer.geb.StpbRepository;
 import org.iish.hsn.invoer.repository.reference.Ref_RPRepository;
+import org.iish.hsn.invoer.service.scan.MilitionScan;
+import org.iish.hsn.invoer.service.scan.MilitionScanRepository;
+import org.iish.hsn.invoer.service.scan.ScansService;
 import org.iish.hsn.invoer.util.InputMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Lookup service to obtain records from the database.
@@ -40,6 +44,8 @@ import java.util.List;
 @Service
 public class LookupService {
     @Autowired private InputMetadata          inputMetadata;
+    @Autowired private ScansService           scansService;
+
     @Autowired private StpbRepository         stpbRepository;
     @Autowired private Ref_RPRepository       refRpRepository;
     @Autowired private Ref_AINBRepository     refAinbRepository;
@@ -231,7 +237,7 @@ public class LookupService {
      * Returns the registrations (b4) for the given OP.
      *
      * @param idnr The id number.
-     * @return The registration (b4).
+     * @return The registrations (b4).
      */
     public List<Registration> getRegistrationsOfOp(int idnr) {
         return registrationRepository.findByOP(idnr, inputMetadata.getWorkOrder());
@@ -241,18 +247,39 @@ public class LookupService {
      * Returns the milition (m0) for the given milition id.
      *
      * @param idnr The idnr.
-     * @param militionId The milition id.
+     * @param seq The sequence number.
      * @param throwException Whether to throw an exception if not found or to return null.
      * @return The milition (m0).
      * @throws NotFoundException Thrown if the record was not found.
      */
-    public Milition getMilition(int idnr, MilitionId militionId, boolean throwException) throws NotFoundException {
+    public Milition getMilition(int idnr, int seq, boolean throwException) throws NotFoundException {
         Milition milition =
-                militionRepository.findByIdnrAndMilitionIdAndWorkOrder(idnr, militionId, inputMetadata.getWorkOrder());
+                militionRepository.findByIdnrAndSeqAndWorkOrder(idnr, seq, inputMetadata.getWorkOrder());
         if ((milition == null) && throwException) {
-            throw new NotFoundException("Milition with id " + militionId + " could not be found!");
+            throw new NotFoundException("Milition with for idnr " + idnr + " with seq " + seq + " could not be found!");
         }
         return milition;
+    }
+
+    /**
+     * Returns the militions (m0) for the given milition id.
+     *
+     * @param idnr The idnr.
+     * @return The militions (m0).
+     */
+    public List<Milition> getMilitions(int idnr) {
+        return militionRepository.findByIdnrAndWorkOrder(idnr, inputMetadata.getWorkOrder());
+    }
+
+    /**
+     * Returns the milition scans for the given milition id.
+     *
+     * @param idnr The idnr.
+     * @return The militions scans.
+     * @throws IOException Thrown on I/O errors.
+     */
+    public Set<MilitionScan> getMilitionScans(int idnr) throws IOException {
+        return scansService.getMilitionScanRepository().findScans(idnr);
     }
 
     /**

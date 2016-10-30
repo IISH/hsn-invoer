@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorator="formViewLayout"
-      th:with="imageUrl=${'/militie/scan?idnr=' + akte.mil.idnr + '&amp;year=' + akte.mil.militionId.year + '&amp;seq=' + akte.mil.militionId.seq + '&amp;crop=true'}">
+<html layout:decorator="formViewLayout">
 <head></head>
 <body>
 <fieldset>
@@ -14,25 +13,33 @@
         </label>
 
         <label class="col-xs-5 control-label left">
-          1 = Alfabetische naamlijst
+          I = Alfabetische naamlijst
         </label>
       </div>
 
       <div class="row">
         <label class="col-xs-offset-3 col-xs-5 control-label left">
-          2 = Lotingsregister
+          L = Lotingsregister
         </label>
       </div>
 
       <div class="row">
         <label class="col-xs-offset-3 col-xs-5 control-label left">
-          3 = Klapper
+          N = Niet bekend
         </label>
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit integer-field required" maxlength="1"
-                 data-valid-chars="1;2;3" th:field="*{mil.type}" hsn:field="mil.type"/>
+                 data-valid-chars="I;L;K;N" th:field="*{mil.type}" hsn:field="mil.type"/>
         </div>
+      </div>
+    </div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-3 control-label">Jaar:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control required year" th:field="*{mil.year}" hsn:field="mil.year"/>
       </div>
     </div>
 
@@ -52,13 +59,21 @@
 
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
-<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+<div layout:fragment="info">
+  <th:block th:include="militie/MSINFO :: MSINFO"></th:block>
+
+  <div id="scansEnteredMessage" class="alert alert-warning extra-top-margin" role="alert" style="display:none;">
+    Er zijn eerder scans voor dezelfde persoon ingevoerd met een vergelijkbaar jaar en/of gemeente:
+    <ul></ul>
+  </div>
+</div>
 
 <fieldset layout:fragment="navigation"
           th:include="fragments/navigation :: navigation-byz-modal (true, true)"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
+  <script src="../../static/js/militie/MS0A.js" hsn:src="@{/js/militie/MS0B.js}"></script>
 </th:block>
 </body>
 </html>

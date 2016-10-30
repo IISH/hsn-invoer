@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorator="formViewLayout"
-      th:with="imageUrl=${'/militie/scan?idnr=' + akte.mil.idnr + '&amp;year=' + akte.mil.militionId.year + '&amp;seq=' + akte.mil.militionId.seq + '&amp;crop=true'}">
+<html layout:decorator="formViewLayout">
 <head></head>
 <body>
 <fieldset>
@@ -10,29 +9,29 @@
     <div class="form-group extra-top-margin">
       <div class="form-inline col-xs-offset-2">
         <div class="form-group">
-          <label class="control-label" th:if="${akte.mil.militionId.year le 1824}">el:</label>
-          <label class="control-label" th:if="${akte.mil.militionId.year gt 1824}">m:</label>
+          <label class="control-label" th:if="${akte.mil.year le 1824}">el:</label>
+          <label class="control-label" th:if="${akte.mil.year gt 1824}">m:</label>
           <input type="text" class="form-control form-control-small integer-field required spacing"
                  th:field="*{milReg.meter}" hsn:field="milReg.meter"/>
         </div>
 
         <div class="form-group spacing">
-          <label class="control-label" th:if="${akte.mil.militionId.year le 1824}">palm:</label>
-          <label class="control-label" th:if="${akte.mil.militionId.year gt 1824}">dm:</label>
+          <label class="control-label" th:if="${akte.mil.year le 1824}">palm:</label>
+          <label class="control-label" th:if="${akte.mil.year gt 1824}">dm:</label>
           <input type="text" class="form-control form-control-small integer-field required spacing"
                  th:field="*{milReg.decimeter}" hsn:field="milReg.decimeter"/>
         </div>
 
         <div class="form-group spacing">
-          <label class="control-label" th:if="${akte.mil.militionId.year le 1824}">duim:</label>
-          <label class="control-label" th:if="${akte.mil.militionId.year gt 1824}">cm:</label>
+          <label class="control-label" th:if="${akte.mil.year le 1824}">duim:</label>
+          <label class="control-label" th:if="${akte.mil.year gt 1824}">cm:</label>
           <input type="text" class="form-control form-control-small integer-field required spacing"
                  th:field="*{milReg.centimeter}" hsn:field="milReg.centimeter"/>
         </div>
 
         <div class="form-group spacing">
-          <label class="control-label" th:if="${akte.mil.militionId.year le 1824}">streep:</label>
-          <label class="control-label" th:if="${akte.mil.militionId.year gt 1824}">mm:</label>
+          <label class="control-label" th:if="${akte.mil.year le 1824}">streep:</label>
+          <label class="control-label" th:if="${akte.mil.year gt 1824}">mm:</label>
           <input type="text" class="form-control form-control-small integer-field required spacing"
                  th:field="*{milReg.millimeter}" hsn:field="milReg.millimeter"/>
         </div>

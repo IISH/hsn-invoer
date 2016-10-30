@@ -9,9 +9,7 @@ import java.io.Serializable;
  * This class handles the static attributes of a verdict
  */
 @Entity
-@Table(name = "m2", indexes = {
-        @Index(columnList = "IDNR, JAAR, VOLG, TYPE"), @Index(columnList = "ONDRZKO, OPDRNRI")
-})
+@Table(name = "m2", indexes = {@Index(columnList = "IDNR, VOLG, TYPE"), @Index(columnList = "ONDRZKO, OPDRNRI")})
 public class Verdict extends Invoer implements Serializable {
     public enum Type {
         UITSTEL(1), TWEEDE_UITSTEL(2), AANWIJZING(3), BEZWAREN(4), WET(5), KONING(6);
@@ -37,8 +35,7 @@ public class Verdict extends Invoer implements Serializable {
     }
 
     @Column(name = "IDNR", nullable = false) private int idnr;
-
-    @Embedded private MilitionId militionId = new MilitionId();
+    @Column(name = "VOLG", nullable = false) private int seq;
 
     @Column(name = "TYPE", nullable = false) private int type;
     @Column(name = "AARD", nullable = false, length = 50) private String nature = "";
@@ -82,12 +79,12 @@ public class Verdict extends Invoer implements Serializable {
         this.idnr = idnr;
     }
 
-    public MilitionId getMilitionId() {
-        return militionId;
+    public int getSeq() {
+        return seq;
     }
 
-    public void setMilitionId(MilitionId militionId) {
-        this.militionId = militionId;
+    public void setSeq(int seq) {
+        this.seq = seq;
     }
 
     public int getType() {
