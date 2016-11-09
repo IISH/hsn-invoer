@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html layout:decorator="formLayout">
+<html layout:decorator="formLayout" th:with="scroll=true">
 <head></head>
 <body>
 <fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
 
 <fieldset>
   <th:block layout:fragment="fields">
-    <div id="addresses" class="extra-top-margin" th:fragment="addresses" th:object="${akte}">
+    <div id="addresses" th:fragment="addresses" th:object="${akte}">
       <th:block th:each="curPkadres,stat : *{pkadres}">
-        <div class="pk-adres" th:with="vgnradp=${akte.pkadres[__${stat.index}__].vgnradp}"
+        <div class="pk-adres complete-focus" th:with="vgnradp=${akte.pkadres[__${stat.index}__].vgnradp}"
              th:classappend="${vgnradp > 1} ? 'extra-top-margin'">
           <div class="form-header" th:utext="${vgnradp + 'e ADRES:'}">1e ADRES:</div>
 

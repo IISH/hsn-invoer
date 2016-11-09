@@ -36,6 +36,12 @@ public class AjaxPicklistSetController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
+    @RequestMapping(value = "/kindrelatie", method = RequestMethod.POST)
+    public void setKindRelatie(@RequestParam String value) {
+        picklistService.setKindRelatie(value);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/kerkgenootschap", method = RequestMethod.POST)
     public void setKerkGenootschap(@RequestParam String value) {
         picklistService.setKg(value);

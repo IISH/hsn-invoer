@@ -26,21 +26,27 @@
 
         if (self.idnrElem.hasClass('stpb-idnr')) {
             self.idnrElem.blur(function () {
-                self.isTyping = false;
-                self.blur = $(this);
-                self.stpbLookup();
+                if ($.getCurNavigation().isNext) {
+                    self.isTyping = false;
+                    self.blur = $(this);
+                    self.stpbLookup();
+                }
             });
         }
         else if (self.idnrElem.hasClass('rp-idnr') && self.idnrElem.hasClass('no-rp-lookup')) {
             self.idnrElem.blur(function () {
-                self.blur = $(this);
-                self.noRefRPLookup();
+                if ($.getCurNavigation().isNext) {
+                    self.blur = $(this);
+                    self.noRefRPLookup();
+                }
             });
         }
         else if (self.idnrElem.hasClass('rp-idnr')) {
             self.idnrElem.blur(function () {
-                self.blur = $(this);
-                self.refRPLookup();
+                if ($.getCurNavigation().isNext) {
+                    self.blur = $(this);
+                    self.refRPLookup();
+                }
             });
         }
 
@@ -49,8 +55,10 @@
         }
 
         self.huwCheckElem.blur(function () {
-            self.blur = $(this);
-            self.marriageLookup();
+            if ($.getCurNavigation().isNext) {
+                self.blur = $(this);
+                self.marriageLookup();
+            }
         });
     }
 
@@ -165,7 +173,7 @@
                         'het gaat hier om bovenstaand identificatienummer en de volgende akte: <br/>' +
                         '<div class="text-left center-block" style="width:50%;">' +
                         'gemeentenaam: ' + huwttl.hplts + '<br/>' +
-                        'huwelijkdsdatum: ' + huwttl.hdag + '-' + huwttl.hmaand + '-' + huwttl.hjaar + '<br/>' +
+                        'huwelijkdsdatum: ' + huwttl.huw.hdag + '-' + huwttl.huw.hmaand + '-' + huwttl.huw.hjaar + '<br/>' +
                         'aktenummer: ' + huwttl.haktenr + '</div>', true, true, true);
                 }
             }, function () {
@@ -173,7 +181,7 @@
                     self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, true, true);
                 }
                 else {
-                    self.onSuccess(false);
+                    self.onSuccess();
                 }
             });
         });
@@ -218,8 +226,8 @@
         editOp ? self.withOpStateElems.show() : self.withOpStateElems.hide();
         error ? self.nextBtnElem.addClass('op-error') : self.nextBtnElem.removeClass('op-error');
 
-        self.blur.getNextFormElement().focus();
         $.triggerChangeOfState();
+        self.blur.getNextFormElement().focus();
     };
 
     FindOp.prototype.serverCall = function (url, params, onSuccess, onFailure) {
@@ -239,12 +247,12 @@
             $.unlockNavigation();
             //removeIcon();
 
-            onSuccess.apply(arguments);
+            onSuccess.apply(this, arguments);
         }).fail(function () {
             $.unlockNavigation();
             //removeIcon();
             
-            onFailure.apply(arguments);
+            onFailure.apply(this, arguments);
         });
     };
 

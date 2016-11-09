@@ -583,11 +583,15 @@ public class HuwelijksAkteService extends AkteService {
     public void registerGetuigen(HuwelijksAkteFlowState huwelijksAkteFlow) {
         Huwgtg[] huwgtg = huwelijksAkteFlow.getHuwgtg();
 
-        if (huwelijksAkteFlow.getHuwknd().getNgtg() == -5) {
+        int nGtg = huwelijksAkteFlow.getHuwknd().getNgtg();
+        if (nGtg == -5) {
             huwgtgRepository.delete(Arrays.asList(huwgtg));
         }
+        else if (nGtg == 0) {
+            huwelijksAkteFlow.getHuwknd().setNgtg(huwgtg.length);
+        }
         else {
-            Huwgtg[] newHuwgtg = new Huwgtg[huwelijksAkteFlow.getHuwknd().getNgtg()];
+            Huwgtg[] newHuwgtg = new Huwgtg[nGtg];
 
             for (int i = 0; i < newHuwgtg.length; i++) {
                 if (i < huwgtg.length) {
@@ -672,7 +676,9 @@ public class HuwelijksAkteService extends AkteService {
     public void deleteAkte(AkteFlowState akteFlow) {
         HuwelijksAkteFlowState huwelijksAkteFlow = (HuwelijksAkteFlowState) akteFlow;
 
-        huwttlRepository.delete(huwelijksAkteFlow.getHuwttl());
+        if (huwelijksAkteFlow.getHuwttl().getId() != null) {
+            huwttlRepository.delete(huwelijksAkteFlow.getHuwttl());
+        }
         huwkndRepository.delete(huwelijksAkteFlow.getHuwknd());
         huwafkRepository.delete(huwelijksAkteFlow.getHuwafk());
         huweerRepository.delete(huwelijksAkteFlow.getHuweerGroom());

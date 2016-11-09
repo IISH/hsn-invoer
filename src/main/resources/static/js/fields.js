@@ -181,18 +181,6 @@
                 return false;
             }
         );
-
-        hasNoErrors(
-            elem, showWhen,
-            function () {
-                elem.show();
-                return true;
-            },
-            function () {
-                elem.hide();
-                return false;
-            }
-        );
     };
 
     /**
@@ -307,29 +295,6 @@
         $(target).change(onEvent);
     };
 
-    var hasNoErrors = function (elem, target, onTrue, onFalse) {
-        var previousResult = null;
-        if (elem.data('has-no-errors') !== undefined) {
-            var onEvent = function () {
-                var newResult = null;
-                if (target.hasClass('has-an-error')) {
-                    newResult = onFalse();
-                }
-                else {
-                    newResult = onTrue();
-                }
-
-                if (newResult !== previousResult) {
-                    $.triggerChangeOfState();
-                }
-                previousResult = newResult;
-            };
-
-            onEvent();
-            $(document).blur(onEvent);
-        }
-    };
-
     var prepareByz = function (elem) {
         var allByzElem = elem.find('textarea');
 
@@ -376,6 +341,13 @@
         }
     };
 
+    var updateScrollPosition = function (elem) {
+        var parent = elem.closest('.complete-focus');
+        if (parent.length > 0) {
+            parent.get(0).scrollIntoView({block: 'end', behavior: 'smooth'});
+        }
+    };
+
     $(document).on('keyup', '.form-elem', function (e) {
         var elem = $(e.target);
 
@@ -396,7 +368,9 @@
             allow = allow && onValidChars(elem, e);
         }
 
-        allow = allow && setOverwrite(elem, e);
+        if (!elem.is('textarea')) {
+            allow = allow && setOverwrite(elem, e);
+        }
 
         return allow;
     }).on('blur', 'input', function (e) {
@@ -417,6 +391,8 @@
         if (elem.is($.getDataElemSelector('replace-in-field'))) {
             onReplaceInField(elem);
         }
+
+        updateScrollPosition(elem);
     });
 
     // IE9 does not support 'maxlength' on textarea

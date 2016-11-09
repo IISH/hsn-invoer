@@ -309,6 +309,14 @@
         return newElement;
     };
 
+    var autoHeightScroll = function (elem) {
+        var windowHeight = $(window).height();
+        var parentHeight = elem.parent().height();
+        var elementHeight = elem.height();
+        var maxHeight = windowHeight - (parentHeight - elementHeight);
+        elem.css('max-height', maxHeight + 'px');
+    };
+
     $.fn.getPrevFormElement = function (originalSrc) {
         originalSrc = (originalSrc === undefined) ? this : originalSrc;
         return getNewFormElement(this, originalSrc, true);
@@ -343,6 +351,14 @@
         }
         else {
             $('.form-elem:enabled:visible:first').focus();
+        }
+
+        var scrollElem = $('.scroll-height');
+        if (scrollElem.length === 1) {
+            autoHeightScroll(scrollElem);
+            scrollElem.resize(function () {
+                autoHeightScroll(scrollElem);
+            });
         }
     });
 })(jQuery);

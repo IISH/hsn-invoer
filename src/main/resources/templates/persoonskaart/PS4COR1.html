@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorator="formLayout" xmlns:th="http://www.w3.org/1999/html">
+<html layout:decorator="formLayout">
 <head></head>
 <body>
 <fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
@@ -7,19 +7,31 @@
 <fieldset>
   <th:block layout:fragment="fields">
     <div class="alert alert-info" role="alert">
-      Bij eerste invoer zijn er wel huwelijk(en) ingevoerd!!! Aantal:
-      <th:block th:utext="${akte.pkhuw.size()}">0</th:block> <br />
-      Deze worden nu verwijderd! <br/>
+      Bij eerste invoer zijn er
+      <th:block th:utext="${akte.pkhuw.size()}">0</th:block>
+      huwelijk(en) ingevoerd.
     </div>
 
     <div class="form-group extra-top-margin">
-      <label class="col-xs-8 control-label">
-        Wilt u ze alsnog weer opnieuw invoeren?  j / n
+      <label class="col-xs-6 control-label">
+        Wilt u doorgaan met correctie huwelijken? j / n
       </label>
 
       <div class="col-xs-2">
-        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n" maxlength="1"
-               id="anotherMarriage" name="anotherMarriage"/>
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+               maxlength="1" id="corMarriage" name="corMarriage"/>
+      </div>
+    </div>
+
+    <div class="form-group" data-show-when="#corMarriage" data-has-values-in="j"
+         th:if="${akte.pkhuw.size()} > 0" style="display:none;">
+      <label class="col-xs-6 control-label">
+        Wilt u de ingevoerde huwelijken verwijderen? j / n
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+               maxlength="1" id="delMarriage" name="delMarriage"/>
       </div>
     </div>
   </th:block>

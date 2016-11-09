@@ -13,7 +13,7 @@
     </th:block>
 
     <div class="form-group extra-top-margin" th:if="${akte.pkknd.pktype != 8}"
-         th:include="fragments/complete-fields :: relatie ('curPkeigknd.relkndp', 'Relatie tot PK-houder:', null, false)"></div>
+         th:include="fragments/complete-fields :: kindrelatie ('curPkeigknd.relkndp', 'Relatie tot PK-houder:')"></div>
 
     <div class="form-group extra-top-margin">
       <label class="col-xs-3 control-label">GEB dat/plts:</label>
@@ -115,14 +115,33 @@
 
 <span layout:fragment="navigational-form">
   <div class="form-group">
-    <label class="col-xs-10 control-label" th:if="${akte.isCorrection()} == false">Nog een kind invoeren? j /
-      n</label>
-    <label class="col-xs-10 control-label" th:if="${akte.isCorrection()}">Nog een kind aanvullen of corrigeren? j /
-      n</label>
+    <label class="col-xs-10 control-label" th:if="${akte.isCorrection()} == false">
+      Nog een kind invoeren? j / n
+    </label>
 
-    <div class="col-xs-2">
+    <label class="col-xs-10 control-label"
+           th:if="${akte.isCorrection()} and ${akte.curPkeigknd.vgnrkdp lt akte.pkeigknd.size()}">
+      Volgende kinderen verwijderen? j / n
+    </label>
+
+    <label class="col-xs-10 control-label"
+           th:if="${akte.isCorrection()} and ${akte.curPkeigknd.vgnrkdp ge akte.pkeigknd.size()}">
+      Nog een kind toevoegen? j / n
+    </label>
+
+    <div class="col-xs-2"
+         th:if="${akte.isCorrection() == false} or ${akte.curPkeigknd.vgnrkdp ge akte.pkeigknd.size()}">
       <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
-             name="anotherChild" id="anotherChild"/>
+              name="anotherChild" id="anotherChild"/>
+    </div>
+
+    <div class="col-xs-2"
+         th:if="${akte.isCorrection()} and ${akte.curPkeigknd.vgnrkdp lt akte.pkeigknd.size()}">
+      <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+             name="delChild" id="delChild"/>
+
+      <input type="hidden" name="anotherChild" data-set-value-when="#delChild" data-has-values-in="j"
+             data-then-value="n" data-else-value="j"/>
     </div>
   </div>
 </span>
