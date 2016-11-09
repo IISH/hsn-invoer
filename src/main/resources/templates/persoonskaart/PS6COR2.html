@@ -6,14 +6,18 @@
 
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="form-group">
-      <label class="col-xs-8 control-label">
-        Is de PK-houder een of meermalen gehuwd geweest? j / n
+    <div class="alert alert-info" role="alert">
+      De <th:block th:utext="${akte.pkeigknd.size()}">0</th:block> ingevoerde kind(eren) worden nu verwijderd!
+    </div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-6 control-label">
+        Wilt u ze alsnog weer opnieuw invoeren?  j / n
       </label>
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
-               maxlength="1" id="anotherMarriage" name="anotherMarriage"/>
+               maxlength="1" id="anotherChild" name="anotherChild"/>
       </div>
     </div>
   </th:block>

@@ -127,8 +127,8 @@
         if (!message.is(':visible')) {
             var hiddenByErrorCheck = message.data('error-check');
             if (isErrorCheck || (!hiddenByErrorCheck && !isErrorCheck)) {
-                message.show();
-                getMessages().show();
+                message.showNoEvent();
+                getMessages().showNoEvent();
             }
         }
     };
@@ -136,7 +136,7 @@
     var hideMessage = function (message, isErrorCheck) {
         if (message.is(':visible')) {
             message.data('error-check', isErrorCheck);
-            message.hide();
+            message.hideNoEvent();
 
             var messages = getMessages();
             var alertBox = messages;
@@ -144,7 +144,7 @@
                 alertBox = messages.find('.alert');
             }
             if (alertBox.children().filter(':visible').length === 0) {
-                messages.hide();
+                messages.hideNoEvent();
             }
         }
     };
@@ -246,6 +246,13 @@
         else {
             nextBtn.removeAttr('disabled');
             byzBtn.removeAttr('disabled');
+        }
+
+        if (nextBtn.is(':focus:disabled')) {
+            nextBtn.getNextFormElement().focus();
+        }
+        if (byzBtn.is(':focus:disabled')) {
+            byzBtn.getNextFormElement().focus();
         }
     };
 

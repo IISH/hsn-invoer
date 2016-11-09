@@ -19,6 +19,7 @@ public class Pkhuw extends Invoer {
     @Column(name = "VN3HUWP", nullable = false, length = 30) private String vn3huwp = "";    // 3rd firstname spouse
 
     @Column(name = "BRPHUWP", nullable = false, length = 254) private String brphuwp = "";    // profession spouse
+    @Column(name = "GSDHUWP", nullable = false, length = 20) private String gsdhuwp = "";    // religion spouse
 
     @Column(name = "GDGHUWP", nullable = false) private   int gdghuwp;                  // day of birth spouse
     @Column(name = "GMDHUWP", nullable = false) private   int gmdhuwp;                  // month of birth spouse
@@ -130,6 +131,14 @@ public class Pkhuw extends Invoer {
 
     public void setBrphuwp(String brphuwp) {
         this.brphuwp = brphuwp;
+    }
+
+    public String getGsdhuwp() {
+        return gsdhuwp;
+    }
+
+    public void setGsdhuwp(String gsdhuwp) {
+        this.gsdhuwp = gsdhuwp;
     }
 
     public int getGdghuwp() {

@@ -69,3 +69,15 @@ CREATE TABLE `relatie` (
   KEY `UK_lqixv4lpo2wdm0x481v3r5kh2` (`RELATIE`),
   KEY `UK_16d3juhgmf5tkd7sva7f3opsp` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+CREATE TABLE `kindrelatie` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `NWINLST` varchar(1) NOT NULL,
+  `RELATIE` varchar(50) NOT NULL,
+  `ONDRZKO` varchar(3) NOT NULL,
+  `OPDRNRI` varchar(3) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `UK_qd4gl856llklgpm5m71rbcwne` (`RELATIE`),
+  KEY `UK_gq6m5l6x93u7dvh9c7rubespb` (`ONDRZKO`,`OPDRNRI`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
