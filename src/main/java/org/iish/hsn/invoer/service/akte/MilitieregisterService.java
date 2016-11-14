@@ -209,8 +209,12 @@ public class MilitieregisterService {
      * @param militieregisterFlow The militie register flow state.
      */
     public void deleteAkte(MilitieregisterFlowState militieregisterFlow) {
-        militionRepository.delete(militieregisterFlow.getMil());
-        militionRegistrationRepository.delete(militieregisterFlow.getMilReg());
+        if (militieregisterFlow.getMil().getId() != null) {
+            militionRepository.delete(militieregisterFlow.getMil());
+        }
+        if (militieregisterFlow.getMilReg().getId() != null) {
+            militionRegistrationRepository.delete(militieregisterFlow.getMilReg());
+        }
         verdictRepository.delete(militieregisterFlow.getVerdict().values());
     }
 

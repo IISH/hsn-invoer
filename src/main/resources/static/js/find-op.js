@@ -14,6 +14,7 @@
         self.withoutOpElems = $('.without-op');
         self.withOpStateElems = $('.with-op-state');
         self.huwCheckElem = $('.huw-check');
+        self.militieCheckElem = $('.militie-check');
         self.nextBtnElem = $('.btn-next');
         self.lookup = elem.getDataValue('lookup');
 
@@ -58,6 +59,17 @@
             if ($.getCurNavigation().isNext) {
                 self.blur = $(this);
                 self.marriageLookup();
+            }
+        });
+
+        if (!self.militieCheckElem.is(':input')) {
+            self.militieCheckElem = self.militieCheckElem.find(':input:last');
+        }
+
+        self.militieCheckElem.blur(function () {
+            if ($.getCurNavigation().isNext) {
+                self.blur = $(this);
+                self.militionSequenceLookup();
             }
         });
     }
@@ -129,7 +141,12 @@
                         self.onSuccess();
                     }
                     else if (self.idnrElem.hasClass('m0-lookup')) {
-                        self.militionLookup();
+                        if (!$.isCorrection()) {
+                            self.militionLookup();
+                        }
+                        else {
+                            self.onSuccess();
+                        }
                     }
                     else {
                         self.noRefRPLookup();
@@ -201,6 +218,23 @@
                 else {
                     self.onSuccess();
                 }
+            });
+        });
+    };
+
+    FindOp.prototype.militionSequenceLookup = function () {
+        self.withIdnr(function (idnr) {
+            var seq = parseInt($('.seq').val());
+
+            self.serverCall('/ajax/lookup/m0/list', {idnr: idnr} , function (enteredScans) {
+                if ((seq > 0) && (enteredScans.length >= seq)) {
+                    self.onSuccess();
+                }
+                else {
+                    self.onFailure('Er is/zijn maximaal ' + enteredScans.length + ' register ingevoerd voor deze OP!', false, true, true);
+                }
+            }, function () {
+                self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, true, true);
             });
         });
     };

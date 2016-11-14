@@ -60,6 +60,10 @@
                 else
                     sessionStorage.setItem('hsnScanB', dataUrl);
             });
+
+            sessionStorage.setItem('hsnScanSide', 'A');
+            sessionStorage.setItem('hsnScanPositionA', null);
+            sessionStorage.setItem('hsnScanPositionB', null);
         });
     });
 })(jQuery, PDFJS);

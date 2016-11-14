@@ -10,6 +10,8 @@ var HsnCanvas = (function ($, fabric) {
     return function (canvasId, allowCutting) {
         var canvas = new fabric.Canvas(canvasId);
 
+        var loading = new fabric.Text('Loading...' ,
+            {hasControls: false, selectable: false, fontStyle: 'italic', fontFamily: 'Delicious'});
         var image = null;
         var lines = [];
 
@@ -29,6 +31,7 @@ var HsnCanvas = (function ($, fabric) {
                 image.hasRotatingPoint = false;
                 image.lockUniScaling = true;
 
+                canvas.remove(loading);
                 canvas.add(image);
 
                 if ($.isPlainObject(position))
@@ -150,6 +153,10 @@ var HsnCanvas = (function ($, fabric) {
                 canvas.renderAll();
             });
             canvas.setWidth($('.canvas-container').parent().width());
+
+            canvas.add(loading);
+            loading.center();
+
             canvas.renderAll();
         }
 

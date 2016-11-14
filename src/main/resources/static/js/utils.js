@@ -39,6 +39,9 @@
                 var scanSide = sessionStorage.getItem('hsnScanSide');
                 scanSide = (scanSide === null) ? 'A' : scanSide;
 
+                if (sessionStorage.getItem('hsnScanSide') === null)
+                    sessionStorage.setItem('hsnScanSide', scanSide);
+
                 var image = sessionStorage.getItem('hsnScan' + scanSide);
                 if (image !== null) {
                     try {

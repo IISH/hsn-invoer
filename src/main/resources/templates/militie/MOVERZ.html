@@ -9,17 +9,17 @@
     <thead>
     <tr>
       <th>Ident. Nummer</th>
+      <th>Volgnummer</th>
       <th>Achternaam</th>
       <th>Voornamen</th>
-      <th>Subtotaal</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="curMilReg,stat : ${overview}">
       <td th:utext="${curMilReg.idnr}"></td>
+      <td th:utext="${curMilReg.seq}"></td>
       <td th:utext="${curMilReg.familyName}"></td>
       <td th:utext="${curMilReg.firstName}"></td>
-      <td th:utext="${stat.index + 1}"></td>
     </tr>
     <tr th:if="${overview.size() == 0}">
       <td colspan="4" class="text-center">EINDE BESTAND / echter niets gevonden!</td>

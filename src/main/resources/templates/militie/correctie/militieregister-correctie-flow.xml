@@ -18,8 +18,26 @@
   <!-- MCOR: CORRECTIE SCHERM -->
   <view-state id="MCOR" view="militie/MCOR" model="akte">
     <transition on="stop" to="stopEnd"/>
-    <transition on="next" to="firstCorrectionCodeCheck"/>
+    <transition on="next" to="MS0A"/>
   </view-state>
+
+  <!-- MS0A: SCAN -->
+  <view-state id="MS0A" view="militie/MS0A" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="determineScanSideB"/>
+  </view-state>
+
+  <action-state id="determineScanSideB">
+    <evaluate expression="(akte.mil.scanB != '') and akte.isCropSideA()"/>
+
+    <transition on="yes" to="MS0A">
+        <evaluate expression="akte.setCropSideA(false)"/>
+    </transition>
+
+    <transition on="no" to="firstCorrectionCodeCheck">
+        <evaluate expression="akte.setCropSideA(false)"/>
+    </transition>
+  </action-state>
 
   <action-state id="firstCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>

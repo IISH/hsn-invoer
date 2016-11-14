@@ -34,13 +34,15 @@
     });
 
     $(document).ready(function () {
-        $.lockNavigation();
-        $.getJSON('/ajax/lookup/m0/list', {idnr: $('.idnr').text()}, function (data) {
-            $.unlockNavigation();
-            militions = data;
+        if (!$.isCorrection()) {
+            $.lockNavigation();
+            $.getJSON('/ajax/lookup/m0/list', {idnr: $('.idnr').text()}, function (data) {
+                $.unlockNavigation();
+                militions = data;
 
-            checkEnteredInput();
-            $('#mil\\.year, #mil\\.municipality').blur(checkEnteredInput);
-        });
+                checkEnteredInput();
+                $('#mil\\.year, #mil\\.municipality').blur(checkEnteredInput);
+            });
+        }
     });
 })(jQuery);
