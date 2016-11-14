@@ -5,7 +5,9 @@ CREATE TABLE `m0` (
   `VOLG` int(11) NOT NULL,
   `TYPE` varchar(1) NOT NULL,
   `GEMNAAM` varchar(50) NOT NULL,
-  `INVNR` int(11) NOT NULL,
+  `INVNR` varchar(10) NOT NULL,
+  `SCANA` varchar(255) NOT NULL,
+  `SCANB` varchar(255) NOT NULL,
   `OPDRNR` varchar(3) NOT NULL,
   `DATUM` varchar(10) NOT NULL,
   `INIT` varchar(3) NOT NULL,
@@ -17,7 +19,7 @@ CREATE TABLE `m0` (
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `UK_2e41hqvw4ayshxg6nx9av4ght` (`IDNR`,`VOLG`,`TYPE`)
+  UNIQUE KEY `UK_esd5x9m6752sx3y4x8uc994eh` (`IDNR`,`VOLG`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
