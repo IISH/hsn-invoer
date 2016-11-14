@@ -97,7 +97,7 @@ CREATE TABLE `m1` (
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `UK_k16vb93fyivkl55sy3ox4d8o9` (`IDNR`,`JAAR`,`VOLG`),
+  KEY `UK_k16vb93fyivkl55sy3ox4d8o9` (`IDNR`,`VOLG`),
   KEY `UK_ma2ooxdvnc8posxxxvfxlkgfm` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -128,6 +128,6 @@ CREATE TABLE `m2` (
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `UK_2at34v26tp3gfximpf20e1tgh` (`IDNR`,`JAAR`,`VOLG`,`TYPE`),
+  KEY `UK_2at34v26tp3gfximpf20e1tgh` (`IDNR`,`VOLG`),
   KEY `UK_oq00jxwvcxmptvqkpqfvj8db0` (`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
