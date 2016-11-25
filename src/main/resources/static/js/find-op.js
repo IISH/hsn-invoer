@@ -84,7 +84,7 @@
                 }
 
                 $.getJSON('/ajax/lookup/gebakte', {idnr: idnr}, function (gebakte) {
-                    self.onFailure('De akte is al ingevoerd onder kode ' + gebakte.gebkode, true, true, false);
+                    self.onFailure('De akte is al ingevoerd onder code ' + gebakte.gebkode, true, true, false);
                 }).fail(function () {
                     self.gebkndLookup();
                 });

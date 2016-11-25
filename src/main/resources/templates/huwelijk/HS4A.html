@@ -7,7 +7,10 @@
 <fieldset>
   <th:block layout:fragment="fields">
     <legend>
-      Gegevens eerdere huwelijken van de
+      Gegevens
+      <th:block th:if="${akte.curHuweer.huwer} == 'm'">echtgenote</th:block>
+      <th:block th:if="${akte.curHuweer.huwer} == 'v'">echtgenoot</th:block>
+      eerdere huwelijken van de
       <span class="letter-spacing" th:if="${akte.curHuweer.huwer} == 'm'">BRUIDEGOM:</span>
       <span class="letter-spacing" th:if="${akte.curHuweer.huwer} == 'v'">BRUID:</span>
     </legend>

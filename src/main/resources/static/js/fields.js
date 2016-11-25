@@ -168,13 +168,14 @@
             elem, showWhen,
             function () {
                 var visible = showWhen.is(':visible');
-                if (visible) {
+                var hidden = showWhen.is('input[type=hidden]');
+                if (visible || hidden) {
                     elem.show();
                 }
                 else {
                     elem.hide();
                 }
-                return visible;
+                return visible || hidden;
             },
             function () {
                 elem.hide();

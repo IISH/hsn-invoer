@@ -283,6 +283,10 @@ public class OverlijdensAkteService extends AkteService {
         Ovlagv ovlagvCur = overlijdensAkteFlow.getCurOvlagv();
         ovlagvCur.setIdnr(overlijdensAkteFlow.getOvlknd().getIdnr());
 
+        if (ovlagvCur.getLftagv() == 0) {
+            ovlagvCur.setLftagv(-1);
+        }
+
         inputMetadata.saveToEntity(ovlagvCur);
         ovlagvCur = ovlagvRepository.save(ovlagvCur);
 

@@ -5,10 +5,9 @@ import org.iish.hsn.invoer.domain.invoer.geb.Geb_;
 import org.iish.hsn.invoer.util.Cohort;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GeboorteSpecifications extends AkteSpecifications<Geb, Integer> {
     public GeboorteSpecifications() {
@@ -18,6 +17,7 @@ public class GeboorteSpecifications extends AkteSpecifications<Geb, Integer> {
     public Specification<Geb> isInGemeente(final int gemnr) {
         return new Specification<Geb>() {
             public Predicate toPredicate(Root<Geb> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                query.orderBy(getOrderBy(root, cb));
                 return cb.equal(root.get(Geb_.gemnr), gemnr);
             }
         };
@@ -27,9 +27,20 @@ public class GeboorteSpecifications extends AkteSpecifications<Geb, Integer> {
         final Cohort cohort = Cohort.getCohortByNumber(cohortNumber);
         return new Specification<Geb>() {
             public Predicate toPredicate(Root<Geb> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                query.orderBy(getOrderBy(root, cb));
                 return cb.and(cb.greaterThanOrEqualTo(root.get(Geb_.jaar), cohort.getStartYear()),
                         cb.lessThanOrEqualTo(root.get(Geb_.jaar), cohort.getEndYear()));
             }
         };
+    }
+
+    @Override
+    protected List<Order> getOrderBy(Root<Geb> root, CriteriaBuilder cb) {
+        List<Order> orderColumns = new ArrayList<>();
+        orderColumns.add(cb.asc(root.get(Geb_.gemnaam)));
+        orderColumns.add(cb.asc(root.get(Geb_.jaar)));
+        orderColumns.add(cb.asc(root.get(Geb_.aktenr)));
+        orderColumns.add(cb.asc(root.get(Geb_.idnr)));
+        return orderColumns;
     }
 }
