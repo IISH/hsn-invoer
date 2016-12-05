@@ -64,7 +64,7 @@
             self.val(age);
         }
 
-        self.hasErrorWhen(!isNaN(age) && (age < 12 || age > 55) && (age != -1));
+        self.hasErrorWhen(!isNaN(age) && (age < 12 || age > 55) && ([-1,-2,-3].indexOf(age) < 0));
         $.triggerChangeOfState();
     };
 
