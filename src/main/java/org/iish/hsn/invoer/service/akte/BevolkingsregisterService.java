@@ -229,7 +229,7 @@ public class BevolkingsregisterService {
                 // If this person is the OP, take over information from the birth certificate
                 if (person.getKeyToRegistrationPersons() == bevolkingsregisterFlow.getVolgnrOP()) {
                     person.setNatureOfPerson(Person.NatureOfPerson.FIRST_RP.getNatureOfPerson());
-                    person.setFamilyName(refRp.getLastName());
+                    person.setFamilyName(refRp.getPrefixLastName());
                     person.setFirstName(refRp.getFirstName());
                     person.setSex(refRp.getSex());
                     person.setPlaceOfBirth(refRp.getNameMunicipality());
@@ -245,14 +245,14 @@ public class BevolkingsregisterService {
                 if (bevolkingsregisterFlow.getVolgnrOP() >= 3) {
                     // First one is the father
                     if (person.getKeyToRegistrationPersons() == 1) {
-                        person.setFamilyName(refRp.getLastNameFather());
+                        person.setFamilyName(refRp.getPrefixLastNameFather());
                         person.setFirstName(refRp.getFirstNameFather());
                         person.setSex("m");
                     }
 
                     // Second one is the mother
                     if (person.getKeyToRegistrationPersons() == 2) {
-                        person.setFamilyName(refRp.getLastNameMother());
+                        person.setFamilyName(refRp.getPrefixLastNameMother());
                         person.setFirstName(refRp.getFirstNameMother());
                         person.setSex("v");
                     }
