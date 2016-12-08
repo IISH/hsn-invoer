@@ -96,13 +96,13 @@ public class MilitieregisterService {
             militionRegistration.setMonthOfBirth(refRp.getMonthOfBirth());
             militionRegistration.setYearOfBirth(refRp.getYearOfBirth());
 
-            militionRegistration.setFamilyName(refRp.getLastName());
+            militionRegistration.setFamilyName(refRp.getPrefixLastName());
             militionRegistration.setFirstName(refRp.getFirstName());
 
-            militionRegistration.setFamilyNameFather(refRp.getLastNameFather());
+            militionRegistration.setFamilyNameFather(refRp.getPrefixLastNameFather());
             militionRegistration.setFirstNameFather(refRp.getFirstNameFather());
 
-            militionRegistration.setFamilyNameMother(refRp.getLastNameMother());
+            militionRegistration.setFamilyNameMother(refRp.getPrefixLastNameMother());
             militionRegistration.setFirstNameMother(refRp.getFirstNameMother());
 
             Plaats plaats = lookupService.getPlaats(refRp.getNumberMunicipality(), false);
