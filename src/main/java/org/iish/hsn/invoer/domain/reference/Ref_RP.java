@@ -92,7 +92,7 @@ public class Ref_RP implements Serializable {
 
     public String getPrefixLastName() {
         String prefixLastName = getLastName();
-        if (getPrefixName().isEmpty())
+        if (!getPrefixName().isEmpty())
             return prefixLastName + ", " + getPrefixName();
         return prefixLastName;
     }
@@ -135,7 +135,7 @@ public class Ref_RP implements Serializable {
 
     public String getPrefixLastNameMother() {
         String prefixLastName = getLastNameMother();
-        if (getPrefixMother().isEmpty())
+        if (!getPrefixMother().isEmpty())
             return prefixLastName + ", " + getPrefixMother();
         return prefixLastName;
     }
@@ -154,7 +154,7 @@ public class Ref_RP implements Serializable {
 
     public String getPrefixLastNameFather() {
         String prefixLastName = getLastNameFather();
-        if (getPrefixFather().isEmpty())
+        if (!getPrefixFather().isEmpty())
             return prefixLastName + ", " + getPrefixFather();
         return prefixLastName;
     }
