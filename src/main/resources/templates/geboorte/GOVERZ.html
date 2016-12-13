@@ -18,7 +18,7 @@
     </thead>
     <tbody>
     <tr th:each="curGeb,stat : ${overview}">
-      <td th:utext="${curGeb.gebkode}"></td>
+      <td th:utext="${curGeb.id.gebkode}"></td>
       <td th:utext="${curGeb.gemnaam}"></td>
       <td th:utext="${curGeb.jaar}"></td>
       <td th:utext="${curGeb.aktenr}"></td>

@@ -28,7 +28,9 @@
                 error = true;
             }
             if (yearVal <= 1810) {
-                error = true;
+                if (!parent.hasClass('checkDate7a') || !(yearVal === -1 || yearVal === -2 || yearVal === -3)) {
+                    error = true;
+                }
             }
 
             return error;

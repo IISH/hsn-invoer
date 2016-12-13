@@ -21,7 +21,7 @@
            data-then-value-of="#toestemming-kode" data-else-value-of="#toestemming-geven"
            th:field="*{huwknd.toemrhm}" hsn:field="huwknd.toemrhm"/>
 
-    <div class="form-group" data-show-when="#huwknd\.levmrhm" data-has-values-in="j" style="display:none;">
+    <div data-show-when="#huwknd\.levmrhm" data-has-values-in="j" style="display:none;">
       <div class="form-group">
         <label for="toestemming-geven" class="col-xs-10 control-label">
           Geeft deze toestemming tot het huwelijk? j (ja) / n (nee) / i (jur. irrelevant) / g (geen antw)
@@ -35,10 +35,10 @@
         </div>
       </div>
 
-      <div class="form-group" data-show-when="#toestemming-geven" data-has-values-in="j" style="display: none;">
+      <div data-show-when="#toestemming-geven" data-has-values-in="j" style="display: none;">
         <div class="form-group">
           <label for="toestemming-kode" class="col-xs-7 control-label">
-            Aard toestemming? s (schrift.) /m (mond.) /a (anders) /k (notar.akte)
+            Aard toestemming? /m (mond.) /s (schrift.) /k (notar.akte) /a (anders)
           </label>
 
           <div class="col-xs-2">
