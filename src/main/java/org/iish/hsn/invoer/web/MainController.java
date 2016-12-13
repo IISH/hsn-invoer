@@ -75,8 +75,8 @@ public class MainController {
                 return "redirect:/geboorte";*/
             case "2":
                 return "redirect:/overlijden";
-            /*TODO: case "3":
-                return "redirect:/huwelijk";*/
+            case "3":
+                return "redirect:/huwelijk";
             case "4":
                 return "redirect:/persoonskaart";
             /* TODO: case "5":
