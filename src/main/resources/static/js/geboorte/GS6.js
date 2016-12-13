@@ -3,9 +3,10 @@
 
     var mayAddByz = function () {
         var byzBtn = $('.btn-byz');
-
         byzBtn.addClass('no-byz');
-        if (($('#gebknd\\.kant').val() === 'j') && ($('#gebkant\\.kanttype').getIntegerValue() === 5)) {
+
+        var kant = $('#gebknd\\.kant');
+        if ((kant.val() === 'n') || ((kant.val() === 'j') && ($('#gebkant\\.kanttype').getIntegerValue() === 5))) {
             byzBtn.removeClass('no-byz');
         }
 

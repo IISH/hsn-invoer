@@ -117,14 +117,21 @@ public class GeboorteAkteService extends AkteService {
             geboorteAkteFlow.setStpb(lookupService.getStpb(idnr, true));
 
             // Now look up the gebknd record and update the changes to the date
-            gebknd = lookupService.getGebknd(idnr, true);
-            gebknd.setAktedag(dag);
-            gebknd.setAktemnd(maand);
-            gebknd.setAkteuur(uur);
+            gebknd = lookupService.getGebknd(idnr, false);
+            if (gebknd != null) {
+                gebknd.setAktedag(dag);
+                gebknd.setAktemnd(maand);
+                gebknd.setAkteuur(uur);
 
-            inputMetadata.saveToEntity(gebknd);
-            gebknd = gebkndRepository.save(gebknd);
-            geboorteAkteFlow.setGebknd(gebknd);
+                inputMetadata.saveToEntity(gebknd);
+                gebknd = gebkndRepository.save(gebknd);
+                geboorteAkteFlow.setGebknd(gebknd);
+            }
+
+            gebakte = lookupService.getGebakte(idnr, false);
+            if (gebakte != null) {
+                geboorteAkteFlow.setGebakte(gebakte);
+            }
 
             Gebvdr gebvdr = gebvdrRepository.findByIdnrAndWorkOrder(idnr, inputMetadata.getWorkOrder());
             if (gebvdr != null) {
@@ -187,6 +194,10 @@ public class GeboorteAkteService extends AkteService {
             gebknd.setAnmag("Vroedvrouw of verg. persoon");
         }
 
+        if (gebknd.getLftag() == 0) {
+            gebknd.setLftag(-1);
+        }
+
         // The user can still stop the flow, so only save during correction
         if (geboorteAkteFlow.isCorrection()) {
             inputMetadata.saveToEntity(gebknd);
@@ -201,6 +212,11 @@ public class GeboorteAkteService extends AkteService {
      * @param geboorteAkteFlow The geboorte akte flow state.
      */
     public void registerGeboorteAndMoeder(GeboorteAkteFlowState geboorteAkteFlow) {
+        Gebknd gebknd = geboorteAkteFlow.getGebknd();
+        if (gebknd.getLftmr() == 0) {
+            gebknd.setLftmr(-1);
+        }
+
         saveGebknd(geboorteAkteFlow);
     }
 
@@ -233,6 +249,10 @@ public class GeboorteAkteService extends AkteService {
      */
     public void registerVader(GeboorteAkteFlowState geboorteAkteFlow) {
         Gebvdr gebvdr = geboorteAkteFlow.getGebvdr();
+
+        if (gebvdr.getLftvr() == 0) {
+            gebvdr.setLftvr(-1);
+        }
 
         // Simply delete the previous record if there is no information to make sure we have a clean record again
         if (geboorteAkteFlow.isCorrection() && !gebvdr.getGegvr().equals("j")) {
@@ -271,6 +291,10 @@ public class GeboorteAkteService extends AkteService {
         Gebgtg gebgtgCur = geboorteAkteFlow.getCurGebgtg();
         gebgtgCur.setIdnr(geboorteAkteFlow.getGebknd().getIdnr());
 
+        if (gebgtgCur.getLftgt() == 0) {
+            gebgtgCur.setLftgt(-1);
+        }
+
         inputMetadata.saveToEntity(gebgtgCur);
         gebgtgCur = gebgtgRepository.save(gebgtgCur);
 
@@ -285,13 +309,8 @@ public class GeboorteAkteService extends AkteService {
      * @param geboorteAkteFlow The geboorte akte flow state.
      */
     public void registerKanttype(GeboorteAkteFlowState geboorteAkteFlow) {
-        Gebknd gebknd = geboorteAkteFlow.getGebknd();
         Gebkant gebkant = geboorteAkteFlow.getGebkant();
-
-        gebkant.setIdnr(gebknd.getIdnr());
-        if (!geboorteAkteFlow.isCorrection()) {
-            gebkant.setKhuwanr("N");
-        }
+        gebkant.setIdnr(geboorteAkteFlow.getGebknd().getIdnr());
 
         inputMetadata.saveToEntity(gebkant);
         gebkant = gebkantRepository.save(gebkant);

@@ -3,19 +3,33 @@ package org.iish.hsn.invoer.domain.invoer.geb;
 import org.iish.hsn.invoer.domain.invoer.Invoer;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "geb") // Is actually not a table, but a view
 public class Geb extends Invoer {
+    @Embeddable
+    public static class GebId implements Serializable {
+        @Column(name = "ID", nullable = false) private       Integer id;
+        @Column(name = "GEBKODE", nullable = false) private  long    gebkode; // long, as MySQL turns this into a bigint
+
+        public Integer getId() {
+            return id;
+        }
+
+        public long getGebkode() {
+            return gebkode;
+        }
+    }
+
     @Column(name = "GEMNR", nullable = false) private    int    gemnr;
     @Column(name = "GEMNAAM", nullable = false) private  String gemnaam = "";
     @Column(name = "JAAR", nullable = false) private     int    jaar;
     @Column(name = "AKTENR", nullable = false) private   int    aktenr;
     @Column(name = "IDNR", nullable = false) private     int    idnr;
-    @Column(name = "GEBKODE", nullable = false) private  long   gebkode; // long, as MySQL turns this into a bigint
     @Column(name = "OVERSAMP", nullable = false) private String oversamp = "";
 
-    @Id @Column(name = "ID") private Integer id;
+    @EmbeddedId private GebId id;
 
     public int getGemnr() {
         return gemnr;
@@ -37,15 +51,11 @@ public class Geb extends Invoer {
         return idnr;
     }
 
-    public long getGebkode() {
-        return gebkode;
-    }
-
     public String getOversamp() {
         return oversamp;
     }
 
-    public Integer getId() {
+    public GebId getId() {
         return id;
     }
 }
