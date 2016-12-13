@@ -26,7 +26,6 @@ CREATE TABLE `m0` (
 CREATE TABLE `m1` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
-  `JAAR` int(11) NOT NULL,
   `VOLG` int(11) NOT NULL,
   `ANM` varchar(50) NOT NULL,
   `VNM` varchar(50) NOT NULL,
@@ -105,7 +104,6 @@ CREATE TABLE `m1` (
 CREATE TABLE `m2` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
-  `JAAR` int(11) NOT NULL,
   `VOLG` int(11) NOT NULL,
   `TYPE` int(11) NOT NULL,
   `AARD` varchar(50) NOT NULL,
