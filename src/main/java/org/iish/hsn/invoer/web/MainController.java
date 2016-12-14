@@ -71,8 +71,8 @@ public class MainController {
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.POST)
     public String redirectToModule(@RequestParam("keuze") String module) {
         switch (module) {
-            /*TODO: case "1":
-                return "redirect:/geboorte";*/
+            case "1":
+                return "redirect:/geboorte";
             case "2":
                 return "redirect:/overlijden";
             case "3":
