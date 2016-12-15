@@ -106,7 +106,7 @@ public class MilitieregisterService {
             militionRegistration.setFirstNameMother(refRp.getFirstNameMother());
 
             Plaats plaats = lookupService.getPlaats(refRp.getNumberMunicipality(), false);
-            if (plaats != null) {
+            if ((scan.getMunicipality() == null) && (plaats != null)) {
                 milition.setMunicipality(plaats.getGemnaam());
             }
         }
