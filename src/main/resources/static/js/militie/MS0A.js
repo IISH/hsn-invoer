@@ -3,6 +3,7 @@
 
     var hsnCanvas;
     var cutter;
+    var submit = false;
 
     var readImageOrPdf = function (file) {
         if (file.type.match('image.*')) {
@@ -53,17 +54,24 @@
         xhr.responseType = 'blob';
         xhr.send();
 
-        $('form:first').submit(function () {
-            hsnCanvas.createNewImage(function (dataUrl) {
-                if (cutter.hasClass('sideA'))
-                    sessionStorage.setItem('hsnScanA', dataUrl);
-                else
-                    sessionStorage.setItem('hsnScanB', dataUrl);
-            });
+        $('form:first').submit(function (e) {
+            if (!submit) {
+                e.preventDefault();
 
-            sessionStorage.setItem('hsnScanSide', 'A');
-            sessionStorage.setItem('hsnScanPositionA', null);
-            sessionStorage.setItem('hsnScanPositionB', null);
+                hsnCanvas.createNewImage(function (dataUrl) {
+                    if (cutter.hasClass('sideA'))
+                        sessionStorage.setItem('hsnScanA', dataUrl);
+                    else
+                        sessionStorage.setItem('hsnScanB', dataUrl);
+
+                    submit = true;
+                    $('.btn-next').click();
+                });
+
+                sessionStorage.setItem('hsnScanSide', 'A');
+                sessionStorage.setItem('hsnScanPositionA', null);
+                sessionStorage.setItem('hsnScanPositionB', null);
+            }
         });
     });
 })(jQuery, PDFJS);
