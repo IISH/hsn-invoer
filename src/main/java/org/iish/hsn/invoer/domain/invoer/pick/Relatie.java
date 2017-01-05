@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Relatie {
     @Embedded private WorkOrder workOrder;
 
-    @Column(name = "RELKODE", nullable = false) private              Integer relkode;
+    @Column(name = "RELKODE") private                                Integer relkode;
     @Column(name = "RELATIE", nullable = false, length = 50) private String  relatie;
     @Column(name = "NWINLST", nullable = false, length = 1) private  String  nwinlst;
 
