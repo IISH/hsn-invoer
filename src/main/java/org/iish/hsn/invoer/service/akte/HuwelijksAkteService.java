@@ -89,9 +89,7 @@ public class HuwelijksAkteService extends AkteService {
 
             huwknd.setGebsex(refRp.getSex());
             if (refRp.getSex().equals("m")) {
-                huwknd.setAnmhm(refRp.getLastName());
-                huwknd.setTushm(refRp.getPrefixName());
-
+                huwknd.setAnmhm(refRp.getPrefixLastName());
                 String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
                 huwknd.setVrn1hm(firstNames[0]);
                 huwknd.setVrn2hm(firstNames[1]);
@@ -100,17 +98,13 @@ public class HuwelijksAkteService extends AkteService {
                 huwknd.setGebplnhm(refRp.getNumberMunicipality());
                 huwknd.setGebplhm(refRp.getNameMunicipality());
 
-                huwknd.setAnmvrhm(refRp.getLastNameFather());
-                huwknd.setTusvrhm(refRp.getPrefixFather());
-
+                huwknd.setAnmvrhm(refRp.getPrefixLastNameFather());
                 String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
                 huwknd.setVrn1vrhm(firstNamesFather[0]);
                 huwknd.setVrn2vrhm(firstNamesFather[1]);
                 huwknd.setVrn3vrhm(firstNamesFather[2]);
 
-                huwknd.setAnmmrhm(refRp.getLastNameMother());
-                huwknd.setTusmrhm(refRp.getPrefixMother());
-
+                huwknd.setAnmmrhm(refRp.getPrefixLastNameMother());
                 String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
                 huwknd.setVrn1mrhm(firstNamesMother[0]);
                 huwknd.setVrn2mrhm(firstNamesMother[1]);
@@ -120,9 +114,7 @@ public class HuwelijksAkteService extends AkteService {
             }
 
             if (refRp.getSex().equals("v")) {
-                huwknd.setAnmhv(refRp.getLastName());
-                huwknd.setTushv(refRp.getPrefixName());
-
+                huwknd.setAnmhv(refRp.getPrefixLastName());
                 String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
                 huwknd.setVrn1hv(firstNames[0]);
                 huwknd.setVrn2hv(firstNames[1]);
@@ -131,17 +123,13 @@ public class HuwelijksAkteService extends AkteService {
                 huwknd.setGebplnhv(refRp.getNumberMunicipality());
                 huwknd.setGebplhv(refRp.getNameMunicipality());
 
-                huwknd.setAnmvrhv(refRp.getLastNameFather());
-                huwknd.setTusvrhv(refRp.getPrefixFather());
-
+                huwknd.setAnmvrhv(refRp.getPrefixLastNameFather());
                 String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
                 huwknd.setVrn1vrhv(firstNamesFather[0]);
                 huwknd.setVrn2vrhv(firstNamesFather[1]);
                 huwknd.setVrn3vrhv(firstNamesFather[2]);
 
-                huwknd.setAnmmrhv(refRp.getLastNameMother());
-                huwknd.setTusmrhv(refRp.getPrefixMother());
-
+                huwknd.setAnmmrhv(refRp.getPrefixLastNameMother());
                 String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
                 huwknd.setVrn1mrhv(firstNamesMother[0]);
                 huwknd.setVrn2mrhv(firstNamesMother[1]);
@@ -265,10 +253,10 @@ public class HuwelijksAkteService extends AkteService {
 
         // Update the address of the mother with the address filled in for the father
         if (viewStateId.equals("HS2Mv") && !huwelijksAkteFlow.isCorrection()) {
-            huwknd.setAdrmrhv(huwknd.getAdrvrhm());
+            huwknd.setAdrmrhm(huwknd.getAdrvrhm());
         }
         if (viewStateId.equals("HS2Vv") && !huwelijksAkteFlow.isCorrection()) {
-            huwknd.setAdrmrhm(huwknd.getAdrvrhv());
+            huwknd.setAdrmrhv(huwknd.getAdrvrhv());
         }
 
         // Compare entered names with those from the birth certificate

@@ -97,8 +97,10 @@
                                     value = record[idField] + ' ' + value;
                                 }
 
-                                values.push(value);
-                                recordsByLabel[value] = record;
+                                if (!isId || (record[idField] != null)) {
+                                    values.push(value);
+                                    recordsByLabel[value] = record;
+                                }
                             }
                         });
 

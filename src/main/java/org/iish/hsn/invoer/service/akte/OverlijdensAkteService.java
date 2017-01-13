@@ -81,25 +81,19 @@ public class OverlijdensAkteService extends AkteService {
                     ovlknd.setGgmovl(refRp.getNameMunicipality());
                 }
 
-                ovlknd.setAnmovl(refRp.getLastName());
-                ovlknd.setTusovl(refRp.getPrefixName());
-
+                ovlknd.setAnmovl(refRp.getPrefixLastName());
                 String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
                 ovlknd.setVrn1ovl(firstNames[0]);
                 ovlknd.setVrn2ovl(firstNames[1]);
                 ovlknd.setVrn3ovl(firstNames[2]);
 
-                ovlknd.setAnmvovl(refRp.getLastNameFather());
-                ovlknd.setTusvovl(refRp.getPrefixFather());
-
+                ovlknd.setAnmvovl(refRp.getPrefixLastNameFather());
                 String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
                 ovlknd.setVrn1vovl(firstNamesFather[0]);
                 ovlknd.setVrn2vovl(firstNamesFather[1]);
                 ovlknd.setVrn3vovl(firstNamesFather[2]);
 
-                ovlknd.setAnmmovl(refRp.getLastNameMother());
-                ovlknd.setTusmovl(refRp.getPrefixMother());
-
+                ovlknd.setAnmmovl(refRp.getPrefixLastNameMother());
                 String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
                 ovlknd.setVrn1movl(firstNamesMother[0]);
                 ovlknd.setVrn2movl(firstNamesMother[1]);
