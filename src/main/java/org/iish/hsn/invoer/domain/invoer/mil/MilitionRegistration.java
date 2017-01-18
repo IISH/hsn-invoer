@@ -65,7 +65,7 @@ public class MilitionRegistration extends Invoer implements Serializable {
     @Column(name = "SGMKIN", nullable = false, length = 50) private String chin = "";
     @Column(name = "SGMHAA", nullable = false, length = 50) private String hair = "";
     @Column(name = "SGMWBR", nullable = false, length = 50) private String eyebrows = "";
-    @Column(name = "SGMMTK", nullable = false, length = 50) private String notableSigns = "";
+    @Column(name = "SGMMTK", nullable = false, length = 250) private String notableSigns = "";
 
     @Column(name = "RDNVRIJ", nullable = false, length = 50) private String reasonsExcempion = "";
     @Column(name = "RDNOGS", nullable = false, length = 50) private String reasonsInapplicability = "";

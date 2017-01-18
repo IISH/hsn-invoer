@@ -95,6 +95,7 @@ public class MilitieregisterService {
             militionRegistration.setDayOfBirth(refRp.getDayOfBirth());
             militionRegistration.setMonthOfBirth(refRp.getMonthOfBirth());
             militionRegistration.setYearOfBirth(refRp.getYearOfBirth());
+            militionRegistration.setPlaceOfBirth(refRp.getNameMunicipality());
 
             militionRegistration.setFamilyName(refRp.getPrefixLastName());
             militionRegistration.setFirstName(refRp.getFirstName());

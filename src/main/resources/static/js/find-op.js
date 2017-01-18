@@ -170,6 +170,9 @@
                     if (enteredScans.length < availableScans.length) {
                         self.onSuccess();
                     }
+                    else if (availableScans.length === 0) {
+                        self.onFailure('Er zijn geen scans voor de OP met deze identificatie gevonden!', true, false, true);
+                    }
                     else {
                         self.onFailure('Alle militieregisters met deze identificatie zijn reeds ingevoerd!', true, false, true);
                     }

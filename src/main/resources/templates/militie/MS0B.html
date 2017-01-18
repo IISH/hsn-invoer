@@ -7,41 +7,6 @@
     <div class="form-header letter-spacing">GEGEVENS REGISTER:</div>
 
     <div class="form-group extra-top-margin">
-      <div class="row">
-        <label class="col-xs-3 control-label">
-          Type register:
-        </label>
-
-        <label class="col-xs-5 control-label left">
-          I = Alfabetische naamlijst
-        </label>
-      </div>
-
-      <div class="row">
-        <label class="col-xs-offset-3 col-xs-5 control-label left">
-          L = Lotingsregister
-        </label>
-      </div>
-
-      <div class="row">
-        <label class="col-xs-offset-3 col-xs-5 control-label left">
-          K = Keuringsregister
-        </label>
-      </div>
-
-      <div class="row">
-        <label class="col-xs-offset-3 col-xs-5 control-label left">
-          N = Niet bekend
-        </label>
-
-        <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit integer-field required" maxlength="1"
-                 data-valid-chars="I;L;K;N" th:field="*{mil.type}" hsn:field="mil.type"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group extra-top-margin">
       <label class="col-xs-3 control-label">Jaar:</label>
 
       <div class="col-xs-2">
@@ -50,6 +15,24 @@
     </div>
 
     <div class="form-group" th:include="fragments/complete-fields :: plaats ('mil.municipality', 'Gemeente:')"></div>
+
+    <div class="form-group">
+      <label class="col-xs-3 control-label">
+        Type register:
+      </label>
+
+      <div class="col-xs-1">
+        <input type="text" class="form-control form-control-digit integer-field required" maxlength="1"
+               data-valid-chars="I;L;K;N" th:field="*{mil.type}" hsn:field="mil.type"/>
+      </div>
+
+      <ul class="col-xs-3 list-unstyled default-label">
+        <li>I = Alfabetische naamlijst</li>
+        <li>L = Lotingsregister</li>
+        <li>K = Keuringsregister</li>
+        <li>N = Niet bekend</li>
+      </ul>
+    </div>
 
     <div class="form-group">
       <label class="col-xs-3 control-label">Inventaris nummer:</label>

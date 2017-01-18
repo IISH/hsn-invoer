@@ -67,6 +67,7 @@ public class MilitieregisterController {
     public ModelAndView getOverviewChoices() {
         Map<String, Object> model = new HashMap<>();
         model.put("action", "/militie/overzicht/menu");
+        model.put("isAkte", false);
         model.put("isBirthOverview", false);
         model.put("nameOverz", "MOVERZS");
 

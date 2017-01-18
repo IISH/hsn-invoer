@@ -6,6 +6,16 @@
   <th:block layout:fragment="fields">
     <div class="form-header letter-spacing">GEGEVENS OUDERS LOTELING:</div>
 
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-3 control-label">Gegevens voogd? j / n </label>
+
+      <div class="col-xs-2">
+        <input type="text" id="voogd" class="form-control form-control-digit required"
+               data-valid-chars="j;n" maxlength="1"
+               th:value="${@militieregisterHelper.hasDataOnVoogd(akte.milReg, akte.isCorrection())}"/>
+      </div>
+    </div>
+
     <div class="form-group extra-top-margin" th:if="${!akte.is1862()}">
       <label class="col-xs-3 control-label">Achternaam vader:</label>
 
@@ -45,7 +55,8 @@
     <div class="form-group" th:if="${!akte.is1862()}"
          th:include="fragments/complete-fields :: plaats ('milReg.placeParents', 'Woonplaats ouders:')"></div>
 
-    <div class="form-group" th:classappend="${!akte.is1862()} ? 'extra-top-margin'">
+    <div class="form-group" th:classappend="${!akte.is1862()} ? 'extra-top-margin'"
+         data-show-when="#voogd" data-has-values-in="j" style="display:none;">
       <label class="col-xs-3 control-label">Achternaam voogd:</label>
 
       <div class="col-xs-4">
@@ -54,7 +65,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" data-show-when="#voogd" data-has-values-in="j" style="display:none;">
       <label class="col-xs-3 control-label">Voornamen voogd:</label>
 
       <div class="col-xs-4">
@@ -63,7 +74,7 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${!akte.is1862()}"
+    <div class="form-group" data-show-when="#voogd" data-has-values-in="j" style="display:none;" th:if="${!akte.is1862()}"
          th:include="fragments/complete-fields :: plaats ('milReg.placeGuardian', 'Woonplaats voogd:')"></div>
 
     <div class="form-group" th:if="${akte.is1862()}"
@@ -79,7 +90,7 @@
       <div class="form-group"
            th:include="fragments/complete-fields :: beroep ('milReg.professionMother', 'Beroep moeder:')"></div>
 
-      <div class="form-group"
+      <div class="form-group" data-show-when="#voogd" data-has-values-in="j" style="display:none;"
            th:include="fragments/complete-fields :: beroep ('milReg.professionGuardian', 'Beroep voogd:')"></div>
     </th:block>
 

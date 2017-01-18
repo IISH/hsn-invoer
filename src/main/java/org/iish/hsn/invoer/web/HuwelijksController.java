@@ -50,6 +50,7 @@ public class HuwelijksController {
     public ModelAndView getOverviewChoices() {
         Map<String, Object> model = new HashMap<>();
         model.put("action", "/huwelijk/overzicht/menu");
+        model.put("isAkte", true);
         model.put("isBirthOverview", false);
         model.put("nameOverz", "HOVERZS");
 

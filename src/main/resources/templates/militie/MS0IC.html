@@ -4,7 +4,8 @@
 <body>
 <fieldset class="title" layout:fragment="title">
   <legend align="center" th:if="${akte.isCorrection() == false}">INVOER VAN MILITIEREGISTERS</legend>
-  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE VAN MILITIEREGISTERS</legend>
+  <legend align="center" th:if="${akte.isCorrection() and akte.isCorrectionDelete() == false}">CORRECTIE VAN MILITIEREGISTERS</legend>
+  <legend align="center" th:if="${akte.isCorrection() and akte.isCorrectionDelete()}">VERWIJDER MILITIEREGISTERS</legend>
 </fieldset>
 
 <fieldset>
@@ -19,7 +20,7 @@
 
     <div class="with-op-state" style="display:none;" th:if="${akte.isCorrection()}">
       <div class="form-group">
-        <label class="col-xs-5 control-label">Volgnummer:</label>
+        <label class="col-xs-5 control-label">Automatisch volgnummer:</label>
 
         <div class="col-xs-1">
           <input type="text" class="form-control required seq militie-check" th:field="*{mil.seq}" hsn:field="mil.seq"/>
