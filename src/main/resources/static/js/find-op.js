@@ -96,7 +96,12 @@
                 }
 
                 $.getJSON('/ajax/lookup/gebakte', {idnr: idnr}, function (gebakte) {
-                    self.onFailure('De akte is al ingevoerd onder kode ' + gebakte.gebkode, true, true, false);
+                    if ($.isCorrection()) {
+                        self.onFailure('De akte is al ingevoerd onder code ' + gebakte.gebkode, false, false, true);
+                    }
+                    else {
+                        self.onFailure('De akte is al ingevoerd onder code ' + gebakte.gebkode, true, true, false);
+                    }
                 }).fail(function () {
                     self.gebkndLookup();
                 });

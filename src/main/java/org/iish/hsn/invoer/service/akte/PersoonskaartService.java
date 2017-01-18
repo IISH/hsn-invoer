@@ -74,9 +74,7 @@ public class PersoonskaartService extends AkteService {
                 pkknd.setGmdperp(refRp.getMonthOfBirth());
                 pkknd.setGjrperp(refRp.getYearOfBirth());
 
-                pkknd.setAnmperp(refRp.getLastName());
-                pkknd.setTusperp(refRp.getPrefixName());
-
+                pkknd.setAnmperp(refRp.getPrefixLastName());
                 String[] firstNames = Utils.getFirstNames(refRp.getFirstName());
                 pkknd.setVnm1perp(firstNames[0]);
                 pkknd.setVnm2perp(firstNames[1]);
@@ -86,17 +84,13 @@ public class PersoonskaartService extends AkteService {
 
                 pkknd.setGslperp(refRp.getSex());
 
-                pkknd.setAnmvdrp(refRp.getLastNameFather());
-                pkknd.setTusvdrp(refRp.getPrefixFather());
-
+                pkknd.setAnmvdrp(refRp.getPrefixLastNameFather());
                 String[] firstNamesFather = Utils.getFirstNames(refRp.getFirstNameFather());
                 pkknd.setVnm1vdrp(firstNamesFather[0]);
                 pkknd.setVnm2vdrp(firstNamesFather[1]);
                 pkknd.setVnm3vdrp(firstNamesFather[2]);
 
-                pkknd.setAnmmdrp(refRp.getLastNameMother());
-                pkknd.setTusmdrp(refRp.getPrefixMother());
-
+                pkknd.setAnmmdrp(refRp.getPrefixLastNameMother());
                 String[] firstNamesMother = Utils.getFirstNames(refRp.getFirstNameMother());
                 pkknd.setVnm1mdrp(firstNamesMother[0]);
                 pkknd.setVnm2mdrp(firstNamesMother[1]);
