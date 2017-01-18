@@ -68,7 +68,7 @@ CREATE TABLE `m1` (
   `SGMKIN` varchar(50) NOT NULL,
   `SGMHAA` varchar(50) NOT NULL,
   `SGMWBR` varchar(50) NOT NULL,
-  `SGMMTK` varchar(50) NOT NULL,
+  `SGMMTK` varchar(250) NOT NULL,
   `RDNVRIJ` varchar(50) NOT NULL,
   `RDNOGS` varchar(50) NOT NULL,
   `ADVIES` varchar(50) NOT NULL,
