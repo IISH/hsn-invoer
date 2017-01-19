@@ -35,6 +35,24 @@
     </div>
 
     <div class="form-group">
+      <label class="col-xs-3 control-label">Volgnummer register:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control integer-field"
+               th:field="*{mil.seqRegister}" hsn:field="mil.seqRegister"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-3 control-label">Verwijzend volgnummer:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control integer-field"
+               th:field="*{mil.seqRefer}" hsn:field="mil.seqRefer"/>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label class="col-xs-3 control-label">Inventaris nummer:</label>
 
       <div class="col-xs-2">

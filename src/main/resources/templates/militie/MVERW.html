@@ -12,7 +12,7 @@
   <th:block layout:fragment="fields">
     <div class="alert alert-info" role="alert">
       <div>
-        Het gaat om <span th:utext="${akte.milReg.familyName}"></span>, <span th:utext="${akte.milReg.firstName}"></span>
+        Het gaat om <span th:utext="${akte.mil.familyName}"></span>, <span th:utext="${akte.mil.firstName}"></span>
         <th:block th:if="${akte.refRp}">met identificatienummer <span th:utext="${akte.refRp.idnr}"></span></th:block>
       </div>
     </div>

@@ -12,7 +12,7 @@
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{milReg.voluntaryService}" hsn:field="milReg.voluntaryService"/>
+                 maxlength="1" th:field="*{mil.voluntaryService}" hsn:field="mil.voluntaryService"/>
         </div>
       </div>
 
@@ -21,7 +21,7 @@
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{milReg.formerClass}" hsn:field="milReg.formerClass"/>
+                 maxlength="1" th:field="*{mil.formerClass}" hsn:field="mil.formerClass"/>
         </div>
       </div>
 
@@ -30,7 +30,7 @@
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{milReg.headOfList}" hsn:field="milReg.headOfList"/>
+                 maxlength="1" th:field="*{mil.headOfList}" hsn:field="mil.headOfList"/>
         </div>
       </div>
 
@@ -39,7 +39,7 @@
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{milReg.outStateService}" hsn:field="milReg.outStateService"/>
+                 maxlength="1" th:field="*{mil.outStateService}" hsn:field="mil.outStateService"/>
         </div>
       </div>
     </th:block>
@@ -50,17 +50,17 @@
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-               maxlength="1" th:field="*{milReg.inGesticht}" hsn:field="milReg.inGesticht"/>
+               maxlength="1" th:field="*{mil.inGesticht}" hsn:field="mil.inGesticht"/>
       </div>
     </div>
 
     <th:block th:if="${!akte.is1817()}">
-      <div data-show-when="#milReg\.inGesticht" data-has-values-in="j" style="display:none;">
+      <div data-show-when="#mil\.inGesticht" data-has-values-in="j" style="display:none;">
         <div class="form-group">
           <label class="col-xs-5 control-label">Naam gesticht:</label>
 
           <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{milReg.nameGesticht}" hsn:field="milReg.nameGesticht"/>
+            <input type="text" class="form-control" th:field="*{mil.nameGesticht}" hsn:field="mil.nameGesticht"/>
           </div>
         </div>
 
@@ -69,15 +69,15 @@
 
           <div class="col-xs-2">
             <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                   maxlength="1" th:field="*{milReg.commitCrime}" hsn:field="milReg.commitCrime"/>
+                   maxlength="1" th:field="*{mil.commitCrime}" hsn:field="mil.commitCrime"/>
           </div>
         </div>
 
-        <div class="form-group" data-show-when="#milReg\.commitCrime" data-has-values-in="j">
+        <div class="form-group" data-show-when="#mil\.commitCrime" data-has-values-in="j">
           <label class="col-xs-5 control-label">Voor welk delict veroordeeld?</label>
 
           <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{milReg.whatCrime}" hsn:field="milReg.whatCrime"/>
+            <input type="text" class="form-control" th:field="*{mil.whatCrime}" hsn:field="mil.whatCrime"/>
           </div>
         </div>
       </div>
@@ -87,15 +87,15 @@
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{milReg.voluntaryService}" hsn:field="milReg.voluntaryService"/>
+                 maxlength="1" th:field="*{mil.voluntaryService}" hsn:field="mil.voluntaryService"/>
         </div>
       </div>
 
-      <div class="form-group" data-show-when="#milReg\.voluntaryService" data-has-values-in="j">
+      <div class="form-group" data-show-when="#mil\.voluntaryService" data-has-values-in="j">
         <label class="col-xs-5 control-label">Waarbij?</label>
 
         <div class="col-xs-4">
-          <input type="text" class="form-control" th:field="*{milReg.voluntaryWhere}" hsn:field="milReg.voluntaryWhere"/>
+          <input type="text" class="form-control" th:field="*{mil.voluntaryWhere}" hsn:field="mil.voluntaryWhere"/>
         </div>
       </div>
     </th:block>

@@ -1,4 +1,4 @@
-CREATE TABLE `m0` (
+CREATE TABLE `m1` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `IDNR` int(11) NOT NULL,
   `JAAR` int(11) NOT NULL,
@@ -6,27 +6,10 @@ CREATE TABLE `m0` (
   `TYPE` varchar(1) NOT NULL,
   `GEMNAAM` varchar(50) NOT NULL,
   `INVNR` varchar(10) NOT NULL,
+  `VOLGREG` int(11) NOT NULL,
+  `VOLGWIJS` int(11) NOT NULL,
   `SCANA` varchar(255) NOT NULL,
   `SCANB` varchar(255) NOT NULL,
-  `OPDRNR` varchar(3) NOT NULL,
-  `DATUM` varchar(10) NOT NULL,
-  `INIT` varchar(3) NOT NULL,
-  `VERSIE` varchar(5) NOT NULL,
-  `ONDRZKO` varchar(3) NOT NULL,
-  `OPDRNRO` varchar(3) NOT NULL,
-  `DATUMO` varchar(10) NOT NULL,
-  `INITO` varchar(3) NOT NULL,
-  `VERSIEO` varchar(5) NOT NULL,
-  `OPDRNRI` varchar(3) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `UK_esd5x9m6752sx3y4x8uc994eh` (`IDNR`,`VOLG`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-
-CREATE TABLE `m1` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `IDNR` int(11) NOT NULL,
-  `VOLG` int(11) NOT NULL,
   `ANM` varchar(50) NOT NULL,
   `VNM` varchar(50) NOT NULL,
   `GBD` int(11) NOT NULL,
@@ -34,6 +17,7 @@ CREATE TABLE `m1` (
   `GBJ` int(11) NOT NULL,
   `GBPLTS` varchar(50) NOT NULL,
   `WPLTS` varchar(50) NOT NULL,
+  `MILPLTS` varchar(50) NOT NULL,
   `ODSPLTS` varchar(50) NOT NULL,
   `VGDPLTS` varchar(50) NOT NULL,
   `INGES` varchar(1) NOT NULL,

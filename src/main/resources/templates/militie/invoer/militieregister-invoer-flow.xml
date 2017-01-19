@@ -47,7 +47,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="determineAfterMS1">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -62,14 +62,14 @@
   <!-- MS2: GEGEVENS OUDERS LOTELING -->
   <view-state id="MS2" view="militie/MS2" model="akte">
     <transition on="next" to="MS3">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
   <!-- MS3: LENGTE EN SIGNALEMENT -->
   <view-state id="MS3" view="militie/MS3" model="akte">
     <transition on="next" to="determineAfterMS3">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -84,7 +84,7 @@
   <!-- MS4: MILITIE GEGEVENS LOTELING -->
   <view-state id="MS4" view="militie/MS4" model="akte">
     <transition on="next" to="determineAfterMS4">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -99,7 +99,7 @@
   <!-- MS5: REDENEN/BEZWAREN UITSTEL/VRIJSTELLING/AANSTELLING -->
   <view-state id="MS5" view="militie/MS5" model="akte">
     <transition on="next" to="MS6">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -113,7 +113,7 @@
   <!-- MS7: AANSTELLING EN AANMERKINGEN -->
   <view-state id="MS7" view="militie/MS7" model="akte">
     <transition on="next" to="MSNIEUW">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 

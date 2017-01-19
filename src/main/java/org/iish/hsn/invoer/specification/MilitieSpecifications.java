@@ -1,10 +1,10 @@
 package org.iish.hsn.invoer.specification;
 
-import org.iish.hsn.invoer.domain.invoer.mil.MilitionRegistration;
-import org.iish.hsn.invoer.domain.invoer.mil.MilitionRegistration_;
+import org.iish.hsn.invoer.domain.invoer.mil.Milition;
+import org.iish.hsn.invoer.domain.invoer.mil.Milition_;
 
-public class MilitieSpecifications extends AkteSpecifications<MilitionRegistration, Integer> {
+public class MilitieSpecifications extends AkteSpecifications<Milition, Integer> {
     public MilitieSpecifications() {
-        super(MilitionRegistration_.idnr, MilitionRegistration_.workOrder);
+        super(Milition_.idnr, Milition_.workOrder);
     }
 }

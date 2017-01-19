@@ -42,12 +42,12 @@
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="v;z;p;w;n"
-                 th:field="*{milReg.substitute}" hsn:field="milReg.substitute"/>
+                 th:field="*{mil.substitute}" hsn:field="mil.substitute"/>
         </div>
       </div>
     </div>
 
-    <div class="extra-top-margin" data-show-when="#milReg\.substitute" data-has-values-in="v" style="display:none;"
+    <div class="extra-top-margin" data-show-when="#mil\.substitute" data-has-values-in="v" style="display:none;"
          th:if="${!akte.is1817()}">
       <div class="form-group">
         <label class="col-xs-7 control-label">Vrijstelling wegens ziekelijke gesteldheid? j / n</label>
@@ -55,7 +55,7 @@
         <div class="col-xs-2">
           <input type="text" id="ziek" class="form-control form-control-digit required"
                  data-valid-chars="j;n" maxlength="1"
-                 th:value="${@militieregisterHelper.getVrijstellingWegensZiekte(akte.milReg, akte.isCorrection())}"/>
+                 th:value="${@militieregisterHelper.getVrijstellingWegensZiekte(akte.mil, akte.isCorrection())}"/>
         </div>
       </div>
 
@@ -64,18 +64,18 @@
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-small integer-field"
-                 th:field="*{milReg.numberRegulationIllness}" hsn:field="milReg.numberRegulationIllness"/>
+                 th:field="*{mil.numberRegulationIllness}" hsn:field="mil.numberRegulationIllness"/>
         </div>
       </div>
     </div>
 
-    <div class="extra-top-margin" data-show-when="#milReg\.substitute" data-has-values-in="z" style="display:none;">
+    <div class="extra-top-margin" data-show-when="#mil\.substitute" data-has-values-in="z" style="display:none;">
       <div class="form-group" th:if="${!akte.is1817()}">
         <label class="col-xs-7 control-label">Heeft loteling voor zeemilitie aangeleverd? j / n / o</label>
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{milReg.inNaval}" hsn:field="milReg.inNaval"/>
+                 maxlength="1" th:field="*{mil.inNaval}" hsn:field="mil.inNaval"/>
         </div>
       </div>
 
@@ -84,18 +84,18 @@
 
         <div class="col-xs-5">
           <input type="text" class="form-control"
-                 th:field="*{milReg.positionAnnexation}" hsn:field="milReg.positionAnnexation"/>
+                 th:field="*{mil.positionAnnexation}" hsn:field="mil.positionAnnexation"/>
         </div>
       </div>
 
       <div class="form-group">
         <label class="col-xs-3 control-label">Datum van inlijving:</label>
 
-        <div th:replace="fragments/fields :: datum ('milReg.dayOfAnnexation', 'milReg.monthOfAnnexation', 'milReg.yearOfAnnexation')"></div>
+        <div th:replace="fragments/fields :: datum ('mil.dayOfAnnexation', 'mil.monthOfAnnexation', 'mil.yearOfAnnexation')"></div>
       </div>
     </div>
 
-    <div class="extra-top-margin" data-show-when="#milReg\.substitute" data-has-values-in="p;w" style="display:none;">
+    <div class="extra-top-margin" data-show-when="#mil\.substitute" data-has-values-in="p;w" style="display:none;">
       <div class="form-header">GEGEVENS PLAATSVERVANGER:</div>
 
       <div class="form-group extra-top-margin" th:if="${!akte.is1817()}">
@@ -103,7 +103,7 @@
 
         <div class="col-xs-4">
           <input type="text" class="form-control"
-                 th:field="*{milReg.familyNameSubstitute}" hsn:field="milReg.familyNameSubstitute"/>
+                 th:field="*{mil.familyNameSubstitute}" hsn:field="mil.familyNameSubstitute"/>
         </div>
       </div>
 
@@ -112,7 +112,7 @@
 
         <div class="col-xs-4">
           <input type="text" class="form-control"
-                 th:field="*{milReg.firstNameSubstitute}" hsn:field="milReg.firstNameSubstitute"/>
+                 th:field="*{mil.firstNameSubstitute}" hsn:field="mil.firstNameSubstitute"/>
         </div>
       </div>
 
@@ -121,7 +121,7 @@
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-small integer-field"
-                 th:field="*{milReg.substituteNumber}" hsn:field="milReg.substituteNumber"/>
+                 th:field="*{mil.substituteNumber}" hsn:field="mil.substituteNumber"/>
         </div>
       </div>
     </div>
@@ -132,7 +132,7 @@
       <label class="col-xs-3 control-label">Aamerkingen:</label>
 
       <div class="col-xs-6">
-        <textarea class="form-control form-control-small" th:field="*{milReg.remarks}" hsn:field="milReg.remarks">
+        <textarea class="form-control form-control-small" th:field="*{mil.remarks}" hsn:field="mil.remarks">
         </textarea>
       </div>
     </div>

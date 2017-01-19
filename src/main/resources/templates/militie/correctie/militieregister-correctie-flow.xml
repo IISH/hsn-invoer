@@ -83,7 +83,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="MS2">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -92,7 +92,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="thirdCorrectionCodeCheck">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -116,7 +116,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="fourthCorrectionCodeCheck">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -140,7 +140,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="fifthCorrectionCodeCheck">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -164,7 +164,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="sixthCorrectionCodeCheck">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -212,7 +212,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="eightCorrectionCodeCheck">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -236,7 +236,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="MSNIEUW">
-      <evaluate expression="militieregisterService.saveMilReg(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 

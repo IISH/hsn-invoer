@@ -9,17 +9,23 @@
     <thead>
     <tr>
       <th>Ident. Nummer</th>
-      <th>Automatisch volgnummer</th>
+      <th>Auto volgnummer</th>
       <th>Achternaam</th>
       <th>Voornamen</th>
+      <th>Jaar</th>
+      <th>Gemeente</th>
+      <th>Type register</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="curMilReg,stat : ${overview}">
-      <td th:utext="${curMilReg.idnr}"></td>
-      <td th:utext="${curMilReg.seq}"></td>
-      <td th:utext="${curMilReg.familyName}"></td>
-      <td th:utext="${curMilReg.firstName}"></td>
+    <tr th:each="curMil,stat : ${overview}">
+      <td th:utext="${curMil.idnr}"></td>
+      <td th:utext="${curMil.seq}"></td>
+      <td th:utext="${curMil.familyName}"></td>
+      <td th:utext="${curMil.firstName}"></td>
+      <td th:utext="${curMil.year}"></td>
+      <td th:utext="${curMil.municipality}"></td>
+      <td th:utext="${@militieregisterHelper.getTypeRegister(curMil.type)}"></td>
     </tr>
     <tr th:if="${overview.size() == 0}">
       <td colspan="4" class="text-center">EINDE BESTAND / echter niets gevonden!</td>

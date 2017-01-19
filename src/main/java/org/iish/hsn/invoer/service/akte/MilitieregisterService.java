@@ -1,14 +1,12 @@
 package org.iish.hsn.invoer.service.akte;
 
 import org.iish.hsn.invoer.domain.invoer.mil.Milition;
-import org.iish.hsn.invoer.domain.invoer.mil.MilitionRegistration;
 import org.iish.hsn.invoer.domain.invoer.mil.Verdict;
 import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.AkteException;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.flow.state.MilitieregisterFlowState;
-import org.iish.hsn.invoer.repository.invoer.mil.MilitionRegistrationRepository;
 import org.iish.hsn.invoer.repository.invoer.mil.MilitionRepository;
 import org.iish.hsn.invoer.repository.invoer.mil.VerdictRepository;
 import org.iish.hsn.invoer.service.LookupService;
@@ -31,7 +29,6 @@ public class MilitieregisterService {
     @Autowired private InputMetadata inputMetadata;
     @Autowired private LookupService lookupService;
     @Autowired private MilitionRepository militionRepository;
-    @Autowired private MilitionRegistrationRepository militionRegistrationRepository;
     @Autowired private VerdictRepository verdictRepository;
     @Autowired private ScansService scansService;
 
@@ -66,7 +63,6 @@ public class MilitieregisterService {
     public void registerOP(MilitieregisterFlowState militieregisterFlow) throws AkteException {
         try {
             Milition milition = militieregisterFlow.getMil();
-            MilitionRegistration militionRegistration = militieregisterFlow.getMilReg();
 
             Ref_RP refRp = lookupService.getRefRp(milition.getIdnr(), true);
             militieregisterFlow.setRefRp(refRp);
@@ -89,22 +85,22 @@ public class MilitieregisterService {
             if (scan.getYear() != null)
                 milition.setYear(scan.getYear());
 
-            militionRegistration.setIdnr(milition.getIdnr());
-            militionRegistration.setSeq(milition.getSeq());
+            milition.setIdnr(milition.getIdnr());
+            milition.setSeq(milition.getSeq());
 
-            militionRegistration.setDayOfBirth(refRp.getDayOfBirth());
-            militionRegistration.setMonthOfBirth(refRp.getMonthOfBirth());
-            militionRegistration.setYearOfBirth(refRp.getYearOfBirth());
-            militionRegistration.setPlaceOfBirth(refRp.getNameMunicipality());
+            milition.setDayOfBirth(refRp.getDayOfBirth());
+            milition.setMonthOfBirth(refRp.getMonthOfBirth());
+            milition.setYearOfBirth(refRp.getYearOfBirth());
+            milition.setPlaceOfBirth(refRp.getNameMunicipality());
 
-            militionRegistration.setFamilyName(refRp.getPrefixLastName());
-            militionRegistration.setFirstName(refRp.getFirstName());
+            milition.setFamilyName(refRp.getPrefixLastName());
+            milition.setFirstName(refRp.getFirstName());
 
-            militionRegistration.setFamilyNameFather(refRp.getPrefixLastNameFather());
-            militionRegistration.setFirstNameFather(refRp.getFirstNameFather());
+            milition.setFamilyNameFather(refRp.getPrefixLastNameFather());
+            milition.setFirstNameFather(refRp.getFirstNameFather());
 
-            militionRegistration.setFamilyNameMother(refRp.getPrefixLastNameMother());
-            militionRegistration.setFirstNameMother(refRp.getFirstNameMother());
+            milition.setFamilyNameMother(refRp.getPrefixLastNameMother());
+            milition.setFirstNameMother(refRp.getFirstNameMother());
 
             Plaats plaats = lookupService.getPlaats(refRp.getNumberMunicipality(), false);
             if ((scan.getMunicipality() == null) && (plaats != null)) {
@@ -126,6 +122,10 @@ public class MilitieregisterService {
         try {
             Milition milition = militieregisterFlow.getMil();
 
+            // If no sequence number is given, always pick the first one
+            if (milition.getSeq() == 0)
+                milition.setSeq(1);
+
             militieregisterFlow.setRefRp(lookupService.getRefRp(milition.getIdnr(), true));
             militieregisterFlow.setMil(lookupService.getMilition(milition.getIdnr(), milition.getSeq(), true));
 
@@ -133,12 +133,6 @@ public class MilitieregisterService {
                     milition.getIdnr(), milition.getSeq(), inputMetadata.getWorkOrder());
             if (milition != null) {
                 militieregisterFlow.setMil(milition);
-            }
-
-            MilitionRegistration militionRegistration = militionRegistrationRepository.findByIdnrAndSeqAndWorkOrder(
-                    milition.getIdnr(), milition.getSeq(), inputMetadata.getWorkOrder());
-            if (militionRegistration != null) {
-                militieregisterFlow.setMilReg(militionRegistration);
             }
 
             List<Verdict> verdicts = verdictRepository.findByIdnrAndSeqAndWorkOrder(
@@ -164,20 +158,6 @@ public class MilitieregisterService {
         inputMetadata.saveToEntity(mil);
         mil = militionRepository.save(mil);
         militieregisterFlow.setMil(mil);
-
-        saveMilReg(militieregisterFlow);
-    }
-
-    /**
-     * Persists the milition registration record to the database.
-     *
-     * @param militieregisterFlow The militie register flow state.
-     */
-    public void saveMilReg(MilitieregisterFlowState militieregisterFlow) {
-        MilitionRegistration milReg = militieregisterFlow.getMilReg();
-        inputMetadata.saveToEntity(milReg);
-        milReg = militionRegistrationRepository.save(milReg);
-        militieregisterFlow.setMilReg(milReg);
     }
 
     /**
@@ -201,7 +181,7 @@ public class MilitieregisterService {
             }
         }
 
-        saveMilReg(militieregisterFlow);
+        saveMil(militieregisterFlow);
     }
 
     /**
@@ -212,9 +192,6 @@ public class MilitieregisterService {
     public void deleteAkte(MilitieregisterFlowState militieregisterFlow) {
         if (militieregisterFlow.getMil().getId() != null) {
             militionRepository.delete(militieregisterFlow.getMil());
-        }
-        if (militieregisterFlow.getMilReg().getId() != null) {
-            militionRegistrationRepository.delete(militieregisterFlow.getMilReg());
         }
         verdictRepository.delete(militieregisterFlow.getVerdict().values());
     }
@@ -238,13 +215,12 @@ public class MilitieregisterService {
      */
     private MilitieregisterFlowState createNewAkte() {
         Milition milition = new Milition();
-        MilitionRegistration militionRegistration = new MilitionRegistration();
 
         Map<Verdict.Type, Verdict> verdict = new HashMap<>();
         for (Verdict.Type type : Verdict.Type.values()) {
             verdict.put(type, new Verdict(type.getType()));
         }
 
-        return new MilitieregisterFlowState(milition, militionRegistration, verdict);
+        return new MilitieregisterFlowState(milition, verdict);
     }
 }

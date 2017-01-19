@@ -150,7 +150,7 @@
                             self.militionLookup();
                         }
                         else {
-                            self.onSuccess();
+                            self.militionSeq();
                         }
                     }
                     else {
@@ -246,21 +246,60 @@
             });
         });
     };
+
+    FindOp.prototype.militionSeq = function () {
+        self.withIdnr(function (idnr) {
+            self.serverCall('/ajax/lookup/m0/list', {idnr: idnr} , function (enteredScans) {
+                if (enteredScans.length > 1) {
+                    enteredScans.sort(function (a, b) { return a.seq > b.seq });
+
+                    var list = $('<ol>');
+                    $.each(enteredScans, function (i, enteredScan) {
+                        var typeRegister = 'Niet bekend';
+                        if (enteredScan.type === 'I')
+                            typeRegister = 'Alfabetische naamlijst';
+                        if (enteredScan.type === 'L')
+                            typeRegister = 'Lotingsregister';
+                        if (enteredScan.type === 'K')
+                            typeRegister = 'Keuringsregister';
+
+                        list.append(
+                            $('<li class="spacing">')
+                                .append($('<div>').text(
+                                    enteredScan.familyName + ', ' + enteredScan.firstName
+                                ))
+                                .append($('<div>').text(
+                                    typeRegister + ': ' + enteredScan.municipality + ', ' + enteredScan.year
+                                ))
+                        );
+                    });
+                    $('#volgnummers').find('ol').replaceWith(list);
+
+                    self.onSuccess();
+                }
+                else {
+                    self.militieCheckElem.val(1);
+                    self.onSuccess(true, false);
+                }
+            });
+        });
+    };
     
-    FindOp.prototype.onSuccess = function (autoNextElement) {
+    FindOp.prototype.onSuccess = function (autoNextElement, showOp) {
+        autoNextElement = (autoNextElement || (autoNextElement === undefined));
+        showOp = (showOp || (showOp === undefined));
+
         self.failElem.hide();
 
-        self.withOpElems.show();
+        if (showOp) self.withOpElems.show();
         self.withoutOpElems.hide();
 
-        self.withOpStateElems.show();
+        if (showOp) self.withOpStateElems.show();
 
         self.nextBtnElem.removeClass('op-error');
         $.triggerChangeOfState();
 
-        if (autoNextElement || (autoNextElement === undefined))
-            self.blur.getNextFormElement().focus();
-
+        if (autoNextElement) self.blur.getNextFormElement().focus();
         $.triggerChangeOfState();
     };
 

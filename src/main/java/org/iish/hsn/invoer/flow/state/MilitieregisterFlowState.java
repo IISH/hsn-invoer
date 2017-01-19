@@ -1,13 +1,11 @@
 package org.iish.hsn.invoer.flow.state;
 
 import org.iish.hsn.invoer.domain.invoer.mil.Milition;
-import org.iish.hsn.invoer.domain.invoer.mil.MilitionRegistration;
 import org.iish.hsn.invoer.domain.invoer.mil.Verdict;
 import org.iish.hsn.invoer.domain.invoer.mil.Verdict.Type;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,15 +14,13 @@ import java.util.Map;
 public class MilitieregisterFlowState extends AkteFlowState implements Serializable {
     private Ref_RP refRp;
     private Milition mil;
-    private MilitionRegistration milReg;
 
     private Map<Type, Verdict> verdict;
 
     private boolean cropSideA = true;
 
-    public MilitieregisterFlowState(Milition mil, MilitionRegistration milReg, Map<Type, Verdict> verdict) {
+    public MilitieregisterFlowState(Milition mil, Map<Type, Verdict> verdict) {
         this.mil = mil;
-        this.milReg = milReg;
         this.verdict = verdict;
     }
 
@@ -70,14 +66,6 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
 
     public void setMil(Milition mil) {
         this.mil = mil;
-    }
-
-    public MilitionRegistration getMilReg() {
-        return milReg;
-    }
-
-    public void setMilReg(MilitionRegistration milReg) {
-        this.milReg = milReg;
     }
 
     public Map<Type, Verdict> getVerdict() {

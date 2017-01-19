@@ -1,25 +1,38 @@
 package org.iish.hsn.invoer.flow.helper;
 
-import org.iish.hsn.invoer.domain.invoer.mil.MilitionRegistration;
+import org.iish.hsn.invoer.domain.invoer.mil.Milition;
 import org.iish.hsn.invoer.domain.invoer.mil.Verdict;
 import org.iish.hsn.invoer.flow.state.MilitieregisterFlowState;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MilitieregisterHelper {
-    public String hasDataOnVoogd(MilitionRegistration milReg, boolean isCorrection) {
-        if (!milReg.getFirstNameGuardian().isEmpty() || !milReg.getFamilyNameGuardian().isEmpty() ||
-                !milReg.getPlaceGuardian().isEmpty() || !milReg.getProfessionGuardian().isEmpty())
+    public String getTypeRegister(String type) {
+        switch (type) {
+            case "I":
+                return "Alfabetische naamlijst";
+            case "L":
+                return "Lotingsregister";
+            case "K":
+                return "Keuringsregister";
+            default:
+                return "Niet bekend";
+        }
+    }
+
+    public String hasDataOnVoogd(Milition mil, boolean isCorrection) {
+        if (!mil.getFirstNameGuardian().isEmpty() || !mil.getFamilyNameGuardian().isEmpty() ||
+                !mil.getPlaceGuardian().isEmpty() || !mil.getProfessionGuardian().isEmpty())
             return "j";
         if (isCorrection)
             return "n";
         return "";
     }
 
-    public String hasKenmerken(MilitionRegistration milReg, boolean isCorrection) {
-        if (!milReg.getFace().isEmpty() || !milReg.getForehead().isEmpty() || !milReg.getEyes().isEmpty() ||
-                !milReg.getNose().isEmpty() || !milReg.getMouth().isEmpty() || !milReg.getChin().isEmpty() ||
-                !milReg.getHair().isEmpty() || !milReg.getEyebrows().isEmpty() || !milReg.getNotableSigns().isEmpty())
+    public String hasKenmerken(Milition mil, boolean isCorrection) {
+        if (!mil.getFace().isEmpty() || !mil.getForehead().isEmpty() || !mil.getEyes().isEmpty() ||
+                !mil.getNose().isEmpty() || !mil.getMouth().isEmpty() || !mil.getChin().isEmpty() ||
+                !mil.getHair().isEmpty() || !mil.getEyebrows().isEmpty() || !mil.getNotableSigns().isEmpty())
             return "j";
 
         if (isCorrection)
@@ -27,8 +40,8 @@ public class MilitieregisterHelper {
         return "";
     }
 
-    public String getVrijstellingWegensZiekte(MilitionRegistration milReg, boolean isCorrection) {
-        if (milReg.getNumberRegulationIllness() > 0)
+    public String getVrijstellingWegensZiekte(Milition mil, boolean isCorrection) {
+        if (mil.getNumberRegulationIllness() > 0)
             return "j";
         if (isCorrection)
             return "n";
