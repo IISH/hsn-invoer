@@ -41,7 +41,7 @@ var HsnCanvas = (function ($, fabric) {
                         .scaleToWidth(canvas.width)
                         .set({
                             left: -image.getPointByOrigin('left', 'top').x,
-                            top: -image.getPointByOrigin('left', 'top').y,
+                            top: -image.getPointByOrigin('left', 'top').y
                         })
                         .setCoords();
 
