@@ -8,7 +8,7 @@ var HsnCanvas = (function ($, fabric) {
     };
 
     return function (canvasId, allowCutting) {
-        var canvas = new fabric.Canvas(canvasId);
+        var canvas = new fabric.Canvas(canvasId, {stateful: false, renderOnAddRemove: false});
 
         var loading = new fabric.Text('Loading...' ,
             {hasControls: false, selectable: false, fontStyle: 'italic', fontFamily: 'Delicious'});
@@ -37,7 +37,13 @@ var HsnCanvas = (function ($, fabric) {
                 if ($.isPlainObject(position))
                     image.set(position).setCoords();
                 else
-                    image.scaleToWidth(canvas.width).center().setCoords();
+                    image
+                        .scaleToWidth(canvas.width)
+                        .set({
+                            left: -image.getPointByOrigin('left', 'top').x,
+                            top: -image.getPointByOrigin('left', 'top').y,
+                        })
+                        .setCoords();
 
                 canvas.renderAll();
 

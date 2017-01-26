@@ -18,7 +18,7 @@
             reader.onload = function () {
                 PDFJS.getDocument(reader.result).then(function (pdf) {
                     pdf.getPage(1).then(function (page) {
-                        var viewport = page.getViewport(5.0);
+                        var viewport = page.getViewport(3);
 
                         var hiddenCanvas = document.createElement('canvas');
                         hiddenCanvas.width = viewport.width;
