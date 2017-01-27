@@ -10,7 +10,7 @@ var HsnCanvas = (function ($, fabric) {
     return function (canvasId, allowCutting) {
         var canvas = new fabric.Canvas(canvasId, {stateful: false, renderOnAddRemove: false});
 
-        var loading = new fabric.Text('Loading...' ,
+        var loading = new fabric.Text('Loading...',
             {hasControls: false, selectable: false, fontStyle: 'italic', fontFamily: 'Delicious'});
         var image = null;
         var lines = [];
@@ -25,11 +25,9 @@ var HsnCanvas = (function ($, fabric) {
             if (image !== null)
                 image.remove();
 
-            var img = document.createElement('img');
-            img.onload = function () {
-                image = new fabric.Image(img).set({originX: 'center', originY: 'center'});
-                image.hasRotatingPoint = false;
-                image.lockUniScaling = true;
+            fabric.Image.fromURL(dataUrl, function (img) {
+                image = img;
+                image.set({originX: 'center', originY: 'center'});
 
                 canvas.remove(loading);
                 canvas.add(image);
@@ -49,8 +47,7 @@ var HsnCanvas = (function ($, fabric) {
 
                 setUpNavigation();
                 setUpImageInteraction();
-            };
-            img.src = dataUrl;
+            });
         };
 
         this.onNewImagePosition = function (callback) {
@@ -58,15 +55,11 @@ var HsnCanvas = (function ($, fabric) {
         };
 
         this.createNewImage = function (callback) {
-            var imgs = [];
-            var newHeight = 0;
-
+            var imgs = [], newHeight = 0;
             scaleAll(1 / image.scaleX);
 
-            var copy = true;
-            var prevX = 0;
-            var lastCopiedX = 0;
-            getCutPoints().forEach(function (point) {
+            var copy = true, prevX = 0, lastCopiedX = 0;
+            var determineCutLine = function (point) {
                 var curX = point;
                 var height = curX - prevX;
                 if (copy) {
@@ -76,13 +69,10 @@ var HsnCanvas = (function ($, fabric) {
                 }
                 prevX = curX;
                 copy = !copy;
-            });
+            };
 
-            var height = (image.getHeight() - prevX);
-            if (copy) {
-                imgs.push({top: lastCopiedX, data: getImageData(prevX, height)});
-                newHeight += height;
-            }
+            getCutPoints().forEach(determineCutLine);
+            determineCutLine(image.getHeight());
 
             var hiddenCanvas = document.createElement('canvas');
             hiddenCanvas.width = image.width;
@@ -110,9 +100,7 @@ var HsnCanvas = (function ($, fabric) {
             image.remove();
             image = null;
 
-            lines.forEach(function (line) {
-                line.remove();
-            });
+            lines.forEach(function (line) { line.remove(); });
             lines = [];
         };
 
@@ -140,9 +128,7 @@ var HsnCanvas = (function ($, fabric) {
                     }
 
                     image.setCoords();
-                    lines.forEach(function (line) {
-                        line.setCoords();
-                    });
+                    lines.forEach(function (line) { line.setCoords(); });
                     canvas.renderAll();
                 }
             });
@@ -298,10 +284,7 @@ var HsnCanvas = (function ($, fabric) {
             if (allowCutting === true) {
                 canvas.deactivateAll();
 
-                var objs = canvas.getObjects().map(function (obj) {
-                    return obj.set('active', true);
-                });
-
+                var objs = canvas.getObjects().map(function (obj) { return obj.set('active', true); });
                 var group = new fabric.Group(objs, {
                     originX: 'center',
                     originY: 'center',
@@ -341,17 +324,9 @@ var HsnCanvas = (function ($, fabric) {
         }
 
         function getCutPoints() {
-            var cutPoints = [];
-
-            lines.forEach(function (line) {
-                cutPoints.push(line.getBoundingRect().top - image.getBoundingRect().top);
-            });
-
-            cutPoints.sort(function (a, b) {
-                return a - b;
-            });
-
-            return cutPoints;
+            return lines
+                .map(function (line) { return Math.round(line.getBoundingRect().top - image.getBoundingRect().top); })
+                .sort(function (a, b) { return a - b; });
         }
 
         function getImageData(top, height) {

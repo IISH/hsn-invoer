@@ -23,15 +23,24 @@
 
       <div class="col-xs-1">
         <input type="text" class="form-control form-control-digit integer-field required" maxlength="1"
-               data-valid-chars="I;L;K;N" th:field="*{mil.type}" hsn:field="mil.type"/>
+               data-valid-chars="A;I;K;L;N" th:field="*{mil.type}" hsn:field="mil.type"/>
       </div>
 
       <ul class="col-xs-3 list-unstyled default-label">
-        <li>I = Alfabetische naamlijst</li>
-        <li>L = Lotingsregister</li>
+        <li>A = Alfabetische naamlijst</li>
+        <li>I = Inschrijvingsregister</li>
         <li>K = Keuringsregister</li>
+        <li>L = Lotingsregister</li>
         <li>N = Niet bekend</li>
       </ul>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-3 control-label">Inventaris nummer:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control" th:field="*{mil.invNumber}" hsn:field="mil.invNumber"/>
+      </div>
     </div>
 
     <div class="form-group">
@@ -53,10 +62,11 @@
     </div>
 
     <div class="form-group">
-      <label class="col-xs-3 control-label">Inventaris nummer:</label>
+      <label class="col-xs-3 control-label">Lotingsnummer:</label>
 
       <div class="col-xs-2">
-        <input type="text" class="form-control" th:field="*{mil.invNumber}" hsn:field="mil.invNumber"/>
+        <input type="text" class="form-control integer-field"
+               th:field="*{mil.drawnNumber}" hsn:field="mil.drawnNumber"/>
       </div>
     </div>
 

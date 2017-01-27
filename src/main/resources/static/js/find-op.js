@@ -256,12 +256,14 @@
                     var list = $('<ol>');
                     $.each(enteredScans, function (i, enteredScan) {
                         var typeRegister = 'Niet bekend';
-                        if (enteredScan.type === 'I')
+                        if (enteredScan.type === 'A')
                             typeRegister = 'Alfabetische naamlijst';
-                        if (enteredScan.type === 'L')
-                            typeRegister = 'Lotingsregister';
+                        if (enteredScan.type === 'I')
+                            typeRegister = 'Inschrijvingsregister';
                         if (enteredScan.type === 'K')
                             typeRegister = 'Keuringsregister';
+                        if (enteredScan.type === 'L')
+                            typeRegister = 'Lotingsregister';
 
                         list.append(
                             $('<li class="spacing">')

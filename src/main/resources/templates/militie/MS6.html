@@ -6,8 +6,8 @@
   <th:block layout:fragment="fields">
     <div class="form-header letter-spacing">UITSPRAAK MILITIERAAD:</div>
 
-    <div class="form-header extra-top-margin" th:if="${akte.is1817()}">Ajournement:</div>
-    <div class="form-header extra-top-margin" th:if="${!akte.is1817()}">Uitstel:</div>
+    <div class="form-header extra-top-margin" th:if="${akte.is1815()}">Ajournement:</div>
+    <div class="form-header extra-top-margin" th:if="${!akte.is1815()}">Uitstel:</div>
 
     <div class="form-group extra-top-margin">
       <label class="col-xs-4 control-label">Datum der uitspraak:</label>
@@ -17,8 +17,8 @@
     </div>
 
     <div class="form-group">
-      <label class="col-xs-4 control-label" th:if="${akte.is1817()}">Tijdsbepaling ajournement:</label>
-      <label class="col-xs-4 control-label" th:if="${!akte.is1817()}">Bepaling dag der nadere uitspraak:</label>
+      <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Tijdsbepaling ajournement:</label>
+      <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Bepaling dag der nadere uitspraak:</label>
 
       <div class="col-xs-6">
         <input type="text" class="form-control"
@@ -35,8 +35,8 @@
       </div>
 
       <div class="form-group">
-        <label class="col-xs-4 control-label" th:if="${akte.is1817()}">Tijdsbepaling tweede ajournement:</label>
-        <label class="col-xs-4 control-label" th:if="${!akte.is1817()}">Bepaling dag der nadere uitspraak:</label>
+        <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Tijdsbepaling tweede ajournement:</label>
+        <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Bepaling dag der nadere uitspraak:</label>
 
         <div class="col-xs-6">
           <input type="text" class="form-control"
@@ -45,8 +45,8 @@
       </div>
     </th:block>
 
-    <div class="form-header extra-top-margin" th:if="${akte.is1817()}">Designatie:</div>
-    <div class="form-header extra-top-margin" th:if="${!akte.is1817()}">Aanwijzing:</div>
+    <div class="form-header extra-top-margin" th:if="${akte.is1815()}">Designatie:</div>
+    <div class="form-header extra-top-margin" th:if="${!akte.is1815()}">Aanwijzing:</div>
 
     <div class="form-group extra-top-margin">
       <label class="col-xs-4 control-label">Datum der uitspraak:</label>
@@ -76,7 +76,7 @@
     <div data-show-when="#in-beroep" data-has-values-in="j" style="display:none;">
       <div class="form-header letter-spacing extra-top-margin">UITSPRAAK GEDEPUTEERDE STATEN:</div>
 
-      <div class="form-header extra-top-margin" th:if="${!akte.is1817()}">Op bezwaar:</div>
+      <div class="form-header extra-top-margin" th:if="${!akte.is1815()}">Op bezwaar:</div>
 
       <div class="form-group extra-top-margin">
         <label class="col-xs-4 control-label">Dagtekening bezwaar:</label>
@@ -102,8 +102,8 @@
       </div>
 
       <div class="form-group">
-        <label class="col-xs-4 control-label" th:if="${akte.is1817()}">Nummer van de zaak in register:</label>
-        <label class="col-xs-4 control-label" th:if="${!akte.is1817()}">Nummer der uitspraak:</label>
+        <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Nummer van de zaak in register:</label>
+        <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Nummer der uitspraak:</label>
 
         <div class="col-xs-2">
           <input type="text" class="form-control integer-field"
@@ -111,7 +111,7 @@
         </div>
       </div>
 
-      <th:block th:if="${!akte.is1817()}">
+      <th:block th:if="${!akte.is1815()}">
         <div class="form-header extra-top-margin">Krachtens wet:</div>
 
         <div class="form-group extra-top-margin">

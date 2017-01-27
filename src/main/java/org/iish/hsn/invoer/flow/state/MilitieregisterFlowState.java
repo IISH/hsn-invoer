@@ -25,14 +25,15 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     }
 
     public String getYear() {
-        if (is1817()) return "1817";
+        if (is1815()) return "1815";
         if (is1862()) return "1862";
+        if (is1913()) return "1913";
         return "0";
     }
 
-    public boolean is1817() {
+    public boolean is1815() {
         int year = mil.getYear();
-        return (year >= 1817) && (year <= 1861);
+        return (year >= 1815) && (year <= 1861);
     }
 
     public boolean is1862() {
@@ -40,8 +41,13 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
         return (year >= 1862) && (year <= 1912);
     }
 
+    public boolean is1913() {
+        int year = mil.getYear();
+        return (year >= 1913) && (year <= 1922);
+    }
+
     public boolean isOtherYear() {
-        return !is1817() && !is1862();
+        return !is1815() && !is1862() && !is1913();
     }
 
     public boolean isCropSideA() {

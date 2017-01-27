@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="form-group extra-top-margin" th:if="${!akte.is1862()}">
+    <div class="form-group extra-top-margin">
       <label class="col-xs-3 control-label">Achternaam vader:</label>
 
       <div class="col-xs-4">
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="form-group" th:classappend="${akte.is1862()} ? 'extra-top-margin'">
+    <div class="form-group">
       <label class="col-xs-3 control-label">Voornamen vader:</label>
 
       <div class="col-xs-4">
@@ -52,33 +52,31 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${!akte.is1862()}"
+    <div class="form-group"
          th:include="fragments/complete-fields :: plaats ('mil.placeParents', 'Woonplaats ouders:')"></div>
 
-    <div class="form-group" th:classappend="${!akte.is1862()} ? 'extra-top-margin'"
-         data-show-when="#voogd" data-has-values-in="j" style="display:none;">
-      <label class="col-xs-3 control-label">Achternaam voogd:</label>
+    <div data-show-when="#voogd" data-has-values-in="j" style="display:none;">
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-3 control-label">Achternaam voogd:</label>
 
-      <div class="col-xs-4">
-        <input type="text" class="form-control"
-               th:field="*{mil.familyNameGuardian}" hsn:field="mil.familyNameGuardian"/>
+        <div class="col-xs-4">
+          <input type="text" class="form-control"
+                 th:field="*{mil.familyNameGuardian}" hsn:field="mil.familyNameGuardian"/>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group" data-show-when="#voogd" data-has-values-in="j" style="display:none;">
-      <label class="col-xs-3 control-label">Voornamen voogd:</label>
+      <div class="form-group">
+        <label class="col-xs-3 control-label">Voornamen voogd:</label>
 
-      <div class="col-xs-4">
-        <input type="text" class="form-control"
-               th:field="*{mil.firstNameGuardian}" hsn:field="mil.firstNameGuardian"/>
+        <div class="col-xs-4">
+          <input type="text" class="form-control"
+                 th:field="*{mil.firstNameGuardian}" hsn:field="mil.firstNameGuardian"/>
+        </div>
       </div>
+
+      <div class="form-group"
+           th:include="fragments/complete-fields :: plaats ('mil.placeGuardian', 'Woonplaats voogd:')"></div>
     </div>
-
-    <div class="form-group" data-show-when="#voogd" data-has-values-in="j" style="display:none;" th:if="${!akte.is1862()}"
-         th:include="fragments/complete-fields :: plaats ('mil.placeGuardian', 'Woonplaats voogd:')"></div>
-
-    <div class="form-group" th:if="${akte.is1862()}"
-         th:include="fragments/complete-fields :: plaats ('mil.placeParents', 'Woonplaats:')"></div>
 
     <div class="form-group extra-top-margin"
          th:include="fragments/complete-fields :: beroep ('mil.profession', 'Beroep loteling:')"></div>

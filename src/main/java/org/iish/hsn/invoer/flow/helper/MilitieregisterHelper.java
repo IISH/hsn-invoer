@@ -9,12 +9,14 @@ import org.springframework.stereotype.Component;
 public class MilitieregisterHelper {
     public String getTypeRegister(String type) {
         switch (type) {
-            case "I":
+            case "A":
                 return "Alfabetische naamlijst";
-            case "L":
-                return "Lotingsregister";
+            case "I":
+                return "Inschrijvingsregister";
             case "K":
                 return "Keuringsregister";
+            case "L":
+                return "Lotingsregister";
             default:
                 return "Niet bekend";
         }
@@ -35,14 +37,6 @@ public class MilitieregisterHelper {
                 !mil.getHair().isEmpty() || !mil.getEyebrows().isEmpty() || !mil.getNotableSigns().isEmpty())
             return "j";
 
-        if (isCorrection)
-            return "n";
-        return "";
-    }
-
-    public String getVrijstellingWegensZiekte(Milition mil, boolean isCorrection) {
-        if (mil.getNumberRegulationIllness() > 0)
-            return "j";
         if (isCorrection)
             return "n";
         return "";

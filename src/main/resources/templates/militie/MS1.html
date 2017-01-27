@@ -9,27 +9,41 @@
     <div class="extra-top-margin" th:include="fragments/groups-of-fields :: namen-nieuw ('mil.familyName', 'mil.firstName')">
     </div>
 
-    <th:block th:if="${akte.is1862() or akte.isOtherYear()}">
-      <div class="form-group extra-top-margin"
-           th:include="fragments/complete-fields :: plaats ('mil.placeOfBirth', 'Geboorteplaats:')"></div>
-    </th:block>
-
-    <div class="form-group checkDateDefault" th:classappend="${akte.is1817()} ? 'extra-top-margin'">
+    <div class="form-group checkDateDefault extra-top-margin">
       <label class="col-xs-3 control-label">Geboortedatum:</label>
 
       <div th:replace="fragments/fields :: datum ('mil.dayOfBirth', 'mil.monthOfBirth', 'mil.yearOfBirth')"></div>
     </div>
 
-    <th:block th:if="${akte.is1817()}">
-      <div class="form-group"
-           th:include="fragments/complete-fields :: plaats ('mil.placeOfBirth', 'Geboorteplaats:')"></div>
-    </th:block>
+    <div class="form-group"
+         th:include="fragments/complete-fields :: plaats ('mil.placeOfBirth', 'Geboorteplaats:')"></div>
 
     <div class="form-group extra-top-margin"
-         th:include="fragments/complete-fields :: plaats ('mil.placeOfLiving', ${akte.is1817() ? 'Verblijfplaats:' : 'Woonplaats:'})"></div>
+         th:include="fragments/complete-fields :: plaats ('mil.placeOfMilition', ${akte.is1815() ? 'Militiekanton:' : 'Militiedistrict:'})"></div>
 
     <div class="form-group"
-         th:include="fragments/complete-fields :: plaats ('mil.placeOfMilition', ${akte.is1817() ? 'Militiekanton:' : 'Militiedistrict:'})"></div>
+         th:include="fragments/complete-fields :: plaats ('mil.placeOfLiving', ${akte.is1815() ? 'Verblijfplaats:' : 'Woonplaats:'})"></div>
+
+    <th:block th:if="${akte.is1815()}">
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Woont bij zijn ouders? j / n / o</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o" maxlength="1"
+                 th:field="*{mil.livesWithParents}" hsn:field="mil.livesWithParents"/>
+        </div>
+      </div>
+    </th:block>
+
+    <th:block th:if="${akte.is1913() or akte.isOtherYear()}">
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-3 control-label">Opleiding</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control" th:field="*{mil.education}" hsn:field="mil.education"/>
+        </div>
+      </div>
+    </th:block>
 
     <div th:replace="militie/byz-fragment :: byzModal"></div>
   </th:block>
