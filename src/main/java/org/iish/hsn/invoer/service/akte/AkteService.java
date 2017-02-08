@@ -38,12 +38,9 @@ public abstract class AkteService {
 
         int byzNr = 1;
         for (Byz byz : byzAkteFlowState.getByz()) {
-            String trimmedByz = byz.getByz().trim();
-            if (!trimmedByz.isEmpty()) {
-                byz.setByz(trimmedByz);
+            if (!byz.getByz().trim().isEmpty()) {
                 byz.setByznr(byzNr + (byzRound * 5));
                 byz.setScherm(byzAkteFlowState.getViewStateHistory().getPrevViewStateId());
-
                 saveByz(byzAkteFlowState, byz);
             }
             else {
