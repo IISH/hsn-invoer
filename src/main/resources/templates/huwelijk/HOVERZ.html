@@ -19,11 +19,11 @@
     <tr th:each="curHuw,stat : ${overview}">
       <td th:utext="${curHuw.idnr}"></td>
       <th:block th:if="${curHuw.gebsex == 'm'}">
-        <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteLastName(curHuw.anmhm, curHuw.tushm)}"></td>
+        <td th:utext="${curHuw.anmhm}"></td>
         <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getFirstNames(curHuw.vrn1hm, curHuw.vrn2hm, curHuw.vrn3hm)}"></td>
       </th:block>
       <th:block th:if="${curHuw.gebsex == 'v'}">
-        <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteLastName(curHuw.anmhv, curHuw.tushv)}"></td>
+        <td th:utext="${curHuw.anmhv}"></td>
         <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getFirstNames(curHuw.vrn1hv, curHuw.vrn2hv, curHuw.vrn3hv)}"></td>
       </th:block>
       <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getDateAsString(curHuw.huw.hdag, curHuw.huw.hmaand, curHuw.huw.hjaar)}"></td>

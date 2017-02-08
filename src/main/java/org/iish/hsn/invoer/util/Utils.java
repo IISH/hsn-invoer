@@ -24,21 +24,6 @@ public class Utils {
     }
 
     /**
-     * Combines the last name and the 'tussenvoegsel'.
-     *
-     * @param lastName The last name.
-     * @param tusvgl   The 'tussenvoegsel'.
-     * @return The complete last name.
-     */
-    public static String getCompleteLastName(String lastName, String tusvgl) {
-        String achternaam = lastName.trim();
-        if ((tusvgl != null) && !tusvgl.trim().isEmpty()) {
-            achternaam += ", " + tusvgl.trim();
-        }
-        return achternaam;
-    }
-
-    /**
      * Combines all of the first names.
      *
      * @param firstName1 First name part 1.
@@ -78,16 +63,13 @@ public class Utils {
      * Returns the complete name.
      *
      * @param lastName   The last name.
-     * @param tusvgl     The 'tussenvoegsel'.
      * @param firstName1 First name part 1.
      * @param firstName2 First name part 2.
      * @param firstName3 First name part 3.
      * @return The complete name.
      */
-    public static String getCompleteName(String lastName, String tusvgl, String firstName1, String firstName2,
-                                         String firstName3) {
-        String completeName = tusvgl.trim() + " " + lastName.trim() + ", " +
-                              getFirstNames(firstName1, firstName2, firstName3);
+    public static String getCompleteName(String lastName, String firstName1, String firstName2, String firstName3) {
+        String completeName = lastName.trim() + ", " + getFirstNames(firstName1, firstName2, firstName3);
         return completeName.trim();
     }
 
