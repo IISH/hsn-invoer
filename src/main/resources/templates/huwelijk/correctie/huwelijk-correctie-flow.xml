@@ -285,8 +285,7 @@
   </view-state>
 
   <action-state id="prevMarriageGroomCheck">
-    <evaluate expression="(new Integer(flowScope.akte.huwknd.bsthm) != 1) and
-                          (flowScope.akte.moreOfGroom == 'j')"/>
+    <evaluate expression="(flowScope.akte.huwknd.bsthm != '1') and (flowScope.akte.moreOfGroom == 'j')"/>
 
     <transition on="yes" to="HS4A">
       <evaluate expression="huwelijksAkteService.createEerderHuwelijk(flowScope.akte, 'm')"/>
@@ -296,8 +295,7 @@
   </action-state>
 
   <action-state id="prevMarriageBrideCheck">
-    <evaluate expression="(new Integer(flowScope.akte.huwknd.bsthv) != 1) and
-                          (flowScope.akte.moreOfBride == 'j')"/>
+    <evaluate expression="(flowScope.akte.huwknd.bsthv != '1') and (flowScope.akte.moreOfBride == 'j')"/>
 
     <transition on="yes" to="HS4A">
       <evaluate expression="huwelijksAkteService.createEerderHuwelijk(flowScope.akte, 'v')"/>

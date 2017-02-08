@@ -39,7 +39,7 @@
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
                  name="eerder-gehuwd-bruidegom" id="eerder-gehuwd-bruidegom"
-                 th:value="${(akte.huwknd.bsthm == '1') || (akte.huwknd.bsthm == null)} ? 'n' : 'j'"/>
+                 th:value="${(akte.huwknd.bsthm == '1') || (akte.huwknd.bsthm == '')} ? 'n' : 'j'"/>
         </div>
       </div>
 
@@ -86,7 +86,7 @@
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
                  name="eerder-gehuwd-bruid" id="eerder-gehuwd-bruid"
-                 th:value="${(akte.huwknd.bsthv == '1') || (akte.huwknd.bsthv == null)} ? 'n' : 'j'"/>
+                 th:value="${(akte.huwknd.bsthv == '1') || (akte.huwknd.bsthv == '')} ? 'n' : 'j'"/>
         </div>
       </div>
 
