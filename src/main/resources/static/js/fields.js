@@ -298,24 +298,7 @@
 
     var prepareByz = function (elem) {
         var allByzElem = elem.find('textarea');
-
-        var text = '';
-        for (var i = 1; i <= 5; i++) {
-            text += elem.find('.byz' + i).val();
-        }
-        allByzElem.val(text);
-        allByzElem[0].setSelectionRange(text.length * 2, text.length * 2);
-
-        allByzElem.blur(function () {
-            var text = allByzElem.val();
-            var textParts = text.match(/.{1,55}/g); // Split into blocks of 55 chars each
-            for (var i = 1; i <= 5; i++) {
-                var textPart = '';
-                if (textParts !== null)
-                    textPart = (textParts.length >= i) ? textParts[i - 1] : '';
-                elem.find('.byz' + i).val(textPart);
-            }
-        });
+        allByzElem[0].setSelectionRange(allByzElem.val().length * 2, allByzElem.val().length * 2);
     };
 
     var setOverwrite = function (elem, e) {

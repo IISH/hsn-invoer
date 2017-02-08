@@ -14,23 +14,12 @@
 
   <div class="form-group extra-top-margin">
     <div class="col-xs-10 col-xs-offset-1 bijzonderheden">
-      <textarea class="form-control" maxlength="275" rows="5"></textarea>
-
-      <input type="hidden" class="byz1" th:field="*{byz[0].byz}"/>
-      <input type="hidden" class="byz2" th:field="*{byz[1].byz}"/>
-      <input type="hidden" class="byz3" th:field="*{byz[2].byz}"/>
-      <input type="hidden" class="byz4" th:field="*{byz[3].byz}"/>
-      <input type="hidden" class="byz5" th:field="*{byz[4].byz}"/>
+      <textarea th:field="*{fullByz}" class="form-control" maxlength="275" rows="5"></textarea>
     </div>
   </div>
 </div>
 
 <div th:fragment="bijzonderhedenCorrectie">
-  <!--<p>
-    Totaal aantal opgenomen regels bij deze akte:
-    <th:block th:utext="${akte.nrOfByzEntered}">0</th:block>
-  </p>-->
-
   <p>
     Corrigeer de bijzonderheden regel voor regel!!!
     <br/>
@@ -41,13 +30,7 @@
 
   <div class="form-group extra-top-margin">
     <div class="col-xs-10 col-xs-offset-1 bijzonderheden">
-      <textarea class="form-control" maxlength="275" rows="5"></textarea>
-
-      <input type="hidden" class="byz1" th:field="*{byz[0].byz}"/>
-      <input type="hidden" class="byz2" th:field="*{byz[1].byz}"/>
-      <input type="hidden" class="byz3" th:field="*{byz[2].byz}"/>
-      <input type="hidden" class="byz4" th:field="*{byz[3].byz}"/>
-      <input type="hidden" class="byz5" th:field="*{byz[4].byz}"/>
+      <textarea th:field="*{fullByz}" class="form-control" maxlength="275" rows="5"></textarea>
     </div>
   </div>
 </div>
