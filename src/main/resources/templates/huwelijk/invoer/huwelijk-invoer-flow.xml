@@ -133,7 +133,7 @@
 
   <action-state id="prevMarriageGroomCheck">
     <evaluate expression="(flowScope.akte.huwttl.huw.hjaar lt 1970) and
-                          (new Integer(flowScope.akte.huwknd.bsthm) != 1) and
+                          (flowScope.akte.huwknd.bsthm != '1') and
                           (flowScope.akte.moreOfGroom == 'j')"/>
 
     <transition on="yes" to="HS4A">
@@ -145,7 +145,7 @@
 
   <action-state id="prevMarriageBrideCheck">
     <evaluate expression="(flowScope.akte.huwttl.huw.hjaar lt 1970) and
-                          (new Integer(flowScope.akte.huwknd.bsthv) != 1) and
+                          (flowScope.akte.huwknd.bsthv != '1') and
                           (flowScope.akte.moreOfBride == 'j')"/>
 
     <transition on="yes" to="HS4A">

@@ -19,7 +19,7 @@
     <tr th:each="curHuw,stat : ${overview}">
       <td th:utext="${curHuw.idnr}"></td>
       <th:block th:if="${curHuw.gebsex == 'm'}">
-        <td th:utext="$curHuw.anmhm}"></td>
+        <td th:utext="${curHuw.anmhm}"></td>
         <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getFirstNames(curHuw.vrn1hm, curHuw.vrn2hm, curHuw.vrn3hm)}"></td>
       </th:block>
       <th:block th:if="${curHuw.gebsex == 'v'}">
