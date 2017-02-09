@@ -32,8 +32,8 @@ public abstract class ByzAkteFlowState extends AkteFlowState implements Serializ
 
     public String getFullByz() {
         StringBuilder sb = new StringBuilder();
-        for (Byz byz : byz) {
-            sb.append(byz.getByz());
+        for (Byz b : byz) {
+            sb.append(b.getByz());
         }
         return sb.toString();
     }
