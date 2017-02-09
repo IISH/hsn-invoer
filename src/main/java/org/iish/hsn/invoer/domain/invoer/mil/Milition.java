@@ -72,7 +72,7 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "LGTMM", nullable = false) private int millimeter;
 
     @Column(name = "GEWICHT", nullable = false) private int kg;
-    @Column(name = "IDX", nullable = false, length = 10) private String index;
+    @Column(name = "IDX", nullable = false, length = 10) private String index = "";
 
     @Column(name = "SGMGEZ", nullable = false, length = 50) private String face = "";
     @Column(name = "SGMVHF", nullable = false, length = 50) private String forehead = "";
