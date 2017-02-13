@@ -81,10 +81,17 @@
 
   <!-- MS6: UITSPRAKEN -->
   <view-state id="MS6" view="militie/MS6" model="akte">
-    <transition on="next" to="MS7">
+    <transition on="next" to="moreDataCheck">
       <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
     </transition>
   </view-state>
+
+  <action-state id="moreDataCheck">
+    <evaluate expression="flowScope.akte.moreData == 'j'"/>
+
+    <transition on="yes" to="MS7"/>
+    <transition on="no" to="MSNIEUW"/>
+  </action-state>
 
   <!-- MS7: AANSTELLING EN AANMERKINGEN -->
   <view-state id="MS7" view="militie/MS7" model="akte">

@@ -6,6 +6,7 @@
   <view-state id="MS0C" view="militie/MS0IC" model="akte">
     <on-entry>
       <evaluate expression="militieregisterService.createNewAkteForCorrection()" result="flowScope.akte"/>
+      <evaluate expression="flowScope.akte.setCorrectionDelete()"/>
     </on-entry>
 
     <transition on="stop" to="end"/>

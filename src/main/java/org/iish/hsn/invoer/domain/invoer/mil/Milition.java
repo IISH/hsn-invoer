@@ -92,7 +92,6 @@ public class Milition extends Invoer implements Serializable {
 
     @Column(name = "UITSEL", nullable = false, length = 1) private String delayOfService = "";
     @Column(name = "PERIOD", nullable = false, length = 50) private String delayInformation = "";
-    @Column(name = "BESLUIT", nullable = false, length = 50) private String delayDecision = "";
 
     @Column(name = "PVNM", nullable = false, length = 1) private String substitute = "";
     @Column(name = "PVNB", nullable = false) private int substituteNumber;
@@ -642,14 +641,6 @@ public class Milition extends Invoer implements Serializable {
 
     public void setDelayInformation(String delayInformation) {
         this.delayInformation = delayInformation;
-    }
-
-    public String getDelayDecision() {
-        return delayDecision;
-    }
-
-    public void setDelayDecision(String delayDecision) {
-        this.delayDecision = delayDecision;
     }
 
     public String getSubstitute() {

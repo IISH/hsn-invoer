@@ -42,6 +42,17 @@ public class MilitieregisterHelper {
         return "";
     }
 
+    public String hasUitgesteld(MilitieregisterFlowState akte, boolean isCorrection) {
+        if (checkVerdict(akte.getVerdictUitstel()))
+            return "j";
+        if (checkVerdict(akte.getVerdictTweedeUitstel()))
+            return "j";
+
+        if (isCorrection)
+            return "n";
+        return "";
+    }
+
     public String hasInBeroep(MilitieregisterFlowState akte, boolean isCorrection) {
         if (checkVerdict(akte.getVerdictBezwaren()))
             return "j";

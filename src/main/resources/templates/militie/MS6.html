@@ -6,57 +6,66 @@
   <th:block layout:fragment="fields">
     <div class="form-header letter-spacing">UITSPRAAK MILITIERAAD:</div>
 
-    <div class="form-header extra-top-margin" th:if="${akte.is1815()}">Ajournement:</div>
-    <div class="form-header extra-top-margin" th:if="${!akte.is1815()}">Uitstel:</div>
-
     <div class="form-group extra-top-margin">
-      <label class="col-xs-4 control-label">Datum der uitspraak:</label>
+      <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Ajournement? j / n </label>
+      <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Wordt de uitspraak uitgesteld? j / n </label>
 
-      <div
-          th:replace="fragments/fields :: datum ('verdictUitstel.dayOfVerdict', 'verdictUitstel.monthOfVerdict', 'verdictUitstel.yearOfVerdict')"></div>
-    </div>
-
-    <div class="form-group">
-      <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Tijdsbepaling ajournement:</label>
-      <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Bepaling dag der nadere uitspraak:</label>
-
-      <div class="col-xs-6">
-        <input type="text" class="form-control"
-               th:field="*{verdictUitstel.nature}" hsn:field="verdictUitstel.nature"/>
+      <div class="col-xs-2">
+        <input type="text" id="uitgesteld" class="form-control form-control-digit required" data-valid-chars="j;n"
+               maxlength="1" th:value="${@militieregisterHelper.hasUitgesteld(akte, akte.isCorrection())}"/>
       </div>
     </div>
 
-    <th:block th:if="${!akte.is1862()}">
+    <div data-show-when="#uitgesteld" data-has-values-in="j" style="display:none;">
       <div class="form-group extra-top-margin">
-        <label class="col-xs-4 control-label">Datum tweede uitspraak:</label>
+        <label class="col-xs-4 control-label">Dagtekening:</label>
 
         <div
-            th:replace="fragments/fields :: datum ('verdictTweedeUitstel.dayOfVerdict', 'verdictTweedeUitstel.monthOfVerdict', 'verdictTweedeUitstel.yearOfVerdict')"></div>
+            th:replace="fragments/fields :: datum ('verdictUitstel.dayOfVerdict', 'verdictUitstel.monthOfVerdict', 'verdictUitstel.yearOfVerdict')"></div>
       </div>
 
       <div class="form-group">
-        <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Tijdsbepaling tweede ajournement:</label>
+        <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Tijdsbepaling ajournement:</label>
         <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Bepaling dag der nadere uitspraak:</label>
 
         <div class="col-xs-6">
           <input type="text" class="form-control"
-                 th:field="*{verdictTweedeUitstel.nature}" hsn:field="verdictTweedeUitstel.nature"/>
+                 th:field="*{verdictUitstel.nature}" hsn:field="verdictUitstel.nature"/>
         </div>
       </div>
-    </th:block>
+
+      <th:block th:if="${!akte.is1862()}">
+        <div class="form-group extra-top-margin">
+          <label class="col-xs-4 control-label">Datum tweede uitspraak:</label>
+
+          <div
+              th:replace="fragments/fields :: datum ('verdictTweedeUitstel.dayOfVerdict', 'verdictTweedeUitstel.monthOfVerdict', 'verdictTweedeUitstel.yearOfVerdict')"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Tijdsbepaling tweede ajournement:</label>
+          <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Bepaling dag der nadere uitspraak:</label>
+
+          <div class="col-xs-6">
+            <input type="text" class="form-control"
+                   th:field="*{verdictTweedeUitstel.nature}" hsn:field="verdictTweedeUitstel.nature"/>
+          </div>
+        </div>
+      </th:block>
+    </div>
 
     <div class="form-header extra-top-margin" th:if="${akte.is1815()}">Designatie:</div>
-    <div class="form-header extra-top-margin" th:if="${!akte.is1815()}">Aanwijzing:</div>
+    <div class="form-header extra-top-margin" th:if="${!akte.is1815()}">Aanwijzing dienst:</div>
 
     <div class="form-group extra-top-margin">
-      <label class="col-xs-4 control-label">Datum der uitspraak:</label>
+      <label class="col-xs-4 control-label">Dagtekening:</label>
 
       <div
           th:replace="fragments/fields :: datum ('verdictAanwijzing.dayOfVerdict', 'verdictAanwijzing.monthOfVerdict', 'verdictAanwijzing.yearOfVerdict')"></div>
     </div>
 
     <div class="form-group">
-      <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
+      <label class="col-xs-4 control-label">Aard van de aanwijzing dienst:</label>
 
       <div class="col-xs-6">
         <input type="text" class="form-control"
@@ -197,6 +206,19 @@
 <div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+
+<span layout:fragment="navigational-form" style="width:400px;">
+  <div class="form-group" th:if="${akte.isCorrection()} == false">
+    <label class="col-xs-10 control-label">
+      Nog meer informatie om in te voeren? j / n
+    </label>
+
+    <div class="col-xs-2">
+      <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="j;n"
+             name="moreData" id="moreData"/>
+    </div>
+  </div>
+</span>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>

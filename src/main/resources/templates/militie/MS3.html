@@ -39,8 +39,7 @@
       </div>
     </div>
 
-    <!-- TODO: Years to show these fields -->
-    <div class="form-group extra-top-margin">
+    <div class="form-group extra-top-margin" th:if="${akte.isOtherYear()}">
       <label class="col-xs-2 col-xs-offset-2 control-label">Gewicht in kg:</label>
 
       <div class="col-xs-1">
@@ -71,13 +70,15 @@
           <label class="col-xs-2 control-label">Aangezicht:</label>
 
           <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{mil.face}" hsn:field="mil.face"/>
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.face}" hsn:field="mil.face"/>
           </div>
 
           <label class="col-xs-2 control-label">Voorhoofd:</label>
 
           <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{mil.forehead}" hsn:field="mil.forehead"/>
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.forehead}" hsn:field="mil.forehead"/>
           </div>
         </div>
 
@@ -85,13 +86,15 @@
           <label class="col-xs-2 control-label">Ogen:</label>
 
           <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{mil.eyes}" hsn:field="mil.eyes"/>
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.eyes}" hsn:field="mil.eyes"/>
           </div>
 
           <label class="col-xs-2 control-label">Neus:</label>
 
           <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{mil.nose}" hsn:field="mil.nose"/>
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.nose}" hsn:field="mil.nose"/>
           </div>
         </div>
 
@@ -99,13 +102,15 @@
           <label class="col-xs-2 control-label">Mond:</label>
 
           <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{mil.mouth}" hsn:field="mil.mouth"/>
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.mouth}" hsn:field="mil.mouth"/>
           </div>
 
           <label class="col-xs-2 control-label">Kin:</label>
 
           <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{mil.chin}" hsn:field="mil.chin"/>
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.chin}" hsn:field="mil.chin"/>
           </div>
         </div>
 
@@ -113,21 +118,24 @@
           <label class="col-xs-2 control-label">Haar:</label>
 
           <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{mil.hair}" hsn:field="mil.hair"/>
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.hair}" hsn:field="mil.hair"/>
           </div>
 
           <label class="col-xs-2 control-label">Wenkbrauwen:</label>
 
           <div class="col-xs-4">
-            <input type="text" class="form-control" th:field="*{mil.eyebrows}" hsn:field="mil.eyebrows"/>
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.eyebrows}" hsn:field="mil.eyebrows"/>
           </div>
         </div>
 
         <div class="form-group">
           <label class="col-xs-3 control-label">Merkbare tekenen:</label>
 
-          <div class="col-xs-8">
-            <input type="text" class="form-control" th:field="*{mil.notableSigns}" hsn:field="mil.notableSigns"/>
+          <div class="col-xs-9">
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.notableSigns}" hsn:field="mil.notableSigns"/>
           </div>
         </div>
       </div>

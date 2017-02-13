@@ -19,6 +19,8 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
 
     private boolean cropSideA = true;
 
+    private String moreData = "j";
+
     public MilitieregisterFlowState(Milition mil, Map<Type, Verdict> verdict) {
         this.mil = mil;
         this.verdict = verdict;
@@ -72,6 +74,14 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
 
     public void setMil(Milition mil) {
         this.mil = mil;
+    }
+
+    public String getMoreData() {
+        return moreData;
+    }
+
+    public void setMoreData(String moreData) {
+        this.moreData = moreData;
     }
 
     public Map<Type, Verdict> getVerdict() {

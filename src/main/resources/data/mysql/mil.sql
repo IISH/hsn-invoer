@@ -66,7 +66,6 @@ CREATE TABLE `m1` (
   `MEDADV` varchar(100) NOT NULL,
   `UITSEL` varchar(1) NOT NULL,
   `PERIOD` varchar(50) NOT NULL,
-  `BESLUIT` varchar(50) NOT NULL,
   `PVNM` varchar(1) NOT NULL,
   `PVNB` int(11) NOT NULL,
   `ANPV` varchar(50) NOT NULL,

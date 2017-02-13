@@ -24,7 +24,7 @@
     <div class="form-group"
          th:include="fragments/complete-fields :: plaats ('mil.placeOfLiving', ${akte.is1815() ? 'Verblijfplaats:' : 'Woonplaats:'})"></div>
 
-    <th:block th:if="${akte.is1815()} or akte.isOtherYear()">
+    <th:block th:if="${akte.is1815() or akte.isOtherYear()}">
       <div class="form-group extra-top-margin">
         <label class="col-xs-4 control-label">Woont bij zijn ouders? j / n / o</label>
 

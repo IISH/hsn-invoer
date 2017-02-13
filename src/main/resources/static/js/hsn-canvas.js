@@ -34,9 +34,17 @@ var HsnCanvas = (function ($, fabric) {
 
                 if ($.isPlainObject(position))
                     image.set(position).setCoords();
-                else
+                else if (allowCutting)
                     image
                         .scaleToWidth(canvas.width)
+                        .set({
+                            left: -image.getPointByOrigin('left', 'top').x,
+                            top: -image.getPointByOrigin('left', 'top').y
+                        })
+                        .setCoords();
+                else
+                    image
+                        .scaleToHeight(canvas.height)
                         .set({
                             left: -image.getPointByOrigin('left', 'top').x,
                             top: -image.getPointByOrigin('left', 'top').y
