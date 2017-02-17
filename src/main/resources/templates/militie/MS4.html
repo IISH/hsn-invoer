@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html layout:decorator="formViewLayout">
+<html layout:decorator="formViewLayout" th:with="scroll=true">
 <head></head>
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
     <div class="form-header letter-spacing">MILITIE GEGEVENS LOTELING:</div>
 
-    <div class="form-group extra-top-margin" th:if="${!akte.is1862()}">
+    <div class="form-group extra-top-margin">
       <div class="row">
         <label class="col-xs-3 control-label">
           Aangifte:
@@ -61,7 +61,7 @@
       </div>
     </th:block>
 
-    <th:block th:if="${akte.isOtherYear()}">
+    <th:block th:if="${akte.is1862() or akte.isOtherYear()}">
       <div class="form-group extra-top-margin">
         <label class="col-xs-5 control-label">Bindt zich in vrijwillige dienst? j / n / o</label>
 
@@ -80,7 +80,7 @@
       </div>
     </th:block>
 
-    <th:block th:if="${!akte.is1913() and !akte.is1862()}">
+    <th:block th:if="${!akte.is1913()}">
       <div class="form-group extra-top-margin">
         <label class="col-xs-5 control-label" th:if="${akte.is1815()}">Loteling is gedetineerd? j / n / o</label>
         <label class="col-xs-5 control-label" th:if="${!akte.is1815()}">Bevindt zich in een gesticht? j / n / o</label>

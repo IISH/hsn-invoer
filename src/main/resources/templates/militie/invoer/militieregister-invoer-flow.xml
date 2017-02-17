@@ -90,11 +90,18 @@
     <evaluate expression="flowScope.akte.moreData == 'j'"/>
 
     <transition on="yes" to="MS7"/>
-    <transition on="no" to="MSNIEUW"/>
+    <transition on="no" to="MSBYZ"/>
   </action-state>
 
   <!-- MS7: AANSTELLING EN AANMERKINGEN -->
   <view-state id="MS7" view="militie/MS7" model="akte">
+    <transition on="next" to="MSBYZ">
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- MSBYZ: BIJZONDERHEDEN -->
+  <view-state id="MSBYZ" view="militie/MSBYZ" model="akte">
     <transition on="next" to="MSNIEUW">
       <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>

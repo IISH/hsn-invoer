@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout" th:with="scroll=true">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">BIJZONDERHEDEN:</div>
+
+    <div class="form-group extra-top-margin">
+      <div class="col-xs-12">
+        <textarea class="form-control" rows="8" th:field="*{mil.byz}" hsn:field="mil.byz">
+        </textarea>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, false)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
+</th:block>
+</body>
+</html>

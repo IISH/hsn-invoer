@@ -219,7 +219,7 @@
   <action-state id="eightCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
-    <transition on="0" to="MBYZ"/>
+    <transition on="0" to="MSBYZ"/>
     <transition on="1" to="MSNIEUW"/>
     <transition on="2" to="MSNIEUW"/>
     <transition on="3" to="MSNIEUW"/>
@@ -227,12 +227,12 @@
     <transition on="5" to="MSNIEUW"/>
     <transition on="6" to="MSNIEUW"/>
     <transition on="7" to="MSNIEUW"/>
-    <transition on="8" to="MBYZ"/>
+    <transition on="8" to="MSBYZ"/>
     <transition on="9" to="MSNIEUW"/>
   </action-state>
 
-  <!-- MBYZ: BIJZONDERHEDEN -->
-  <view-state id="MBYZ" view="militie/MBYZ" model="akte">
+  <!-- MSBYZ: BIJZONDERHEDEN -->
+  <view-state id="MSBYZ" view="militie/MSBYZ" model="akte">
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="MSNIEUW">

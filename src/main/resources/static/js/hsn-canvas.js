@@ -188,11 +188,14 @@ var HsnCanvas = (function ($, fabric) {
         function toSelectionState() {
             state = State.SELECTION;
 
-            image.hoverCursor = 'pointer';
+            canvas.defaultCursor = 'pointer';
+
             image.selectable = true;
+            image.dirty = true;
 
             if (activeLine) {
                 activeLine.stroke = 'blue';
+                activeLine.dirty = true;
                 activeLine = null;
             }
 
@@ -203,12 +206,15 @@ var HsnCanvas = (function ($, fabric) {
             state = State.ACTION;
 
             if (allowCutting !== false) {
-                image.hoverCursor = 'crosshair';
+                canvas.defaultCursor = 'crosshair';
+
                 image.selectable = false;
+                image.dirty = true;
             }
 
             if (activeLine) {
                 activeLine.stroke = 'blue';
+                activeLine.dirty = true;
                 activeLine = null;
             }
 
@@ -218,11 +224,14 @@ var HsnCanvas = (function ($, fabric) {
         function toLineState(line) {
             state = State.LINE;
 
-            image.hoverCursor = 'crosshair';
+            canvas.defaultCursor = 'crosshair';
+
             image.selectable = false;
+            image.dirty = true;
 
             activeLine = line;
             activeLine.stroke = 'red';
+            activeLine.dirty = true;
 
             canvas.deactivateAll().renderAll();
         }

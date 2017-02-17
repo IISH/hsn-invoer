@@ -9,7 +9,7 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 
 public interface MilitionRepository extends Repository<Milition, Integer>, JpaSpecificationExecutor<Milition> {
-    @Query("SELECT m FROM Milition m WHERE m.idnr = ?1 AND m.workOrder = ?2")
+    @Query("SELECT m FROM Milition m WHERE m.idnr = ?1 AND m.workOrder = ?2 ORDER BY m.seq")
     List<Milition> findByIdnrAndWorkOrder(int idnr, WorkOrder workOrder);
 
     Milition findByIdnrAndSeqAndWorkOrder(int idnr, int seq, WorkOrder workOrder);

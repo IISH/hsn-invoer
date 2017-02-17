@@ -190,10 +190,19 @@ public class MilitieregisterService {
      * @param militieregisterFlow The militie register flow state.
      */
     public void deleteAkte(MilitieregisterFlowState militieregisterFlow) {
+        int idnr = militieregisterFlow.getMil().getIdnr();
+
         if (militieregisterFlow.getMil().getId() != null) {
             militionRepository.delete(militieregisterFlow.getMil());
         }
         verdictRepository.delete(militieregisterFlow.getVerdict().values());
+
+        // Renumber the sequences
+        int seq = 1;
+        for (Milition milition : lookupService.getMilitions(idnr)) {
+            milition.setSeq(seq++);
+            militionRepository.save(milition);
+        }
     }
 
     /**

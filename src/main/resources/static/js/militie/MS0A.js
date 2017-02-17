@@ -55,7 +55,7 @@
         xhr.send();
 
         $('form:first').submit(function (e) {
-            if (!submit) {
+            if (!submit && $(document.activeElement).hasClass('btn-next')) {
                 e.preventDefault();
 
                 hsnCanvas.createNewImage(function (dataUrl) {

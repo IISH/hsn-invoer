@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorator="formViewLayout">
+<html layout:decorator="formViewLayout" th:with="scroll=true">
 <head></head>
 <body>
 <fieldset>
@@ -31,16 +31,6 @@
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o" maxlength="1"
                  th:field="*{mil.livesWithParents}" hsn:field="mil.livesWithParents"/>
-        </div>
-      </div>
-    </th:block>
-
-    <th:block th:if="${akte.is1913() or akte.isOtherYear()}">
-      <div class="form-group extra-top-margin">
-        <label class="col-xs-3 control-label">Opleiding</label>
-
-        <div class="col-xs-5">
-          <input type="text" class="form-control" th:field="*{mil.education}" hsn:field="mil.education"/>
         </div>
       </div>
     </th:block>

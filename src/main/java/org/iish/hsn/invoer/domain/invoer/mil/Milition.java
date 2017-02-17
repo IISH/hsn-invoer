@@ -54,7 +54,7 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "EXEMP", nullable = false, length = 200) private String reasonsNotIncluded = "";
     @Column(name = "MILCOM", nullable = false, length = 255) private String militionChairImprovements = "";
 
-    @Column(name = "ANMVDR", nullable = false, length = 50) private String familyNameFather = "";
+    @Column(name = "ANVDR", nullable = false, length = 50) private String familyNameFather = "";
     @Column(name = "VNVDR", nullable = false, length = 50) private String firstNameFather = "";
     @Column(name = "ANMDR", nullable = false, length = 50) private String familyNameMother = "";
     @Column(name = "VNMDR", nullable = false, length = 50) private String firstNameMother = "";
@@ -106,6 +106,11 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "INLD", nullable = false) private int dayOfAnnexation;
     @Column(name = "INLM", nullable = false) private int monthOfAnnexation;
     @Column(name = "INLJ", nullable = false) private int yearOfAnnexation;
+
+    @Column(name = "AANWD", nullable = false) private int dayOfDesignation;
+    @Column(name = "AANWM", nullable = false) private int monthOfDesignation;
+    @Column(name = "AANWJ", nullable = false) private int yearOfDesignation;
+    @Column(name = "AANW", nullable = false, length = 50) private String designation = "";
 
     @Column(name = "AANMRK", nullable = false, length = 128) private String remarks = "";
     @Column(name = "BYZ", nullable = false, length = 255) private String byz = "";
@@ -737,6 +742,38 @@ public class Milition extends Invoer implements Serializable {
 
     public void setYearOfAnnexation(int yearOfAnnexation) {
         this.yearOfAnnexation = yearOfAnnexation;
+    }
+
+    public int getDayOfDesignation() {
+        return dayOfDesignation;
+    }
+
+    public void setDayOfDesignation(int dayOfDesignation) {
+        this.dayOfDesignation = dayOfDesignation;
+    }
+
+    public int getMonthOfDesignation() {
+        return monthOfDesignation;
+    }
+
+    public void setMonthOfDesignation(int monthOfDesignation) {
+        this.monthOfDesignation = monthOfDesignation;
+    }
+
+    public int getYearOfDesignation() {
+        return yearOfDesignation;
+    }
+
+    public void setYearOfDesignation(int yearOfDesignation) {
+        this.yearOfDesignation = yearOfDesignation;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 
     public String getRemarks() {

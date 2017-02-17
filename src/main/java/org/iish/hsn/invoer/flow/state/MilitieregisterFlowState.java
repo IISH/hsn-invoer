@@ -100,10 +100,6 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
         return verdict.get(Type.TWEEDE_UITSTEL);
     }
 
-    public Verdict getVerdictAanwijzing() {
-        return verdict.get(Type.AANWIJZING);
-    }
-
     public Verdict getVerdictBezwaren() {
         return verdict.get(Type.BEZWAREN);
     }

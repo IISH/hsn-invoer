@@ -1,5 +1,5 @@
 <!doctype html>
-<html layout:decorator="formViewLayout">
+<html layout:decorator="formViewLayout" th:with="scroll=true">
 <head></head>
 <body>
 <fieldset>
@@ -61,15 +61,14 @@
       <label class="col-xs-4 control-label">Dagtekening:</label>
 
       <div
-          th:replace="fragments/fields :: datum ('verdictAanwijzing.dayOfVerdict', 'verdictAanwijzing.monthOfVerdict', 'verdictAanwijzing.yearOfVerdict')"></div>
+          th:replace="fragments/fields :: datum ('mil.dayOfDesignation', 'mil.monthOfDesignation', 'mil.yearOfDesignation')"></div>
     </div>
 
     <div class="form-group">
       <label class="col-xs-4 control-label">Aard van de aanwijzing dienst:</label>
 
       <div class="col-xs-6">
-        <input type="text" class="form-control"
-               th:field="*{verdictAanwijzing.nature}" hsn:field="verdictAanwijzing.nature"/>
+        <input type="text" class="form-control" th:field="*{mil.designation}" hsn:field="mil.designation"/>
       </div>
     </div>
 

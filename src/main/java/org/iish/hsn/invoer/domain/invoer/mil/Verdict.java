@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Table(name = "m2", indexes = {@Index(columnList = "IDNR, VOLG, TYPE"), @Index(columnList = "ONDRZKO, OPDRNRI")})
 public class Verdict extends Invoer implements Serializable {
     public enum Type {
-        UITSTEL(1), TWEEDE_UITSTEL(2), AANWIJZING(3), BEZWAREN(4), WET(5), KONING(6);
+        UITSTEL(1), TWEEDE_UITSTEL(2), BEZWAREN(3), WET(4), KONING(5);
 
         private int type;
 

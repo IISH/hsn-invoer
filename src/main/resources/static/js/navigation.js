@@ -311,7 +311,7 @@
 
     var autoHeightScroll = function (elem) {
         var windowHeight = $(window).height();
-        var parentHeight = elem.parent().height();
+        var parentHeight = $('#main').height();
         var elementHeight = elem.height();
         var maxHeight = windowHeight - (parentHeight - elementHeight);
         elem.css('max-height', maxHeight + 'px');
@@ -374,7 +374,7 @@
         var scrollElem = $('.scroll-height');
         if (scrollElem.length === 1) {
             autoHeightScroll(scrollElem);
-            scrollElem.resize(function () {
+            scrollElem.add(window).resize(function () {
                 autoHeightScroll(scrollElem);
             });
         }
