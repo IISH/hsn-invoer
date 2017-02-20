@@ -303,12 +303,12 @@
 
     var setOverwrite = function (elem, e) {
         if (e.charCode !== 0) {
-            var text = elem.val();
+            var text = elem.valNoEvent();
             var caret = elem.getCaret();
 
             // First remove the character that will be replaced
             var output = text.substring(0, caret);
-            elem.val(output + text.substring(caret + 1));
+            elem.valNoEvent(output + text.substring(caret + 1));
 
             // Then reinitialize the caret position
             elem.setCaret(caret);
