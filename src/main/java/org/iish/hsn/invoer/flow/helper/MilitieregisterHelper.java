@@ -53,19 +53,6 @@ public class MilitieregisterHelper {
         return "";
     }
 
-    public String hasInBeroep(MilitieregisterFlowState akte, boolean isCorrection) {
-        if (checkVerdict(akte.getVerdictBezwaren()))
-            return "j";
-        if (checkVerdict(akte.getVerdictWet()))
-            return "j";
-        if (checkVerdict(akte.getVerdictKoning()))
-            return "j";
-
-        if (isCorrection)
-            return "n";
-        return "";
-    }
-
     private boolean checkVerdict(Verdict verdict) {
         return (verdict != null) && ((verdict.getDayOfVerdict() != 0) ||
                 (verdict.getMonthOfVerdict() != 0) || (verdict.getYearOfVerdict() != 0));

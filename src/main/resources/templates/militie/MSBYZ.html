@@ -7,6 +7,15 @@
     <div class="form-header letter-spacing">BIJZONDERHEDEN:</div>
 
     <div class="form-group extra-top-margin">
+      <label class="col-xs-7 control-label">Zijn er verder nog bijzonderheden om in te voeren?  j / n</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" id="has-byz"
+               data-valid-chars="j;n" maxlength="1"/>
+      </div>
+    </div>
+
+    <div class="form-group extra-top-margin" data-show-when="#has-byz" data-has-values-in="j" style="display:none;">
       <div class="col-xs-12">
         <textarea class="form-control" rows="8" th:field="*{mil.byz}" hsn:field="mil.byz">
         </textarea>

@@ -7,34 +7,34 @@
     <div class="form-header letter-spacing" th:if="${!akte.is1913()}">LENGTE, GEWICHT EN SIGNALEMENT:</div>
     <div class="form-header letter-spacing" th:if="${akte.is1913()}">LENGTE EN GEWICHT:</div>
 
-    <div class="form-group extra-top-margin">
+    <div class="form-group extra-top-margin lengths">
       <div class="form-inline col-xs-offset-2">
         <div class="form-group">
           <label class="control-label" th:if="${akte.mil.year le 1824}">el:</label>
           <label class="control-label" th:if="${akte.mil.year gt 1824}">m:</label>
-          <input type="text" class="form-control form-control-small integer-field required spacing" maxlength="1"
-                 th:field="*{mil.meter}" hsn:field="mil.meter"/>
+          <input type="text" class="form-control form-control-small integer-field required spacing"
+                 maxlength="2" th:field="*{mil.meter}" hsn:field="mil.meter"/>
         </div>
 
         <div class="form-group spacing">
           <label class="control-label" th:if="${akte.mil.year le 1824}">palm:</label>
           <label class="control-label" th:if="${akte.mil.year gt 1824}">dm:</label>
-          <input type="text" class="form-control form-control-small integer-field required spacing" maxlength="1"
-                 th:field="*{mil.decimeter}" hsn:field="mil.decimeter"/>
+          <input type="text" class="form-control form-control-small integer-field required spacing"
+                 maxlength="2" th:field="*{mil.decimeter}" hsn:field="mil.decimeter"/>
         </div>
 
         <div class="form-group spacing">
           <label class="control-label" th:if="${akte.mil.year le 1824}">duim:</label>
           <label class="control-label" th:if="${akte.mil.year gt 1824}">cm:</label>
-          <input type="text" class="form-control form-control-small integer-field required spacing" maxlength="1"
-                 th:field="*{mil.centimeter}" hsn:field="mil.centimeter"/>
+          <input type="text" class="form-control form-control-small integer-field required spacing"
+                 maxlength="2" th:field="*{mil.centimeter}" hsn:field="mil.centimeter"/>
         </div>
 
         <div class="form-group spacing">
           <label class="control-label" th:if="${akte.mil.year le 1824}">streep:</label>
           <label class="control-label" th:if="${akte.mil.year gt 1824}">mm:</label>
-          <input type="text" class="form-control form-control-small integer-field required spacing" maxlength="1"
-                 th:field="*{mil.millimeter}" hsn:field="mil.millimeter"/>
+          <input type="text" class="form-control form-control-small integer-field required spacing"
+                 maxlength="2" th:field="*{mil.millimeter}" hsn:field="mil.millimeter"/>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
       <label class="col-xs-2 col-xs-offset-2 control-label">Gewicht in kg:</label>
 
       <div class="col-xs-1">
-        <input type="text" class="form-control form-control-small integer-field"
+        <input type="text" class="form-control form-control-small integer-field zero-allowed"
                th:field="*{mil.kg}" hsn:field="mil.kg"/>
       </div>
 
@@ -153,6 +153,7 @@
 
 <th:block layout:fragment="js">
   <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
+  <script src="../../static/js/militie/MS3.js" hsn:src="@{/js/militie/MS3.js}"></script>
 </th:block>
 </body>
 </html>

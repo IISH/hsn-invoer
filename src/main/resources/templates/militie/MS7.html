@@ -4,30 +4,11 @@
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="form-header letter-spacing">UITSTEL:</div>
-
-    <div class="form-group extra-top-margin">
-      <label class="col-xs-5 control-label">Heeft de loteling uitstel gekregen? j / n / o</label>
-
-      <div class="col-xs-2">
-        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o" maxlength="1"
-               th:field="*{mil.delayOfService}" hsn:field="mil.delayOfService"/>
-      </div>
-    </div>
-
-    <div class="form-group" data-show-when="#mil\.delayOfService" data-has-values-in="j" style="display:none;">
-      <label class="col-xs-4 control-label">Informatie over uitstel:</label>
-
-      <div class="col-xs-5">
-        <input type="text" class="form-control" th:field="*{mil.delayInformation}" hsn:field="mil.delayInformation"/>
-      </div>
-    </div>
-
     <th:block th:if="${!akte.is1913()}">
-      <div class="form-header letter-spacing extra-top-margin">PLAATSVERVANGER:</div>
+      <div class="form-header letter-spacing">PLAATSVERVANGER:</div>
 
       <div class="form-group extra-top-margin">
-        <div class="row">
+        <div class="row no-margin">
           <label class="col-xs-3 control-label">
             Aanstelling:
           </label>
@@ -37,13 +18,13 @@
           </label>
         </div>
 
-        <div class="row">
+        <div class="row no-margin">
           <label class="col-xs-offset-3 col-xs-5 control-label left">
             w = Loteling heeft nummer verwisseld
           </label>
         </div>
 
-        <div class="row">
+        <div class="row no-margin">
           <label class="col-xs-offset-3 col-xs-5 control-label left">
             n = Niet van toepassing
           </label>
@@ -86,8 +67,6 @@
     </th:block>
 
     <th:block th:if="${!akte.is1815()}">
-      <div class="form-header letter-spacing extra-top-margin">AANSTELLING BEPALING:</div>
-
       <div class="form-group extra-top-margin" th:if="${akte.is1862() or akte.isOtherYear()}">
         <label class="col-xs-7 control-label">Heeft loteling voor zeemilitie aangeleverd? j / n / o</label>
 
@@ -127,19 +106,35 @@
       </th:block>
     </th:block>
 
-    <th:block th:if="${!akte.is1913()}">
-      <div class="form-header letter-spacing extra-top-margin">AANSTELLING:</div>
+    <div class="form-header letter-spacing extra-top-margin" th:if="${akte.is1815()}">DESIGNATIE:</div>
+    <div class="form-header letter-spacing extra-top-margin" th:if="${!akte.is1815()}">AANWIJZING DIENST:</div>
 
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-4 control-label">Dagtekening aanwijzing:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('mil.dayOfDesignation', 'mil.monthOfDesignation', 'mil.yearOfDesignation')"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-4 control-label">Aard van de aanwijzing dienst:</label>
+
+      <div class="col-xs-6">
+        <input type="text" class="form-control" th:field="*{mil.designation}" hsn:field="mil.designation"/>
+      </div>
+    </div>
+
+    <th:block th:if="${!akte.is1913()}">
       <div class="form-group extra-top-margin">
-        <label class="col-xs-3 control-label">Datum van inlijving:</label>
+        <label class="col-xs-4 control-label">Datum van inlijving:</label>
 
         <div th:replace="fragments/fields :: datum ('mil.dayOfAnnexation', 'mil.monthOfAnnexation', 'mil.yearOfAnnexation')"></div>
       </div>
 
       <div class="form-group">
-        <label class="col-xs-3 control-label">Korps / Positie inlijving:</label>
+        <label class="col-xs-4 control-label">Korps / Positie inlijving:</label>
 
-        <div class="col-xs-5">
+        <div class="col-xs-6">
           <input type="text" class="form-control"
                  th:field="*{mil.positionAnnexation}" hsn:field="mil.positionAnnexation"/>
         </div>
@@ -149,7 +144,7 @@
     <div class="form-header letter-spacing extra-top-margin">AANMERKINGEN:</div>
 
     <div class="form-group extra-top-margin">
-      <label class="col-xs-3 control-label">Aamerkingen:</label>
+      <label class="col-xs-4 control-label">Aanmerkingen:</label>
 
       <div class="col-xs-6">
         <textarea class="form-control form-control-small" th:field="*{mil.remarks}" hsn:field="mil.remarks">

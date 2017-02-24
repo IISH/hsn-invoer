@@ -256,7 +256,7 @@ public class LookupService {
         Milition milition =
                 militionRepository.findByIdnrAndSeqAndWorkOrder(idnr, seq, inputMetadata.getWorkOrder());
         if ((milition == null) && throwException) {
-            throw new NotFoundException("Milition with for idnr " + idnr + " with seq " + seq + " could not be found!");
+            throw new NotFoundException("Milition with idnr " + idnr + " and seq " + seq + " could not be found!");
         }
         return milition;
     }

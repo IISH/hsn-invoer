@@ -19,7 +19,10 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
 
     private boolean cropSideA = true;
 
-    private String moreData = "j";
+    private String includesExemption = "j";
+    private String includesDelay = "j";
+    private String includesDelayMilition = "j";
+    private String includesAppeal = "j";
 
     public MilitieregisterFlowState(Milition mil, Map<Type, Verdict> verdict) {
         this.mil = mil;
@@ -76,12 +79,36 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
         this.mil = mil;
     }
 
-    public String getMoreData() {
-        return moreData;
+    public String getIncludesExemption() {
+        return includesExemption;
     }
 
-    public void setMoreData(String moreData) {
-        this.moreData = moreData;
+    public void setIncludesExemption(String includesExemption) {
+        this.includesExemption = includesExemption;
+    }
+
+    public String getIncludesDelay() {
+        return includesDelay;
+    }
+
+    public void setIncludesDelay(String includesDelay) {
+        this.includesDelay = includesDelay;
+    }
+
+    public String getIncludesDelayMilition() {
+        return includesDelayMilition;
+    }
+
+    public void setIncludesDelayMilition(String includesDelayMilition) {
+        this.includesDelayMilition = includesDelayMilition;
+    }
+
+    public String getIncludesAppeal() {
+        return includesAppeal;
+    }
+
+    public void setIncludesAppeal(String includesAppeal) {
+        this.includesAppeal = includesAppeal;
     }
 
     public Map<Type, Verdict> getVerdict() {

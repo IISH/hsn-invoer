@@ -171,7 +171,8 @@
                         self.onSuccess();
                     }
                     else if (availableScans.length === 0) {
-                        self.onFailure('Er zijn geen scans voor de OP met deze identificatie gevonden!', true, false, true);
+                        self.onFailure('Er zijn geen scans voor de OP met deze identificatie gevonden ' +
+                            'en/of de naamgeving van de scan is niet correct!', true, false, true);
                     }
                     else {
                         self.onFailure('Alle militieregisters met deze identificatie zijn reeds ingevoerd!', true, false, true);
@@ -279,9 +280,12 @@
 
                     self.onSuccess();
                 }
-                else {
+                else if (enteredScans.length === 1) {
                     self.militieCheckElem.val(1);
                     self.onSuccess(true, false);
+                }
+                else {
+                    self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, false, true);
                 }
             });
         });

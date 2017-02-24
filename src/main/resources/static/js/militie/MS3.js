@@ -1,0 +1,27 @@
+(function ($) {
+    'use strict';
+
+    $(document).on('keyup', '.lengths input', function (e) {
+        var elem = $(e.target);
+        var val = elem.val();
+        if ((e.which !== 9) && (val.indexOf('-') !== 0) && (val.length === 1)) {
+            elem.autoNextFocus(true);
+        }
+        return true;
+    });
+
+    var checkLength = function (elem) {
+        var val = elem.getIntegerValue();
+        elem.hasErrorWhen(isNaN(val) || (val < -3) || (val > 9));
+    };
+
+    $(document).ready(function () {
+        var lengths = $('.lengths input');
+        lengths.each(function () {
+            checkLength($(this));
+        });
+        lengths.blur(function (e) {
+            checkLength($(e.target));
+        });
+    });
+})(jQuery);

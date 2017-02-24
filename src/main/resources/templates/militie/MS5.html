@@ -4,10 +4,10 @@
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="form-header letter-spacing">REDENEN/BEZWAREN OPGEGEVEN BIJ MILITIECOMMISSARIS/COMMISSIE:</div>
+    <div class="form-header letter-spacing">VRIJSTELLING:</div>
 
     <div class="form-group extra-top-margin">
-      <label class="col-xs-5 control-label">Redenen tot vrijstelling:</label>
+      <label class="col-xs-6 control-label">Aangevoerde redenen door loteling:</label>
 
       <div class="col-xs-5">
         <input type="text" class="form-control" th:field="*{mil.reasonsExemption}" hsn:field="mil.reasonsExemption"/>
@@ -15,7 +15,7 @@
     </div>
 
     <div class="form-group" th:if="${!akte.is1862() and !akte.is1913()}">
-      <label class="col-xs-5 control-label">Redenen ongeschiktheid:</label>
+      <label class="col-xs-6 control-label">Aangevoerde redenen door militieraad:</label>
 
       <div class="col-xs-5">
         <input type="text" class="form-control" th:field="*{mil.reasonsInapplicability}" hsn:field="mil.reasonsInapplicability"/>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="form-group" th:if="${!akte.is1815() and !akte.is1862()}">
-      <label class="col-xs-5 control-label">Eerdere beslissingen:</label>
+      <label class="col-xs-6 control-label">Redenen uit het verleden:</label>
 
       <div class="col-xs-5">
         <input type="text" class="form-control" th:field="*{mil.earlierDecisions}" hsn:field="mil.earlierDecisions"/>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="form-group">
-      <label class="col-xs-5 control-label">Advies:</label>
+      <label class="col-xs-6 control-label">Advies van de militieraad (definitieve reden vrijstelling):</label>
 
       <div class="col-xs-5">
         <input type="text" class="form-control" th:field="*{mil.advice}" hsn:field="mil.advice"/>
@@ -39,7 +39,7 @@
     </div>
 
     <div class="form-group" th:if="${akte.is1913() or akte.isOtherYear()}">
-      <label class="col-xs-5 control-label">Medisch advies:</label>
+      <label class="col-xs-6 control-label">Medisch advies op de keuringsraad:</label>
 
       <div class="col-xs-5">
         <input type="text" class="form-control" th:field="*{mil.medicalAdvice}" hsn:field="mil.medicalAdvice"/>

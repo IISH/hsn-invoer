@@ -1,0 +1,134 @@
+<!doctype html>
+<html layout:decorator="formViewLayout" th:with="scroll=true">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">UITSPRAAK GEDEPUTEERDE STATEN:</div>
+
+    <div class="form-header extra-top-margin" th:if="${!akte.is1815()}">Op bezwaar:</div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-4 control-label">Dagtekening bezwaar:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('verdictBezwaren.dayOfAppeal', 'verdictBezwaren.monthOfAppeal', 'verdictBezwaren.yearOfAppeal')"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-4 control-label">Dagtekening der uitspraak:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('verdictBezwaren.dayOfVerdict', 'verdictBezwaren.monthOfVerdict', 'verdictBezwaren.yearOfVerdict')"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
+
+      <div class="col-xs-6">
+        <input type="text" class="form-control"
+               th:field="*{verdictBezwaren.nature}" hsn:field="verdictBezwaren.nature"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Nummer van de zaak in register:</label>
+      <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Nummer der uitspraak:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control integer-field"
+               th:field="*{verdictBezwaren.numberVerdict}" hsn:field="verdictBezwaren.numberVerdict"/>
+      </div>
+    </div>
+
+    <th:block th:if="${!akte.is1815()}">
+      <div class="form-header extra-top-margin">Krachtens wet:</div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Dagtekening der uitspraak:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('verdictWet.dayOfVerdict', 'verdictWet.monthOfVerdict', 'verdictWet.yearOfVerdict')"></div>
+      </div>
+
+      <div class="form-group">
+        <div class="sub-form-group">
+          <label class="col-xs-4 control-label">Nummer der uitspraak:</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control integer-field"
+                   th:field="*{verdictWet.numberVerdict}" hsn:field="verdictWet.numberVerdict"/>
+          </div>
+        </div>
+
+        <div class="sub-form-group">
+          <label class="col-xs-2 control-label">Artikel der wet:</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control integer-field"
+                   th:field="*{verdictWet.numberRegulation}" hsn:field="verdictWet.numberRegulation"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
+
+        <div class="col-xs-6">
+          <input type="text" class="form-control"
+                 th:field="*{verdictWet.nature}" hsn:field="verdictWet.nature"/>
+        </div>
+      </div>
+
+      <div class="form-header letter-spacing extra-top-margin">
+        BESLISSING KONING IN HOGER BEROEP:
+      </div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Dagtekening beroep:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('verdictKoning.dayOfAppeal', 'verdictKoning.monthOfAppeal', 'verdictKoning.yearOfAppeal')"></div>
+      </div>
+
+      <div class="form-group ">
+        <label class="col-xs-4 control-label">Dagtekening der besluit:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('verdictKoning.dayOfVerdict', 'verdictKoning.monthOfVerdict', 'verdictKoning.yearOfVerdict')"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Nummer der besluit:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control integer-field"
+                 th:field="*{verdictKoning.numberVerdict}" hsn:field="verdictKoning.numberVerdict"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Aard der beslissing:</label>
+
+        <div class="col-xs-6">
+          <input type="text" class="form-control"
+                 th:field="*{verdictKoning.nature}" hsn:field="verdictKoning.nature"/>
+        </div>
+      </div>
+    </th:block>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
+</th:block>
+</body>
+</html>

@@ -159,7 +159,7 @@
     <transition on="9" to="sixthCorrectionCodeCheck"/>
   </action-state>
 
-  <!-- MS5: REDENEN/BEZWAREN UITSTEL/VRIJSTELLING/AANSTELLING -->
+  <!-- MS5: VRIJSTELLING -->
   <view-state id="MS5" view="militie/MS5" model="akte">
     <transition on="stop" to="stopEnd"/>
 
@@ -171,20 +171,20 @@
   <action-state id="sixthCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
-    <transition on="0" to="MS6"/>
+    <transition on="0" to="MS6a"/>
     <transition on="1" to="seventhCorrectionCodeCheck"/>
     <transition on="2" to="seventhCorrectionCodeCheck"/>
     <transition on="3" to="seventhCorrectionCodeCheck"/>
     <transition on="4" to="seventhCorrectionCodeCheck"/>
     <transition on="5" to="seventhCorrectionCodeCheck"/>
-    <transition on="6" to="MS6"/>
+    <transition on="6" to="MS6a"/>
     <transition on="7" to="seventhCorrectionCodeCheck"/>
     <transition on="8" to="seventhCorrectionCodeCheck"/>
     <transition on="9" to="seventhCorrectionCodeCheck"/>
   </action-state>
 
-  <!-- MS6: UITSPRAKEN -->
-  <view-state id="MS6" view="militie/MS6" model="akte">
+  <!-- MS6a: UITSTEL -->
+  <view-state id="MS6a" view="militie/MS6a" model="akte">
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="seventhCorrectionCodeCheck">
@@ -195,28 +195,52 @@
   <action-state id="seventhCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
-    <transition on="0" to="MS7"/>
+    <transition on="0" to="MS6b"/>
     <transition on="1" to="eightCorrectionCodeCheck"/>
     <transition on="2" to="eightCorrectionCodeCheck"/>
     <transition on="3" to="eightCorrectionCodeCheck"/>
     <transition on="4" to="eightCorrectionCodeCheck"/>
     <transition on="5" to="eightCorrectionCodeCheck"/>
     <transition on="6" to="eightCorrectionCodeCheck"/>
-    <transition on="7" to="MS7"/>
+    <transition on="7" to="MS6b"/>
     <transition on="8" to="eightCorrectionCodeCheck"/>
     <transition on="9" to="eightCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- MS6b: IN BEROEP -->
+  <view-state id="MS6b" view="militie/MS6b" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="eightCorrectionCodeCheck">
+      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="eightCorrectionCodeCheck">
+    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
+
+    <transition on="0" to="MS7"/>
+    <transition on="1" to="ninthCorrectionCodeCheck"/>
+    <transition on="2" to="ninthCorrectionCodeCheck"/>
+    <transition on="3" to="ninthCorrectionCodeCheck"/>
+    <transition on="4" to="ninthCorrectionCodeCheck"/>
+    <transition on="5" to="ninthCorrectionCodeCheck"/>
+    <transition on="6" to="ninthCorrectionCodeCheck"/>
+    <transition on="7" to="ninthCorrectionCodeCheck"/>
+    <transition on="8" to="MS7"/>
+    <transition on="9" to="ninthCorrectionCodeCheck"/>
   </action-state>
 
   <!-- MS7: AANSTELLING EN AANMERKINGEN -->
   <view-state id="MS7" view="militie/MS7" model="akte">
     <transition on="stop" to="stopEnd"/>
 
-    <transition on="next" to="eightCorrectionCodeCheck">
+    <transition on="next" to="ninthCorrectionCodeCheck">
       <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
   </view-state>
 
-  <action-state id="eightCorrectionCodeCheck">
+  <action-state id="ninthCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
     <transition on="0" to="MSBYZ"/>

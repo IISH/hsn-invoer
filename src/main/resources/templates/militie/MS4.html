@@ -7,29 +7,29 @@
     <div class="form-header letter-spacing">MILITIE GEGEVENS LOTELING:</div>
 
     <div class="form-group extra-top-margin">
-      <div class="row">
+      <div class="row no-margin">
         <label class="col-xs-3 control-label">
           Aangifte:
         </label>
 
-        <label class="col-xs-5 control-label left">
+        <label class="col-xs-6 control-label left">
           1 = Loteling heeft zichzelf aangegeven
         </label>
       </div>
 
-      <div class="row">
-        <label class="col-xs-offset-3 col-xs-5 control-label left">
+      <div class="row no-margin">
+        <label class="col-xs-offset-3 col-xs-6 control-label left">
           2 = Loteling is door iemand anders aangegeven
         </label>
       </div>
 
-      <div class="row">
-        <label class="col-xs-offset-3 col-xs-5 control-label left">
+      <div class="row no-margin">
+        <label class="col-xs-offset-3 col-xs-6 control-label left">
           3 = Loteling is door de gemeente aangegeven
         </label>
       </div>
 
-      <div class="row">
+      <div class="row no-margin">
         <label class="col-xs-offset-3 col-xs-5 control-label left">
           4 = Niet opgegeven in de bron
         </label>
@@ -62,8 +62,8 @@
     </th:block>
 
     <th:block th:if="${akte.is1862() or akte.isOtherYear()}">
-      <div class="form-group extra-top-margin">
-        <label class="col-xs-5 control-label">Bindt zich in vrijwillige dienst? j / n / o</label>
+      <div class="form-group">
+        <label class="col-xs-5 control-label">Bevindt zich in vrijwillige dienst? j / n / o</label>
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
@@ -81,7 +81,7 @@
     </th:block>
 
     <th:block th:if="${!akte.is1913()}">
-      <div class="form-group extra-top-margin">
+      <div class="form-group">
         <label class="col-xs-5 control-label" th:if="${akte.is1815()}">Loteling is gedetineerd? j / n / o</label>
         <label class="col-xs-5 control-label" th:if="${!akte.is1815()}">Bevindt zich in een gesticht? j / n / o</label>
 
@@ -100,16 +100,16 @@
           </div>
         </div>
 
-        <div class="form-group extra-top-margin">
+        <div class="form-group">
           <label class="col-xs-5 control-label">Is het gesticht een gevangenis? j / n / o</label>
 
           <div class="col-xs-2">
             <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                   maxlength="1" th:field="*{mil.commitCrime}" hsn:field="mil.commitCrime"/>
+                   maxlength="1" th:field="*{mil.inJail}" hsn:field="mil.inJail"/>
           </div>
         </div>
 
-        <div class="form-group" data-show-when="#mil\.commitCrime" data-has-values-in="j" th:if="${!akte.is1815()}">
+        <div class="form-group" data-show-when="#mil\.inJail" data-has-values-in="j" th:if="${!akte.is1815()}">
           <label class="col-xs-5 control-label">Voor welk delict veroordeeld?</label>
 
           <div class="col-xs-7">
@@ -119,22 +119,39 @@
       </div>
     </th:block>
 
-    <div class="form-group extra-top-margin" th:if="${!akte.is1913()}">
-      <label class="col-xs-5 control-label">Als vrijgesteld, waarom?</label>
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-8 control-label">Is er sprake van vrijstelling? (Of aanvraag daarvoor?) j / n</label>
 
-      <div class="col-xs-7">
-        <input type="text" class="form-control"
-               th:field="*{mil.reasonsNotIncluded}" hsn:field="mil.reasonsNotIncluded"/>
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+               maxlength="1" name="includesExemption"/>
       </div>
     </div>
 
-    <div class="form-group" th:if="${akte.is1815() or akte.isOtherYear()}"
-         th:classappend="${!akte.is1815()} ? 'extra-top-margin'">
-      <label class="col-xs-5 control-label">Verbeteringen opgegeven door militieraad</label>
+    <div class="form-group">
+      <label class="col-xs-8 control-label">Is er sprake van uitstel? (Of aanvraag daarvoor?) j / n</label>
 
-      <div class="col-xs-7">
-        <input type="text" class="form-control"
-               th:field="*{mil.militionChairImprovements}" hsn:field="mil.militionChairImprovements"/>
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+               maxlength="1" name="includesDelay"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-8 control-label">Is er sprake van uitstel van de beslissing door de militieraad? j / n</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+               maxlength="1" name="includesDelayMilition"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-8 control-label">Is er op enige manier sprake van beroep? j / n</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+               maxlength="1" name="includesAppeal"/>
       </div>
     </div>
 

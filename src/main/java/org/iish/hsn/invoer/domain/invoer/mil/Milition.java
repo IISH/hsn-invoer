@@ -44,15 +44,13 @@ public class Milition extends Invoer implements Serializable {
 
     @Column(name = "INGES", nullable = false, length = 1) private String inGesticht = "";
     @Column(name = "NMGES", nullable = false, length = 200) private String nameGesticht = "";
-    @Column(name = "PLGMSD", nullable = false, length = 1) private String commitCrime = "";
-    @Column(name = "WELMSD", nullable = false, length = 200) private String whatCrime = "";
+    @Column(name = "INGEV", nullable = false, length = 1) private String inJail = "";
+    @Column(name = "DELICT", nullable = false, length = 200) private String whatCrime = "";
 
     @Column(name = "IVRKL", nullable = false, length = 1) private String formerClass = "";
     @Column(name = "RDNLTR", nullable = false, length = 200) private String formerClassReason = "";
     @Column(name = "IVWD", nullable = false, length = 1) private String voluntaryService = "";
     @Column(name = "NMREG", nullable = false, length = 200) private String voluntaryWhere = "";
-    @Column(name = "EXEMP", nullable = false, length = 200) private String reasonsNotIncluded = "";
-    @Column(name = "MILCOM", nullable = false, length = 255) private String militionChairImprovements = "";
 
     @Column(name = "ANVDR", nullable = false, length = 50) private String familyNameFather = "";
     @Column(name = "VNVDR", nullable = false, length = 50) private String firstNameFather = "";
@@ -92,6 +90,7 @@ public class Milition extends Invoer implements Serializable {
 
     @Column(name = "UITSEL", nullable = false, length = 1) private String delayOfService = "";
     @Column(name = "PERIOD", nullable = false, length = 50) private String delayInformation = "";
+    @Column(name = "BESLUIT", nullable = false, length = 50) private String delayReasons = "";
 
     @Column(name = "PVNM", nullable = false, length = 1) private String substitute = "";
     @Column(name = "PVNB", nullable = false) private int substituteNumber;
@@ -328,12 +327,12 @@ public class Milition extends Invoer implements Serializable {
         this.nameGesticht = nameGesticht;
     }
 
-    public String getCommitCrime() {
-        return commitCrime;
+    public String getInJail() {
+        return inJail;
     }
 
-    public void setCommitCrime(String commitCrime) {
-        this.commitCrime = commitCrime;
+    public void setInJail(String inJail) {
+        this.inJail = inJail;
     }
 
     public String getWhatCrime() {
@@ -374,22 +373,6 @@ public class Milition extends Invoer implements Serializable {
 
     public void setVoluntaryWhere(String voluntaryWhere) {
         this.voluntaryWhere = voluntaryWhere;
-    }
-
-    public String getReasonsNotIncluded() {
-        return reasonsNotIncluded;
-    }
-
-    public void setReasonsNotIncluded(String reasonsNotIncluded) {
-        this.reasonsNotIncluded = reasonsNotIncluded;
-    }
-
-    public String getMilitionChairImprovements() {
-        return militionChairImprovements;
-    }
-
-    public void setMilitionChairImprovements(String militionChairImprovements) {
-        this.militionChairImprovements = militionChairImprovements;
     }
 
     public String getFamilyNameFather() {
@@ -646,6 +629,14 @@ public class Milition extends Invoer implements Serializable {
 
     public void setDelayInformation(String delayInformation) {
         this.delayInformation = delayInformation;
+    }
+
+    public String getDelayReasons() {
+        return delayReasons;
+    }
+
+    public void setDelayReasons(String delayReasons) {
+        this.delayReasons = delayReasons;
     }
 
     public String getSubstitute() {
