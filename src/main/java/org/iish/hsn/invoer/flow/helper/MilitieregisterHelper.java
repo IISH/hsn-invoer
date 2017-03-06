@@ -42,6 +42,15 @@ public class MilitieregisterHelper {
         return "";
     }
 
+    public String hasVrijgesteld(MilitieregisterFlowState akte, boolean isCorrection) {
+        if (!akte.getMil().getMilitionChairImprovements().isEmpty())
+            return "j";
+
+        if (isCorrection)
+            return "n";
+        return "";
+    }
+
     public String hasUitgesteld(MilitieregisterFlowState akte, boolean isCorrection) {
         if (checkVerdict(akte.getVerdictUitstel()))
             return "j";

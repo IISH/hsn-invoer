@@ -4,7 +4,7 @@
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
-    <th:block th:if="${!akte.is1913()}">
+    <th:block th:if="${akte.is('1815L', '1862L')}">
       <div class="form-header letter-spacing">PLAATSVERVANGER:</div>
 
       <div class="form-group extra-top-margin">
@@ -37,7 +37,7 @@
       </div>
 
       <div data-show-when="#mil\.substitute" data-has-values-in="p;w" style="display:none;">
-        <div class="form-group extra-top-margin" th:if="${!akte.is1815()}">
+        <div class="form-group extra-top-margin" th:if="${akte.is('1862', '1913')}">
           <label class="col-xs-3 control-label">Achternaam:</label>
 
           <div class="col-xs-4">
@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <div class="form-group" th:if="${!akte.is1815()}">
+        <div class="form-group" th:if="${akte.is('1862', '1913')}">
           <label class="col-xs-3 control-label">Voornamen:</label>
 
           <div class="col-xs-4">
@@ -66,65 +66,65 @@
       </div>
     </th:block>
 
-    <th:block th:if="${!akte.is1815()}">
-      <div class="form-group extra-top-margin" th:if="${akte.is1862() or akte.isOtherYear()}">
-        <label class="col-xs-7 control-label">Heeft loteling voor zeemilitie aangeleverd? j / n / o</label>
+    <div class="form-group extra-top-margin" th:if="${akte.is('1862IL')}">
+      <label class="col-xs-7 control-label">Heeft loteling voor zeemilitie aangeleverd? j / n / o</label>
 
-        <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{mil.inNaval}" hsn:field="mil.inNaval"/>
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
+               maxlength="1" th:field="*{mil.inNaval}" hsn:field="mil.inNaval"/>
+      </div>
+    </div>
+
+    <th:block th:if="${akte.is('1913AL')}">
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Wens loteling korps / positie:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.wishOfRecruit}" hsn:field="mil.wishOfRecruit"/>
         </div>
       </div>
 
-      <th:block th:if="${akte.is1913() or akte.isOtherYear()}">
-        <div class="form-group extra-top-margin">
-          <label class="col-xs-4 control-label">Wens loteling korps / positie:</label>
+      <div class="form-group">
+        <label class="col-xs-4 control-label">1e geschikte korps / positie:</label>
 
-          <div class="col-xs-5">
-            <input type="text" class="form-control"
-                   th:field="*{mil.wishOfRecruit}" hsn:field="mil.wishOfRecruit"/>
-          </div>
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.firstSuitability}" hsn:field="mil.firstSuitability"/>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label class="col-xs-4 control-label">1e geschikte korps / positie:</label>
+      <div class="form-group">
+        <label class="col-xs-4 control-label">2e geschikte korps / positie:</label>
 
-          <div class="col-xs-5">
-            <input type="text" class="form-control"
-                   th:field="*{mil.firstSuitability}" hsn:field="mil.firstSuitability"/>
-          </div>
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.secondSuitability}" hsn:field="mil.secondSuitability"/>
         </div>
-
-        <div class="form-group">
-          <label class="col-xs-4 control-label">2e geschikte korps / positie:</label>
-
-          <div class="col-xs-5">
-            <input type="text" class="form-control"
-                   th:field="*{mil.secondSuitability}" hsn:field="mil.secondSuitability"/>
-          </div>
-        </div>
-      </th:block>
+      </div>
     </th:block>
 
-    <div class="form-header letter-spacing extra-top-margin" th:if="${akte.is1815()}">DESIGNATIE:</div>
-    <div class="form-header letter-spacing extra-top-margin" th:if="${!akte.is1815()}">AANWIJZING DIENST:</div>
+    <div class="form-header letter-spacing extra-top-margin" th:if="${akte.mil.is1815()}">DESIGNATIE:</div>
+    <div class="form-header letter-spacing extra-top-margin" th:if="${!akte.mil.is1815()}">AANWIJZING DIENST:</div>
 
-    <div class="form-group extra-top-margin">
-      <label class="col-xs-4 control-label">Dagtekening aanwijzing:</label>
+    <th:block th:if="${akte.is('1815L', '1862I')}">
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Dagtekening aanwijzing:</label>
 
-      <div
-          th:replace="fragments/fields :: datum ('mil.dayOfDesignation', 'mil.monthOfDesignation', 'mil.yearOfDesignation')"></div>
-    </div>
-
-    <div class="form-group">
-      <label class="col-xs-4 control-label">Aard van de aanwijzing dienst:</label>
-
-      <div class="col-xs-6">
-        <input type="text" class="form-control" th:field="*{mil.designation}" hsn:field="mil.designation"/>
+        <div
+            th:replace="fragments/fields :: datum ('mil.dayOfDesignation', 'mil.monthOfDesignation', 'mil.yearOfDesignation')"></div>
       </div>
-    </div>
 
-    <th:block th:if="${!akte.is1913()}">
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Aard van de aanwijzing dienst:</label>
+
+        <div class="col-xs-6">
+          <input type="text" class="form-control" th:field="*{mil.designation}" hsn:field="mil.designation"/>
+        </div>
+      </div>
+    </th:block>
+
+    <th:block th:if="${akte.is('1815L', '1862IL', '1913AL')}">
       <div class="form-group extra-top-margin">
         <label class="col-xs-4 control-label">Datum van inlijving:</label>
 
@@ -140,17 +140,6 @@
         </div>
       </div>
     </th:block>
-
-    <div class="form-header letter-spacing extra-top-margin">AANMERKINGEN:</div>
-
-    <div class="form-group extra-top-margin">
-      <label class="col-xs-4 control-label">Aanmerkingen:</label>
-
-      <div class="col-xs-6">
-        <textarea class="form-control form-control-small" th:field="*{mil.remarks}" hsn:field="mil.remarks">
-        </textarea>
-      </div>
-    </div>
 
     <div th:replace="militie/byz-fragment :: byzModal"></div>
   </th:block>

@@ -6,7 +6,7 @@
   <th:block layout:fragment="fields">
     <div class="form-header letter-spacing">UITSPRAAK GEDEPUTEERDE STATEN:</div>
 
-    <div class="form-header extra-top-margin" th:if="${!akte.is1815()}">Op bezwaar:</div>
+    <div class="form-header extra-top-margin" th:if="${akte.is('1862', '1913')}">Op bezwaar:</div>
 
     <div class="form-group extra-top-margin">
       <label class="col-xs-4 control-label">Dagtekening bezwaar:</label>
@@ -32,8 +32,8 @@
     </div>
 
     <div class="form-group">
-      <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Nummer van de zaak in register:</label>
-      <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Nummer der uitspraak:</label>
+      <label class="col-xs-4 control-label" th:if="${akte.mil.is1815()}">Nummer van de zaak in register:</label>
+      <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Nummer der uitspraak:</label>
 
       <div class="col-xs-2">
         <input type="text" class="form-control integer-field"
@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <th:block th:if="${!akte.is1815()}">
+    <th:block th:if="${akte.is('1862', '1913')}">
       <div class="form-header extra-top-margin">Krachtens wet:</div>
 
       <div class="form-group extra-top-margin">

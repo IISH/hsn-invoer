@@ -88,6 +88,13 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "ADVIES", nullable = false, length = 100) private String advice = "";
     @Column(name = "MEDADV", nullable = false, length = 100) private String medicalAdvice = "";
 
+    @Column(name = "EXEMP", nullable = false, length = 200) private String reasonsNotIncluded = "";
+    @Column(name = "MILCOM", nullable = false, length = 255) private String militionChairImprovements = "";
+    @Column(name = "BEPERK", nullable = false) private int yearsConstraint;
+
+    @Column(name = "HFDLST", nullable = false, length = 1) private String headOfList = "";
+    @Column(name = "BTNDST", nullable = false, length = 1) private String outStateService = "";
+
     @Column(name = "UITSEL", nullable = false, length = 1) private String delayOfService = "";
     @Column(name = "PERIOD", nullable = false, length = 50) private String delayInformation = "";
     @Column(name = "BESLUIT", nullable = false, length = 50) private String delayReasons = "";
@@ -118,6 +125,30 @@ public class Milition extends Invoer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
+
+    public boolean is1815() {
+        int year = getYear();
+        return (year >= 1815) && (year <= 1861);
+    }
+
+    public boolean is1862() {
+        int year = getYear();
+        return (year >= 1862) && (year <= 1912);
+    }
+
+    public boolean is1913() {
+        int year = getYear();
+        return (year >= 1913) && (year <= 1922);
+    }
+
+    public boolean is1923() {
+        int year = getYear();
+        return (year >= 1923) && (year <= 1941);
+    }
+
+    public boolean isOtherYear() {
+        return !is1815() && !is1862() && !is1913() && !is1923();
+    }
 
     public int getIdnr() {
         return idnr;
@@ -613,6 +644,46 @@ public class Milition extends Invoer implements Serializable {
 
     public void setMedicalAdvice(String medicalAdvice) {
         this.medicalAdvice = medicalAdvice;
+    }
+
+    public String getReasonsNotIncluded() {
+        return reasonsNotIncluded;
+    }
+
+    public void setReasonsNotIncluded(String reasonsNotIncluded) {
+        this.reasonsNotIncluded = reasonsNotIncluded;
+    }
+
+    public String getMilitionChairImprovements() {
+        return militionChairImprovements;
+    }
+
+    public void setMilitionChairImprovements(String militionChairImprovements) {
+        this.militionChairImprovements = militionChairImprovements;
+    }
+
+    public int getYearsConstraint() {
+        return yearsConstraint;
+    }
+
+    public void setYearsConstraint(int yearsConstraint) {
+        this.yearsConstraint = yearsConstraint;
+    }
+
+    public String getHeadOfList() {
+        return headOfList;
+    }
+
+    public void setHeadOfList(String headOfList) {
+        this.headOfList = headOfList;
+    }
+
+    public String getOutStateService() {
+        return outStateService;
+    }
+
+    public void setOutStateService(String outStateService) {
+        this.outStateService = outStateService;
     }
 
     public String getDelayOfService() {

@@ -7,8 +7,8 @@
     <div class="form-header letter-spacing">UITSPRAAK MILITIERAAD OP UITSTEL:</div>
 
     <div class="form-group extra-top-margin">
-      <label class="col-xs-6 control-label" th:if="${akte.is1815()}">Ajournement? j / n </label>
-      <label class="col-xs-6 control-label" th:if="${!akte.is1815()}">Wordt de uitspraak uitgesteld? j / n </label>
+      <label class="col-xs-6 control-label" th:if="${akte.mil.is1815()}">Ajournement? j / n </label>
+      <label class="col-xs-6 control-label" th:if="${!akte.mil.is1815()}">Wordt de uitspraak uitgesteld? j / n </label>
 
       <div class="col-xs-2">
         <input type="text" id="uitgesteld" class="form-control form-control-digit required" data-valid-chars="j;n"
@@ -25,8 +25,8 @@
       </div>
 
       <div class="form-group">
-        <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Tijdsbepaling ajournement:</label>
-        <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Bepaling dag der nadere uitspraak:</label>
+        <label class="col-xs-4 control-label" th:if="${akte.mil.is1815()}">Tijdsbepaling ajournement:</label>
+        <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Bepaling dag der nadere uitspraak:</label>
 
         <div class="col-xs-6">
           <input type="text" class="form-control"
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <th:block th:if="${!akte.is1862()}">
+      <th:block th:if="${!akte.mil.is1862()}">
         <div class="form-group extra-top-margin">
           <label class="col-xs-4 control-label">Datum tweede uitspraak:</label>
 
@@ -43,8 +43,8 @@
         </div>
 
         <div class="form-group">
-          <label class="col-xs-4 control-label" th:if="${akte.is1815()}">Tijdsbepaling tweede ajournement:</label>
-          <label class="col-xs-4 control-label" th:if="${!akte.is1815()}">Bepaling dag der nadere uitspraak:</label>
+          <label class="col-xs-4 control-label" th:if="${akte.mil.is1815()}">Tijdsbepaling tweede ajournement:</label>
+          <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Bepaling dag der nadere uitspraak:</label>
 
           <div class="col-xs-6">
             <input type="text" class="form-control"

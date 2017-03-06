@@ -4,8 +4,7 @@
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="form-header letter-spacing" th:if="${!akte.is1913()}">LENGTE, GEWICHT EN SIGNALEMENT:</div>
-    <div class="form-header letter-spacing" th:if="${akte.is1913()}">LENGTE EN GEWICHT:</div>
+    <div class="form-header letter-spacing">UITERLIJKE KENMKEREN:</div>
 
     <div class="form-group extra-top-margin lengths">
       <div class="form-inline col-xs-offset-2">
@@ -39,7 +38,7 @@
       </div>
     </div>
 
-    <div class="form-group extra-top-margin" th:if="${akte.isOtherYear()}">
+    <div class="form-group extra-top-margin" th:if="${akte.is('1923')}">
       <label class="col-xs-2 col-xs-offset-2 control-label">Gewicht in kg:</label>
 
       <div class="col-xs-1">
@@ -54,7 +53,7 @@
       </div>
     </div>
 
-    <th:block th:if="${!akte.is1913()}">
+    <th:block th:if="${akte.is('1815', '1862')}">
       <div class="form-group extra-top-margin">
         <label class="col-xs-4 control-label">Zijn er uiterlijke kenmerken? j / n </label>
 

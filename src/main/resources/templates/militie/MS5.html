@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${!akte.is1862() and !akte.is1913()}">
+    <div class="form-group" th:if="${akte.is('1815')}">
       <label class="col-xs-6 control-label">Aangevoerde redenen door militieraad:</label>
 
       <div class="col-xs-5">
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${!akte.is1815() and !akte.is1862()}">
+    <div class="form-group" th:if="${akte.is('1913')}">
       <label class="col-xs-6 control-label">Redenen uit het verleden:</label>
 
       <div class="col-xs-5">
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${akte.is1913() or akte.isOtherYear()}">
+    <div class="form-group" th:if="${akte.is('1913')}">
       <label class="col-xs-6 control-label">Medisch advies op de keuringsraad:</label>
 
       <div class="col-xs-5">

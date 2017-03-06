@@ -28,6 +28,17 @@
         }
     };
 
+    var checkYearAndType = function () {
+        var year = $('#mil\\.year').getIntegerValue();
+        var type = $('#mil\\.type').val();
+
+        $.setError(
+            (type === 'A') && (year >= 1862) && (year <= 1912),
+            'year-and-type',
+            'Deze variant mag niet worden ingevoerd!'
+        );
+    };
+
     $.initCheckDate('.checkYearMilitie', null, function (hsnDate) {
         var yearVal = hsnDate.year.getValue();
         return (yearVal === 0 || yearVal <= 1700 || yearVal >= 2025);
@@ -44,5 +55,8 @@
                 $('#mil\\.year, #mil\\.municipality').blur(checkEnteredInput);
             });
         }
+
+        checkYearAndType();
+        $('#mil\\.year, #mil\\.type').blur(checkYearAndType);
     });
 })(jQuery);

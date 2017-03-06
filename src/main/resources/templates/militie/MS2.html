@@ -4,84 +4,86 @@
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="form-header letter-spacing">GEGEVENS OUDERS LOTELING:</div>
+    <th:block th:if="${akte.is('1815', '1862', '1913I')}">
+      <div class="form-header letter-spacing">GEGEVENS OUDERS LOTELING:</div>
 
-    <div class="form-group extra-top-margin">
-      <label class="col-xs-3 control-label">Gegevens voogd? j / n </label>
-
-      <div class="col-xs-2">
-        <input type="text" id="voogd" class="form-control form-control-digit required"
-               data-valid-chars="j;n" maxlength="1"
-               th:value="${@militieregisterHelper.hasDataOnVoogd(akte.mil, akte.isCorrection())}"/>
-      </div>
-    </div>
-
-    <div class="form-group extra-top-margin">
-      <label class="col-xs-3 control-label">Achternaam vader:</label>
-
-      <div class="col-xs-4">
-        <input type="text" class="form-control"
-               th:field="*{mil.familyNameFather}" hsn:field="mil.familyNameFather"/>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="col-xs-3 control-label">Voornamen vader:</label>
-
-      <div class="col-xs-4">
-        <input type="text" class="form-control"
-               th:field="*{mil.firstNameFather}" hsn:field="mil.firstNameFather"/>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="col-xs-3 control-label">Achternaam moeder:</label>
-
-      <div class="col-xs-4">
-        <input type="text" class="form-control"
-               th:field="*{mil.familyNameMother}" hsn:field="mil.familyNameMother"/>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="col-xs-3 control-label">Voornamen moeder:</label>
-
-      <div class="col-xs-4">
-        <input type="text" class="form-control"
-               th:field="*{mil.firstNameMother}" hsn:field="mil.firstNameMother"/>
-      </div>
-    </div>
-
-    <div class="form-group"
-         th:include="fragments/complete-fields :: plaats ('mil.placeParents', 'Woonplaats ouders:')"></div>
-
-    <div data-show-when="#voogd" data-has-values-in="j" style="display:none;">
       <div class="form-group extra-top-margin">
-        <label class="col-xs-3 control-label">Achternaam voogd:</label>
+        <label class="col-xs-3 control-label">Gegevens voogd? j / n </label>
+
+        <div class="col-xs-2">
+          <input type="text" id="voogd" class="form-control form-control-digit required"
+                 data-valid-chars="j;n" maxlength="1"
+                 th:value="${@militieregisterHelper.hasDataOnVoogd(akte.mil, akte.isCorrection())}"/>
+        </div>
+      </div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-3 control-label">Achternaam vader:</label>
 
         <div class="col-xs-4">
           <input type="text" class="form-control"
-                 th:field="*{mil.familyNameGuardian}" hsn:field="mil.familyNameGuardian"/>
+                 th:field="*{mil.familyNameFather}" hsn:field="mil.familyNameFather"/>
         </div>
       </div>
 
       <div class="form-group">
-        <label class="col-xs-3 control-label">Voornamen voogd:</label>
+        <label class="col-xs-3 control-label">Voornamen vader:</label>
 
         <div class="col-xs-4">
           <input type="text" class="form-control"
-                 th:field="*{mil.firstNameGuardian}" hsn:field="mil.firstNameGuardian"/>
+                 th:field="*{mil.firstNameFather}" hsn:field="mil.firstNameFather"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label">Achternaam moeder:</label>
+
+        <div class="col-xs-4">
+          <input type="text" class="form-control"
+                 th:field="*{mil.familyNameMother}" hsn:field="mil.familyNameMother"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label">Voornamen moeder:</label>
+
+        <div class="col-xs-4">
+          <input type="text" class="form-control"
+                 th:field="*{mil.firstNameMother}" hsn:field="mil.firstNameMother"/>
         </div>
       </div>
 
       <div class="form-group"
-           th:include="fragments/complete-fields :: plaats ('mil.placeGuardian', 'Woonplaats voogd:')"></div>
-    </div>
+           th:include="fragments/complete-fields :: plaats ('mil.placeParents', 'Woonplaats ouders:')"></div>
+
+      <div data-show-when="#voogd" data-has-values-in="j" style="display:none;">
+        <div class="form-group extra-top-margin">
+          <label class="col-xs-3 control-label">Achternaam voogd:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control"
+                   th:field="*{mil.familyNameGuardian}" hsn:field="mil.familyNameGuardian"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-3 control-label">Voornamen voogd:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control"
+                   th:field="*{mil.firstNameGuardian}" hsn:field="mil.firstNameGuardian"/>
+          </div>
+        </div>
+
+        <div class="form-group"
+             th:include="fragments/complete-fields :: plaats ('mil.placeGuardian', 'Woonplaats voogd:')"></div>
+      </div>
+    </th:block>
 
     <div class="form-group extra-top-margin"
          th:include="fragments/complete-fields :: beroep ('mil.profession', 'Beroep loteling:')"></div>
 
-    <th:block th:if="${!akte.is1862()}">
+    <th:block th:if="${akte.is('1815', '1913I')}">
       <div class="form-group"
            th:include="fragments/complete-fields :: beroep ('mil.professionFather', 'Beroep vader:')"></div>
 
@@ -92,7 +94,7 @@
            th:include="fragments/complete-fields :: beroep ('mil.professionGuardian', 'Beroep voogd:')"></div>
     </th:block>
 
-    <th:block th:if="${akte.is1913() or akte.isOtherYear()}">
+    <th:block th:if="${akte.is('1913')}">
       <div class="form-group extra-top-margin">
         <label class="col-xs-3 control-label">Opleiding</label>
 

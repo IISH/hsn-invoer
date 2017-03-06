@@ -3,7 +3,7 @@ application:
   date: "1 augustus 2016"
 
 storage:
-  path: "C:\\data"
+  path: "/home/kerim/data/"
 
 spring:
   mvc:

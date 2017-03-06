@@ -19,40 +19,34 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
 
     private boolean cropSideA = true;
 
-    private String includesExemption = "j";
-    private String includesDelay = "j";
-    private String includesDelayMilition = "j";
-    private String includesAppeal = "j";
+    private String includesExemption = "n";
+    private String includesDelay = "n";
+    private String includesDelayMilition = "n";
+    private String includesAppeal = "n";
 
     public MilitieregisterFlowState(Milition mil, Map<Type, Verdict> verdict) {
         this.mil = mil;
         this.verdict = verdict;
     }
 
-    public String getYear() {
-        if (is1815()) return "1815";
-        if (is1862()) return "1862";
-        if (is1913()) return "1913";
-        return "0";
-    }
+    public boolean is(String... years) {
+        boolean isMatch = false;
+        for (String yearAndTypes : years) {
+            String year = yearAndTypes.substring(0, 4);
+            boolean yearMatches = mil.isOtherYear() ||
+                    (mil.is1815() && "1815".equals(year)) ||
+                    (mil.is1862() && "1862".equals(year)) ||
+                    (mil.is1913() && "1913".equals(year)) ||
+                    (mil.is1923() && ("1913".equals(year) || "1923".equals(year)));
 
-    public boolean is1815() {
-        int year = mil.getYear();
-        return (year >= 1815) && (year <= 1861);
-    }
-
-    public boolean is1862() {
-        int year = mil.getYear();
-        return (year >= 1862) && (year <= 1912);
-    }
-
-    public boolean is1913() {
-        int year = mil.getYear();
-        return (year >= 1913) && (year <= 1922);
-    }
-
-    public boolean isOtherYear() {
-        return !is1815() && !is1862() && !is1913();
+            if (yearMatches) {
+                String type = "KN".contains(mil.getType()) ? "L" : mil.getType();
+                String types = yearAndTypes.substring(4).toUpperCase();
+                if (mil.isOtherYear() || types.isEmpty() || types.contains(type))
+                    isMatch = true;
+            }
+        }
+        return isMatch;
     }
 
     public boolean isCropSideA() {

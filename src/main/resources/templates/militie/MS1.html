@@ -19,12 +19,12 @@
          th:include="fragments/complete-fields :: plaats ('mil.placeOfBirth', 'Geboorteplaats:')"></div>
 
     <div class="form-group extra-top-margin"
-         th:include="fragments/complete-fields :: plaats ('mil.placeOfMilition', ${akte.is1815() ? 'Militiekanton:' : 'Militiedistrict:'})"></div>
+         th:include="fragments/complete-fields :: plaats ('mil.placeOfMilition', ${akte.mil.is1815() ? 'Militiekanton:' : 'Militiedistrict:'})"></div>
 
     <div class="form-group"
-         th:include="fragments/complete-fields :: plaats ('mil.placeOfLiving', ${akte.is1815() ? 'Verblijfplaats:' : 'Woonplaats:'})"></div>
+         th:include="fragments/complete-fields :: plaats ('mil.placeOfLiving', ${akte.mil.is1815() ? 'Verblijfplaats:' : 'Woonplaats:'})"></div>
 
-    <th:block th:if="${akte.is1815() or akte.isOtherYear()}">
+    <th:block th:if="${akte.is('1815')}">
       <div class="form-group extra-top-margin">
         <label class="col-xs-4 control-label">Woont bij zijn ouders? j / n / o</label>
 
