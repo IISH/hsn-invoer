@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    var openModal = function (modal, elem) {
+    function openModal(modal, elem) {
         $.ajax({
             url: '/bevolkingsregister/overzicht/persons',
             type: 'GET',
@@ -21,19 +21,19 @@
                 modal.modal({keyboard: false, backdrop: 'static'});
             }
         });
-    };
+    }
 
-    var closeModal = function (modal) {
+    function closeModal(modal) {
         modal.modal('hide');
-    };
+    }
 
-    var forIdnr = function () {
+    function forIdnr() {
         var idnr = parseInt(prompt('Identificatienummer Onderzoekspersoon:', '0'));
         if (isNaN(idnr)) {
             return;
         }
         location.search = "?idnr=" + idnr;
-    };
+    }
 
     $(document).on('click', '.btn-persons', function (e) {
         openModal($('#personsModal'), $(e.target).closest('tr'));

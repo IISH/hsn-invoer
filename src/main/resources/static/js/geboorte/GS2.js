@@ -3,7 +3,7 @@
 
     $.initCheckDate(
         '.checkDateAndTime',
-        function (hsnDate, elem) {
+        function prepare(hsnDate, elem) {
             $.prepareDate(hsnDate);
 
             var yearVal = hsnDate.year.getValue();
@@ -18,7 +18,7 @@
                 hsnDate.minute.elem.val(-1);
             }
         },
-        function (hsnDate) {
+        function dateCheck(hsnDate) {
             var error = $.checkHsnDate(hsnDate);
 
             var yearVal = hsnDate.year.getValue();
@@ -41,7 +41,7 @@
         }
     );
 
-    var checkBirthBeforeAkteDate = function () {
+    function checkBirthBeforeAkteDate() {
         var aktedag = $.getDataElem('aktedag').getIntegerDataValue('aktedag');
         var aktemnd = $.getDataElem('aktemnd').getIntegerDataValue('aktemnd');
 
@@ -53,9 +53,9 @@
             'birth-before-akte',
             'Verkeerd dagnummer geboorte!! Later dan dagnummer akte!!'
         );
-    };
+    }
 
-    var checkAge = function () {
+    function checkAge() {
         var self = $('#gebknd\\.lftmr');
         var age = self.getIntegerValue();
 
@@ -66,7 +66,7 @@
 
         self.hasErrorWhen(!isNaN(age) && (age < 12 || age > 55) && ([-1,-2,-3].indexOf(age) < 0));
         $.triggerChangeOfState();
-    };
+    }
 
     $(document).ready(function () {
         $('.checkDateAndTime').each(function () {

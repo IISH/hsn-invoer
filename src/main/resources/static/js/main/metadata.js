@@ -1,10 +1,10 @@
 (function ($) {
     'use strict';
 
-    var checkLength = function (elem) {
+    function checkLength(elem) {
         elem.hasErrorWhen(elem.val().length !== 3);
         $.triggerChangeOfState();
-    };
+    }
 
     $(document).ready(function () {
         $('#init, #ondrzk, #opdrnr').blur(function () {

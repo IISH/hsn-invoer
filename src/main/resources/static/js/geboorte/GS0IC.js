@@ -3,14 +3,14 @@
 
     $.initCheckDate(
         '.checkDateTime',
-        function (hsnDate) {
+        function prepare(hsnDate) {
             $.each([hsnDate.day, hsnDate.month], function (i, elem) {
                 if (elem.isInput && (elem.getValue() === 0) && !elem.isEmptyVal()) {
                     elem.elem.val(-1);
                 }
             });
         },
-        function (hsnDate) {
+        function dateCheck(hsnDate) {
             var error = false;
 
             var dayVal = hsnDate.day.getValue();

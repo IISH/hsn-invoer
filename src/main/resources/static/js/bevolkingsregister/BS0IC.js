@@ -4,15 +4,15 @@
     var registerType;
     var allRegistrationsOfOp = [];
 
-    var getIdnr = function () {
+    function getIdnr() {
         var idnr = $('#b4\\.registrationId\\.keyToRP');
         if (idnr.is(':input')) {
             return idnr.getIntegerValue();
         }
         return idnr.getIntegerText();
-    };
+    }
 
-    var checkIdnr = function () {
+    function checkIdnr() {
         var idnr = $(this).getIntegerValue();
         if (!isNaN(idnr)) {
             $.getJSON('/ajax/lookup/rp', {idnr: idnr}, function (rp) {
@@ -41,9 +41,9 @@
             $.triggerChangeOfState();
             $('.person span').text('');
         }
-    };
+    }
 
-    var checkBron = function () {
+    function checkBron() {
         var keyToSourceRegister = $(this).getIntegerValue();
         if (!isNaN(keyToSourceRegister)) {
             $.getJSON('/ajax/lookup/ainb', {keyToSourceRegister: keyToSourceRegister}, function (ainb) {
@@ -84,9 +84,25 @@
             $.triggerChangeOfState();
             $('.register span').text('');
         }
-    };
+    }
 
-    var checkHoofdDatum = function (e) {
+    function checkHoofdDatum(e) {
+        function onError(message) {
+            $('.fail.registration').text(message).show();
+            $('.btn-next').addClass('registration-error');
+            $.triggerChangeOfState();
+        }
+
+        function onSuccess(elem, isNext) {
+            $('.fail.registration').hide();
+            $('.btn-next').removeClass('registration-error');
+            $.triggerChangeOfState();
+
+            if ($.isCorrection() && elem.hasClass('year') && isNext) {
+                elem.getNextFormElement().focus();
+            }
+        }
+
         var idnr = getIdnr();
         var keyToSourceRegister = $('#b4\\.registrationId\\.keyToSourceRegister').getIntegerValue();
         var day = $('#b4\\.registrationId\\.dayEntryHead').getIntegerValue();
@@ -101,22 +117,6 @@
         var isNext = $.getCurNavigation().isNext;
         var isCorrectionOfIdentification = ($.isCorrection() && !isNaN(orgKeyToSourceRegister) &&
             !isNaN(orgDay) && !isNaN(orgMonth) && !isNaN(orgYear));
-
-        var onError = function (message) {
-            $('.fail.registration').text(message).show();
-            $('.btn-next').addClass('registration-error');
-            $.triggerChangeOfState();
-        };
-
-        var onSuccess = function (elem, isNext) {
-            $('.fail.registration').hide();
-            $('.btn-next').removeClass('registration-error');
-            $.triggerChangeOfState();
-
-            if ($.isCorrection() && elem.hasClass('year') && isNext) {
-                elem.getNextFormElement().focus();
-            }
-        };
 
         if (isCorrectionOfIdentification && (keyToSourceRegister === orgKeyToSourceRegister) &&
             (day === orgDay) && (month === orgMonth) && (year === orgYear)) {
@@ -154,9 +154,21 @@
             $('.btn-next').addClass('registration-error');
             $.triggerChangeOfState();
         }
-    };
+    }
 
-    var checkOpDatum = function () {
+    function checkOpDatum() {
+        function onError() {
+            $('.fail.op-registration').text('Datum OP bestaat reeds!').show();
+            $('.btn-next').addClass('op-registration-error');
+            $.triggerChangeOfState();
+        }
+
+        function onSuccess() {
+            $('.fail.op-registration').hide();
+            $('.btn-next').removeClass('op-registration-error');
+            $.triggerChangeOfState();
+        }
+
         var idnr = getIdnr();
         var day = $('#b4\\.dayEntryRP').getIntegerValue();
         var month = $('#b4\\.monthEntryRP').getIntegerValue();
@@ -165,18 +177,6 @@
         var orgDay = $.getDataElem('dayentryrp').getIntegerDataValue('dayentryrp');
         var orgMonth = $.getDataElem('monthentryrp').getIntegerDataValue('monthentryrp');
         var orgYear = $.getDataElem('yearentryrp').getIntegerDataValue('yearentryrp');
-
-        var onError = function () {
-            $('.fail.op-registration').text('Datum OP bestaat reeds!').show();
-            $('.btn-next').addClass('op-registration-error');
-            $.triggerChangeOfState();
-        };
-
-        var onSuccess = function () {
-            $('.fail.op-registration').hide();
-            $('.btn-next').removeClass('op-registration-error');
-            $.triggerChangeOfState();
-        };
 
         if (!isNaN(orgDay) && !isNaN(orgMonth) && !isNaN(orgYear) &&
             (day === orgDay) && (month === orgMonth) && (year === orgYear)) {
@@ -203,9 +203,29 @@
             $('.btn-next').addClass('op-registration-error');
             $.triggerChangeOfState();
         }
-    };
+    }
 
-    var checkOtherRegistrations = function () {
+    function checkOtherRegistrations() {
+        function findRegistration(earlier, registrations) {
+            var foundReg = null;
+            var curRegDate = new Date(yearEntryRP, monthEntryRP - 1, dayEntryRP);
+            $.each(registrations, function (i, reg) {
+                if (!(  keyToSourceRegister === reg.registrationId.keyToSourceRegister &&
+                        dayEntryHead === reg.registrationId.dayEntryHead &&
+                        monthEntryHead === reg.registrationId.monthEntryHead &&
+                        yearEntryHead === reg.registrationId.yearEntryHead
+                    )) {
+                    var thisRegDate = new Date(reg.yearEntryRP, reg.monthEntryRP - 1, reg.dayEntryRP);
+                    if ((earlier && ((curRegDate.getTime() - thisRegDate.getTime()) > 0)) ||
+                        (!earlier && ((curRegDate.getTime() - thisRegDate.getTime()) < 0))) {
+                        foundReg = reg;
+                        return false;
+                    }
+                }
+            });
+            return foundReg;
+        }
+
         var prevRegistration = null;
         var nextRegistration = null;
 
@@ -219,26 +239,6 @@
         var dayEntryRP = $('#b4\\.dayEntryRP').getIntegerValue();
         var monthEntryRP = $('#b4\\.monthEntryRP').getIntegerValue();
         var yearEntryRP = $('#b4\\.yearEntryRP').getIntegerValue();
-
-        var findRegistration = function (earlier, registrations) {
-            var foundReg = null;
-            var curRegDate = new Date(yearEntryRP, monthEntryRP - 1, dayEntryRP);
-            $.each(registrations, function (i, reg) {
-                if (!(  keyToSourceRegister === reg.registrationId.keyToSourceRegister &&
-                    dayEntryHead === reg.registrationId.dayEntryHead &&
-                    monthEntryHead === reg.registrationId.monthEntryHead &&
-                    yearEntryHead === reg.registrationId.yearEntryHead
-                    )) {
-                    var thisRegDate = new Date(reg.yearEntryRP, reg.monthEntryRP - 1, reg.dayEntryRP);
-                    if ((earlier && ((curRegDate.getTime() - thisRegDate.getTime()) > 0)) ||
-                        (!earlier && ((curRegDate.getTime() - thisRegDate.getTime()) < 0))) {
-                        foundReg = reg;
-                        return false;
-                    }
-                }
-            });
-            return foundReg;
-        };
 
         if (!isNaN(idnr) && (dayEntryRP > 0 && monthEntryRP > 0 && yearEntryRP > 0)) {
             $.getJSON('/ajax/lookup/b4/op/list', {idnr: idnr}, function (registrations) {
@@ -280,9 +280,9 @@
             $('.group-vorige-inschrijving').hide();
             checkVorigeInschrijving();
         }
-    };
+    }
 
-    var checkDateHfd = function (hsnDate, elem) {
+    function checkDateHfd(hsnDate, elem) {
         var error = $.checkDateBevReg(hsnDate, elem);
 
         var dateOp = $('.checkDateOP');
@@ -306,9 +306,9 @@
         }
 
         return error;
-    };
+    }
 
-    var checkDateOP = function (hsnDate, elem) {
+    function checkDateOP(hsnDate, elem) {
         var error = $.checkDateBevReg(hsnDate, elem);
 
         var dateHfd = $('.checkDateHfd');
@@ -332,9 +332,9 @@
         }
 
         return error;
-    };
+    }
 
-    var checkVolgnummer = function (self) {
+    function checkVolgnummer(self) {
         var volgnummer = self.getIntegerValue();
         if (!isNaN(volgnummer)) {
             var volgNrOpElem = $('#volgnrOP');
@@ -361,9 +361,9 @@
                 'Volgnummer OP is hoger dan het aantal regels!'
             );
         }
-    };
+    }
 
-    var checkVorigeInschrijving = function () {
+    function checkVorigeInschrijving() {
         var error = false;
         var vorigeInschrijving = $('#vorige-inschrijving');
 
@@ -389,7 +389,7 @@
                 'Deze door uw opgegeven combinatie van bronnummer en hoofddatum is nog niet ingevoerd!'
             );
         }
-    };
+    }
 
     $.initCheckDate('.checkDateHfd', $.prepareDate, checkDateHfd);
     $.initCheckDate('.checkDateOP', $.prepareDate, checkDateOP);

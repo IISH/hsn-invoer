@@ -3,13 +3,13 @@
 
     $.initCheckDate(
         '.checkDate',
-        function (hsnDate, elem) {
+        function prepare(hsnDate, elem) {
             var parent = elem.getParentOfFormElement();
             if (!parent.hasClass('kantmeldingDateCheck')) {
                 $.prepareDate(hsnDate, elem);
             }
         },
-        function (hsnDate, elem) {
+        function checkDate(hsnDate, elem) {
             var error = false;
             var parent = elem.getParentOfFormElement();
 
@@ -37,7 +37,7 @@
         }
     );
 
-    var checkNoDate = function (elem) {
+    function checkNoDate(elem) {
         var hsnDate = elem.getHsnDate();
 
         var parent = elem.closest('.form-group');
@@ -62,7 +62,7 @@
         hsnDate.year.elem.blur(onBlur);
 
         onBlur();
-    };
+    }
 
     $(document).ready(function () {
         $('.checkDate').each(function () {

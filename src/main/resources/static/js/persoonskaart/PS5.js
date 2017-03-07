@@ -3,7 +3,7 @@
 
     var adrAjax = false;
 
-    var initAddressRenumbering = function (elem) {
+    function initAddressRenumbering(elem) {
         if (!$.isCorrection()) {
             var regex = /pkadres([0-9]).vernum/;
             elem.find('.adresRenumbering').blur(function (e) {
@@ -22,9 +22,9 @@
                 }
             });
         }
-    };
+    }
 
-    var initCheckAddressOrder = function (elem) {
+    function initCheckAddressOrder(elem) {
         elem.find('.day, .month, .year').blur(function () {
             var index = 0;
             var prevOrder = null;
@@ -53,9 +53,9 @@
 
             $.setError(!isOrderOk, 'address-order', 'De adressen staan niet op chronologische volgorde, verbeter nu!');
         });
-    };
+    }
 
-    var updateCountry = function (elem) {
+    function updateCountry(elem) {
         var parentElem = elem.closest('.pk-adres');
 
         var plaats = parentElem.find('.plaats');
@@ -66,9 +66,9 @@
             ((plaats.val().trim().length > 0) || (street.val().trim().length > 0))) {
             country.val('Nl');
         }
-    };
+    }
 
-    var updateAdrFields = function (elem, isNext, isPrev) {
+    function updateAdrFields(elem, isNext, isPrev) {
         if (!adrAjax) {
             adrAjax = true;
             $(document).resetInvisibleFormElements();
@@ -108,9 +108,9 @@
                 }
             });
         }
-    };
+    }
 
-    var updateDateFieldsIfEmpty = function (hsnDate) {
+    function updateDateFieldsIfEmpty(hsnDate) {
         var day = hsnDate.day;
         var dayIsZero = (day.isInput && (day.getValue() === 0));
 
@@ -123,7 +123,7 @@
         }
 
         return dayIsZero;
-    };
+    }
 
     $(document).on('blur', '.day, .year', function (e) {
         var self = $(e.target);
