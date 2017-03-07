@@ -13,22 +13,22 @@
     var runningInit = true;
     var initFunctions = [];
 
-    $.registerInit = function (func) {
+    $.registerInit = function registerInit(func) {
         initFunctions.push(func);
     };
 
-    $.isRunningInit = function () {
+    $.isRunningInit = function isRunningInit() {
         return runningInit;
     };
 
-    var runInit = function (elem) {
+    function runInit(elem) {
         runningInit = true;
         for (var i = 0; i < initFunctions.length; i++) {
             var initFunction = initFunctions[i];
             initFunction(elem);
         }
         runningInit = false;
-    };
+    }
 
     $(document).ready(function () {
         runInit($(document));
@@ -94,7 +94,7 @@
      * Allow table with active row selector which is always visible, even on a scrollable table
      */
 
-    var toggleActiveRow = function (elem) {
+    function toggleActiveRow(elem) {
         var rows, focusIndicator;
 
         // Find out which row to make active, if there is one...
@@ -116,7 +116,7 @@
         var fixedLeftColumn = $('.fixed-left-column');
         fixedLeftColumn.find('tr.active').not(rows).removeClass('active');
         fixedLeftColumn.find('.fixed .glyphicon').not(focusIndicator).removeClass('glyphicon glyphicon-triangle-right');
-    };
+    }
 
     $(document).on('focus', '.form-elem', function (e) {
         toggleActiveRow($(e.target));
@@ -126,7 +126,7 @@
      * Modal and popover utility methods
      */
 
-    $.fn.setPopover = function (content) {
+    $.fn.setPopover = function setPopover(content) {
         var firstClass = 'nav-trigger popover-left form-elem hidden tabindex';
         var lastClass = 'nav-trigger popover-right form-elem hidden tabindex';
 
@@ -153,7 +153,7 @@
         return this;
     };
 
-    $.getOpenedModal = function () {
+    $.getOpenedModal = function getOpenedModal() {
         return $('.modal.in').first();
     };
 
@@ -199,23 +199,23 @@
 
     /* Without selector */
 
-    $.isFormElement = function (elem) {
+    $.isFormElement = function isFormElement(elem) {
         return ((elem !== undefined) && elem.hasClass('form-elem') && elem.is(':enabled:visible'));
     };
 
-    $.getDataElemSelector = function (dataName) {
+    $.getDataElemSelector = function getDataElemSelector(dataName) {
         return '[data-' + dataName + ']';
     };
 
-    $.getDataElem = function (dataName) {
+    $.getDataElem = function getDataElem(dataName) {
         return $($.getDataElemSelector(dataName));
     };
 
-    $.isCorrection = function () {
+    $.isCorrection = function isCorrection() {
         return $.getDataElem('is-correction').data('is-correction');
     };
 
-    $.fn.resetInvisibleFormElements = function () {
+    $.fn.resetInvisibleFormElements = function resetInvisibleFormElements() {
         this.find('.form-elem:input')
             .not(':visible')
             .not('[type=hidden]')
@@ -235,31 +235,31 @@
 
     var useTimeout = true;
 
-    $.noTimeoutWithNav = function () {
+    $.noTimeoutWithNav = function noTimeoutWithNav() {
         useTimeout = false;
     };
 
-    $.useTimeout = function () {
+    $.useTimeout = function useTimeout() {
         return useTimeout;
     };
 
     var shouldCheckByz = true;
 
-    $.dontCheckByz = function () {
+    $.dontCheckByz = function dontCheckByz() {
         shouldCheckByz = false;
     };
 
-    $.checkByz = function () {
+    $.checkByz = function checkByz() {
         return shouldCheckByz;
     };
 
     /* With selector */
 
-    $.fn.getParentOfFormElement = function () {
+    $.fn.getParentOfFormElement = function getParentOfFormElement() {
         return this.closest('td, .form-group, .sub-form-group');
     };
 
-    $.fn.getDataValue = function (dataName) {
+    $.fn.getDataValue = function getDataValue(dataName) {
         var data = this.data(dataName);
         if (data !== undefined) {
             return data.toString();
@@ -267,7 +267,7 @@
         return undefined;
     };
 
-    $.fn.getIntegerDataValue = function (dataName) {
+    $.fn.getIntegerDataValue = function getIntegerDataValue(dataName) {
         var data = this.getDataValue(dataName);
         if (data !== undefined) {
             return parseInt(data);
@@ -275,7 +275,7 @@
         return undefined;
     };
 
-    $.fn.getMultipleDataValues = function (dataName) {
+    $.fn.getMultipleDataValues = function getMultipleDataValues(dataName) {
         var data = this.getDataValue(dataName);
         if (data !== undefined) {
             return data.split(';');
@@ -283,23 +283,23 @@
         return undefined;
     };
 
-    $.fn.getDataValueAsElem = function (dataName) {
+    $.fn.getDataValueAsElem = function getDataValueAsElem(dataName) {
         return $(this.getDataValue(dataName));
     };
 
-    $.fn.getIntegerValue = function () {
+    $.fn.getIntegerValue = function getIntegerValue() {
         return parseInt(this.val());
     };
 
-    $.fn.getIntegerText = function () {
+    $.fn.getIntegerText = function getIntegerText() {
         return parseInt(this.text());
     };
 
-    $.fn.getIntegerAttr = function (attr) {
+    $.fn.getIntegerAttr = function getIntegerAttr(attr) {
         return parseInt(this.attr(attr));
     };
 
-    $.fn.setValue = function (val) {
+    $.fn.setValue = function setValue(val) {
         if (this.is(':input')) {
             this.val(val);
         }
@@ -308,14 +308,14 @@
         }
     };
 
-    $.fn.getCaret = function () {
+    $.fn.getCaret = function getCaret() {
         if ((this.length > 0) && (typeof this[0].selectionStart !== 'undefined')) {
             return this[0].selectionStart;
         }
         return 0;
     };
 
-    $.fn.setCaret = function (caretPos) {
+    $.fn.setCaret = function setCaret(caretPos) {
         if ((this.length > 0) && (typeof this[0].setSelectionRange !== 'undefined')) {
             this[0].focus();
             this[0].setSelectionRange(caretPos, caretPos);
@@ -325,7 +325,7 @@
     /* Overwrite 'show' / 'hide' jQuery functions to send event */
 
     var onHide = $.fn.hide;
-    $.fn.hide = function () {
+    $.fn.hide = function hideEvent() {
         // Determine if the elements are all already hidden
         var isHidden = true;
         var isTypeahead = false;
@@ -349,12 +349,12 @@
         return toReturn;
     };
 
-    $.fn.hideNoEvent = function () {
+    $.fn.hideNoEvent = function hideNoEvent() {
         return onHide.apply(this, arguments);
     };
 
     var onShow = $.fn.show;
-    $.fn.show = function () {
+    $.fn.show = function showEvent() {
         // Determine if the elements are all already shown
         var isHidden = false;
         var isTypeahead = false;
@@ -378,13 +378,13 @@
         return toReturn;
     };
 
-    $.fn.showNoEvent = function () {
+    $.fn.showNoEvent = function showNoEvent() {
         return onShow.apply(this, arguments);
     };
 
     /* Overwrite 'val' jQuery function to send 'change' event */
     var onVal = $.fn.val;
-    $.fn.val = function () {
+    $.fn.val = function valEvent() {
         var changeValue = (arguments.length > 0);
         if (changeValue) {
             var valueBefore = onVal.apply(this);
@@ -397,7 +397,7 @@
         return result;
     };
 
-    $.fn.valNoEvent = function () {
+    $.fn.valNoEvent = function valNoEvent() {
         return onVal.apply(this, arguments);
     };
 })(jQuery);

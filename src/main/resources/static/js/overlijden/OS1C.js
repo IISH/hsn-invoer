@@ -3,14 +3,14 @@
 
     $.initCheckDate(
         '.checkDateTimeOvl',
-        function (hsnDate) {
+        function prepare(hsnDate) {
             $.prepareDate(hsnDate);
 
             if (hsnDate.hour.getValue() === -1) {
                 hsnDate.minute.elem.val(-1);
             }
         },
-        function (hsnDate) {
+        function checkDate(hsnDate) {
             var error = true;
 
             var dayVal = hsnDate.day.getValue();
@@ -45,7 +45,7 @@
         }
     );
 
-    var checkDeathAfterAkteDate = function () {
+    function checkDeathAfterAkteDate() {
         var aktedag = $.getDataElem('aktedag').getIntegerDataValue('aktedag');
         var aktemnd = $.getDataElem('aktemnd').getIntegerDataValue('aktemnd');
         var aktejr = $.getDataElem('aktejr').getIntegerDataValue('aktejr');
@@ -67,9 +67,9 @@
             'Dagtekening AKTE is eerder in de tijd dan dagtekening OVERLIJDEN! ' +
             'Corrigeer of stop met deze akte!'
         );
-    };
+    }
 
-    var calculateAge = function () {
+    function calculateAge() {
         var ovlDay = $('#ovlknd\\.ovldag').getIntegerValue();
         var ovlMonth = $('#ovlknd\\.ovlmnd').getIntegerValue();
         var ovlYear = $('#ovlknd\\.ovljr').getIntegerValue();
@@ -98,9 +98,9 @@
             $('#ovlknd\\.lftmovl').val(ageMonths);
             $('#ovlknd\\.lftjovl').val(ageYears);
         }
-    };
+    }
 
-    var showAge = function () {
+    function showAge() {
         if (($('#ovlknd\\.lftdovl').getIntegerValue() === 0) &&
             ($('#ovlknd\\.lftwovl').getIntegerValue() === 0) &&
             ($('#ovlknd\\.lftmovl').getIntegerValue() === 0) &&
@@ -111,7 +111,7 @@
         else {
             $('.age-manual').hide();
         }
-    };
+    }
 
     $(document).ready(function () {
         checkDeathAfterAkteDate();

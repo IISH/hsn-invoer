@@ -17,21 +17,21 @@
         isRight: false
     };
 
-    $.getCurNavigation = function () {
+    $.getCurNavigation = function getCurNavigation() {
         return curNav;
     };
 
-    var lockNavigation = false;
+    var isNavigationLocked = false;
 
-    $.lockNavigation = function () {
-        lockNavigation = true;
+    $.lockNavigation = function lockNavigation() {
+        isNavigationLocked = true;
     };
 
-    $.unlockNavigation = function () {
-        lockNavigation = false;
+    $.unlockNavigation = function unlockNavigation() {
+        isNavigationLocked = false;
     };
 
-    $.duringNavigation = function (e, onDefaultNavigation, onTableNavigation) {
+    $.duringNavigation = function duringNavigation(e, onDefaultNavigation, onTableNavigation) {
         var self = $(e.target);
 
         // Disable the enter key, unless the focused element is a button
@@ -78,7 +78,7 @@
         }
     };
 
-    $.fn.autoNextFocus = function (performBlur) {
+    $.fn.autoNextFocus = function autoNextFocus(performBlur) {
         if (this.length > 0) {
             // Simulate a TAB
             $.determineNextFocusElem({
@@ -89,7 +89,7 @@
         }
     };
 
-    $.fn.autoPrevFocus = function (performBlur) {
+    $.fn.autoPrevFocus = function autoPrevFocus(performBlur) {
         if (this.length > 0) {
             // Simulate a Shift + TAB
             $.determineNextFocusElem({
@@ -100,23 +100,16 @@
         }
     };
 
-    $.determineNextFocusElem = function (e, performBlur) {
-        var onNavigation = function (self, determineFocusElem) {
-            if (typeof e.preventDefault === 'function') {
-                e.preventDefault();
-            }
-            if (performBlur || (performBlur === undefined)) {
-                self.blur(); // Now perform the blur and all event handlers attached to this event
-            }
-
-            var afterBlur = function () {
+    $.determineNextFocusElem = function determineNextFocusElem(e, performBlur) {
+        function onNavigation(self, determineFocusElem) {
+            function afterBlur() {
                 // If the blur caused a focus on a new element, then ignore default navigation
                 if ($(':focus').filter(':input').not(self).length > 0) {
                     return;
                 }
                 
                 // If navigation is locked, then return as well
-                if (lockNavigation) {
+                if (isNavigationLocked) {
                     return;
                 }
 
@@ -140,7 +133,14 @@
                 $.each(curNav, function (k, v) {
                     curNav[k] = false;
                 });
-            };
+            }
+
+            if (typeof e.preventDefault === 'function') {
+                e.preventDefault();
+            }
+            if (performBlur || (performBlur === undefined)) {
+                self.blur(); // Now perform the blur and all event handlers attached to this event
+            }
 
             // setTimeout can also be used to make IE wait until the blur event has completed
             if ($.useTimeout()) {
@@ -149,10 +149,10 @@
             else {
                 afterBlur();
             }
-        };
+        }
 
         $.duringNavigation(e,
-            function (self, isNext, isPrev) {
+            function defaultNavigation(self, isNext, isPrev) {
                 onNavigation(self, function () {
                     if (isPrev) {
                         return self.getPrevFormElement();
@@ -160,7 +160,7 @@
                     return self.getNextFormElement();
                 });
             },
-            function (self, isUp, isDown, isLeft, isRight) {
+            function tableNavigation(self, isUp, isDown, isLeft, isRight) {
                 onNavigation(self, function () {
                     var focusElem = null;
                     var table = self.closest('table');
@@ -235,22 +235,22 @@
 
     var autoFocusNext = false;
 
-    var shouldAutoNextFocusElem = function (e) {
+    function shouldAutoNextFocusElem(e) {
         if (e.charCode !== 0) {
             var self = $(e.target);
             var maxLength = self.getIntegerAttr('maxlength');
             autoFocusNext = (!self.getParentOfFormElement().hasClass('noAutoNext') && !isNaN(maxLength) && (self.getCaret() >= (maxLength - 1)));
         }
-    };
+    }
 
-    var autoNextFocusElem = function (e) {
+    function autoNextFocusElem(e) {
         if (autoFocusNext) {
             autoFocusNext = false;
             $(e.target).autoNextFocus(true);
         }
-    };
+    }
 
-    var initTabIndexes = function () {
+    function initTabIndexes() {
         var i = 0;
         $('input,button,textarea,.nav-trigger').each(function () {
             var elem = $(this);
@@ -261,9 +261,9 @@
                 .addClass('form-elem tabindex' + i);
             i++;
         });
-    };
+    }
 
-    var getNewFormElement = function (elem, originalSrc, isPrev) {
+    function getNewFormElement(elem, originalSrc, isPrev) {
         var order = (isPrev) ? -1 : 1;
 
         var newElement = null;
@@ -307,15 +307,15 @@
         }
 
         return newElement;
-    };
+    }
 
-    var autoHeightScroll = function (elem) {
+    function autoHeightScroll(elem) {
         var windowHeight = $(window).height();
         var parentHeight = $('#main').height();
         var elementHeight = elem.height();
         var maxHeight = windowHeight - (parentHeight - elementHeight);
         elem.css('max-height', maxHeight + 'px');
-    };
+    }
 
     var onByzModalEnter = function () {
         var modal = $('.byzModal');
@@ -335,12 +335,12 @@
         }
     };
 
-    $.fn.getPrevFormElement = function (originalSrc) {
+    $.fn.getPrevFormElement = function getPrevFormElement(originalSrc) {
         originalSrc = (originalSrc === undefined) ? this : originalSrc;
         return getNewFormElement(this, originalSrc, true);
     };
 
-    $.fn.getNextFormElement = function (originalSrc) {
+    $.fn.getNextFormElement = function getNextFormElement(originalSrc) {
         originalSrc = (originalSrc === undefined) ? this : originalSrc;
         return getNewFormElement(this, originalSrc, false);
     };

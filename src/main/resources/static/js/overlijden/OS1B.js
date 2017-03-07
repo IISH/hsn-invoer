@@ -3,12 +3,12 @@
 
     $.initCheckDate(
         '.checkDateTimeOvl',
-        function (hsnDate) {
+        function prepare(hsnDate) {
             if (hsnDate.hour.getValue() === -1) {
                 hsnDate.minute.elem.val(-1);
             }
         },
-        function (hsnDate) {
+        function checkDate(hsnDate) {
             var error = true;
 
             var dayVal = hsnDate.day.getValue();

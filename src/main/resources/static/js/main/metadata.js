@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    var checkLength = function (elem) {
+    function checkLength(elem) {
         elem.hasErrorWhen(elem.val().length !== 3);
     };
 
@@ -29,7 +29,7 @@
         else {
             $.setError(false, 'metadata', errorMessage);
         }
-    };
+    }
 
     $(document).ready(function () {
         $('#ondrzk, #opdrnr').blur(function () {
