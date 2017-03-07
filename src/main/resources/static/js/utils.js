@@ -31,29 +31,29 @@
     }
 
     $(document).ready(function () {
+        function loadImage() {
+            var scanSide = sessionStorage.getItem('hsnScanSide');
+            scanSide = (scanSide === null) ? 'A' : scanSide;
+
+            if (sessionStorage.getItem('hsnScanSide') === null)
+                sessionStorage.setItem('hsnScanSide', scanSide);
+
+            var image = sessionStorage.getItem('hsnScan' + scanSide);
+            if (image !== null) {
+                try {
+                    var position = JSON.parse(sessionStorage.getItem('hsnScanPosition' + scanSide));
+                    hsnCanvas.loadImage(image, position);
+                }
+                catch (err) {
+                    hsnCanvas.loadImage(image);
+                }
+            }
+        }
+
         runInit($(document));
 
         var viewElem = $('#view');
         if (viewElem.length > 0) {
-            var loadImage = function () {
-                var scanSide = sessionStorage.getItem('hsnScanSide');
-                scanSide = (scanSide === null) ? 'A' : scanSide;
-
-                if (sessionStorage.getItem('hsnScanSide') === null)
-                    sessionStorage.setItem('hsnScanSide', scanSide);
-
-                var image = sessionStorage.getItem('hsnScan' + scanSide);
-                if (image !== null) {
-                    try {
-                        var position = JSON.parse(sessionStorage.getItem('hsnScanPosition' + scanSide));
-                        hsnCanvas.loadImage(image, position);
-                    }
-                    catch (err) {
-                        hsnCanvas.loadImage(image);
-                    }
-                }
-            };
-
             var hsnCanvas = new HsnCanvas('view', false);
             loadImage();
 
@@ -223,7 +223,7 @@
             .valNoEvent('');
     };
 
-    $.imageBlobToDataUrl = function (blob, callback) {
+    $.imageBlobToDataUrl = function imageBlobToDataUrl(blob, callback) {
         var reader = new FileReader();
         reader.onload = function (evt) {
             callback(evt.target.result);

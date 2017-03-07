@@ -7,7 +7,7 @@ var HsnCanvas = (function ($, fabric) {
         LINE: 3
     };
 
-    return function (canvasId, allowCutting) {
+    return function HsnCanvas(canvasId, allowCutting) {
         var canvas = new fabric.Canvas(canvasId, {stateful: false, renderOnAddRemove: false});
 
         var loading = new fabric.Text('Loading...',
@@ -21,11 +21,11 @@ var HsnCanvas = (function ($, fabric) {
 
         setUpCanvasInteraction();
 
-        this.loadImage = function (dataUrl, position) {
+        this.loadImage = function loadImage(dataUrl, position) {
             if (image !== null)
                 image.remove();
 
-            fabric.Image.fromURL(dataUrl, function (img) {
+            fabric.Image.fromURL(dataUrl, function loadImageFromURL(img) {
                 image = img;
                 image.set({originX: 'center', originY: 'center'});
 
@@ -58,16 +58,12 @@ var HsnCanvas = (function ($, fabric) {
             });
         };
 
-        this.onNewImagePosition = function (callback) {
+        this.onNewImagePosition = function onNewImagePosition(callback) {
             newImagePositionCallbacks.push(callback);
         };
 
-        this.createNewImage = function (callback) {
-            var imgs = [], newHeight = 0;
-            scaleAll(1 / image.scaleX);
-
-            var copy = true, prevX = 0, lastCopiedX = 0;
-            var determineCutLine = function (point) {
+        this.createNewImage = function createNewImage(callback) {
+            function determineCutLine(point) {
                 var curX = point;
                 var height = curX - prevX;
                 if (copy) {
@@ -77,8 +73,12 @@ var HsnCanvas = (function ($, fabric) {
                 }
                 prevX = curX;
                 copy = !copy;
-            };
+            }
 
+            var imgs = [], newHeight = 0;
+            scaleAll(1 / image.scaleX);
+
+            var copy = true, prevX = 0, lastCopiedX = 0;
             getCutPoints().forEach(determineCutLine);
             determineCutLine(image.getHeight());
 
@@ -88,7 +88,7 @@ var HsnCanvas = (function ($, fabric) {
             var context = hiddenCanvas.getContext('2d');
 
             var loaded = 0;
-            imgs.forEach(function (img) {
+            imgs.forEach(function cutForImage(img) {
                 var image = new Image();
                 image.onload = function () {
                     context.drawImage(image, 0, img.top);

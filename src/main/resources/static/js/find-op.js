@@ -163,7 +163,7 @@
         });
     };
 
-    FindOp.prototype.militionLookup = function () {
+    FindOp.prototype.militionLookup = function militionLookup() {
         self.withIdnr(function (idnr) {
             self.serverCall('/ajax/lookup/m0/list', {idnr: idnr} , function (enteredScans) {
                 self.serverCall('/ajax/lookup/m0/scans', {idnr: idnr} , function (availableScans) {
@@ -231,7 +231,7 @@
         });
     };
 
-    FindOp.prototype.militionSequenceLookup = function () {
+    FindOp.prototype.militionSequenceLookup = function militionSequenceLookup() {
         self.withIdnr(function (idnr) {
             var seq = parseInt($('.seq').val());
 
@@ -248,7 +248,7 @@
         });
     };
 
-    FindOp.prototype.militionSeq = function () {
+    FindOp.prototype.militionSeq = function militionSeq() {
         self.withIdnr(function (idnr) {
             self.serverCall('/ajax/lookup/m0/list', {idnr: idnr} , function (enteredScans) {
                 if (enteredScans.length > 1) {

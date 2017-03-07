@@ -317,15 +317,15 @@
         elem.css('max-height', maxHeight + 'px');
     }
 
-    var onByzModalEnter = function () {
+    function onByzModalEnter() {
         var modal = $('.byzModal');
         if (modal.length === 1) {
             modal.data('content', modal.find('textarea').val());
             modal.modal({keyboard: false, backdrop: 'static'});
         }
-    };
+    }
 
-    var onByzModalExit = function (save) {
+    function onByzModalExit(save) {
         var modal = $('.byzModal');
         if (modal.length === 1) {
             if (!save) {
@@ -333,7 +333,7 @@
             }
             modal.modal('hide');
         }
-    };
+    }
 
     $.fn.getPrevFormElement = function getPrevFormElement(originalSrc) {
         originalSrc = (originalSrc === undefined) ? this : originalSrc;
