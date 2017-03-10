@@ -61,6 +61,7 @@ CREATE TABLE `m1` (
   `RDNOGS` varchar(100) NOT NULL,
   `RDNOU` varchar(100) NOT NULL,
   `ADVIES` varchar(100) NOT NULL,
+  `MEDGEB` varchar(100) NOT NULL,
   `MEDADV` varchar(100) NOT NULL,
   `EXEMP` varchar(200) NOT NULL,
   `MILCOM` varchar(255) NOT NULL,
