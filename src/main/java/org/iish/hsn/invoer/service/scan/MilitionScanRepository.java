@@ -1,6 +1,5 @@
 package org.iish.hsn.invoer.service.scan;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.iish.hsn.invoer.domain.invoer.mil.Milition;
 
 import java.io.IOException;
@@ -125,12 +124,10 @@ public class MilitionScanRepository {
             int year = Integer.parseInt(matcher.group(3));
             String type = matcher.group(5);
 
-            HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
-            int hashCode = hashCodeBuilder
-                    .append(municipality)
-                    .append(year)
-                    .append(type)
-                    .toHashCode();
+            int hashCode = 1;
+            hashCode = 31 * hashCode + municipality.hashCode();
+            hashCode = 31 * hashCode + year;
+            hashCode = 31 * hashCode + type.hashCode();
             String hashCodeStr = String.valueOf(hashCode);
 
             Path sideA = null, sideB = null;
