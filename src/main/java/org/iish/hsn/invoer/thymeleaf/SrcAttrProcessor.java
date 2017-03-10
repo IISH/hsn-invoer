@@ -1,15 +1,18 @@
 package org.iish.hsn.invoer.thymeleaf;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.spring4.requestdata.RequestDataValueProcessorUtils;
 import org.thymeleaf.standard.processor.attr.AbstractStandardSingleAttributeModifierAttrProcessor;
 
+import java.util.Random;
+
 /**
  * Adds a random value to the source URL attribute to prevent caching.
  */
 public class SrcAttrProcessor extends AbstractStandardSingleAttributeModifierAttrProcessor {
+    private static final Random RANDOM = new Random();
+
     private final boolean randomToStaticSource;
 
     public SrcAttrProcessor(final boolean randomToStaticSource) {
@@ -34,7 +37,7 @@ public class SrcAttrProcessor extends AbstractStandardSingleAttributeModifierAtt
         String url = RequestDataValueProcessorUtils.processUrl(arguments.getConfiguration(), arguments, attributeValue);
 
         if (randomToStaticSource)
-            return url + "?r=" + RandomStringUtils.randomAlphanumeric(10);
+            return url + "?r=" + Math.abs(RANDOM.nextInt());
         return url;
     }
 
