@@ -86,6 +86,8 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "RDNOGS", nullable = false, length = 100) private String reasonsInapplicability = "";
     @Column(name = "RDNOU", nullable = false, length = 100) private String earlierDecisions = "";
     @Column(name = "ADVIES", nullable = false, length = 100) private String advice = "";
+
+    @Column(name = "MEDGEB", nullable = false, length = 100) private String medicalDefects = "";
     @Column(name = "MEDADV", nullable = false, length = 100) private String medicalAdvice = "";
 
     @Column(name = "EXEMP", nullable = false, length = 200) private String reasonsNotIncluded = "";
@@ -118,6 +120,7 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "AANWJ", nullable = false) private int yearOfDesignation;
     @Column(name = "AANW", nullable = false, length = 50) private String designation = "";
 
+    @Column(name = "BYZAAN", nullable = false, length = 100) private String byzRemarks = "";
     @Column(name = "AANMRK", nullable = false, length = 128) private String remarks = "";
     @Column(name = "BYZ", nullable = false, length = 255) private String byz = "";
 
@@ -638,6 +641,14 @@ public class Milition extends Invoer implements Serializable {
         this.advice = advice;
     }
 
+    public String getMedicalDefects() {
+        return medicalDefects;
+    }
+
+    public void setMedicalDefects(String medicalDefects) {
+        this.medicalDefects = medicalDefects;
+    }
+
     public String getMedicalAdvice() {
         return medicalAdvice;
     }
@@ -836,6 +847,14 @@ public class Milition extends Invoer implements Serializable {
 
     public void setDesignation(String designation) {
         this.designation = designation;
+    }
+
+    public String getByzRemarks() {
+        return byzRemarks;
+    }
+
+    public void setByzRemarks(String byzRemarks) {
+        this.byzRemarks = byzRemarks;
     }
 
     public String getRemarks() {

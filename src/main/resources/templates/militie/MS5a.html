@@ -7,7 +7,12 @@
     <div class="form-header letter-spacing">VRIJSTELLING:</div>
 
     <div class="form-group extra-top-margin">
-      <label class="col-xs-6 control-label">Aangevoerde redenen door loteling:</label>
+      <label class="col-xs-6 control-label" th:if="${akte.is('1913I') == false}">
+        Aangevoerde redenen door loteling:
+      </label>
+      <label class="col-xs-6 control-label" th:if="${akte.is('1913I')}">
+        Reden tot vrijstelling of uitsluiting:
+      </label>
 
       <div class="col-xs-5">
         <input type="text" class="form-control" th:field="*{mil.reasonsExemption}" hsn:field="mil.reasonsExemption"/>
@@ -23,14 +28,19 @@
     </div>
 
     <div class="form-group" th:if="${akte.is('1913')}">
-      <label class="col-xs-6 control-label">Redenen uit het verleden:</label>
+      <label class="col-xs-6 control-label" th:if="${akte.is('1913I') == false}">
+        Redenen uit het verleden:
+      </label>
+      <label class="col-xs-6 control-label" th:if="${akte.is('1913I')}">
+        Door wie vroegere uitspraak gedaan:
+      </label>
 
       <div class="col-xs-5">
         <input type="text" class="form-control" th:field="*{mil.earlierDecisions}" hsn:field="mil.earlierDecisions"/>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" th:if="${akte.is('1815', '1862', '1913AL')}">
       <label class="col-xs-6 control-label">Advies van de militieraad (definitieve reden vrijstelling):</label>
 
       <div class="col-xs-5">
@@ -38,11 +48,19 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${akte.is('1913')}">
-      <label class="col-xs-6 control-label">Medisch advies op de keuringsraad:</label>
+    <div class="form-group" th:if="${akte.is('1913I')}">
+      <label class="col-xs-6 control-label">Datum vroegere uitspraak:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('verdictVrijstelling.dayOfVerdict', 'verdictVrijstelling.monthOfVerdict', 'verdictVrijstelling.yearOfVerdict')"></div>
+    </div>
+
+    <div class="form-group" th:if="${akte.is('1913I')}">
+      <label class="col-xs-6 control-label">Aard der uitspraak:</label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" th:field="*{mil.medicalAdvice}" hsn:field="mil.medicalAdvice"/>
+        <input type="text" class="form-control"
+               th:field="*{verdictVrijstelling.nature}" hsn:field="verdictVrijstelling.nature"/>
       </div>
     </div>
 

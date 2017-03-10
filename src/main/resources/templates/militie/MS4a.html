@@ -5,15 +5,15 @@
 <fieldset>
   <th:block layout:fragment="fields">
     <div class="form-group">
-      <label class="col-xs-5 control-label">Door de militieraad aangebrachte verbeteringen:</label>
+      <label class="col-xs-5 control-label">Eventuele door de militieraad aangebrachte verbeteringen:</label>
 
       <div class="col-xs-6">
-        <input type="text" class="form-control"
+        <input type="text" class="form-control two-line-label"
                th:field="*{mil.militionChairImprovements}" hsn:field="mil.militionChairImprovements"/>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group extra-top-margin">
       <label class="col-xs-5 control-label">Voor den dienst vrijgesteld? j / n </label>
 
       <div class="col-xs-2">
@@ -26,12 +26,12 @@
       <label class="col-xs-5 control-label">Reden bij vrijstelling:</label>
 
       <div class="col-xs-6">
-        <input type="text" class="form-control"
+        <input type="text" class="form-control required"
                th:field="*{mil.reasonsNotIncluded}" hsn:field="mil.reasonsNotIncluded"/>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" data-show-when="#vrijgesteld" data-has-values-in="j" style="display:none;">
       <label class="col-xs-5 control-label">Beperking in jaren:</label>
 
       <div class="col-xs-2">
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group extra-top-margin">
       <label class="col-xs-5 control-label">Korps / Positie inlijving:</label>
 
       <div class="col-xs-6">

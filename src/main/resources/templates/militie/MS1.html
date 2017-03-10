@@ -35,6 +35,14 @@
       </div>
     </th:block>
 
+    <div class="form-group extra-top-margin" th:if="${akte.is('1913A')}">
+      <label class="col-xs-4 control-label">Bijzondere aantekeningen:</label>
+
+      <div class="col-xs-6">
+        <input type="text" class="form-control" th:field="*{mil.byzRemarks}" hsn:field="mil.byzRemarks"/>
+      </div>
+    </div>
+
     <div th:replace="militie/byz-fragment :: byzModal"></div>
   </th:block>
 </fieldset>

@@ -49,9 +49,6 @@
     <transition on="4" to="secondCorrectionCodeCheck"/>
     <transition on="5" to="secondCorrectionCodeCheck"/>
     <transition on="6" to="secondCorrectionCodeCheck"/>
-    <transition on="7" to="secondCorrectionCodeCheck"/>
-    <transition on="8" to="secondCorrectionCodeCheck"/>
-    <transition on="9" to="secondCorrectionCodeCheck"/>
   </action-state>
 
   <!-- MS0B: GEGEVENS REGISTER -->
@@ -73,9 +70,6 @@
     <transition on="4" to="thirdCorrectionCodeCheck"/>
     <transition on="5" to="thirdCorrectionCodeCheck"/>
     <transition on="6" to="thirdCorrectionCodeCheck"/>
-    <transition on="7" to="thirdCorrectionCodeCheck"/>
-    <transition on="8" to="thirdCorrectionCodeCheck"/>
-    <transition on="9" to="thirdCorrectionCodeCheck"/>
   </action-state>
 
   <!-- MS1: GEGEVENS LOTELING -->
@@ -106,12 +100,9 @@
     <transition on="4" to="fourthCorrectionCodeCheck"/>
     <transition on="5" to="fourthCorrectionCodeCheck"/>
     <transition on="6" to="fourthCorrectionCodeCheck"/>
-    <transition on="7" to="fourthCorrectionCodeCheck"/>
-    <transition on="8" to="fourthCorrectionCodeCheck"/>
-    <transition on="9" to="fourthCorrectionCodeCheck"/>
   </action-state>
 
-  <!-- MS3: LENGTE EN SIGNALEMENT -->
+  <!-- MS3: UITERLIJKE KENMERKEN -->
   <view-state id="MS3" view="militie/MS3" model="akte">
     <transition on="stop" to="stopEnd"/>
 
@@ -123,44 +114,125 @@
   <action-state id="fourthCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
-    <transition on="0" to="MS4"/>
+    <transition on="0" to="extraInfoCheck"/>
     <transition on="1" to="fifthCorrectionCodeCheck"/>
     <transition on="2" to="fifthCorrectionCodeCheck"/>
     <transition on="3" to="fifthCorrectionCodeCheck"/>
-    <transition on="4" to="MS4"/>
+    <transition on="4" to="extraInfoCheck"/>
     <transition on="5" to="fifthCorrectionCodeCheck"/>
     <transition on="6" to="fifthCorrectionCodeCheck"/>
-    <transition on="7" to="fifthCorrectionCodeCheck"/>
-    <transition on="8" to="fifthCorrectionCodeCheck"/>
-    <transition on="9" to="fifthCorrectionCodeCheck"/>
   </action-state>
 
-  <!-- MS4: MILITIE GEGEVENS LOTELING -->
+  <action-state id="extraInfoCheck">
+    <evaluate expression="flowScope.akte.is('1815A')"/>
+
+    <transition on="yes" to="MS4a"/>
+    <transition on="no" to="MS4"/>
+  </action-state>
+
+  <!-- MS4: AANGIFTE, AANWIJZINGEN EN PROCEDURE -->
   <view-state id="MS4" view="militie/MS4" model="akte">
     <transition on="stop" to="stopEnd"/>
 
-    <transition on="next" to="fifthCorrectionCodeCheck">
+    <transition on="next" to="includesExemptionCheck">
       <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- MS4a: EXTRA MILITIE GEGEVENS LOTELING -->
+  <view-state id="MS4a" view="militie/MS4a" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="includesExemptionCheck">
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="includesExemptionCheck">
+    <evaluate expression="flowScope.akte.includesExemption == 'j'"/>
+
+    <transition on="yes" to="MS5a"/>
+    <transition on="no" to="includesMedicalCheck"/>
+  </action-state>
+
+  <!-- MS5a: VRIJSTELLING -->
+  <view-state id="MS5a" view="militie/MS5a" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="includesMedicalCheck">
+      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="includesMedicalCheck">
+    <evaluate expression="flowScope.akte.includesMedical == 'j'"/>
+
+    <transition on="yes" to="MS5b"/>
+    <transition on="no" to="includesDelayCheck"/>
+  </action-state>
+
+  <!-- MS5b: MEDISCH ADVIES -->
+  <view-state id="MS5b" view="militie/MS5b" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="includesDelayCheck">
+      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="includesDelayCheck">
+    <evaluate expression="flowScope.akte.includesDelay == 'j' or flowScope.akte.includesDelayMilition == 'j'"/>
+
+    <transition on="yes" to="MS6a"/>
+    <transition on="no" to="includesAppealCheck"/>
+  </action-state>
+
+  <!-- MS6a: UITSTEL -->
+  <view-state id="MS6a" view="militie/MS6a" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="includesAppealCheck">
+      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="includesAppealCheck">
+    <evaluate expression="flowScope.akte.includesAppeal == 'j'"/>
+
+    <transition on="yes" to="MS6b"/>
+    <transition on="no" to="fifthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- MS6b: IN BEROEP -->
+  <view-state id="MS6b" view="militie/MS6b" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="fifthCorrectionCodeCheck">
+      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
     </transition>
   </view-state>
 
   <action-state id="fifthCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
-    <transition on="0" to="MS5"/>
+    <transition on="0" to="includesAppointed"/>
     <transition on="1" to="sixthCorrectionCodeCheck"/>
     <transition on="2" to="sixthCorrectionCodeCheck"/>
     <transition on="3" to="sixthCorrectionCodeCheck"/>
     <transition on="4" to="sixthCorrectionCodeCheck"/>
-    <transition on="5" to="MS5"/>
+    <transition on="5" to="includesAppointed"/>
     <transition on="6" to="sixthCorrectionCodeCheck"/>
-    <transition on="7" to="sixthCorrectionCodeCheck"/>
-    <transition on="8" to="sixthCorrectionCodeCheck"/>
-    <transition on="9" to="sixthCorrectionCodeCheck"/>
   </action-state>
 
-  <!-- MS5: VRIJSTELLING -->
-  <view-state id="MS5" view="militie/MS5" model="akte">
+  <action-state id="includesAppointed">
+    <evaluate expression="flowScope.akte.is('1815L', '1862IL', '1913AL')"/>
+
+    <transition on="yes" to="MS7"/>
+    <transition on="no" to="sixthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- MS7: AANSTELLING -->
+  <view-state id="MS7" view="militie/MS7" model="akte">
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="sixthCorrectionCodeCheck">
@@ -171,91 +243,16 @@
   <action-state id="sixthCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
-    <transition on="0" to="MS6a"/>
-    <transition on="1" to="seventhCorrectionCodeCheck"/>
-    <transition on="2" to="seventhCorrectionCodeCheck"/>
-    <transition on="3" to="seventhCorrectionCodeCheck"/>
-    <transition on="4" to="seventhCorrectionCodeCheck"/>
-    <transition on="5" to="seventhCorrectionCodeCheck"/>
-    <transition on="6" to="MS6a"/>
-    <transition on="7" to="seventhCorrectionCodeCheck"/>
-    <transition on="8" to="seventhCorrectionCodeCheck"/>
-    <transition on="9" to="seventhCorrectionCodeCheck"/>
-  </action-state>
-
-  <!-- MS6a: UITSTEL -->
-  <view-state id="MS6a" view="militie/MS6a" model="akte">
-    <transition on="stop" to="stopEnd"/>
-
-    <transition on="next" to="seventhCorrectionCodeCheck">
-      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
-    </transition>
-  </view-state>
-
-  <action-state id="seventhCorrectionCodeCheck">
-    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
-
-    <transition on="0" to="MS6b"/>
-    <transition on="1" to="eightCorrectionCodeCheck"/>
-    <transition on="2" to="eightCorrectionCodeCheck"/>
-    <transition on="3" to="eightCorrectionCodeCheck"/>
-    <transition on="4" to="eightCorrectionCodeCheck"/>
-    <transition on="5" to="eightCorrectionCodeCheck"/>
-    <transition on="6" to="eightCorrectionCodeCheck"/>
-    <transition on="7" to="MS6b"/>
-    <transition on="8" to="eightCorrectionCodeCheck"/>
-    <transition on="9" to="eightCorrectionCodeCheck"/>
-  </action-state>
-
-  <!-- MS6b: IN BEROEP -->
-  <view-state id="MS6b" view="militie/MS6b" model="akte">
-    <transition on="stop" to="stopEnd"/>
-
-    <transition on="next" to="eightCorrectionCodeCheck">
-      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
-    </transition>
-  </view-state>
-
-  <action-state id="eightCorrectionCodeCheck">
-    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
-
-    <transition on="0" to="MS7"/>
-    <transition on="1" to="ninthCorrectionCodeCheck"/>
-    <transition on="2" to="ninthCorrectionCodeCheck"/>
-    <transition on="3" to="ninthCorrectionCodeCheck"/>
-    <transition on="4" to="ninthCorrectionCodeCheck"/>
-    <transition on="5" to="ninthCorrectionCodeCheck"/>
-    <transition on="6" to="ninthCorrectionCodeCheck"/>
-    <transition on="7" to="ninthCorrectionCodeCheck"/>
-    <transition on="8" to="MS7"/>
-    <transition on="9" to="ninthCorrectionCodeCheck"/>
-  </action-state>
-
-  <!-- MS7: AANSTELLING EN AANMERKINGEN -->
-  <view-state id="MS7" view="militie/MS7" model="akte">
-    <transition on="stop" to="stopEnd"/>
-
-    <transition on="next" to="ninthCorrectionCodeCheck">
-      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
-    </transition>
-  </view-state>
-
-  <action-state id="ninthCorrectionCodeCheck">
-    <evaluate expression="flowScope.akte.correctionCode.toString()"/>
-
     <transition on="0" to="MSBYZ"/>
     <transition on="1" to="MSNIEUW"/>
     <transition on="2" to="MSNIEUW"/>
     <transition on="3" to="MSNIEUW"/>
     <transition on="4" to="MSNIEUW"/>
     <transition on="5" to="MSNIEUW"/>
-    <transition on="6" to="MSNIEUW"/>
-    <transition on="7" to="MSNIEUW"/>
-    <transition on="8" to="MSBYZ"/>
-    <transition on="9" to="MSNIEUW"/>
+    <transition on="6" to="MSBYZ"/>
   </action-state>
 
-  <!-- MSBYZ: BIJZONDERHEDEN -->
+  <!-- MSBYZ: AANMERKINGEN EN BIJZONDERHEDEN -->
   <view-state id="MSBYZ" view="militie/MSBYZ" model="akte">
     <transition on="stop" to="stopEnd"/>
 

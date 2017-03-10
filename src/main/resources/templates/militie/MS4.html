@@ -4,7 +4,7 @@
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="form-header letter-spacing">MILITIE GEGEVENS LOTELING:</div>
+    <div class="form-header letter-spacing">PROCEDURE GEGEVENS LOTELING:</div>
 
     <div class="form-group extra-top-margin" th:if="${akte.is('1815I', '1862I', '1913I')}">
       <div class="row no-margin">
@@ -41,111 +41,143 @@
       </div>
     </div>
 
-    <th:block th:if="${akte.is('1815IL')}">
-      <div class="form-group extra-top-margin">
-        <label class="col-xs-5 control-label">Behoorde tot een eerdere lichting? j / n / o</label>
-
-        <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{mil.formerClass}" hsn:field="mil.formerClass"/>
-        </div>
-      </div>
-
-      <div class="form-group" data-show-when="#mil\.formerClass" data-has-values-in="j" style="display:none;">
-        <label class="col-xs-5 control-label">Waarom onderdeel van deze licthing?</label>
-
-        <div class="col-xs-7">
-          <input type="text" class="form-control"
-                 th:field="*{mil.formerClassReason}" hsn:field="mil.formerClassReason"/>
-        </div>
-      </div>
-    </th:block>
-
     <th:block th:if="${akte.is('1815L', '1862I', '1913I')}">
+      <div class="form-header extra-top-margin">Aanwijzingen:</div>
+
       <div class="form-group extra-top-margin">
-        <label class="col-xs-5 control-label">Bevindt zich in vrijwillige dienst? j / n / o</label>
+        <label class="col-xs-5 control-label">Zijn er aanwijzingen? j / n</label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{mil.voluntaryService}" hsn:field="mil.voluntaryService"/>
+          <input type="text" id="aanwijzingen" class="form-control form-control-digit required"
+                 data-valid-chars="j;n" maxlength="1"/>
         </div>
       </div>
 
-      <div class="form-group" data-show-when="#mil\.voluntaryService" data-has-values-in="j" style="display:none;">
-        <label class="col-xs-5 control-label">Waarbij?</label>
-
-        <div class="col-xs-7">
-          <input type="text" class="form-control" th:field="*{mil.voluntaryWhere}" hsn:field="mil.voluntaryWhere"/>
-        </div>
-      </div>
-    </th:block>
-
-    <th:block th:if="${akte.is('1815IL', '1862I')}">
-      <div class="form-group extra-top-margin">
-        <label class="col-xs-5 control-label" th:if="${akte.mil.is1815()}">Loteling is gedetineerd? j / n / o</label>
-        <label class="col-xs-5 control-label" th:if="${!akte.mil.is1815()}">Bevindt zich in een gesticht? j / n / o</label>
-
-        <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{mil.inGesticht}" hsn:field="mil.inGesticht"/>
-        </div>
-      </div>
-
-      <div data-show-when="#mil\.inGesticht" data-has-values-in="j" style="display:none;">
-        <div class="form-group">
-          <label class="col-xs-5 control-label">Naam gesticht:</label>
-
-          <div class="col-xs-7">
-            <input type="text" class="form-control" th:field="*{mil.nameGesticht}" hsn:field="mil.nameGesticht"/>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-xs-5 control-label">Is het gesticht een gevangenis? j / n / o</label>
+      <div data-show-when="#aanwijzingen" data-has-values-in="j" style="display:none;">
+        <div class="form-group extra-top-margin">
+          <label class="col-xs-5 control-label">Bevindt zich in vrijwillige dienst? j / n / o</label>
 
           <div class="col-xs-2">
             <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                   maxlength="1" th:field="*{mil.inJail}" hsn:field="mil.inJail"/>
+                   maxlength="1" th:field="*{mil.voluntaryService}" hsn:field="mil.voluntaryService"/>
           </div>
         </div>
 
-        <div class="form-group" data-show-when="#mil\.inJail" data-has-values-in="j" th:if="${akte.is('1862')}">
-          <label class="col-xs-5 control-label">Voor welk delict veroordeeld?</label>
+        <div class="form-group" data-show-when="#mil\.voluntaryService" data-has-values-in="j" style="display:none;">
+          <label class="col-xs-5 control-label">Waarbij?</label>
 
           <div class="col-xs-7">
-            <input type="text" class="form-control" th:field="*{mil.whatCrime}" hsn:field="mil.whatCrime"/>
+            <input type="text" class="form-control" th:field="*{mil.voluntaryWhere}" hsn:field="mil.voluntaryWhere"/>
           </div>
         </div>
+
+        <th:block th:if="${akte.is('1815IL')}">
+          <div class="form-group">
+            <label class="col-xs-5 control-label">Behoorde tot een eerdere lichting? j / n / o</label>
+
+            <div class="col-xs-2">
+              <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
+                     maxlength="1" th:field="*{mil.formerClass}" hsn:field="mil.formerClass"/>
+            </div>
+          </div>
+
+          <div class="form-group" data-show-when="#mil\.formerClass" data-has-values-in="j" style="display:none;">
+            <label class="col-xs-5 control-label">Waarom onderdeel van deze lichting?</label>
+
+            <div class="col-xs-7">
+              <input type="text" class="form-control"
+                     th:field="*{mil.formerClassReason}" hsn:field="mil.formerClassReason"/>
+            </div>
+          </div>
+        </th:block>
+
+        <th:block th:if="${akte.is('1815L')}">
+          <div class="form-group">
+            <label class="col-xs-5 control-label">Aan hoofd lotingslijst geplaatst? j / n / o</label>
+
+            <div class="col-xs-2">
+              <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
+                     maxlength="1" th:field="*{mil.headOfList}" hsn:field="mil.headOfList"/>
+            </div>
+          </div>
+        </th:block>
+
+        <th:block th:if="${akte.is('1815L')}">
+          <div class="form-group">
+            <label class="col-xs-5 control-label">Buitenstaat dienst gesteld? j / n / o</label>
+
+            <div class="col-xs-2">
+              <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
+                     maxlength="1" th:field="*{mil.outStateService}" hsn:field="mil.outStateService"/>
+            </div>
+          </div>
+        </th:block>
+
+        <th:block th:if="${akte.is('1815IL', '1862I')}">
+          <div class="form-group">
+            <label class="col-xs-5 control-label" th:if="${akte.mil.is1815()}">Loteling is gedetineerd? j / n / o</label>
+            <label class="col-xs-5 control-label" th:if="${!akte.mil.is1815()}">Bevindt zich in een gesticht? j / n / o</label>
+
+            <div class="col-xs-2">
+              <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
+                     maxlength="1" th:field="*{mil.inGesticht}" hsn:field="mil.inGesticht"/>
+            </div>
+          </div>
+
+          <div data-show-when="#mil\.inGesticht" data-has-values-in="j" style="display:none;">
+            <div class="form-group">
+              <label class="col-xs-5 control-label">Naam gesticht:</label>
+
+              <div class="col-xs-7">
+                <input type="text" class="form-control" th:field="*{mil.nameGesticht}" hsn:field="mil.nameGesticht"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-5 control-label">Is het gesticht een gevangenis? j / n / o</label>
+
+              <div class="col-xs-2">
+                <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
+                       maxlength="1" th:field="*{mil.inJail}" hsn:field="mil.inJail"/>
+              </div>
+            </div>
+
+            <div class="form-group" data-show-when="#mil\.inJail" data-has-values-in="j"
+                 th:if="${akte.is('1815I', '1862')}">
+              <label class="col-xs-5 control-label" th:if="${akte.is('1815I')} == false">
+                Voor welk delict veroordeeld?
+              </label>
+              <label class="col-xs-5 control-label" th:if="${akte.is('1815I')}">
+                Delict? (Zie aanmerkingen)
+              </label>
+
+              <div class="col-xs-7">
+                <input type="text" class="form-control" th:field="*{mil.whatCrime}" hsn:field="mil.whatCrime"/>
+              </div>
+            </div>
+          </div>
+        </th:block>
       </div>
     </th:block>
 
-    <th:block th:if="${akte.is('1815L')}">
-      <div class="form-group extra-top-margin">
-        <label class="col-xs-5 control-label">Aan hoofd lotingslijst geplaatst? j / n / o</label>
-
-        <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{mil.headOfList}" hsn:field="mil.headOfList"/>
-        </div>
-      </div>
+    <th:block th:if="${akte.is('1815L', '1862IL', '1913IAL')}">
+      <div class="form-header extra-top-margin">Bepaling routing:</div>
 
       <div class="form-group extra-top-margin">
-        <label class="col-xs-5 control-label">Buitenstaat dienst gesteld? j / n / o</label>
-
-        <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
-                 maxlength="1" th:field="*{mil.outStateService}" hsn:field="mil.outStateService"/>
-        </div>
-      </div>
-    </th:block>
-
-    <div class="extra-top-margin" th:if="${akte.is('1815L', '1862IL', '1913IAL')}">
-      <div class="form-group" th:if="${akte.is('1815L', '1862L', '1913IAL')}">
         <label class="col-xs-8 control-label">Is er sprake van vrijstelling? (Of aanvraag daarvoor?) j / n</label>
 
         <div class="col-xs-2">
           <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
                  maxlength="1" name="includesExemption"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1913AL')}">
+        <label class="col-xs-8 control-label">Is er sprake van medisch advies? j / n</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+                 maxlength="1" name="includesMedical"/>
         </div>
       </div>
 
@@ -158,7 +190,7 @@
         </div>
       </div>
 
-      <div class="form-group" th:if="${akte.is('1815L', '1862L', '1913AL')}">
+      <div class="form-group" th:if="${akte.is('1815L', '1862L', '1913A')}">
         <label class="col-xs-8 control-label">Is er sprake van uitstel van de beslissing door de militieraad? j / n</label>
 
         <div class="col-xs-2">
@@ -175,7 +207,7 @@
                  maxlength="1" name="includesAppeal"/>
         </div>
       </div>
-    </div>
+    </th:block>
 
     <div th:replace="militie/byz-fragment :: byzModal"></div>
   </th:block>

@@ -86,6 +86,7 @@ CREATE TABLE `m1` (
   `AANWM` int(11) NOT NULL,
   `AANWJ` int(11) NOT NULL,
   `AANW` varchar(50) NOT NULL,
+  `BYZAAN` varchar(100) NOT NULL,
   `AANMRK` varchar(128) NOT NULL,
   `BYZ` varchar(255) NOT NULL,
   `OPDRNR` varchar(3) NOT NULL,

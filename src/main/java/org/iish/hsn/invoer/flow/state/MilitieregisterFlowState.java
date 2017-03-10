@@ -20,6 +20,7 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     private boolean cropSideA = true;
 
     private String includesExemption = "n";
+    private String includesMedical = "n";
     private String includesDelay = "n";
     private String includesDelayMilition = "n";
     private String includesAppeal = "n";
@@ -81,6 +82,14 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
         this.includesExemption = includesExemption;
     }
 
+    public String getIncludesMedical() {
+        return includesMedical;
+    }
+
+    public void setIncludesMedical(String includesMedical) {
+        this.includesMedical = includesMedical;
+    }
+
     public String getIncludesDelay() {
         return includesDelay;
     }
@@ -131,5 +140,13 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
 
     public Verdict getVerdictKoning() {
         return verdict.get(Type.KONING);
+    }
+
+    public Verdict getVerdictVrijstelling() {
+        return verdict.get(Type.VRIJSTELLING);
+    }
+
+    public Verdict getVerdictMedisch() {
+        return verdict.get(Type.MEDISCH);
     }
 }
