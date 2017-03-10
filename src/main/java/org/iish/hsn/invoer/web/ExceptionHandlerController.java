@@ -3,22 +3,24 @@ package org.iish.hsn.invoer.web;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.webflow.execution.repository.FlowExecutionRestorationFailureException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Controller that handles any thrown exceptions.
  */
 @ControllerAdvice
-public class ExceptionHandlerController {
+public class ExceptionHandlerController implements HandlerExceptionResolver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandlerController.class);
 
     /**
@@ -48,24 +50,26 @@ public class ExceptionHandlerController {
     /**
      * Default exception handler.
      *
-     * @param req The request
-     * @param e   The exception.
-     * @return The modal and view to display.
-     * @throws Exception The incoming exception may be rethrown to let other methods take care of it.
+     * @param request  The request.
+     * @param response The response.
+     * @param handler  The handler.
+     * @param ex       The exception.
+     * @return The model and view to render.
      */
-    @ExceptionHandler(Exception.class)
-    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
-        // If the exception is annotated with @ResponseStatus rethrow it and let the framework handle it
-        if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null) {
-            throw e;
+    @Override
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response,
+                                         Object handler, Exception ex) {
+        // An ExceptionHandler for this exception won't work, so deal with it here
+        if (ex instanceof FlowExecutionRestorationFailureException) {
+            return new ModelAndView("exception/backButtonError");
         }
 
         // Make sure to log the exception
-        LOGGER.error(e.getMessage(), e);
+        LOGGER.error(ex.getMessage(), ex);
 
         ModelAndView mav = new ModelAndView();
-        mav.addObject("exception", e);
-        mav.addObject("url", req.getRequestURL());
+        mav.addObject("request", request);
+        mav.addObject("exception", ex);
         mav.setViewName("exception/defaultError");
 
         return mav;
