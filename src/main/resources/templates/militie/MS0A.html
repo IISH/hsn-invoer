@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html layout:decorator="formLayout" th:with="mainClasses='two-column'">
+<html layout:decorator="formLayout" th:with="mainClasses='two-column'"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
 <head></head>
 <body>
 <fieldset layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-TOP"></fieldset>
@@ -52,4 +54,4 @@
   <script src="../../static/js/militie/MS0A.js" hsn:src="@{/js/militie/MS0A.js}"></script>
 </th:block>
 </body>
-</html>
+</>
