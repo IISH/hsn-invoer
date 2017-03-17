@@ -125,9 +125,11 @@ public class MilitionScanRepository {
             String type = matcher.group(5);
 
             int hashCode = 1;
-            hashCode = 31 * hashCode + municipality.hashCode();
+            if (municipality != null)
+                hashCode = 31 * hashCode + municipality.hashCode();
             hashCode = 31 * hashCode + year;
-            hashCode = 31 * hashCode + type.hashCode();
+            if (type != null)
+                hashCode = 31 * hashCode + type.hashCode();
             String hashCodeStr = String.valueOf(hashCode);
 
             Path sideA = null, sideB = null;
