@@ -1,8 +1,8 @@
 ldap:
-  url: ldap://
+  url: ldap://ds0.socialhistoryservices.org/dc=socialhistoryservices,dc=org
   manager:
-    dn: cn=,dc=
-    password: 
+    dn: cn=admin,dc=socialhistoryservices,dc=org
+    password: G3tL0st
   search:
-    base: ou=
+    base: ou=users
     filter: cn={0}
