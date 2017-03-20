@@ -102,7 +102,7 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "BESLUIT", nullable = false, length = 50) private String delayReasons = "";
 
     @Column(name = "PVNM", nullable = false, length = 1) private String substitute = "";
-    @Column(name = "PVNB", nullable = false) private int substituteNumber;
+    @Column(name = "PVNB", nullable = false, length = 10) private String substituteNumber = "";
     @Column(name = "ANPV", nullable = false, length = 50) private String familyNameSubstitute = "";
     @Column(name = "VNPV", nullable = false, length = 50) private String firstNameSubstitute = "";
 
@@ -110,7 +110,7 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "WENS", nullable = false, length = 50) private String wishOfRecruit = "";
     @Column(name = "GSCHK1", nullable = false, length = 50) private String firstSuitability = "";
     @Column(name = "GSCHK2", nullable = false, length = 50) private String secondSuitability = "";
-    @Column(name = "KPINL", nullable = false, length = 50) private String positionAnnexation = "";
+    @Column(name = "KPINL", nullable = false, length = 255) private String positionAnnexation = "";
     @Column(name = "INLD", nullable = false) private int dayOfAnnexation;
     @Column(name = "INLM", nullable = false) private int monthOfAnnexation;
     @Column(name = "INLJ", nullable = false) private int yearOfAnnexation;
@@ -121,7 +121,7 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "AANW", nullable = false, length = 50) private String designation = "";
 
     @Column(name = "BYZAAN", nullable = false, length = 100) private String byzRemarks = "";
-    @Column(name = "AANMRK", nullable = false, length = 128) private String remarks = "";
+    @Column(name = "AANMRK", nullable = false, length = 255) private String remarks = "";
     @Column(name = "BYZ", nullable = false, length = 255) private String byz = "";
 
     @Id
@@ -729,11 +729,11 @@ public class Milition extends Invoer implements Serializable {
         this.substitute = substitute;
     }
 
-    public int getSubstituteNumber() {
+    public String getSubstituteNumber() {
         return substituteNumber;
     }
 
-    public void setSubstituteNumber(int substituteNumber) {
+    public void setSubstituteNumber(String substituteNumber) {
         this.substituteNumber = substituteNumber;
     }
 

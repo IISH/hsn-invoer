@@ -17,13 +17,13 @@
       <div th:replace="fragments/fields :: datum ('mil.dayOfBirth', 'mil.monthOfBirth', 'mil.yearOfBirth')"></div>
     </div>
 
+    <div class="form-group two-line-label"
+         th:include="fragments/complete-fields :: plaats ('mil.placeOfMilition', ${akte.mil.is1815() ? 'Militiekanton van de geboorteplaats:' : 'Militiedistrict van de geboorteplaats:'})"></div>
+
     <div class="form-group"
          th:include="fragments/complete-fields :: plaats ('mil.placeOfBirth', 'Geboorteplaats:')"></div>
 
     <div class="form-group extra-top-margin"
-         th:include="fragments/complete-fields :: plaats ('mil.placeOfMilition', ${akte.mil.is1815() ? 'Militiekanton:' : 'Militiedistrict:'})"></div>
-
-    <div class="form-group"
          th:include="fragments/complete-fields :: plaats ('mil.placeOfLiving', ${akte.mil.is1815() ? 'Verblijfplaats:' : 'Woonplaats:'})"></div>
 
     <th:block th:if="${akte.is('1815')}">

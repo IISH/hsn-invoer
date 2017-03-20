@@ -38,7 +38,7 @@
       <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Nummer der uitspraak:</label>
 
       <div class="col-xs-2">
-        <input type="text" class="form-control integer-field"
+        <input type="text" class="form-control"
                th:field="*{verdictBezwaren.numberVerdict}" hsn:field="verdictBezwaren.numberVerdict"/>
       </div>
     </div>
@@ -58,7 +58,7 @@
           <label class="col-xs-4 control-label">Nummer der uitspraak:</label>
 
           <div class="col-xs-2">
-            <input type="text" class="form-control integer-field"
+            <input type="text" class="form-control"
                    th:field="*{verdictWet.numberVerdict}" hsn:field="verdictWet.numberVerdict"/>
           </div>
         </div>
@@ -67,7 +67,7 @@
           <label class="col-xs-2 control-label">Artikel der wet:</label>
 
           <div class="col-xs-2">
-            <input type="text" class="form-control integer-field"
+            <input type="text" class="form-control"
                    th:field="*{verdictWet.numberRegulation}" hsn:field="verdictWet.numberRegulation"/>
           </div>
         </div>
@@ -104,7 +104,7 @@
         <label class="col-xs-4 control-label">Nummer der besluit:</label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control integer-field"
+          <input type="text" class="form-control"
                  th:field="*{verdictKoning.numberVerdict}" hsn:field="verdictKoning.numberVerdict"/>
         </div>
       </div>

@@ -6,7 +6,7 @@
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="form-header letter-spacing">PROCEDURE GEGEVENS LOTELING:</div>
+    <div class="form-header letter-spacing">GEGEVENS VERDERE PROCEDURE:</div>
 
     <div class="form-group extra-top-margin" th:if="${akte.is('1815I', '1862I', '1913I')}">
       <div class="row no-margin">
@@ -44,8 +44,6 @@
     </div>
 
     <th:block th:if="${akte.is('1815L', '1862I', '1913I')}">
-      <div class="form-header extra-top-margin">Aanwijzingen:</div>
-
       <div class="form-group extra-top-margin">
         <label class="col-xs-5 control-label">Zijn er aanwijzingen? j / n</label>
 
@@ -163,8 +161,6 @@
     </th:block>
 
     <th:block th:if="${akte.is('1815L', '1862IL', '1913IAL')}">
-      <div class="form-header extra-top-margin">Bepaling routing:</div>
-
       <div class="form-group extra-top-margin">
         <label class="col-xs-8 control-label">Is er sprake van vrijstelling? (Of aanvraag daarvoor?) j / n</label>
 

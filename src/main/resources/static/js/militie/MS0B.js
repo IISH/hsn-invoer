@@ -33,10 +33,31 @@
         var type = $('#mil\\.type').val();
 
         $.setError(
-            (type === 'A') && (year >= 1862) && (year <= 1912),
+            (type === 'a') && (year >= 1862) && (year <= 1912),
             'year-and-type',
             'Deze variant mag niet worden ingevoerd!'
         );
+
+        if ((type === 'a') && (year === 1815 || year === 1913)) {
+            $('#mil\\.seqRegister').getParentOfFormElement().show();
+        }
+        else {
+            $('#mil\\.seqRegister').getParentOfFormElement().hide();
+        }
+
+        if (type !== 'l') {
+            $('#mil\\.seqRefer').getParentOfFormElement().show();
+        }
+        else {
+            $('#mil\\.seqRefer').getParentOfFormElement().hide();
+        }
+
+        if (!(type === 'i' && year === 1815)) {
+            $('#mil\\.drawnNumber').getParentOfFormElement().show();
+        }
+        else {
+            $('#mil\\.drawnNumber').getParentOfFormElement().hide();
+        }
     };
 
     $.initCheckDate('.checkYearMilitie', null, function (hsnDate) {

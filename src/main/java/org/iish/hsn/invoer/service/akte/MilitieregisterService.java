@@ -79,7 +79,7 @@ public class MilitieregisterService {
             milition.setScanA((scan.getSideA() != null) ? scan.getSideA().getFileName().toString() : "");
             milition.setScanB((scan.getSideB() != null) ? scan.getSideB().getFileName().toString() : "");
 
-            milition.setType((scan.getType() != null) ? scan.getType() : "N");
+            milition.setType((scan.getType() != null) ? scan.getType() : "n");
             if (scan.getMunicipality() != null)
                 milition.setMunicipality(scan.getMunicipality());
             if (scan.getYear() != null)

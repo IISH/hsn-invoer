@@ -44,8 +44,8 @@ public class Verdict extends Invoer implements Serializable {
     @Column(name = "USPRM", nullable = false) private int monthOfVerdict;
     @Column(name = "USPRJ", nullable = false) private int yearOfVerdict;
 
-    @Column(name = "NRUSPR", nullable = false) private int numberVerdict;
-    @Column(name = "NRREG", nullable = false) private int numberRegulation;
+    @Column(name = "NRUSPR", nullable = false, length = 10) private String numberVerdict = "";
+    @Column(name = "NRREG", nullable = false, length = 10) private String numberRegulation = "";
 
     @Column(name = "APPLD", nullable = false) private int dayOfAppeal;
     @Column(name = "APPLM", nullable = false) private int monthOfAppeal;
@@ -127,19 +127,19 @@ public class Verdict extends Invoer implements Serializable {
         this.yearOfVerdict = yearOfVerdict;
     }
 
-    public int getNumberVerdict() {
+    public String getNumberVerdict() {
         return numberVerdict;
     }
 
-    public void setNumberVerdict(int numberVerdict) {
+    public void setNumberVerdict(String numberVerdict) {
         this.numberVerdict = numberVerdict;
     }
 
-    public int getNumberRegulation() {
+    public String getNumberRegulation() {
         return numberRegulation;
     }
 
-    public void setNumberRegulation(int numberRegulation) {
+    public void setNumberRegulation(String numberRegulation) {
         this.numberRegulation = numberRegulation;
     }
 
