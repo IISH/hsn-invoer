@@ -29,7 +29,7 @@
         'milReg.professionGuardian'
     ];
 
-    var onFocus = function (e) {
+    $(document).on('focus', '.form-elem', function onFocus(e) {
         var id = $(e.target).attr('id');
 
         $('.info').hideNoEvent();
@@ -49,7 +49,5 @@
         if (beroep.indexOf(id) >= 0) {
             $('.info-beroep').showNoEvent();
         }
-    };
-
-    $(document).on('focus', '.form-elem', onFocus);
+    });
 })(jQuery);

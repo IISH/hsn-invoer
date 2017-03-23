@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    $(document).on('keyup', '.lengths input', function (e) {
+    $(document).on('keyup', '.lengths input', function validateLengths(e) {
         var elem = $(e.target);
         var val = elem.val();
         if ((e.which !== 9) && (val.indexOf('-') !== 0) && (val.length === 1)) {
@@ -10,10 +10,10 @@
         return true;
     });
 
-    var checkLength = function (elem) {
+    function checkLength(elem) {
         var val = elem.getIntegerValue();
         elem.hasErrorWhen(isNaN(val) || (val < -3) || (val > 9));
-    };
+    }
 
     $(document).ready(function () {
         var lengths = $('.lengths input');

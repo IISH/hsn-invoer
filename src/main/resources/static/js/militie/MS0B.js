@@ -3,7 +3,7 @@
 
     var militions;
 
-    var checkEnteredInput = function () {
+    function checkEnteredInput() {
         var message = $('#scansEnteredMessage');
 
         var year = $('#mil\\.year').val();
@@ -26,9 +26,9 @@
         else {
             message.hide();
         }
-    };
+    }
 
-    var checkYearAndType = function () {
+    function checkYearAndType() {
         var year = $('#mil\\.year').getIntegerValue();
         var type = $('#mil\\.type').val();
 
@@ -65,9 +65,9 @@
         else {
             $('#mil\\.drawnNumber').getParentOfFormElement().hide();
         }
-    };
+    }
 
-    $.initCheckDate('.checkYearMilitie', null, function (hsnDate) {
+    $.initCheckDate('.checkYearMilitie', null, function dateCheckMilition(hsnDate) {
         var yearVal = hsnDate.year.getValue();
         return (yearVal === 0 || yearVal <= 1700 || yearVal >= 2025);
     });

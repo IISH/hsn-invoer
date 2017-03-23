@@ -5,7 +5,7 @@
     var cutter;
     var submit = false;
 
-    var readImageOrPdf = function (file) {
+    function readImageOrPdf(file) {
         if (file.type.match('image.*')) {
             $.imageBlobToDataUrl(file, function (dataUrl) {
                 hsnCanvas.loadImage(dataUrl);
@@ -15,7 +15,7 @@
 
         if (file.type.indexOf('pdf') >= 0) {
             var reader = new FileReader();
-            reader.onload = function () {
+            reader.onload = function onPdfLoaded() {
                 PDFJS.getDocument(reader.result).then(function (pdf) {
                     pdf.getPage(1).then(function (page) {
                         var viewport = page.getViewport(3);
@@ -38,7 +38,7 @@
         }
 
         return false;
-    };
+    }
 
     $(document).ready(function () {
         hsnCanvas = new HsnCanvas('cutter', true);
@@ -54,7 +54,7 @@
         xhr.responseType = 'blob';
         xhr.send();
 
-        $('form:first').submit(function (e) {
+        $('form:first').submit(function onSubmit(e) {
             if (!submit && $(document.activeElement).hasClass('btn-next')) {
                 e.preventDefault();
 
