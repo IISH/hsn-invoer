@@ -11,9 +11,9 @@ public interface RelatieRepository extends Repository<Relatie, Integer> {
     Relatie findByRelkode(Integer relkode);
 
     @Query("SELECT rel FROM Relatie rel " +
-           "WHERE (UPPER(rel.relatie) LIKE UPPER(?1)) " +
+           "WHERE (UPPER(rel.relatie) = UPPER(?1)) " +
            "AND (rel.workOrder = ?2 OR rel.workOrder = ?3)")
-    Relatie findByRelatie(String relatie, WorkOrder emptyWorkOrder, WorkOrder workOrder);
+    List<Relatie> findByRelatie(String relatie, WorkOrder emptyWorkOrder, WorkOrder workOrder);
 
     @Query("SELECT rel FROM Relatie rel " +
            "WHERE (UPPER(rel.relatie) LIKE UPPER(?1)) " +
