@@ -47,7 +47,7 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "INGEV", nullable = false, length = 1) private String inJail = "";
     @Column(name = "DELICT", nullable = false, length = 200) private String whatCrime = "";
 
-    @Column(name = "IVRKL", nullable = false, length = 1) private String formerClass = "";
+    @Column(name = "IVRKL", nullable = false, length = 50) private String formerClass = "";
     @Column(name = "RDNLTR", nullable = false, length = 200) private String formerClassReason = "";
     @Column(name = "IVWD", nullable = false, length = 1) private String voluntaryService = "";
     @Column(name = "NMREG", nullable = false, length = 200) private String voluntaryWhere = "";

@@ -28,7 +28,7 @@ CREATE TABLE `m1` (
   `NMGES` varchar(200) NOT NULL,
   `INGEV` varchar(1) NOT NULL,
   `DELICT` varchar(200) NOT NULL,
-  `IVRKL` varchar(1) NOT NULL,
+  `IVRKL` varchar(50) NOT NULL,
   `RDNLTR` varchar(200) NOT NULL,
   `IVWD` varchar(1) NOT NULL,
   `NMREG` varchar(200) NOT NULL,

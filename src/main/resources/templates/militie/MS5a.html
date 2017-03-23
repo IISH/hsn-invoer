@@ -50,14 +50,14 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${akte.is('1913I')}">
+    <div class="form-group" th:if="${akte.is('1862L', '1913I')}">
       <label class="col-xs-6 control-label">Datum vroegere uitspraak:</label>
 
       <div
           th:replace="fragments/fields :: datum ('verdictVrijstelling.dayOfVerdict', 'verdictVrijstelling.monthOfVerdict', 'verdictVrijstelling.yearOfVerdict')"></div>
     </div>
 
-    <div class="form-group" th:if="${akte.is('1913I')}">
+    <div class="form-group" th:if="${akte.is('1862L', '1913I')}">
       <label class="col-xs-6 control-label">Aard der uitspraak:</label>
 
       <div class="col-xs-5">

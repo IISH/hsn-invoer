@@ -11,17 +11,17 @@
     <div class="extra-top-margin" th:include="fragments/groups-of-fields :: namen-nieuw ('mil.familyName', 'mil.firstName')">
     </div>
 
-    <div class="form-group checkDateDefault extra-top-margin">
-      <label class="col-xs-3 control-label">Geboortedatum:</label>
-
-      <div th:replace="fragments/fields :: datum ('mil.dayOfBirth', 'mil.monthOfBirth', 'mil.yearOfBirth')"></div>
-    </div>
-
-    <div class="form-group two-line-label"
+    <div class="form-group two-line-label extra-top-margin"
          th:include="fragments/complete-fields :: plaats ('mil.placeOfMilition', ${akte.mil.is1815() ? 'Militiekanton van de geboorteplaats:' : 'Militiedistrict van de geboorteplaats:'})"></div>
 
     <div class="form-group"
          th:include="fragments/complete-fields :: plaats ('mil.placeOfBirth', 'Geboorteplaats:')"></div>
+
+    <div class="form-group checkDateDefault">
+      <label class="col-xs-3 control-label">Geboortedatum:</label>
+
+      <div th:replace="fragments/fields :: datum ('mil.dayOfBirth', 'mil.monthOfBirth', 'mil.yearOfBirth')"></div>
+    </div>
 
     <div class="form-group extra-top-margin"
          th:include="fragments/complete-fields :: plaats ('mil.placeOfLiving', ${akte.mil.is1815() ? 'Verblijfplaats:' : 'Woonplaats:'})"></div>

@@ -37,38 +37,40 @@
       </ul>
     </div>
 
-    <div class="form-group extra-top-margin">
-      <label class="col-xs-4 control-label">Inventaris nummer:</label>
+    <div class="extra-top-margin">
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Inventarisnummer:</label>
 
-      <div class="col-xs-2">
-        <input type="text" class="form-control" th:field="*{mil.invNumber}" hsn:field="mil.invNumber"/>
+        <div class="col-xs-2">
+          <input type="text" class="form-control" th:field="*{mil.invNumber}" hsn:field="mil.invNumber"/>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label class="col-xs-4 control-label">Volgnummer:</label>
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Volgnummer:</label>
 
-      <div class="col-xs-2">
-        <input type="text" class="form-control integer-field"
-               th:field="*{mil.seqRegister}" hsn:field="mil.seqRegister"/>
+        <div class="col-xs-2">
+          <input type="text" class="form-control integer-field"
+                 th:field="*{mil.seqRegister}" hsn:field="mil.seqRegister"/>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label class="col-xs-4 control-label">Volgnr. inschrijvingsregister:</label>
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Volgnr. inschrijvingsregister:</label>
 
-      <div class="col-xs-2">
-        <input type="text" class="form-control integer-field"
-               th:field="*{mil.seqRefer}" hsn:field="mil.seqRefer"/>
+        <div class="col-xs-2">
+          <input type="text" class="form-control integer-field"
+                 th:field="*{mil.seqRefer}" hsn:field="mil.seqRefer"/>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label class="col-xs-4 control-label">Lotingsnummer:</label>
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Lotingsnummer:</label>
 
-      <div class="col-xs-2">
-        <input type="text" class="form-control integer-field"
-               th:field="*{mil.drawnNumber}" hsn:field="mil.drawnNumber"/>
+        <div class="col-xs-2">
+          <input type="text" class="form-control integer-field"
+                 th:field="*{mil.drawnNumber}" hsn:field="mil.drawnNumber"/>
+        </div>
       </div>
     </div>
 

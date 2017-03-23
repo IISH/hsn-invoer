@@ -6,7 +6,34 @@
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="form-group two-line-label">
+    <div class="form-group">
+      <label class="col-xs-5 control-label">Behoorde tot een eerdere lichting? j / n</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+               id="eerdereLichting" maxlength="1"
+               th:value="${@militieregisterHelper.hasEerdereLichting(akte.mil, akte.isCorrection())}"/>
+      </div>
+    </div>
+
+    <div class="form-group" data-show-when="#eerdereLichting" data-has-values-in="j" style="display:none;">
+      <label class="col-xs-5 control-label">Welke eerdere lichting?</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control" th:field="*{mil.formerClass}" hsn:field="mil.formerClass"/>
+      </div>
+    </div>
+
+    <div class="form-group" data-show-when="#eerdereLichting" data-has-values-in="j" style="display:none;">
+      <label class="col-xs-5 control-label">Waarom onderdeel van deze lichting?</label>
+
+      <div class="col-xs-7">
+        <input type="text" class="form-control"
+               th:field="*{mil.formerClassReason}" hsn:field="mil.formerClassReason"/>
+      </div>
+    </div>
+
+    <div class="form-group two-line-label extra-top-margin">
       <label class="col-xs-5 control-label">Eventuele door de militieraad aangebrachte verbeteringen:</label>
 
       <div class="col-xs-6">

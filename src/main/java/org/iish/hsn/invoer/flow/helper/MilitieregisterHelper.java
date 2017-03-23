@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MilitieregisterHelper {
     public String getTypeRegister(String type) {
+        type = type.toUpperCase();
         switch (type) {
             case "A":
                 return "Alfabetische naamlijst";
@@ -35,6 +36,15 @@ public class MilitieregisterHelper {
         if (!mil.getFace().isEmpty() || !mil.getForehead().isEmpty() || !mil.getEyes().isEmpty() ||
                 !mil.getNose().isEmpty() || !mil.getMouth().isEmpty() || !mil.getChin().isEmpty() ||
                 !mil.getHair().isEmpty() || !mil.getEyebrows().isEmpty() || !mil.getNotableSigns().isEmpty())
+            return "j";
+
+        if (isCorrection)
+            return "n";
+        return "";
+    }
+
+    public String hasEerdereLichting(Milition mil, boolean isCorrection) {
+        if (!mil.getFormerClass().isEmpty())
             return "j";
 
         if (isCorrection)
