@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html layout:decorator="formLayout">
+<html layout:decorator="formLayout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
 <head></head>
 <body>
 <fieldset layout:fragment="title" th:include="persoonskaart/PSTITEL :: PSTITEL"></fieldset>
@@ -39,7 +41,7 @@
         <div class="col-xs-9 form-inline">
           <div class="sub-form-group checkDateDefault" style="display:inline;">
             <th:block
-                th:include="fragments/fields :: datum ('curPkeigknd.gdgkndp', 'curPkeigknd.gmdkndp', 'curPkeigknd.gjrkndp')">
+                th:include="fragments/fields :: datum ('curPkeigknd.hdgkndp', 'curPkeigknd.hmdkndp', 'curPkeigknd.hjrkndp')">
             </th:block>
           </div>
 

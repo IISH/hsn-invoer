@@ -1,8 +1,8 @@
 ldap:
-  url: ldap://
+  url: ldap:///dc=,dc=
   manager:
-    dn: cn=,dc=
-    password: 
+    dn: cn=,dc=,dc=
+    password:
   search:
     base: ou=
     filter: cn={0}
