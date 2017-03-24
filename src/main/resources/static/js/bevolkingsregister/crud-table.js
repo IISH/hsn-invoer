@@ -1,11 +1,11 @@
 (function ($) {
     'use strict';
 
-    var getVisibleCrudTableContainer = function () {
+    function getVisibleCrudTableContainer() {
         return $('.crud-table-container').filter(':visible').first();
-    };
+    }
 
-    var getElems = function () {
+    function getElems() {
         var parent = getVisibleCrudTableContainer();
         var onEdit = parent.find('.on-edit');
         return {
@@ -16,9 +16,9 @@
             btnSaveNew: onEdit.find('.btn-save-new'),
             btnSaveUpdate: onEdit.find('.btn-save-update')
         };
-    };
+    }
 
-    var resetValues = function () {
+    function resetValues() {
         var elems = getElems();
         var inputElems = elems.onEdit.find('input').not('[type=button]');
 
@@ -30,18 +30,18 @@
         elems.parent.find('.modalMessages').hide().empty();
 
         $(document).trigger('crud-table-reset', [elems]);
-    };
+    }
 
-    var getData = function (parentElem) {
+    function getData(parentElem) {
         var data = {};
         parentElem.find(':input:visible, input[type=hidden]').not('[disabled],[type=button]').each(function () {
             var inputElem = $(this);
             data[inputElem.attr('name')] = inputElem.val();
         });
         return data;
-    };
+    }
 
-    var openOnEdit = function (self, isNew) {
+    function openOnEdit(self, isNew) {
         var elems = getElems();
 
         var row = self.closest('tr');
@@ -86,9 +86,9 @@
         else {
             self.trigger('crud-table-update', [elems]);
         }
-    };
+    }
 
-    var onCancel = function (self) {
+    function onCancel(self) {
         var elems = getElems();
         var isContinued = elems.parent.hasClass('continued');
 
@@ -112,13 +112,13 @@
 
         resetValues();
         self.trigger('crud-table-cancel', [elems]);
-    };
+    }
 
-    var onDelete = function (self) {
+    function onDelete(self) {
         self.trigger('crud-table-delete', [getElems()]);
-    };
+    }
 
-    var onSave = function (self, isNew) {
+    function onSave(self, isNew) {
         var elems = getElems();
 
         elems.onEdit.resetInvisibleFormElements();
@@ -137,9 +137,9 @@
         else {
             self.trigger('crud-table-save-update', [elems, data]);
         }
-    };
+    }
 
-    var onAjaxSuccess = function (self, result) {
+    function onAjaxSuccess(self, result) {
         var elems = getElems();
         var resultElem = $(result);
         var index = elems.table.find('.free tr').index(elems.table.find('.free tr.rowToUpdate'));
@@ -156,7 +156,7 @@
                 elems.parent.find('.btn-new:first').focus();
             }
         }
-    };
+    }
 
     $(document).keypress(function (e) {
         var char = String.fromCharCode(e.which);

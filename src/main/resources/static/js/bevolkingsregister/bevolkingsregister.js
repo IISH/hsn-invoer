@@ -11,7 +11,7 @@
      *  The default getCurPerson method with the default value of no current person.
      *  To be overloaded for specific cases on different pages in the bevolkingsregister flow.
      */
-    $.getCurPerson = function () {
+    $.getCurPerson = function getCurPersonDefault() {
         return 0;
     };
 
@@ -19,7 +19,7 @@
      *  The default getCurPersonModal method with an empty jQuery object, as in: no modal found.
      *  To be overloaded for specific cases on different pages in the bevolkingsregister flow.
      */
-    $.getCurPersonModal = function () {
+    $.getCurPersonModal = function getCurPersonModalDefault() {
         return $();
     };
 
@@ -27,13 +27,13 @@
      *  The default getCurPersonData method with an empty object, as in: no data found.
      *  To be overloaded for specific cases on different pages in the bevolkingsregister flow.
      */
-    $.getCurPersonData = function () {
+    $.getCurPersonData = function getCurPersonDataDefault() {
         return {};
     };
 
     /* Date checks */
 
-    $.checkDateBevReg = function (hsnDate, elem) {
+    $.checkDateBevReg = function checkDateBevReg(hsnDate, elem) {
         var error = false;
         var parent = elem.getParentOfFormElement();
 
@@ -74,7 +74,7 @@
         return error;
     };
 
-    var checkInterprDateBevReg = function (hsnDate) {
+    var checkInterprDateBevReg = function checkInterprDateBevReg(hsnDate) {
         var error = false;
 
         var dayVal = hsnDate.day.getValue();
@@ -108,7 +108,7 @@
 
     /* Bijzonderheden and overview modals */
 
-    var onOverviewOpen = function () {
+    function onOverviewOpen() {
         var modal = $('.overviewModal:first');
         if (modal.length === 1) {
             $.get('/bevolkingsregister/overzicht/modal', {}, function (overviewTable) {
@@ -116,13 +116,13 @@
                 modal.modal({keyboard: false, backdrop: 'static'});
             });
         }
-    };
+    }
 
-    var onOverviewClose = function () {
+    function onOverviewClose() {
         $.getOpenedModal().modal('hide');
-    };
+    }
 
-    var onPersonByzOpen = function () {
+    function onPersonByzOpen() {
         var modal = $.getCurPersonModal();
         if (modal.length === 1) {
             $.each($.getCurPersonData(), function (key, value) {
@@ -131,9 +131,9 @@
             modal.data('content', modal.find('textarea').val());
             modal.modal({keyboard: false, backdrop: 'static'});
         }
-    };
+    }
 
-    var onPersonByzClose = function (save) {
+    function onPersonByzClose(save) {
         var modal = $.getOpenedModal();
         if (save) {
             modal.trigger('person-byz-save', [$.getCurPerson()]);
@@ -142,23 +142,23 @@
             modal.find('textarea').val(modal.data('content'));
         }
         modal.modal('hide');
-    };
+    }
 
-    var onRegistrationByzOpen = function () {
+    function onRegistrationByzOpen() {
         var modal = $('.registrationModal');
         if (modal.length === 1) {
             modal.data('content', modal.find('textarea').val());
             modal.modal({keyboard: false, backdrop: 'static'});
         }
-    };
+    }
 
-    var onRegistrationByzClose = function (save) {
+    function onRegistrationByzClose(save) {
         var modal = $.getOpenedModal();
         if (!save) {
             modal.find('textarea').val(modal.data('content'));
         }
         modal.modal('hide');
-    };
+    }
 
     $(document).on('click', '.btn-delete', function (e) {
         if (!confirm('Wilt u deze inschrijving verwijderen?')) {

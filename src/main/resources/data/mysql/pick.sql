@@ -12,7 +12,7 @@ CREATE TABLE `adrestp` (
 
 CREATE TABLE `beroep` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `BERPNAAM` varchar(50) NOT NULL,
+  `BERPNAAM` varchar(254) NOT NULL,
   `NWINLST` varchar(1) NOT NULL,
   `ONDRZKO` varchar(3) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,

@@ -10,7 +10,7 @@
     /**
      * Replaces the first character with an uppercase character.
      */
-    var onUppercase = function (elem) {
+    function onUppercase(elem) {
         // If there is already a 'integer-field' or 'data-valid-chars' handler, don't handle the new event
         var caret = elem.getCaret();
         if (!elem.hasClass('integer-field') && !elem.hasClass('is-id') && !elem.hasClass('no-auto-uppercase')
@@ -24,21 +24,21 @@
                 elem.setCaret(caret);
             }
         }
-    };
+    }
 
     /**
      * Submit the form when the user pressed a (valid) key.
      */
-    var onSubmitOnKeyup = function (elem) {
+    function onSubmitOnKeyup(elem) {
         if (elem.val().trim().length > 0) {
             elem.closest('form').submit();
         }
-    };
+    }
 
     /**
      * Only allow numbers to be entered in a field.
      */
-    var onIntegerField = function (elem, e) {
+    function onIntegerField(elem, e) {
         // If there is already a 'valid chars' handler, don't handle the new event
         if (!elem.is('[data-valid-chars]') && (e.charCode !== 0)) {
             var char = String.fromCharCode(e.which);
@@ -54,7 +54,7 @@
             return allow;
         }
         return true;
-    };
+    }
 
     /**
      * Only allow a certain set of characters to be entered in a field.
@@ -64,7 +64,7 @@
      * 2)   data-valid-chars="1;2;3;4;5;6;7;8;9"
      *      Only the numbers '1' until '9' can be entered.
      */
-    var onValidChars = function (elem, e) {
+    function onValidChars(elem, e) {
         if (e.charCode !== 0) {
             var validChars = elem.getMultipleDataValues('valid-chars');
             var char = String.fromCharCode(e.which);
@@ -73,7 +73,7 @@
             return allow;
         }
         return true;
-    };
+    }
 
     /**
      * Only allow a value of a field within a certain range, otherwise clear the field.
@@ -83,7 +83,7 @@
      * 2)   data-min-value="150"
      *      Only if 150 or larger was entered, the value is accepted.
      */
-    var onMinValue = function (elem) {
+    function onMinValue(elem) {
         var minValue = elem.getIntegerDataValue('min-value');
         var number = elem.getIntegerValue();
 
@@ -93,9 +93,9 @@
         else {
             elem.val(number);
         }
-    };
+    }
 
-    var onMaxValue = function (elem) {
+    function onMaxValue(elem) {
         var maxValue = elem.getIntegerDataValue('max-value');
         var number = elem.getIntegerValue();
 
@@ -105,7 +105,7 @@
         else {
             elem.val(number);
         }
-    };
+    }
 
     /**
      * Replace certain values of a field with another value.
@@ -115,7 +115,7 @@
      * 2)   data-replace=":-1"
      *      Replace an empty value with the value '-1'.
      */
-    var onReplace = function (elem) {
+    function onReplace(elem) {
         var replace = elem.getMultipleDataValues('replace');
         for (var i = 0; i < replace.length; i++) {
             var delimiterPos = replace[i].indexOf(':');
@@ -126,7 +126,7 @@
                 elem.val(right);
             }
         }
-    };
+    }
 
     /**
      * Replace certain values of a field with another value in another field.
@@ -137,7 +137,7 @@
      * 2)   data-replace-in-field="#b" data-replace=":-1"
      *      If there is an empty value, then set the value '-1' in element with id 'b'.
      */
-    var onReplaceInField = function (elem) {
+    function onReplaceInField(elem) {
         var replaceInField = elem.getDataValueAsElem('replace-in-field');
         var forValues = elem.getMultipleDataValues('for-values');
 
@@ -150,7 +150,7 @@
                 replaceInField.val(right);
             }
         }
-    };
+    }
 
     /**
      * Set a trigger on a field only to be shown when a certain condition has been fulfilled.
@@ -161,7 +161,7 @@
      * 2)   data-show-when="#b" data-has-values-not-in="4,5,6"
      *      Only show this field when an element with id 'b' does NOT have the values 4, 5 or 6.
      */
-    var prepareShowWhen = function (elem) {
+    function prepareShowWhen(elem) {
         var showWhen = elem.getDataValueAsElem('show-when');
 
         hasValues(
@@ -182,7 +182,7 @@
                 return false;
             }
         );
-    };
+    }
 
     /**
      * Set the value of a field based on a certain condition.
@@ -195,7 +195,7 @@
      *      When an element with id 'b' does NOT have the values 4, 5 or 6, then the value of this element equals 7,
      *      else the value of this element equals the value of the element with id 'a'.
      */
-    var prepareSetValueWhen = function (elem) {
+    function prepareSetValueWhen(elem) {
         var setValueWhen = elem.getDataValueAsElem('set-value-when');
 
         var thenCase = new ConditionalCase(elem, elem.getDataValue('then-value'), elem.getDataValueAsElem('then-value-of'));
@@ -212,7 +212,7 @@
                 elseCase.enableCase();
             }
         );
-    };
+    }
 
     function ConditionalCase(mainElement, value, valueElement) {
         if ((value === undefined) && (valueElement.length === 0)) {
@@ -228,7 +228,7 @@
 
             valueElementUpdate: undefined,
 
-            enableCase: function () {
+            enableCase: function enableCase() {
                 this.isActive = true;
                 if (this.valueElement.is('input')) {
                     this.valueElementUpdate();
@@ -241,7 +241,7 @@
                 }
             },
 
-            disableCase: function () {
+            disableCase: function disableCase() {
                 this.isActive = false;
                 this.valueElement.off('keyup', this.valueElementUpdate);
             }
@@ -258,18 +258,12 @@
         return conditionalCase;
     }
 
-    var hasValues = function (elem, target, onTrue, onFalse) {
-        var onValuesIn = elem.getDataValue('has-values-in');
-        onValuesIn = (onValuesIn !== undefined) ? onValuesIn.toString().split(';') : onValuesIn;
-        var onValuesNotIn = elem.getDataValue('has-values-not-in');
-        onValuesNotIn = (onValuesNotIn !== undefined) ? onValuesNotIn.toString().split(';') : onValuesNotIn;
-
-        var previousResult = null;
-
-        var valuesAreDefined = function (onValues) {
+    function hasValues(elem, target, onTrue, onFalse) {
+        function valuesAreDefined(onValues) {
             return ((onValues !== undefined) && (onValues.length > 0));
-        };
-        var checkConditions = function (onValues, isNegate) {
+        }
+
+        function checkConditions(onValues, isNegate) {
             var newResult = null;
             if (onValues.indexOf(target.val()) >= 0) {
                 newResult = isNegate ? onFalse() : onTrue();
@@ -282,55 +276,63 @@
                 $.triggerChangeOfState();
             }
             previousResult = newResult;
-        };
-        var onEvent = function () {
+        }
+
+        function onEvent() {
             if (valuesAreDefined(onValuesIn)) {
                 checkConditions(onValuesIn, false);
             }
             else if (valuesAreDefined(onValuesNotIn)) {
                 checkConditions(onValuesNotIn, true);
             }
-        };
+        }
+
+        var onValuesIn = elem.getDataValue('has-values-in');
+        onValuesIn = (onValuesIn !== undefined) ? onValuesIn.toString().split(';') : onValuesIn;
+        var onValuesNotIn = elem.getDataValue('has-values-not-in');
+        onValuesNotIn = (onValuesNotIn !== undefined) ? onValuesNotIn.toString().split(';') : onValuesNotIn;
+
+        var previousResult = null;
 
         onEvent();
         $(target).change(onEvent);
-    };
+    }
 
-    var prepareByz = function (elem) {
+    function prepareByz(elem) {
         var allByzElem = elem.find('textarea');
         allByzElem[0].setSelectionRange(allByzElem.val().length * 2, allByzElem.val().length * 2);
-    };
+    }
 
-    var setOverwrite = function (elem, e) {
+    function setOverwrite(elem, e) {
         if (e.charCode !== 0) {
-            var text = elem.val();
+            var text = elem.valNoEvent();
             var caret = elem.getCaret();
 
             // First remove the character that will be replaced
             var output = text.substring(0, caret);
-            elem.val(output + text.substring(caret + 1));
+            elem.valNoEvent(output + text.substring(caret + 1));
 
             // Then reinitialize the caret position
             elem.setCaret(caret);
         }
         return true;
-    };
+    }
 
     // IE9 does not support 'maxlength' on textarea
-    var setMaxLength = function (elem) {
+    function setMaxLength(elem) {
         var length = elem.val().length;
         var maxlength = elem.attr('maxlength');
         if (maxlength && (length > maxlength)) {
             elem.val(elem.val().slice(0, maxlength));
         }
-    };
+    }
 
-    var updateScrollPosition = function (elem) {
+    function updateScrollPosition(elem) {
         var parent = elem.closest('.complete-focus');
         if (parent.length > 0) {
             parent.get(0).scrollIntoView({block: 'end', behavior: 'smooth'});
         }
-    };
+    }
 
     $(document).on('keyup', '.form-elem', function (e) {
         var elem = $(e.target);
