@@ -62,14 +62,14 @@
         });
     }
 
-    FindOp.prototype.withIdnr = function (handler) {
+    FindOp.prototype.withIdnr = function withIdnr(handler) {
         var idnr = self.idnrElem.getIntegerValue();
         if (!isNaN(idnr)) {
             handler(idnr);
         }
     };
 
-    FindOp.prototype.stpbLookup = function () {
+    FindOp.prototype.stpbLookup = function stpbLookup() {
         self.withIdnr(function (idnr) {
             self.serverCall('/ajax/lookup/stpb', {idnr: idnr}, function (stpb) {
                 $('.gemeente').text(stpb.gemeente);
@@ -99,7 +99,7 @@
         });
     };
 
-    FindOp.prototype.gebkndLookup = function () {
+    FindOp.prototype.gebkndLookup = function gebkndLookup() {
         self.withIdnr(function (idnr) {
             self.serverCall('/ajax/lookup/gebknd', {idnr: idnr}, function (gebknd) {
                 if ($.isCorrection()) {
@@ -123,7 +123,7 @@
         });
     };
 
-    FindOp.prototype.refRPLookup = function () {
+    FindOp.prototype.refRPLookup = function refRPLookup() {
         self.withIdnr(function (idnr) {
             if ((idnr >= 500000) && self.idnrElem.hasClass('allow-large-idnrs')) {
                 self.noRefRPLookup();
@@ -143,7 +143,7 @@
         });
     };
 
-    FindOp.prototype.noRefRPLookup = function () {
+    FindOp.prototype.noRefRPLookup = function noRefRPLookup() {
         self.withIdnr(function (idnr) {
             self.serverCall('/ajax/lookup/' + self.lookup, {idnr: idnr}, function () {
                 if ($.isCorrection()) {
@@ -163,7 +163,7 @@
         });
     };
 
-    FindOp.prototype.marriageLookup = function () {
+    FindOp.prototype.marriageLookup = function marriageLookup() {
         self.withIdnr(function (idnr) {
             var day = $('.day').val();
             var month = $('.month').val();
@@ -192,7 +192,7 @@
         });
     };
 
-    FindOp.prototype.onSuccess = function (autoNextElement) {
+    FindOp.prototype.onSuccess = function onSuccess(autoNextElement) {
         self.failElem.hide();
 
         self.withOpElems.show();
@@ -209,7 +209,7 @@
         $.triggerChangeOfState();
     };
 
-    FindOp.prototype.onTyping = function () {
+    FindOp.prototype.onTyping = function onTyping() {
         self.failElem.hide();
 
         self.withOpElems.hide();
@@ -221,7 +221,7 @@
         $.triggerChangeOfState();
     };
 
-    FindOp.prototype.onFailure = function (message, foundOp, editOp, error) {
+    FindOp.prototype.onFailure = function onFailure(message, foundOp, editOp, error) {
         self.failElem.html(message).show();
 
         self.withOpElems.hide();
@@ -235,7 +235,7 @@
         self.blur.getNextFormElement().focus();
     };
 
-    FindOp.prototype.serverCall = function (url, params, onSuccess, onFailure) {
+    FindOp.prototype.serverCall = function serverCall(url, params, onSuccess, onFailure) {
         $.lockNavigation();
 
         /* TODO: In case a spinner is required

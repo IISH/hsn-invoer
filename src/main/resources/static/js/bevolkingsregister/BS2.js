@@ -3,17 +3,17 @@
 
     /* Utility methods */
 
-    var getActiveRow = function () {
+    function getActiveRow() {
         var readOnlyRow = $('#registrationAddresses').find('tr.active');
         if (readOnlyRow.length === 1) {
             return readOnlyRow;
         }
         return $('.on-edit .free tr:visible');
-    };
+    }
 
     /* Overloading of methods */
 
-    $.getCurPerson = function () {
+    $.getCurPerson = function getCurPerson() {
         var person = 0;
 
         var personElem = getActiveRow().find('span.keyToRegistrationPersons, input[name=keyToRegistrationPersons]');
@@ -32,18 +32,18 @@
         return 0;
     };
 
-    $.getCurPersonModal = function () {
+    $.getCurPersonModal = function getCurPersonModal() {
         return $('.personByzModals > [data-person=' + $.getCurPerson() + '] > .personModal:first');
     };
 
-    $.getCurPersonData = function () {
+    $.getCurPersonData = function getCurPersonData() {
         // Not necessary, data of persons cannot be changed in this screen
         return {};
     };
 
     /* BS2 specific operations */
 
-    var determineSeqNr = function (blurPerson) {
+    function determineSeqNr(blurPerson) {
         var row = getActiveRow();
         var personElem = row.find('.person');
         var seqNrElem = row.find('.seqNr');
@@ -86,9 +86,9 @@
         if (blurPerson && btnSaveUpdate.is(':hidden')) {
             seqNrElem.autoNextFocus(false);
         }
-    };
+    }
 
-    var checkOrderOfDate = function () {
+    function checkOrderOfDate() {
         var warningMsg = $('#dateOrderWarning');
 
         var row = getActiveRow();
@@ -122,9 +122,9 @@
         }
 
         warningMsg.hide();
-    };
+    }
 
-    var copyFromLastLine = function () {
+    function copyFromLastLine() {
         var row = getActiveRow();
         var lastRow = $('#registrationAddresses').find('.free tbody tr:last-child');
 
@@ -146,29 +146,29 @@
 
         determineSeqNr(true);
         $.triggerChangeOfState();
-    };
+    }
 
-    var onReset = function () {
+    function onReset() {
         $('#dateOrderWarning').hide();
-    };
+    }
 
-    var onNew = function (self, elems) {
+    function onNew(self, elems) {
         var person = elems.onEdit.find('.person');
         var seqNr = elems.onEdit.find('.seqNr');
 
         person.val(0).blur();
         seqNr.val('');
         person.focus().setCaret(0);
-    };
+    }
 
-    var onUpdate = function (self, elems) {
+    function onUpdate(self, elems) {
         var row = self.closest('tr');
         var person = row.find('.person').text();
         var seqNr = row.find('.seqNr').text();
         elems.btnSaveUpdate.data('seqNr', seqNr).data('person', person);
-    };
+    }
 
-    var onDelete = function (self) {
+    function onDelete(self) {
         var row = self.closest('tr');
         $.ajax({
             type: 'POST',
@@ -183,9 +183,9 @@
                 self.trigger('crud-table-ajax-success', [result]);
             }
         });
-    };
+    }
 
-    var onSaveNew = function (self, data) {
+    function onSaveNew(self, data) {
         $.ajax({
             type: 'POST',
             dataType: 'text',
@@ -199,9 +199,9 @@
                 self.trigger('crud-table-ajax-success', [result]);
             }
         });
-    };
+    }
 
-    var onSaveUpdate = function (self, data) {
+    function onSaveUpdate(self, data) {
         $.ajax({
             type: 'POST',
             dataType: 'text',
@@ -215,7 +215,7 @@
                 self.trigger('crud-table-ajax-success', [result]);
             }
         });
-    };
+    }
 
     /* Event registration */
 

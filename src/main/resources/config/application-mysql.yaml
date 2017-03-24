@@ -51,7 +51,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-      naming-strategy: org.iish.hsn.invoer.util.HsnNamingStrategy
+      naming:
+        physical-strategy: org.iish.hsn.invoer.util.HsnPhysicalNamingStrategy
 
 hibernate:
   dialect: org.hibernate.dialect.MySQL5InnoDBDialect

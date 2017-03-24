@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    var checkNotAlive = function () {
+    function checkNotAlive() {
         var isAlive = $(forAllFour('#huwknd\\.lev'));
 
         var names = [];
@@ -13,24 +13,24 @@
         if (!$.isCorrection() && (isAlive.val() === 'o')) {
             $(names.join(',')).val('');
         }
-    };
+    }
 
-    var checkAge = function () {
+    function checkAge() {
         var ageElem = $(forAllFour('#huwknd\\.lftj'));
         var age = ageElem.getIntegerValue();
 
         ageElem.hasErrorWhen(age < -3 || age > 110 || (age > -1 && age < 15 && age !== 0));
         $.triggerChangeOfState();
-    };
+    }
 
-    var forAllFour = function (name) {
+    function forAllFour(name) {
         var names = [];
         names.push(name + 'vrhm');
         names.push(name + 'mrhm');
         names.push(name + 'vrhv');
         names.push(name + 'mrhv');
         return names.join(',');
-    };
+    }
 
     $(document).ready(function () {
         $(forAllFour('#huwknd\\.lev')).one('blur', checkNotAlive);

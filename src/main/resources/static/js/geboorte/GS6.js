@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    var mayAddByz = function () {
+    function mayAddByz() {
         var byzBtn = $('.btn-byz');
         byzBtn.addClass('no-byz');
 
@@ -11,7 +11,7 @@
         }
 
         $.triggerChangeOfState();
-    };
+    }
 
     $(document).ready(function () {
         mayAddByz();
