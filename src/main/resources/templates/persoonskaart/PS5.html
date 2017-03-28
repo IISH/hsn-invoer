@@ -40,15 +40,17 @@
             <label class="col-xs-3 control-label">STRAAT:</label>
 
             <div class="col-xs-5">
-              <input type="text" class="form-control street" th:field="*{pkadres[__${stat.index}__].stradrp}"/>
+              <input type="text" class="form-control street"
+                     th:field="*{pkadres[__${stat.index}__].stradrp}" hsn:field="pkadres[__${stat.index}__].stradrp"/>
             </div>
           </div>
 
-          <div class="form-group"> <!--data:show-when="${vgnradp > 1} ? '#pkadres__${stat.index}__\.vernum'" data:has-values-in="${vgnradp > 1} ? 'n'"-->
+          <div class="form-group">
             <label class="col-xs-3 control-label">LAND:</label>
 
             <div class="col-xs-5">
-              <input type="text" class="form-control country" th:field="*{pkadres[__${stat.index}__].lndadrp}"/>
+              <input type="text" class="form-control country"
+                     th:field="*{pkadres[__${stat.index}__].lndadrp}" hsn:field="pkadres[__${stat.index}__].lndadrp"/>
             </div>
           </div>
         </div>

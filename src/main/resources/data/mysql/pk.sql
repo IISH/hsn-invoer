@@ -83,7 +83,7 @@ CREATE TABLE `pkadres` (
 `MDADRP` int(11) NOT NULL,
 `JRADRP` int(11) NOT NULL,
 `VERNUM` varchar(1) NOT NULL,
-`STRADRP` varchar(50) NOT NULL,
+`STRADRP` varchar(254) NOT NULL,
 `PLADRP` varchar(50) NOT NULL,
 `LNDADRP` varchar(50) NOT NULL,
 `OPDRNR` varchar(3) NOT NULL,
