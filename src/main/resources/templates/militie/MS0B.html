@@ -24,16 +24,22 @@
       </label>
 
       <div class="col-xs-1">
-        <input type="text" class="form-control form-control-digit required" maxlength="1"
-               data-valid-chars="a;i;k;l;n" th:field="*{mil.type}" hsn:field="mil.type"/>
+        <input type="text" class="form-control form-control-digit required auto-uppercase" maxlength="1"
+               data-valid-chars="A;I;K;L;N" th:field="*{mil.type}" hsn:field="mil.type"/>
       </div>
 
       <ul class="col-xs-3 list-unstyled default-label">
-        <li>a = Alfabetische naamlijst</li>
-        <li>i = Inschrijvingsregister</li>
-        <li>k = Keuringsregister</li>
-        <li>l = Lotingsregister</li>
-        <li>n = Niet bekend</li>
+        <li>A = Alfabetische naamlijst</li>
+        <li>I = Inschrijvingsregister</li>
+      </ul>
+
+      <ul class="col-xs-3 list-unstyled default-label">
+        <li>K = Keuringsregister</li>
+        <li>L = Lotingsregister</li>
+      </ul>
+
+      <ul class="col-xs-2 list-unstyled default-label">
+        <li>N = Niet bekend</li>
       </ul>
     </div>
 

@@ -73,7 +73,7 @@
   </view-state>
 
   <action-state id="extraInfoCheck">
-    <evaluate expression="flowScope.akte.is('1815A')"/>
+    <evaluate expression="flowScope.akte.mil.is1815() and flowScope.akte.mil.type == 'A'"/>
 
     <transition on="yes" to="MS4a"/>
     <transition on="no" to="MS4"/>

@@ -42,8 +42,9 @@
     </div>
 
     <div class="col-xs-3 text-left">
-      Jaar: <br/>
-      <span th:utext="${akte.mil.year} ? ${akte.mil.year}"></span>
+      Jaar / Type: <br/>
+      <span class="year" th:utext="${akte.mil.year} ? ${akte.mil.year}"></span> /
+      <span class="type" th:utext="${akte.mil.type} ? ${akte.mil.type}"></span>
     </div>
 
     <div class="col-xs-3 text-left">

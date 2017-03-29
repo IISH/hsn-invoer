@@ -33,33 +33,34 @@
         var type = $('#mil\\.type').val();
 
         $.setError(
-            (type === 'a') && (year >= 1862) && (year <= 1912),
+            (type === 'A') && (year >= 1862) && (year <= 1912),
             'year-and-type',
             'Deze variant mag niet worden ingevoerd!'
         );
 
-        if (type === 'k') {
+        if (type === 'K') {
             $('#mil\\.invNumber').getParentOfFormElement().show();
         }
         else {
             $('#mil\\.invNumber').getParentOfFormElement().hide();
         }
 
-        if ((type === 'a') && (year < 1862 || year > 1912)) {
+        if (((type === 'A') && (year < 1862 || year > 1912)) ||
+            ((type === 'L') && (year > 1912))) {
             $('#mil\\.seqRegister').getParentOfFormElement().show();
         }
         else {
             $('#mil\\.seqRegister').getParentOfFormElement().hide();
         }
 
-        if (type !== 'l' && type !== 'k' && type !== 'n') {
+        if ((type !== 'L' && type !== 'K' && type !== 'N') || (year > 1912)) {
             $('#mil\\.seqRefer').getParentOfFormElement().show();
         }
         else {
             $('#mil\\.seqRefer').getParentOfFormElement().hide();
         }
 
-        if (!(type === 'i' && year >= 1815 && year <= 1861)) {
+        if (!(type === 'I' && year >= 1815 && year <= 1861)) {
             $('#mil\\.drawnNumber').getParentOfFormElement().show();
         }
         else {

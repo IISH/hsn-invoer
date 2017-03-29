@@ -14,7 +14,7 @@
 
       <div class="col-xs-2">
         <input type="text" id="uitgesteld" class="form-control form-control-digit required" data-valid-chars="j;n"
-               maxlength="1" th:value="${@militieregisterHelper.hasUitgesteld(akte, akte.isCorrection())}"/>
+               maxlength="1" th:value="${@militieregisterHelper.hasUitgesteld(akte)}"/>
       </div>
     </div>
 
@@ -27,7 +27,7 @@
       </div>
 
       <div class="form-group">
-        <label class="col-xs-4 control-label" th:if="${akte.mil.is1815()}">Tijdsbepaling ajournement:</label>
+        <label class="col-xs-4 control-label" th:if="${akte.mil.is1815()}">Inhoud uitspraak:</label>
         <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Bepaling dag der nadere uitspraak:</label>
 
         <div class="col-xs-6">
@@ -45,7 +45,7 @@
         </div>
 
         <div class="form-group">
-          <label class="col-xs-4 control-label" th:if="${akte.mil.is1815()}">Tijdsbepaling tweede ajournement:</label>
+          <label class="col-xs-4 control-label" th:if="${akte.mil.is1815()}">Inhoud tweede uitspraak:</label>
           <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Bepaling dag der nadere uitspraak:</label>
 
           <div class="col-xs-6">
@@ -67,22 +67,31 @@
       </div>
     </div>
 
-    <div class="form-group" data-show-when="#mil\.delayOfService" data-has-values-in="j" style="display:none;">
-      <label class="col-xs-5 control-label">Hoe lang kreeg de loteling uitstel?</label>
+    <div data-show-when="#mil\.delayOfService" data-has-values-in="j" style="display:none;">
+      <div class="form-group" th:if="${akte.is('1815L')}">
+        <label class="col-xs-5 control-label">Datum uitspraak:</label>
 
-      <div class="col-xs-6">
-        <input type="text" class="form-control" th:field="*{mil.delayInformation}" hsn:field="mil.delayInformation"/>
+        <div
+            th:replace="fragments/fields :: datum ('verdictUitstelDienst.dayOfVerdict', 'verdictUitstelDienst.monthOfVerdict', 'verdictUitstelDienst.yearOfVerdict')"></div>
       </div>
-    </div>
 
-    <div class="form-group" data-show-when="#mil\.delayOfService" data-has-values-in="j;n" style="display:none;">
-      <label class="col-xs-5 control-label" data-show-when="#mil\.delayOfService"
-             data-has-values-in="j" style="display:none;">Redenen militieraad voor uitstel:</label>
-      <label class="col-xs-5 control-label" data-show-when="#mil\.delayOfService"
-             data-has-values-in="n" style="display:none;">Redenen militieraad afwijzing uitstel:</label>
+      <div class="form-group">
+        <label class="col-xs-5 control-label">Hoe lang kreeg de loteling uitstel?</label>
 
-      <div class="col-xs-6">
-        <input type="text" class="form-control" th:field="*{mil.delayReasons}" hsn:field="mil.delayReasons"/>
+        <div class="col-xs-6">
+          <input type="text" class="form-control" th:field="*{mil.delayInformation}" hsn:field="mil.delayInformation"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-5 control-label" data-show-when="#mil\.delayOfService"
+               data-has-values-in="j" style="display:none;">Redenen militieraad voor uitstel:</label>
+        <label class="col-xs-5 control-label" data-show-when="#mil\.delayOfService"
+               data-has-values-in="n" style="display:none;">Redenen militieraad afwijzing uitstel:</label>
+
+        <div class="col-xs-6">
+          <input type="text" class="form-control" th:field="*{mil.delayReasons}" hsn:field="mil.delayReasons"/>
+        </div>
       </div>
     </div>
 

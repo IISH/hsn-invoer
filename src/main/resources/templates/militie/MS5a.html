@@ -21,14 +21,6 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${akte.is('1815')}">
-      <label class="col-xs-6 control-label">Aangevoerde redenen door militieraad:</label>
-
-      <div class="col-xs-5">
-        <input type="text" class="form-control" th:field="*{mil.reasonsInapplicability}" hsn:field="mil.reasonsInapplicability"/>
-      </div>
-    </div>
-
     <div class="form-group" th:if="${akte.is('1913')}">
       <label class="col-xs-6 control-label" th:if="${akte.is('1913I') == false}">
         Redenen uit het verleden:
@@ -42,7 +34,15 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${akte.is('1815', '1862', '1913AL')}">
+    <div class="form-group" th:if="${akte.is('1815', '1913AL')}">
+      <label class="col-xs-6 control-label">Aangevoerde redenen door militieraad:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control" th:field="*{mil.reasonsInapplicability}" hsn:field="mil.reasonsInapplicability"/>
+      </div>
+    </div>
+
+    <div class="form-group" th:if="${akte.is('1815AI', '1862', '1913AL')}">
       <label class="col-xs-6 control-label">Advies van de militieraad (definitieve reden vrijstelling):</label>
 
       <div class="col-xs-5">

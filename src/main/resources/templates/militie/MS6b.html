@@ -11,6 +11,15 @@
     <div class="form-header extra-top-margin" th:if="${akte.is('1862', '1913')}">Op bezwaar:</div>
 
     <div class="form-group extra-top-margin">
+      <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
+
+      <div class="col-xs-6">
+        <input type="text" class="form-control"
+               th:field="*{verdictBezwaren.nature}" hsn:field="verdictBezwaren.nature"/>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label class="col-xs-4 control-label">Dagtekening bezwaar:</label>
 
       <div
@@ -22,15 +31,6 @@
 
       <div
           th:replace="fragments/fields :: datum ('verdictBezwaren.dayOfVerdict', 'verdictBezwaren.monthOfVerdict', 'verdictBezwaren.yearOfVerdict')"></div>
-    </div>
-
-    <div class="form-group">
-      <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
-
-      <div class="col-xs-6">
-        <input type="text" class="form-control"
-               th:field="*{verdictBezwaren.nature}" hsn:field="verdictBezwaren.nature"/>
-      </div>
     </div>
 
     <div class="form-group">
@@ -47,6 +47,15 @@
       <div class="form-header extra-top-margin">Krachtens wet:</div>
 
       <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
+
+        <div class="col-xs-6">
+          <input type="text" class="form-control"
+                 th:field="*{verdictWet.nature}" hsn:field="verdictWet.nature"/>
+        </div>
+      </div>
+
+      <div class="form-group">
         <label class="col-xs-4 control-label">Dagtekening der uitspraak:</label>
 
         <div
@@ -73,20 +82,20 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
-
-        <div class="col-xs-6">
-          <input type="text" class="form-control"
-                 th:field="*{verdictWet.nature}" hsn:field="verdictWet.nature"/>
-        </div>
-      </div>
-
       <div class="form-header letter-spacing extra-top-margin">
         BESLISSING KONING IN HOGER BEROEP:
       </div>
 
       <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Aard der beslissing:</label>
+
+        <div class="col-xs-6">
+          <input type="text" class="form-control"
+                 th:field="*{verdictKoning.nature}" hsn:field="verdictKoning.nature"/>
+        </div>
+      </div>
+
+      <div class="form-group">
         <label class="col-xs-4 control-label">Dagtekening beroep:</label>
 
         <div
@@ -106,15 +115,6 @@
         <div class="col-xs-2">
           <input type="text" class="form-control"
                  th:field="*{verdictKoning.numberVerdict}" hsn:field="verdictKoning.numberVerdict"/>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-xs-4 control-label">Aard der beslissing:</label>
-
-        <div class="col-xs-6">
-          <input type="text" class="form-control"
-                 th:field="*{verdictKoning.nature}" hsn:field="verdictKoning.nature"/>
         </div>
       </div>
     </th:block>

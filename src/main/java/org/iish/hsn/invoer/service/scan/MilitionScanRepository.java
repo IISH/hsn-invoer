@@ -144,9 +144,6 @@ public class MilitionScanRepository {
             else
                 sideB = path;
 
-            if (type != null)
-                type = type.toLowerCase();
-
             scans.put(hashCodeStr, new MilitionScan(sideA, sideB, idnr, municipality, year, type));
         }
     }

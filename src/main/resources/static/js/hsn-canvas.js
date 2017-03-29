@@ -16,6 +16,7 @@ var HsnCanvas = (function ($, fabric) {
         var lines = [];
 
         var state = State.SELECTION;
+        var ctrlSelected = false;
         var activeLine = null;
         var newImagePositionCallbacks = [];
 
@@ -120,11 +121,12 @@ var HsnCanvas = (function ($, fabric) {
             }
 
             $(document).keydown(function (e) {
-                if ((state === State.SELECTION) && (e.keyCode === 17)) {
-                    toActionState();
+                if (e.keyCode === 17) {
+                    ctrlSelected = true;
+                    if (state === State.SELECTION) toActionState();
                 }
 
-                if ((state !== State.SELECTION) && (keyCodes.indexOf(e.keyCode) >= 0)) {
+                if (ctrlSelected && (keyCodes.indexOf(e.keyCode) >= 0)) {
                     e.preventDefault();
 
                     if (state === State.LINE) {
@@ -142,8 +144,9 @@ var HsnCanvas = (function ($, fabric) {
             });
 
             $(document).keyup(function (e) {
-                if ((state === State.ACTION) && (e.keyCode === 17)) {
-                    toSelectionState();
+                if (e.keyCode === 17) {
+                    ctrlSelected = false;
+                    if (state === State.ACTION) toSelectionState();
                 }
             });
         }
@@ -186,6 +189,8 @@ var HsnCanvas = (function ($, fabric) {
         }
 
         function toSelectionState() {
+            console.log('SELECTION');
+
             state = State.SELECTION;
 
             canvas.defaultCursor = 'pointer';
@@ -203,6 +208,8 @@ var HsnCanvas = (function ($, fabric) {
         }
 
         function toActionState() {
+            console.log('ACTION');
+
             state = State.ACTION;
 
             if (allowCutting !== false) {
@@ -222,6 +229,8 @@ var HsnCanvas = (function ($, fabric) {
         }
 
         function toLineState(line) {
+            console.log('LINE');
+
             state = State.LINE;
 
             canvas.defaultCursor = 'crosshair';

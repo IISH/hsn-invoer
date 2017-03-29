@@ -54,7 +54,13 @@
 
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
-<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+<div layout:fragment="info">
+  <th:block th:include="militie/MSINFO :: MSINFO"></th:block>
+
+  <div id="keuringsOfMilitie" class="alert alert-info extra-top-margin" role="alert">
+    Er is òf een advies van de keuringsraad òf van de militieraad. (Welke hoeft niet te worden aangegeven)
+  </div>
+</div>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
 
