@@ -14,10 +14,21 @@
                     var index = parseInt(target.attr('id').match(regex)[1]);
                     var prevIndex = index - 1;
 
-                    $('#pkadres' + index + '\\.pladrp').val($('#pkadres' + prevIndex + '\\.pladrp').val());
+                    var curPlaats = $('#pkadres' + index + '\\.pladrp');
+                    if (curPlaats.val().trim().length === 0) {
+                        curPlaats.val($('#pkadres' + prevIndex + '\\.pladrp').val());
+                    }
+
                     if (code === 'v') {
-                        $('#pkadres' + index + '\\.stradrp').val($('#pkadres' + prevIndex + '\\.stradrp').val());
-                        $('#pkadres' + index + '\\.lndadrp').val($('#pkadres' + prevIndex + '\\.lndadrp').val());
+                        var curAdres = $('#pkadres' + index + '\\.stradrp');
+                        if (curAdres.val().trim().length === 0) {
+                            curAdres.val($('#pkadres' + prevIndex + '\\.stradrp').val());
+                        }
+
+                        var curLand = $('#pkadres' + index + '\\.lndadrp');
+                        if (curLand.val().trim().length === 0) {
+                            curLand.val($('#pkadres' + prevIndex + '\\.lndadrp').val());
+                        }
                     }
                 }
             });
