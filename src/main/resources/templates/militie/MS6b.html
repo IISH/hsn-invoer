@@ -14,19 +14,19 @@
       <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
 
       <div class="col-xs-6">
-        <input type="text" class="form-control"
+        <input type="text" class="form-control" data-info="uitspraak-aard"
                th:field="*{verdictBezwaren.nature}" hsn:field="verdictBezwaren.nature"/>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" data-info="uitspraak-dagtekening-bezwaar">
       <label class="col-xs-4 control-label">Dagtekening bezwaar:</label>
 
       <div
           th:replace="fragments/fields :: datum ('verdictBezwaren.dayOfAppeal', 'verdictBezwaren.monthOfAppeal', 'verdictBezwaren.yearOfAppeal')"></div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" data-info="uitspraak-dagtekening-uitspraak">
       <label class="col-xs-4 control-label">Dagtekening der uitspraak:</label>
 
       <div
@@ -38,7 +38,7 @@
       <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Nummer der uitspraak:</label>
 
       <div class="col-xs-2">
-        <input type="text" class="form-control"
+        <input type="text" class="form-control" data-info="uitspraak-nummer"
                th:field="*{verdictBezwaren.numberVerdict}" hsn:field="verdictBezwaren.numberVerdict"/>
       </div>
     </div>
@@ -50,12 +50,12 @@
         <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
 
         <div class="col-xs-6">
-          <input type="text" class="form-control"
+          <input type="text" class="form-control" data-info="wet-aard"
                  th:field="*{verdictWet.nature}" hsn:field="verdictWet.nature"/>
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" data-info="wet-dagtekening">
         <label class="col-xs-4 control-label">Dagtekening der uitspraak:</label>
 
         <div
@@ -63,7 +63,7 @@
       </div>
 
       <div class="form-group">
-        <div class="sub-form-group">
+        <div class="sub-form-group" data-info="wet-nummer">
           <label class="col-xs-4 control-label">Nummer der uitspraak:</label>
 
           <div class="col-xs-2">
@@ -72,7 +72,7 @@
           </div>
         </div>
 
-        <div class="sub-form-group">
+        <div class="sub-form-group" data-info="wet-artikel">
           <label class="col-xs-2 control-label">Artikel der wet:</label>
 
           <div class="col-xs-2">
@@ -90,26 +90,26 @@
         <label class="col-xs-4 control-label">Aard der beslissing:</label>
 
         <div class="col-xs-6">
-          <input type="text" class="form-control"
+          <input type="text" class="form-control" data-info="koning-aard"
                  th:field="*{verdictKoning.nature}" hsn:field="verdictKoning.nature"/>
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" data-info="koning-dagtekening-bezwaar">
         <label class="col-xs-4 control-label">Dagtekening beroep:</label>
 
         <div
             th:replace="fragments/fields :: datum ('verdictKoning.dayOfAppeal', 'verdictKoning.monthOfAppeal', 'verdictKoning.yearOfAppeal')"></div>
       </div>
 
-      <div class="form-group ">
+      <div class="form-group" data-info="koning-dagtekening-uitspraak">
         <label class="col-xs-4 control-label">Dagtekening der besluit:</label>
 
         <div
             th:replace="fragments/fields :: datum ('verdictKoning.dayOfVerdict', 'verdictKoning.monthOfVerdict', 'verdictKoning.yearOfVerdict')"></div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" data-info="koning-nummer">
         <label class="col-xs-4 control-label">Nummer der besluit:</label>
 
         <div class="col-xs-2">
@@ -125,12 +125,74 @@
 
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
-<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+<div layout:fragment="info">
+  <th:block th:include="militie/MSINFO :: MSINFO"></th:block>
+
+  <div class="well well-sm info info-uitspraak-aard" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 15.1</p>
+  </div>
+
+  <div class="well well-sm info info-uitspraak-dagtekening-bezwaar" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 15.2</p>
+  </div>
+
+  <div class="well well-sm info info-uitspraak-dagtekening-uitspraak" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 15.3</p>
+  </div>
+
+  <div class="well well-sm info info-uitspraak-nummer" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 15.4</p>
+  </div>
+
+  <div class="well well-sm info info-uitspraak-aard" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 14.1</p>
+  </div>
+
+  <div class="well well-sm info info-uitspraak-dagtekening-bezwaar" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 14.2</p>
+  </div>
+
+  <div class="well well-sm info info-uitspraak-dagtekening-uitspraak" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 14.3</p>
+  </div>
+
+  <div class="well well-sm info info-uitspraak-nummer" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 14.2</p>
+  </div>
+
+  <div class="well well-sm info info-wet-aard" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 15.3</p>
+  </div>
+
+  <div class="well well-sm info info-wet-dagtekening" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 15.1</p>
+  </div>
+
+  <div class="well well-sm info info-wet-nummer" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 15.1</p>
+  </div>
+
+  <div class="well well-sm info info-wet-artikel" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 15.2</p>
+  </div>
+
+  <div class="well well-sm info info-koning-aard" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 17.3</p>
+  </div>
+
+  <div class="well well-sm info info-koning-dagtekening-bezwaar" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 17.1</p>
+  </div>
+
+  <div class="well well-sm info info-koning-dagtekening-uitspraak" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 17.2</p>
+  </div>
+
+  <div class="well well-sm info info-koning-nummer" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 17.2</p>
+  </div>
+</div>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
-
-<th:block layout:fragment="js">
-  <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
-</th:block>
 </body>
 </html>

@@ -338,6 +338,20 @@
         }
     }
 
+    function showInfo(elem) {
+        $('.info').hideNoEvent();
+
+        var infoName = elem.data('info');
+        if (infoName) {
+            $('.info.info-' + infoName).showNoEvent();
+        }
+
+        var infoNameGroup = elem.getParentOfFormElement().data('info');
+        if (infoNameGroup) {
+            $('.info.info-' + infoNameGroup).showNoEvent();
+        }
+    }
+
     $(document).on('keyup', '.form-elem', function (e) {
         var elem = $(e.target);
 
@@ -363,6 +377,9 @@
         }
 
         return allow;
+    }).on('focus', '.form-elem', function (e) {
+        var elem = $(e.target);
+        showInfo(elem);
     }).on('blur', 'input', function (e) {
         var elem = $(e.target);
 

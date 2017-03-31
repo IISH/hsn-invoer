@@ -8,7 +8,7 @@
   <label class="col-xs-3 control-label">Achternaam:</label>
 
   <div class="col-xs-4">
-    <input type="text" class="form-control" th:field="*{__${anaam}__}" hsn:field="anaam"/>
+    <input type="text" class="form-control" data-info="anaam" th:field="*{__${anaam}__}" hsn:field="anaam"/>
   </div>
 </div>
 
@@ -16,7 +16,7 @@
   <label class="col-xs-3 control-label">Voornamen:</label>
 
   <div class="col-xs-4">
-    <input type="text" class="form-control" th:field="*{__${vnaam}__}" hsn:field="vnaam"/>
+    <input type="text" class="form-control" data-info="vnaam" th:field="*{__${vnaam}__}" hsn:field="vnaam"/>
   </div>
 </div>
 
@@ -86,7 +86,7 @@
   <label class="col-xs-3 control-label" th:utext="${label}">Plaats:</label>
 
   <div class="col-xs-5">
-    <input type="text" class="form-control plaats" th:field="*{__${plaats}__}" hsn:field="plaats"/>
+    <input type="text" class="form-control plaats" data-info="plaats" th:field="*{__${plaats}__}" hsn:field="plaats"/>
   </div>
 </div>
 </body>

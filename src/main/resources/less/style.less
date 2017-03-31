@@ -63,8 +63,20 @@ canvas {
   border: 1px solid #adadad;
 }
 
-.info {
+.info, .info-manual {
   font-size: 80%;
+
+  ul {
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  p:last-child {
+     margin-bottom: 0;
+  }
 }
 
 fieldset {

@@ -17,7 +17,8 @@
       </label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" th:field="*{mil.reasonsExemption}" hsn:field="mil.reasonsExemption"/>
+        <input type="text" class="form-control" data-info="redenen"
+               th:field="*{mil.reasonsExemption}" hsn:field="mil.reasonsExemption"/>
       </div>
     </div>
 
@@ -30,7 +31,8 @@
       </label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" th:field="*{mil.earlierDecisions}" hsn:field="mil.earlierDecisions"/>
+        <input type="text" class="form-control" data-info="verleden"
+               th:field="*{mil.earlierDecisions}" hsn:field="mil.earlierDecisions"/>
       </div>
     </div>
 
@@ -38,7 +40,8 @@
       <label class="col-xs-6 control-label">Aangevoerde redenen door militieraad:</label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" th:field="*{mil.reasonsInapplicability}" hsn:field="mil.reasonsInapplicability"/>
+        <input type="text" class="form-control" data-info="redenen-militie"
+               th:field="*{mil.reasonsInapplicability}" hsn:field="mil.reasonsInapplicability"/>
       </div>
     </div>
 
@@ -46,11 +49,12 @@
       <label class="col-xs-6 control-label">Advies van de militieraad (definitieve reden vrijstelling):</label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" th:field="*{mil.advice}" hsn:field="mil.advice"/>
+        <input type="text" class="form-control" data-info="advies"
+               th:field="*{mil.advice}" hsn:field="mil.advice"/>
       </div>
     </div>
 
-    <div class="form-group" th:if="${akte.is('1862L', '1913I')}">
+    <div class="form-group" data-info="datum-vrg-uitspraak" th:if="${akte.is('1862L', '1913I')}">
       <label class="col-xs-6 control-label">Datum vroegere uitspraak:</label>
 
       <div
@@ -61,7 +65,7 @@
       <label class="col-xs-6 control-label">Aard der uitspraak:</label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control"
+        <input type="text" class="form-control" data-info="vrg-uitspraak"
                th:field="*{verdictVrijstelling.nature}" hsn:field="verdictVrijstelling.nature"/>
       </div>
     </div>
@@ -72,12 +76,62 @@
 
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
-<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+<div layout:fragment="info">
+  <th:block th:include="militie/MSINFO :: MSINFO"></th:block>
+
+  <div class="well well-sm info info-redenen" style="display:none;" th:if="${akte.is('1913AL')}">
+    <p>Zie kolom 6.1</p>
+  </div>
+
+  <div class="well well-sm info info-verleden" style="display:none;" th:if="${akte.is('1913AL')}">
+    <p>Zie kolom 5.3</p>
+  </div>
+
+  <div class="well well-sm info info-advies" style="display:none;" th:if="${akte.is('1913AL')}">
+    <p>Zie kolom 6.2</p>
+  </div>
+
+  <div class="well well-sm info info-redenen" style="display:none;" th:if="${akte.is('1913I')}">
+    <p>Zie kolom 7</p>
+  </div>
+
+  <div class="well well-sm info info-verleden" style="display:none;" th:if="${akte.is('1913I')}">
+    <p>Zie kolom 9.1</p>
+  </div>
+
+  <div class="well well-sm info info-datum-vrg-uitspraak" style="display:none;" th:if="${akte.is('1913I')}">
+    <p>Zie kolom 9.2</p>
+  </div>
+
+  <div class="well well-sm info info-vrg-uitspraak" style="display:none;" th:if="${akte.is('1913I')}">
+    <p>Zie kolom 9.3</p>
+  </div>
+
+  <div class="well well-sm info info-redenen" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 9 en 11</p>
+  </div>
+
+  <div class="well well-sm info info-redenen-militie" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 10</p>
+  </div>
+
+  <div class="well well-sm info info-redenen" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 9.1</p>
+  </div>
+
+  <div class="well well-sm info info-advies" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 9.2/10</p>
+  </div>
+
+  <div class="well well-sm info info-datum-vrg-uitspraak" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 13.1</p>
+  </div>
+
+  <div class="well well-sm info info-vrg-uitspraak" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 13.2</p>
+  </div>
+</div>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
-
-<th:block layout:fragment="js">
-  <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
-</th:block>
 </body>
 </html>

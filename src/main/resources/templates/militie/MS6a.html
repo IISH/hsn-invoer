@@ -14,12 +14,12 @@
 
       <div class="col-xs-2">
         <input type="text" id="uitgesteld" class="form-control form-control-digit required" data-valid-chars="j;n"
-               maxlength="1" th:value="${@militieregisterHelper.hasUitgesteld(akte)}"/>
+               maxlength="1" data-info="uitgesteld" th:value="${@militieregisterHelper.hasUitgesteld(akte)}"/>
       </div>
     </div>
 
     <div data-show-when="#uitgesteld" data-has-values-in="j" style="display:none;">
-      <div class="form-group extra-top-margin">
+      <div class="form-group extra-top-margin" data-info="dagtekening-1">
         <label class="col-xs-4 control-label">Dagtekening:</label>
 
         <div
@@ -31,13 +31,13 @@
         <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Bepaling dag der nadere uitspraak:</label>
 
         <div class="col-xs-6">
-          <input type="text" class="form-control"
+          <input type="text" class="form-control" data-info="uitspraak-1"
                  th:field="*{verdictUitstel.nature}" hsn:field="verdictUitstel.nature"/>
         </div>
       </div>
 
       <th:block th:if="${!akte.mil.is1862()}">
-        <div class="form-group extra-top-margin">
+        <div class="form-group extra-top-margin" data-info="dagtekening-2">
           <label class="col-xs-4 control-label">Datum tweede uitspraak:</label>
 
           <div
@@ -49,7 +49,7 @@
           <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Bepaling dag der nadere uitspraak:</label>
 
           <div class="col-xs-6">
-            <input type="text" class="form-control"
+            <input type="text" class="form-control" data-info="uitspraak-2"
                    th:field="*{verdictTweedeUitstel.nature}" hsn:field="verdictTweedeUitstel.nature"/>
           </div>
         </div>
@@ -63,12 +63,12 @@
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o" maxlength="1"
-               th:field="*{mil.delayOfService}" hsn:field="mil.delayOfService"/>
+               data-info="uitstel" th:field="*{mil.delayOfService}" hsn:field="mil.delayOfService"/>
       </div>
     </div>
 
     <div data-show-when="#mil\.delayOfService" data-has-values-in="j" style="display:none;">
-      <div class="form-group" th:if="${akte.is('1815L')}">
+      <div class="form-group" data-info="dagtekening-uitstel" th:if="${akte.is('1815L')}">
         <label class="col-xs-5 control-label">Datum uitspraak:</label>
 
         <div
@@ -79,7 +79,8 @@
         <label class="col-xs-5 control-label">Hoe lang kreeg de loteling uitstel?</label>
 
         <div class="col-xs-6">
-          <input type="text" class="form-control" th:field="*{mil.delayInformation}" hsn:field="mil.delayInformation"/>
+          <input type="text" class="form-control" data-info="uitspraak-uitstel"
+                 th:field="*{mil.delayInformation}" hsn:field="mil.delayInformation"/>
         </div>
       </div>
 
@@ -90,7 +91,8 @@
                data-has-values-in="n" style="display:none;">Redenen militieraad afwijzing uitstel:</label>
 
         <div class="col-xs-6">
-          <input type="text" class="form-control" th:field="*{mil.delayReasons}" hsn:field="mil.delayReasons"/>
+          <input type="text" class="form-control" data-info="uitspraak-uitstel"
+                 th:field="*{mil.delayReasons}" hsn:field="mil.delayReasons"/>
         </div>
       </div>
     </div>
@@ -101,12 +103,46 @@
 
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
-<div layout:fragment="info" th:include="militie/MSINFO :: MSINFO"></div>
+<div layout:fragment="info">
+  <th:block th:include="militie/MSINFO :: MSINFO"></th:block>
+
+  <div class="well well-sm info info-uitgesteld info-uitstel" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 12</p>
+  </div>
+
+  <div class="well well-sm info info-dagtekening-1" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 12.1</p>
+  </div>
+
+  <div class="well well-sm info info-uitspraak-1" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 12.2</p>
+  </div>
+
+  <div class="well well-sm info info-dagtekening-2" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 12.4</p>
+  </div>
+
+  <div class="well well-sm info info-uitspraak-2" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 12.5</p>
+  </div>
+
+  <div class="well well-sm info info-dagtekening-uitstel" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 13.1</p>
+  </div>
+
+  <div class="well well-sm info info-uitspraak-uitstel" style="display:none;" th:if="${akte.is('1815L')}">
+    <p>Zie kolom 13.2</p>
+  </div>
+
+  <div class="well well-sm info info-uitgesteld" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 12.1-2</p>
+  </div>
+
+  <div class="well well-sm info info-uitstel" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 13.1-2</p>
+  </div>
+</div>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
-
-<th:block layout:fragment="js">
-  <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
-</th:block>
 </body>
 </html>

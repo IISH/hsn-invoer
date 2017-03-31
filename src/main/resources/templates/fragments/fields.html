@@ -57,7 +57,7 @@
 </div>
 
 <div class="col-xs-5" th:fragment="beroep (beroep, requiredField)">
-  <input type="text" class="form-control beroep" th:field="*{__${beroep}__}" hsn:field="beroep"
+  <input type="text" class="form-control beroep" data-info="beroep" th:field="*{__${beroep}__}" hsn:field="beroep"
          th:classappend="${requiredField} ? 'required'"/>
 </div>
 

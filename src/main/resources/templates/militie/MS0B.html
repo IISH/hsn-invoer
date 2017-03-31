@@ -74,7 +74,7 @@
         <label class="col-xs-4 control-label">Lotingsnummer:</label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control integer-field"
+          <input type="text" class="form-control integer-field" data-info="lotingsnummer"
                  th:field="*{mil.drawnNumber}" hsn:field="mil.drawnNumber"/>
         </div>
       </div>
@@ -89,6 +89,18 @@
 <div layout:fragment="info">
   <th:block th:include="militie/MSINFO :: MSINFO"></th:block>
 
+  <div class="well well-sm info-manual info-1913A-lotingsnummer" style="display:none;">
+    <p>
+      Bij het alfabetisch register bevindt zich het lotingsnummer in kolom 14
+    </p>
+  </div>
+
+  <div class="well well-sm info-manual info-1913L-lotingsnummer" style="display:none;">
+    <p>
+      Bij het lotingsregister bevindt zich het lotingsnummer in kolom 1
+    </p>
+  </div>
+
   <div id="scansEnteredMessage" class="alert alert-warning extra-top-margin" role="alert" style="display:none;">
     Er zijn eerder scans voor dezelfde persoon ingevoerd met een vergelijkbaar jaar en/of gemeente:
     <ul></ul>
@@ -99,7 +111,6 @@
           th:include="fragments/navigation :: navigation-byz-modal (true, true)"></fieldset>
 
 <th:block layout:fragment="js">
-  <script src="../../static/js/militie/info.js" hsn:src="@{/js/militie/info.js}"></script>
   <script src="../../static/js/militie/MS0A.js" hsn:src="@{/js/militie/MS0B.js}"></script>
 </th:block>
 </body>
