@@ -31,7 +31,6 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     }
 
     public boolean is(String... years) {
-        boolean isMatch = false;
         for (String yearAndTypes : years) {
             String year = yearAndTypes.substring(0, 4);
             boolean yearMatches = mil.isOtherYear() ||
@@ -43,11 +42,10 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
             if (yearMatches) {
                 String type = "KN".contains(mil.getType().toUpperCase()) ? "L" : mil.getType().toUpperCase();
                 String types = yearAndTypes.substring(4).toUpperCase();
-                if (mil.isOtherYear() || types.isEmpty() || types.contains(type))
-                    isMatch = true;
+                return (mil.isOtherYear() || types.isEmpty() || types.contains(type));
             }
         }
-        return isMatch;
+        return false;
     }
 
     public boolean isCropSideA() {

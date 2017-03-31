@@ -83,6 +83,7 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "SGMMTK", nullable = false, length = 250) private String notableSigns = "";
 
     @Column(name = "RDNVRIJ", nullable = false, length = 100) private String reasonsExemption = "";
+    @Column(name = "RDNVRIE", nullable = false, length = 100) private String extraReasonsExemption = "";
     @Column(name = "RDNOGS", nullable = false, length = 100) private String reasonsInapplicability = "";
     @Column(name = "RDNOU", nullable = false, length = 100) private String earlierDecisions = "";
     @Column(name = "ADVIES", nullable = false, length = 100) private String advice = "";
@@ -615,6 +616,14 @@ public class Milition extends Invoer implements Serializable {
 
     public void setReasonsExemption(String reasonsExemption) {
         this.reasonsExemption = reasonsExemption;
+    }
+
+    public String getExtraReasonsExemption() {
+        return extraReasonsExemption;
+    }
+
+    public void setExtraReasonsExemption(String extraReasonsExemption) {
+        this.extraReasonsExemption = extraReasonsExemption;
     }
 
     public String getReasonsInapplicability() {

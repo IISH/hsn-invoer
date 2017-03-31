@@ -22,6 +22,15 @@
       </div>
     </div>
 
+    <div class="form-group" th:if="${akte.is('1862L')}">
+      <label class="col-xs-6 control-label">Nader bij de militieraad opgegeven redenen:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control" data-info="redenen-extra"
+               th:field="*{mil.extraReasonsExemption}" hsn:field="mil.extraReasonsExemption"/>
+      </div>
+    </div>
+
     <div class="form-group" th:if="${akte.is('1913')}">
       <label class="col-xs-6 control-label" th:if="${akte.is('1913I') == false}">
         Redenen uit het verleden:
@@ -117,6 +126,10 @@
 
   <div class="well well-sm info info-redenen" style="display:none;" th:if="${akte.is('1862L')}">
     <p>Zie kolom 9.1</p>
+  </div>
+
+  <div class="well well-sm info info-redenen-extra" style="display:none;" th:if="${akte.is('1862L')}">
+    <p>Zie kolom 10</p>
   </div>
 
   <div class="well well-sm info info-advies" style="display:none;" th:if="${akte.is('1862L')}">

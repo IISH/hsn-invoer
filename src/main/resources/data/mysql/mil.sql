@@ -58,6 +58,7 @@ CREATE TABLE `m1` (
   `SGMWBR` varchar(50) NOT NULL,
   `SGMMTK` varchar(250) NOT NULL,
   `RDNVRIJ` varchar(100) NOT NULL,
+  `RDNVRIE` varchar(100) NOT NULL,
   `RDNOGS` varchar(100) NOT NULL,
   `RDNOU` varchar(100) NOT NULL,
   `ADVIES` varchar(100) NOT NULL,

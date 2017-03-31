@@ -45,15 +45,14 @@
             $('#mil\\.invNumber').getParentOfFormElement().hide();
         }
 
-        if (((type === 'A') && (year < 1862 || year > 1912)) ||
-            ((type === 'L') && (year > 1912))) {
+        if (((type === 'A') && (year < 1862 || year > 1912))) {
             $('#mil\\.seqRegister').getParentOfFormElement().show();
         }
         else {
             $('#mil\\.seqRegister').getParentOfFormElement().hide();
         }
 
-        if ((type !== 'L' && type !== 'K' && type !== 'N') || (year > 1912)) {
+        if ((type !== 'L' && type !== 'K' && type !== 'N')) {
             $('#mil\\.seqRefer').getParentOfFormElement().show();
         }
         else {
