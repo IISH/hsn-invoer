@@ -96,12 +96,12 @@
   <action-state id="includesExemptionCheck">
     <evaluate expression="flowScope.akte.includesExemption == 'j'"/>
 
-    <transition on="yes" to="MS5a"/>
+    <transition on="yes" to="MS5"/>
     <transition on="no" to="includesMedicalCheck"/>
   </action-state>
 
-  <!-- MS5a: VRIJSTELLING -->
-  <view-state id="MS5a" view="militie/MS5a" model="akte">
+  <!-- MS5: VRIJSTELLING -->
+  <view-state id="MS5" view="militie/MS5" model="akte">
     <transition on="next" to="includesMedicalCheck">
       <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
     </transition>
@@ -110,12 +110,12 @@
   <action-state id="includesMedicalCheck">
     <evaluate expression="flowScope.akte.includesMedical == 'j'"/>
 
-    <transition on="yes" to="MS5b"/>
+    <transition on="yes" to="MS6"/>
     <transition on="no" to="includesDelayCheck"/>
   </action-state>
 
-  <!-- MS5b: MEDISCH ADVIES -->
-  <view-state id="MS5b" view="militie/MS5b" model="akte">
+  <!-- MS6: MEDISCH ADVIES -->
+  <view-state id="MS4c" view="militie/MS6" model="akte">
     <transition on="next" to="includesDelayCheck">
       <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
     </transition>
@@ -124,12 +124,12 @@
   <action-state id="includesDelayCheck">
     <evaluate expression="flowScope.akte.includesDelay == 'j' or flowScope.akte.includesDelayMilition == 'j'"/>
 
-    <transition on="yes" to="MS6a"/>
+    <transition on="yes" to="MS7"/>
     <transition on="no" to="includesAppealCheck"/>
   </action-state>
 
-  <!-- MS6a: UITSTEL -->
-  <view-state id="MS6a" view="militie/MS6a" model="akte">
+  <!-- MS7: UITSTEL -->
+  <view-state id="MS7" view="militie/MS7" model="akte">
     <transition on="next" to="includesAppealCheck">
       <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
     </transition>
@@ -138,12 +138,12 @@
   <action-state id="includesAppealCheck">
     <evaluate expression="flowScope.akte.includesAppeal == 'j'"/>
 
-    <transition on="yes" to="MS6b"/>
+    <transition on="yes" to="MS8"/>
     <transition on="no" to="includesAppointed"/>
   </action-state>
 
-  <!-- MS6b: IN BEROEP -->
-  <view-state id="MS6b" view="militie/MS6b" model="akte">
+  <!-- MS8: IN BEROEP -->
+  <view-state id="MS8" view="militie/MS8" model="akte">
     <transition on="next" to="includesAppointed">
       <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
     </transition>
@@ -152,12 +152,12 @@
   <action-state id="includesAppointed">
     <evaluate expression="flowScope.akte.is('1815L', '1862IL', '1913AL')"/>
 
-    <transition on="yes" to="MS7"/>
+    <transition on="yes" to="MS9"/>
     <transition on="no" to="MSBYZ"/>
   </action-state>
 
-  <!-- MS7: AANSTELLING -->
-  <view-state id="MS7" view="militie/MS7" model="akte">
+  <!-- MS9: AANSTELLING -->
+  <view-state id="MS9" view="militie/MS9" model="akte">
     <transition on="next" to="MSBYZ">
       <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
