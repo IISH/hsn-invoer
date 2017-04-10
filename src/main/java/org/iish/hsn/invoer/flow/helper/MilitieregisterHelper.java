@@ -49,12 +49,20 @@ public class MilitieregisterHelper {
         return getYesOrNo(akte.isCorrection(),
                 akte.getMil().getReasonsExemption(), akte.getMil().getReasonsInapplicability(),
                 akte.getMil().getEarlierDecisions(), akte.getMil().getAdvice(),
-                checkVerdict(akte.getVerdictVrijstelling()));
+                checkVerdict(
+                        akte.getMil().getDayOfExemptionVerdict(),
+                        akte.getMil().getMonthOfExemptionVerdict(),
+                        akte.getMil().getYearOfExemptionVerdict()
+                ));
     }
 
     public String hasMedical(MilitieregisterFlowState akte) {
         return getYesOrNo(akte.isCorrection(),
-                checkVerdict(akte.getVerdictMedisch()), akte.getMil().getMedicalAdvice(),
+                checkVerdict(
+                        akte.getMil().getDayOfMedicalVerdict(),
+                        akte.getMil().getMonthOfMedicalVerdict(),
+                        akte.getMil().getYearOfMedicalVerdict()),
+                akte.getMil().getMedicalAdvice(),
                 akte.getMil().getMedicalDefects());
     }
 
@@ -86,6 +94,12 @@ public class MilitieregisterHelper {
     private String checkVerdict(Verdict verdict) {
         if ((verdict != null) && ((verdict.getDayOfVerdict() != 0) ||
                 (verdict.getMonthOfVerdict() != 0) || (verdict.getYearOfVerdict() != 0)))
+            return "j";
+        return "";
+    }
+
+    private String checkVerdict(int day, int month, int year) {
+        if ((day != 0) || (month != 0) || (year != 0))
             return "j";
         return "";
     }

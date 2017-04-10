@@ -73,18 +73,12 @@
     });
 
     $(document).on('focus', '.form-elem', function onFocus(e) {
-        $('.info-1913A-lotingsnummer, .info-1913L-lotingsnummer').hideNoEvent();
+        var lotingsNr = $('#lotingsnummerMessage');
+        var year = $('#mil\\.year').getIntegerValue();
 
-        if ($(e.target).attr('id') === 'mil.drawnNumber') {
-            var year = $('#mil\\.year').getIntegerValue();
-            var type = $('#mil\\.type').val();
-
-            if (year >= 1913 && year <= 1922) {
-                if (type === 'A')
-                    $('.info-1913A-lotingsnummer').showNoEvent();
-                if (type === 'L')
-                    $('.info-1913L-lotingsnummer').showNoEvent();
-            }
+        lotingsNr.hideNoEvent();
+        if (year >= 1913 && year <= 1922) {
+            lotingsNr.showNoEvent();
         }
     });
 

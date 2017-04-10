@@ -12,7 +12,7 @@
       <label class="col-xs-6 control-label">Datum uitspraak:</label>
 
       <div
-          th:replace="fragments/fields :: datum ('verdictMedisch.dayOfVerdict', 'verdictMedisch.monthOfVerdict', 'verdictMedisch.yearOfVerdict')"></div>
+          th:replace="fragments/fields :: datum ('mil.dayOfMedicalVerdict', 'mil.monthOfMedicalVerdict', 'mil.yearOfMedicalVerdict')"></div>
     </div>
 
     <div class="form-group" th:if="${akte.is('1913A')}">
@@ -27,7 +27,7 @@
       <label class="col-xs-6 control-label">Bevindingen van de geneeskundigen:</label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" data-info="medical"
+        <input type="text" class="form-control"
                th:field="*{mil.medicalAdvice}" hsn:field="mil.medicalAdvice"/>
       </div>
     </div>
@@ -36,7 +36,7 @@
       <label class="col-xs-6 control-label">Aard der uitspraak:</label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" th:field="*{verdictMedisch.nature}" hsn:field="verdictMedisch.nature"/>
+        <input type="text" class="form-control" th:field="*{mil.medicalVerdict}" hsn:field="mil.medicalVerdict"/>
       </div>
     </div>
 
@@ -44,8 +44,7 @@
       <label class="col-xs-6 control-label">Nummer keuringsreglement:</label>
 
       <div class="col-xs-2">
-        <input type="text" class="form-control"
-               th:field="*{verdictMedisch.numberRegulation}" hsn:field="verdictMedisch.numberRegulation"/>
+        <input type="text" class="form-control" th:field="*{mil.medicalNumber}" hsn:field="mil.medicalNumber"/>
       </div>
     </div>
 
@@ -56,18 +55,14 @@
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
 <div layout:fragment="info">
-  <th:block th:include="militie/MSINFO :: MSINFO"></th:block>
-
-  <div class="well well-sm info info-medical" style="display:none;" th:if="${akte.is('1913A')}">
-    <p>Zie kolom 11-12</p>
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913A')}">
+    Er is òf een advies van de keuringsraad òf van de militieraad
+    (welke hoeft niet te worden aangegeven, zie kolom 11-12).
   </div>
 
-  <div class="well well-sm info info-medical" style="display:none;" th:if="${akte.is('1913L')}">
-    <p>Zie kolom 10a-b</p>
-  </div>
-
-  <div id="keuringsOfMilitie" class="alert alert-info extra-top-margin" role="alert">
-    Er is òf een advies van de keuringsraad òf van de militieraad. (Welke hoeft niet te worden aangegeven)
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913L')}">
+    Er is òf een advies van de keuringsraad òf van de militieraad
+    (welke hoeft niet te worden aangegeven, zie kolom 10a-b).
   </div>
 </div>
 

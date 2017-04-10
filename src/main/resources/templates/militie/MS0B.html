@@ -68,7 +68,7 @@
         <label class="col-xs-4 control-label">Lotingsnummer:</label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control integer-field" data-info="lotingsnummer"
+          <input type="text" class="form-control integer-field"
                  th:field="*{mil.drawnNumber}" hsn:field="mil.drawnNumber"/>
         </div>
       </div>
@@ -81,18 +81,8 @@
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
 <div layout:fragment="info">
-  <th:block th:include="militie/MSINFO :: MSINFO"></th:block>
-
-  <div class="well well-sm info-manual info-1913A-lotingsnummer" style="display:none;">
-    <p>
-      Bij het alfabetisch register bevindt zich het lotingsnummer in kolom 14
-    </p>
-  </div>
-
-  <div class="well well-sm info-manual info-1913L-lotingsnummer" style="display:none;">
-    <p>
-      Bij het lotingsregister bevindt zich het lotingsnummer in kolom 1
-    </p>
+  <div id="lotingsnummerMessage" class="alert alert-info extra-top-margin" role="alert">
+    Bij het alfabetisch register bevindt zich het lotingsnummer in kolom 14; bij het lotingsregister in kolom 1.
   </div>
 
   <div id="scansEnteredMessage" class="alert alert-warning extra-top-margin" role="alert" style="display:none;">

@@ -17,7 +17,7 @@
       </label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" data-info="redenen"
+        <input type="text" class="form-control"
                th:field="*{mil.reasonsExemption}" hsn:field="mil.reasonsExemption"/>
       </div>
     </div>
@@ -26,7 +26,7 @@
       <label class="col-xs-6 control-label">Nader bij de militieraad opgegeven redenen:</label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" data-info="redenen-extra"
+        <input type="text" class="form-control"
                th:field="*{mil.extraReasonsExemption}" hsn:field="mil.extraReasonsExemption"/>
       </div>
     </div>
@@ -40,7 +40,7 @@
       </label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" data-info="verleden"
+        <input type="text" class="form-control"
                th:field="*{mil.earlierDecisions}" hsn:field="mil.earlierDecisions"/>
       </div>
     </div>
@@ -49,7 +49,7 @@
       <label class="col-xs-6 control-label">Aangevoerde redenen door militieraad:</label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" data-info="redenen-militie"
+        <input type="text" class="form-control"
                th:field="*{mil.reasonsInapplicability}" hsn:field="mil.reasonsInapplicability"/>
       </div>
     </div>
@@ -58,24 +58,31 @@
       <label class="col-xs-6 control-label">Advies van de militieraad (definitieve reden vrijstelling):</label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" data-info="advies"
+        <input type="text" class="form-control"
                th:field="*{mil.advice}" hsn:field="mil.advice"/>
       </div>
     </div>
 
-    <div class="form-group" data-info="datum-vrg-uitspraak" th:if="${akte.is('1862L', '1913I')}">
+    <div class="form-group" th:if="${akte.is('1862L', '1913I')}">
       <label class="col-xs-6 control-label">Datum vroegere uitspraak:</label>
 
       <div
-          th:replace="fragments/fields :: datum ('verdictVrijstelling.dayOfVerdict', 'verdictVrijstelling.monthOfVerdict', 'verdictVrijstelling.yearOfVerdict')"></div>
+          th:replace="fragments/fields :: datum ('mil.dayOfExemptionVerdict', 'mil.monthOfExemptionVerdict', 'mil.yearOfExemptionVerdict')"></div>
     </div>
 
     <div class="form-group" th:if="${akte.is('1862L', '1913I')}">
       <label class="col-xs-6 control-label">Aard der uitspraak:</label>
 
       <div class="col-xs-5">
-        <input type="text" class="form-control" data-info="vrg-uitspraak"
-               th:field="*{verdictVrijstelling.nature}" hsn:field="verdictVrijstelling.nature"/>
+        <input type="text" class="form-control" th:field="*{mil.exemptionVerdict}" hsn:field="mil.exemptionVerdict"/>
+      </div>
+    </div>
+
+    <div class="form-group" th:if="${akte.is('1862L')}">
+      <label class="col-xs-6 control-label">Nummer keuringsreglement:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control" th:field="*{mil.medicalNumber}" hsn:field="mil.medicalNumber"/>
       </div>
     </div>
 
@@ -86,62 +93,30 @@
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
 <div layout:fragment="info">
-  <th:block th:include="militie/MSINFO :: MSINFO"></th:block>
-
-  <div class="well well-sm info info-redenen" style="display:none;" th:if="${akte.is('1913AL')}">
-    <p>Zie kolom 6.1</p>
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1815L')}">
+    Redenen loteling (kolom 9+11)<br/>
+    Redenen militieraad (kolom 10)
   </div>
 
-  <div class="well well-sm info info-verleden" style="display:none;" th:if="${akte.is('1913AL')}">
-    <p>Zie kolom 5.3</p>
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1862L')}">
+    Redenen loteling (9.1)<br/>
+    Advies militieraad (9.2/10)<br/>
+    Dagtekening uitspraak (13.1)<br/>
+    Uitspraak (13.2)<br/>
+    Nummer keuringsreglement (16)
   </div>
 
-  <div class="well well-sm info info-advies" style="display:none;" th:if="${akte.is('1913AL')}">
-    <p>Zie kolom 6.2</p>
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913AL')}">
+    Redenen verleden (kolom 5.3)<br/>
+    Aangevoerde reden (kolom 6.1)<br/>
+    Advies militieraad (kolom 6.2)
   </div>
 
-  <div class="well well-sm info info-redenen" style="display:none;" th:if="${akte.is('1913I')}">
-    <p>Zie kolom 7</p>
-  </div>
-
-  <div class="well well-sm info info-verleden" style="display:none;" th:if="${akte.is('1913I')}">
-    <p>Zie kolom 9.1</p>
-  </div>
-
-  <div class="well well-sm info info-datum-vrg-uitspraak" style="display:none;" th:if="${akte.is('1913I')}">
-    <p>Zie kolom 9.2</p>
-  </div>
-
-  <div class="well well-sm info info-vrg-uitspraak" style="display:none;" th:if="${akte.is('1913I')}">
-    <p>Zie kolom 9.3</p>
-  </div>
-
-  <div class="well well-sm info info-redenen" style="display:none;" th:if="${akte.is('1815L')}">
-    <p>Zie kolom 9 en 11</p>
-  </div>
-
-  <div class="well well-sm info info-redenen-militie" style="display:none;" th:if="${akte.is('1815L')}">
-    <p>Zie kolom 10</p>
-  </div>
-
-  <div class="well well-sm info info-redenen" style="display:none;" th:if="${akte.is('1862L')}">
-    <p>Zie kolom 9.1</p>
-  </div>
-
-  <div class="well well-sm info info-redenen-extra" style="display:none;" th:if="${akte.is('1862L')}">
-    <p>Zie kolom 10</p>
-  </div>
-
-  <div class="well well-sm info info-advies" style="display:none;" th:if="${akte.is('1862L')}">
-    <p>Zie kolom 9.2/10</p>
-  </div>
-
-  <div class="well well-sm info info-datum-vrg-uitspraak" style="display:none;" th:if="${akte.is('1862L')}">
-    <p>Zie kolom 13.1</p>
-  </div>
-
-  <div class="well well-sm info info-vrg-uitspraak" style="display:none;" th:if="${akte.is('1862L')}">
-    <p>Zie kolom 13.2</p>
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913I')}">
+    Reden (kolom 7)<br/>
+    Wie vrg uitspraak (kolom 9.1)<br/>
+    Datum  vrg uitspraak (kolom 9.2)<br/>
+    Aard vrg uitspraak (kolom 9.3)
   </div>
 </div>
 

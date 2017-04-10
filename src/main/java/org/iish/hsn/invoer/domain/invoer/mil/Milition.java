@@ -40,17 +40,6 @@ public class Milition extends Invoer implements Serializable {
 
     @Column(name = "OUDERS", nullable = false, length = 1) private String livesWithParents = "";
     @Column(name = "ONDRWS", nullable = false, length = 100) private String education = "";
-    @Column(name = "AANGIFTE", nullable = false) private int declaration;
-
-    @Column(name = "INGES", nullable = false, length = 1) private String inGesticht = "";
-    @Column(name = "NMGES", nullable = false, length = 200) private String nameGesticht = "";
-    @Column(name = "INGEV", nullable = false, length = 1) private String inJail = "";
-    @Column(name = "DELICT", nullable = false, length = 200) private String whatCrime = "";
-
-    @Column(name = "IVRKL", nullable = false, length = 50) private String formerClass = "";
-    @Column(name = "RDNLTR", nullable = false, length = 200) private String formerClassReason = "";
-    @Column(name = "IVWD", nullable = false, length = 1) private String voluntaryService = "";
-    @Column(name = "NMREG", nullable = false, length = 200) private String voluntaryWhere = "";
 
     @Column(name = "ANVDR", nullable = false, length = 50) private String familyNameFather = "";
     @Column(name = "VNVDR", nullable = false, length = 50) private String firstNameFather = "";
@@ -82,44 +71,70 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "SGMWBR", nullable = false, length = 50) private String eyebrows = "";
     @Column(name = "SGMMTK", nullable = false, length = 250) private String notableSigns = "";
 
-    @Column(name = "RDNVRIJ", nullable = false, length = 100) private String reasonsExemption = "";
-    @Column(name = "RDNVRIE", nullable = false, length = 100) private String extraReasonsExemption = "";
-    @Column(name = "RDNOGS", nullable = false, length = 100) private String reasonsInapplicability = "";
-    @Column(name = "RDNOU", nullable = false, length = 100) private String earlierDecisions = "";
-    @Column(name = "ADVIES", nullable = false, length = 100) private String advice = "";
+    @Column(name = "AANGIFTE", nullable = false) private int declaration;
 
-    @Column(name = "MEDGEB", nullable = false, length = 100) private String medicalDefects = "";
-    @Column(name = "MEDADV", nullable = false, length = 100) private String medicalAdvice = "";
+    @Column(name = "IVWD", nullable = false, length = 1) private String voluntaryService = "";
+    @Column(name = "NMREG", nullable = false, length = 200) private String voluntaryWhere = "";
+
+    @Column(name = "IVRKL", nullable = false, length = 50) private String formerClass = "";
+    @Column(name = "RDNLTR", nullable = false, length = 200) private String formerClassReason = "";
+
+    @Column(name = "HFDLST", nullable = false, length = 1) private String headOfList = "";
+    @Column(name = "BTNDST", nullable = false, length = 1) private String outStateService = "";
+
+    @Column(name = "INGES", nullable = false, length = 1) private String inGesticht = "";
+    @Column(name = "NMGES", nullable = false, length = 200) private String nameGesticht = "";
+    @Column(name = "INGEV", nullable = false, length = 1) private String inJail = "";
+    @Column(name = "DELICT", nullable = false, length = 200) private String whatCrime = "";
 
     @Column(name = "EXEMP", nullable = false, length = 200) private String reasonsNotIncluded = "";
     @Column(name = "MILCOM", nullable = false, length = 255) private String militionChairImprovements = "";
     @Column(name = "BEPERK", nullable = false) private int yearsConstraint;
 
-    @Column(name = "HFDLST", nullable = false, length = 1) private String headOfList = "";
-    @Column(name = "BTNDST", nullable = false, length = 1) private String outStateService = "";
+    @Column(name = "RDNVRIJ", nullable = false, length = 100) private String reasonsExemption = "";
+    @Column(name = "RDNVRIE", nullable = false, length = 100) private String extraReasonsExemption = "";
+    @Column(name = "RDNOU", nullable = false, length = 100) private String earlierDecisions = "";
+    @Column(name = "RDNOGS", nullable = false, length = 100) private String reasonsInapplicability = "";
+    @Column(name = "ADVIES", nullable = false, length = 100) private String advice = "";
+    @Column(name = "EXEMPD", nullable = false) private int dayOfExemptionVerdict;
+    @Column(name = "EXEMPM", nullable = false) private int monthOfExemptionVerdict;
+    @Column(name = "EXEMPJ", nullable = false) private int yearOfExemptionVerdict;
+    @Column(name = "EXEMPU", nullable = false, length = 50) private String exemptionVerdict = "";
 
-    @Column(name = "UITSEL", nullable = false, length = 1) private String delayOfService = "";
+    @Column(name = "MEDD", nullable = false) private int dayOfMedicalVerdict;
+    @Column(name = "MEDM", nullable = false) private int monthOfMedicalVerdict;
+    @Column(name = "MEDJ", nullable = false) private int yearOfMedicalVerdict;
+    @Column(name = "MEDGEB", nullable = false, length = 100) private String medicalDefects = "";
+    @Column(name = "MEDADV", nullable = false, length = 100) private String medicalAdvice = "";
+    @Column(name = "MEDU", nullable = false, length = 50) private String medicalVerdict = "";
+    @Column(name = "MEDREG", nullable = false, length = 10) private String medicalNumber = "";
+
+    @Column(name = "UITSTEL", nullable = false, length = 1) private String delayOfService = "";
+    @Column(name = "UITSTELD", nullable = false) private int dayOfDelayVerdict;
+    @Column(name = "UITSTELM", nullable = false) private int monthOfDelayVerdict;
+    @Column(name = "UITSTELJ", nullable = false) private int yearOfDelayVerdict;
     @Column(name = "PERIOD", nullable = false, length = 50) private String delayInformation = "";
     @Column(name = "BESLUIT", nullable = false, length = 50) private String delayReasons = "";
 
     @Column(name = "PVNM", nullable = false, length = 1) private String substitute = "";
-    @Column(name = "PVNB", nullable = false, length = 10) private String substituteNumber = "";
     @Column(name = "ANPV", nullable = false, length = 50) private String familyNameSubstitute = "";
     @Column(name = "VNPV", nullable = false, length = 50) private String firstNameSubstitute = "";
+    @Column(name = "PVNB", nullable = false, length = 10) private String substituteNumber = "";
 
     @Column(name = "ZEEMIL", nullable = false, length = 1) private String inNaval = "";
     @Column(name = "WENS", nullable = false, length = 50) private String wishOfRecruit = "";
     @Column(name = "GSCHK1", nullable = false, length = 50) private String firstSuitability = "";
     @Column(name = "GSCHK2", nullable = false, length = 50) private String secondSuitability = "";
-    @Column(name = "KPINL", nullable = false, length = 255) private String positionAnnexation = "";
-    @Column(name = "INLD", nullable = false) private int dayOfAnnexation;
-    @Column(name = "INLM", nullable = false) private int monthOfAnnexation;
-    @Column(name = "INLJ", nullable = false) private int yearOfAnnexation;
 
     @Column(name = "AANWD", nullable = false) private int dayOfDesignation;
     @Column(name = "AANWM", nullable = false) private int monthOfDesignation;
     @Column(name = "AANWJ", nullable = false) private int yearOfDesignation;
     @Column(name = "AANW", nullable = false, length = 50) private String designation = "";
+
+    @Column(name = "INLD", nullable = false) private int dayOfAnnexation;
+    @Column(name = "INLM", nullable = false) private int monthOfAnnexation;
+    @Column(name = "INLJ", nullable = false) private int yearOfAnnexation;
+    @Column(name = "KPINL", nullable = false, length = 255) private String positionAnnexation = "";
 
     @Column(name = "BYZAAN", nullable = false, length = 100) private String byzRemarks = "";
     @Column(name = "AANMRK", nullable = false, length = 255) private String remarks = "";
@@ -338,78 +353,6 @@ public class Milition extends Invoer implements Serializable {
         this.education = education;
     }
 
-    public int getDeclaration() {
-        return declaration;
-    }
-
-    public void setDeclaration(int declaration) {
-        this.declaration = declaration;
-    }
-
-    public String getInGesticht() {
-        return inGesticht;
-    }
-
-    public void setInGesticht(String inGesticht) {
-        this.inGesticht = inGesticht;
-    }
-
-    public String getNameGesticht() {
-        return nameGesticht;
-    }
-
-    public void setNameGesticht(String nameGesticht) {
-        this.nameGesticht = nameGesticht;
-    }
-
-    public String getInJail() {
-        return inJail;
-    }
-
-    public void setInJail(String inJail) {
-        this.inJail = inJail;
-    }
-
-    public String getWhatCrime() {
-        return whatCrime;
-    }
-
-    public void setWhatCrime(String whatCrime) {
-        this.whatCrime = whatCrime;
-    }
-
-    public String getFormerClass() {
-        return formerClass;
-    }
-
-    public void setFormerClass(String formerClass) {
-        this.formerClass = formerClass;
-    }
-
-    public String getFormerClassReason() {
-        return formerClassReason;
-    }
-
-    public void setFormerClassReason(String formerClassReason) {
-        this.formerClassReason = formerClassReason;
-    }
-
-    public String getVoluntaryService() {
-        return voluntaryService;
-    }
-
-    public void setVoluntaryService(String voluntaryService) {
-        this.voluntaryService = voluntaryService;
-    }
-
-    public String getVoluntaryWhere() {
-        return voluntaryWhere;
-    }
-
-    public void setVoluntaryWhere(String voluntaryWhere) {
-        this.voluntaryWhere = voluntaryWhere;
-    }
-
     public String getFamilyNameFather() {
         return familyNameFather;
     }
@@ -610,60 +553,92 @@ public class Milition extends Invoer implements Serializable {
         this.notableSigns = notableSigns;
     }
 
-    public String getReasonsExemption() {
-        return reasonsExemption;
+    public int getDeclaration() {
+        return declaration;
     }
 
-    public void setReasonsExemption(String reasonsExemption) {
-        this.reasonsExemption = reasonsExemption;
+    public void setDeclaration(int declaration) {
+        this.declaration = declaration;
     }
 
-    public String getExtraReasonsExemption() {
-        return extraReasonsExemption;
+    public String getVoluntaryService() {
+        return voluntaryService;
     }
 
-    public void setExtraReasonsExemption(String extraReasonsExemption) {
-        this.extraReasonsExemption = extraReasonsExemption;
+    public void setVoluntaryService(String voluntaryService) {
+        this.voluntaryService = voluntaryService;
     }
 
-    public String getReasonsInapplicability() {
-        return reasonsInapplicability;
+    public String getVoluntaryWhere() {
+        return voluntaryWhere;
     }
 
-    public void setReasonsInapplicability(String reasonsInapplicability) {
-        this.reasonsInapplicability = reasonsInapplicability;
+    public void setVoluntaryWhere(String voluntaryWhere) {
+        this.voluntaryWhere = voluntaryWhere;
     }
 
-    public String getEarlierDecisions() {
-        return earlierDecisions;
+    public String getFormerClass() {
+        return formerClass;
     }
 
-    public void setEarlierDecisions(String earlierDecisions) {
-        this.earlierDecisions = earlierDecisions;
+    public void setFormerClass(String formerClass) {
+        this.formerClass = formerClass;
     }
 
-    public String getAdvice() {
-        return advice;
+    public String getFormerClassReason() {
+        return formerClassReason;
     }
 
-    public void setAdvice(String advice) {
-        this.advice = advice;
+    public void setFormerClassReason(String formerClassReason) {
+        this.formerClassReason = formerClassReason;
     }
 
-    public String getMedicalDefects() {
-        return medicalDefects;
+    public String getHeadOfList() {
+        return headOfList;
     }
 
-    public void setMedicalDefects(String medicalDefects) {
-        this.medicalDefects = medicalDefects;
+    public void setHeadOfList(String headOfList) {
+        this.headOfList = headOfList;
     }
 
-    public String getMedicalAdvice() {
-        return medicalAdvice;
+    public String getOutStateService() {
+        return outStateService;
     }
 
-    public void setMedicalAdvice(String medicalAdvice) {
-        this.medicalAdvice = medicalAdvice;
+    public void setOutStateService(String outStateService) {
+        this.outStateService = outStateService;
+    }
+
+    public String getInGesticht() {
+        return inGesticht;
+    }
+
+    public void setInGesticht(String inGesticht) {
+        this.inGesticht = inGesticht;
+    }
+
+    public String getNameGesticht() {
+        return nameGesticht;
+    }
+
+    public void setNameGesticht(String nameGesticht) {
+        this.nameGesticht = nameGesticht;
+    }
+
+    public String getInJail() {
+        return inJail;
+    }
+
+    public void setInJail(String inJail) {
+        this.inJail = inJail;
+    }
+
+    public String getWhatCrime() {
+        return whatCrime;
+    }
+
+    public void setWhatCrime(String whatCrime) {
+        this.whatCrime = whatCrime;
     }
 
     public String getReasonsNotIncluded() {
@@ -690,20 +665,132 @@ public class Milition extends Invoer implements Serializable {
         this.yearsConstraint = yearsConstraint;
     }
 
-    public String getHeadOfList() {
-        return headOfList;
+    public String getReasonsExemption() {
+        return reasonsExemption;
     }
 
-    public void setHeadOfList(String headOfList) {
-        this.headOfList = headOfList;
+    public void setReasonsExemption(String reasonsExemption) {
+        this.reasonsExemption = reasonsExemption;
     }
 
-    public String getOutStateService() {
-        return outStateService;
+    public String getExtraReasonsExemption() {
+        return extraReasonsExemption;
     }
 
-    public void setOutStateService(String outStateService) {
-        this.outStateService = outStateService;
+    public void setExtraReasonsExemption(String extraReasonsExemption) {
+        this.extraReasonsExemption = extraReasonsExemption;
+    }
+
+    public String getEarlierDecisions() {
+        return earlierDecisions;
+    }
+
+    public void setEarlierDecisions(String earlierDecisions) {
+        this.earlierDecisions = earlierDecisions;
+    }
+
+    public String getReasonsInapplicability() {
+        return reasonsInapplicability;
+    }
+
+    public void setReasonsInapplicability(String reasonsInapplicability) {
+        this.reasonsInapplicability = reasonsInapplicability;
+    }
+
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
+
+    public int getDayOfExemptionVerdict() {
+        return dayOfExemptionVerdict;
+    }
+
+    public void setDayOfExemptionVerdict(int dayOfExemptionVerdict) {
+        this.dayOfExemptionVerdict = dayOfExemptionVerdict;
+    }
+
+    public int getMonthOfExemptionVerdict() {
+        return monthOfExemptionVerdict;
+    }
+
+    public void setMonthOfExemptionVerdict(int monthOfExemptionVerdict) {
+        this.monthOfExemptionVerdict = monthOfExemptionVerdict;
+    }
+
+    public int getYearOfExemptionVerdict() {
+        return yearOfExemptionVerdict;
+    }
+
+    public void setYearOfExemptionVerdict(int yearOfExemptionVerdict) {
+        this.yearOfExemptionVerdict = yearOfExemptionVerdict;
+    }
+
+    public String getExemptionVerdict() {
+        return exemptionVerdict;
+    }
+
+    public void setExemptionVerdict(String exemptionVerdict) {
+        this.exemptionVerdict = exemptionVerdict;
+    }
+
+    public int getDayOfMedicalVerdict() {
+        return dayOfMedicalVerdict;
+    }
+
+    public void setDayOfMedicalVerdict(int dayOfMedicalVerdict) {
+        this.dayOfMedicalVerdict = dayOfMedicalVerdict;
+    }
+
+    public int getMonthOfMedicalVerdict() {
+        return monthOfMedicalVerdict;
+    }
+
+    public void setMonthOfMedicalVerdict(int monthOfMedicalVerdict) {
+        this.monthOfMedicalVerdict = monthOfMedicalVerdict;
+    }
+
+    public int getYearOfMedicalVerdict() {
+        return yearOfMedicalVerdict;
+    }
+
+    public void setYearOfMedicalVerdict(int yearOfMedicalVerdict) {
+        this.yearOfMedicalVerdict = yearOfMedicalVerdict;
+    }
+
+    public String getMedicalDefects() {
+        return medicalDefects;
+    }
+
+    public void setMedicalDefects(String medicalDefects) {
+        this.medicalDefects = medicalDefects;
+    }
+
+    public String getMedicalAdvice() {
+        return medicalAdvice;
+    }
+
+    public void setMedicalAdvice(String medicalAdvice) {
+        this.medicalAdvice = medicalAdvice;
+    }
+
+    public String getMedicalVerdict() {
+        return medicalVerdict;
+    }
+
+    public void setMedicalVerdict(String medicalVerdict) {
+        this.medicalVerdict = medicalVerdict;
+    }
+
+    public String getMedicalNumber() {
+        return medicalNumber;
+    }
+
+    public void setMedicalNumber(String medicalNumber) {
+        this.medicalNumber = medicalNumber;
     }
 
     public String getDelayOfService() {
@@ -712,6 +799,30 @@ public class Milition extends Invoer implements Serializable {
 
     public void setDelayOfService(String delayOfService) {
         this.delayOfService = delayOfService;
+    }
+
+    public int getDayOfDelayVerdict() {
+        return dayOfDelayVerdict;
+    }
+
+    public void setDayOfDelayVerdict(int dayOfDelayVerdict) {
+        this.dayOfDelayVerdict = dayOfDelayVerdict;
+    }
+
+    public int getMonthOfDelayVerdict() {
+        return monthOfDelayVerdict;
+    }
+
+    public void setMonthOfDelayVerdict(int monthOfDelayVerdict) {
+        this.monthOfDelayVerdict = monthOfDelayVerdict;
+    }
+
+    public int getYearOfDelayVerdict() {
+        return yearOfDelayVerdict;
+    }
+
+    public void setYearOfDelayVerdict(int yearOfDelayVerdict) {
+        this.yearOfDelayVerdict = yearOfDelayVerdict;
     }
 
     public String getDelayInformation() {
@@ -738,14 +849,6 @@ public class Milition extends Invoer implements Serializable {
         this.substitute = substitute;
     }
 
-    public String getSubstituteNumber() {
-        return substituteNumber;
-    }
-
-    public void setSubstituteNumber(String substituteNumber) {
-        this.substituteNumber = substituteNumber;
-    }
-
     public String getFamilyNameSubstitute() {
         return familyNameSubstitute;
     }
@@ -760,6 +863,14 @@ public class Milition extends Invoer implements Serializable {
 
     public void setFirstNameSubstitute(String firstNameSubstitute) {
         this.firstNameSubstitute = firstNameSubstitute;
+    }
+
+    public String getSubstituteNumber() {
+        return substituteNumber;
+    }
+
+    public void setSubstituteNumber(String substituteNumber) {
+        this.substituteNumber = substituteNumber;
     }
 
     public String getInNaval() {
@@ -794,38 +905,6 @@ public class Milition extends Invoer implements Serializable {
         this.secondSuitability = secondSuitability;
     }
 
-    public String getPositionAnnexation() {
-        return positionAnnexation;
-    }
-
-    public void setPositionAnnexation(String positionAnnexation) {
-        this.positionAnnexation = positionAnnexation;
-    }
-
-    public int getDayOfAnnexation() {
-        return dayOfAnnexation;
-    }
-
-    public void setDayOfAnnexation(int dayOfAnnexation) {
-        this.dayOfAnnexation = dayOfAnnexation;
-    }
-
-    public int getMonthOfAnnexation() {
-        return monthOfAnnexation;
-    }
-
-    public void setMonthOfAnnexation(int monthOfAnnexation) {
-        this.monthOfAnnexation = monthOfAnnexation;
-    }
-
-    public int getYearOfAnnexation() {
-        return yearOfAnnexation;
-    }
-
-    public void setYearOfAnnexation(int yearOfAnnexation) {
-        this.yearOfAnnexation = yearOfAnnexation;
-    }
-
     public int getDayOfDesignation() {
         return dayOfDesignation;
     }
@@ -856,6 +935,38 @@ public class Milition extends Invoer implements Serializable {
 
     public void setDesignation(String designation) {
         this.designation = designation;
+    }
+
+    public int getDayOfAnnexation() {
+        return dayOfAnnexation;
+    }
+
+    public void setDayOfAnnexation(int dayOfAnnexation) {
+        this.dayOfAnnexation = dayOfAnnexation;
+    }
+
+    public int getMonthOfAnnexation() {
+        return monthOfAnnexation;
+    }
+
+    public void setMonthOfAnnexation(int monthOfAnnexation) {
+        this.monthOfAnnexation = monthOfAnnexation;
+    }
+
+    public int getYearOfAnnexation() {
+        return yearOfAnnexation;
+    }
+
+    public void setYearOfAnnexation(int yearOfAnnexation) {
+        this.yearOfAnnexation = yearOfAnnexation;
+    }
+
+    public String getPositionAnnexation() {
+        return positionAnnexation;
+    }
+
+    public void setPositionAnnexation(String positionAnnexation) {
+        this.positionAnnexation = positionAnnexation;
     }
 
     public String getByzRemarks() {
