@@ -39,7 +39,7 @@
       </div>
 
       <div data-show-when="#mil\.substitute" data-has-values-in="p;w" style="display:none;">
-        <div class="form-group extra-top-margin" th:if="${akte.is('1862', '1913')}">
+        <div class="form-group extra-top-margin" th:if="${akte.is('1862')}">
           <label class="col-xs-3 control-label">Achternaam:</label>
 
           <div class="col-xs-4">
@@ -48,7 +48,7 @@
           </div>
         </div>
 
-        <div class="form-group" th:if="${akte.is('1862', '1913')}">
+        <div class="form-group" th:if="${akte.is('1862')}">
           <label class="col-xs-3 control-label">Voornamen:</label>
 
           <div class="col-xs-4">
@@ -109,8 +109,8 @@
     </th:block>
 
     <th:block th:if="${akte.is('1815', '1862', '1913IL')}">
-    <div class="form-header letter-spacing extra-top-margin" th:if="${akte.mil.is1815()}">DESIGNATIE:</div>
-    <div class="form-header letter-spacing extra-top-margin" th:if="${!akte.mil.is1815()}">AANWIJZING DIENST:</div>
+      <div class="form-header letter-spacing extra-top-margin" th:if="${akte.mil.is1815()}">DESIGNATIE:</div>
+      <div class="form-header letter-spacing extra-top-margin" th:if="${!akte.mil.is1815()}">AANWIJZING DIENST:</div>
 
       <th:block th:if="${akte.is('1815L', '1862IL')}">
         <div class="form-group extra-top-margin">
