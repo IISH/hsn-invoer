@@ -10,24 +10,24 @@
   <th:block layout:fragment="fields">
     <legend>MOEDER</legend>
 
+    <input type="hidden" th:field="*{gebknd.brgstmr}"
+           data-set-value-when="#is-echtgenoot-aangever" data-has-values-in="j"
+           data-then-value="5" data-else-value-of="#keuze-echtgenoot"/>
+
     <div class="form-group">
-      <input type="hidden" th:field="*{gebknd.brgstmr}"
-             data-set-value-when="#is-echtgenoot-aangever" data-has-values-in="j"
-             data-then-value="5" data-else-value-of="#keuze-echtgenoot"/>
+      <label for="is-echtgenoot-aangever" class="col-xs-7 control-label">
+        Is de moeder de echtgenote van de aangever: j / n
+      </label>
 
-      <div class="form-group-style">
-        <label for="is-echtgenoot-aangever" class="col-xs-7 control-label">
-          Is de moeder de echtgenote van de aangever: j / n
-        </label>
-
-        <div class="col-xs-5">
-          <input type="text" id="is-echtgenoot-aangever" class="form-control form-control-digit required"
-                 maxlength="1" data-valid-chars="j;n"
-                 th:value="${@geboorteAkteHelper.getMoederEchtgenoteAangever(akte.gebknd)}"/>
-        </div>
+      <div class="col-xs-5">
+        <input type="text" id="is-echtgenoot-aangever" class="form-control form-control-digit required"
+               maxlength="1" data-valid-chars="j;n"
+               th:value="${@geboorteAkteHelper.getMoederEchtgenoteAangever(akte.gebknd)}"/>
       </div>
+    </div>
 
-      <div data-show-when="#is-echtgenoot-aangever" data-has-values-in="n" style="display: none;">
+    <div data-show-when="#is-echtgenoot-aangever" data-has-values-in="n" style="display: none;">
+      <div class="form-group">
         <div class="form-group-style">
           <div class="col-xs-5 col-xs-offset-2">
             <span class="text-control-label inline">1 = ongehuwd</span>
