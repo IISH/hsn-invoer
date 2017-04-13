@@ -115,7 +115,7 @@
   </action-state>
 
   <!-- MS6: MEDISCH ADVIES -->
-  <view-state id="MS4c" view="militie/MS6" model="akte">
+  <view-state id="MS6" view="militie/MS6" model="akte">
     <transition on="next" to="includesDelayCheck">
       <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
     </transition>
