@@ -5,7 +5,7 @@
 
     function initAddressRenumbering(elem) {
         if (!$.isCorrection()) {
-            var regex = /pkadres([0-9]).vernum/;
+            var regex = /pkadres([0-9]+).vernum/;
             elem.find('.adresRenumbering').blur(function (e) {
                 var target = $(e.target);
                 var code = target.val().trim();
