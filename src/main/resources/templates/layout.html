@@ -8,8 +8,8 @@
   <title>HSN-Invoerprogramma</title>
   <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
-<body>
-<div id="main" class="container" th:classappend="${mainClasses} ? ${mainClasses}">
+<body th:classappend="${mainClasses} ? ${mainClasses}">
+<div id="main" class="container">
   <th:block layout:fragment="content"></th:block>
 </div>
 

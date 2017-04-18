@@ -11,10 +11,6 @@ html, body {
   width: 900px;
   padding-top: 10px;
 
-  &.two-column {
-    width: 1500px;
-  }
-
   &.extend-width {
     width: 100%;
     min-width: 900px;
@@ -28,6 +24,14 @@ html, body {
 body {
   overflow-x: hidden;
   overflow-y: scroll;
+
+  &.two-column {
+    overflow-y: hidden;
+
+    #main {
+      width: 1500px;
+    }
+  }
 }
 
 header,
