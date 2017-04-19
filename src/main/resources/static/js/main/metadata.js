@@ -3,9 +3,9 @@
 
     function checkLength(elem) {
         elem.hasErrorWhen(elem.val().length !== 3);
-    };
+    }
 
-    var checkAccess = function () {
+    function checkAccess() {
         var errorMessage = 'Helaas mag u voor deze werk order niet invoeren of correcties uitvoeren!';
 
         if ($('.has-an-error:visible').length === 0) {
