@@ -87,14 +87,6 @@
           <input type="text" class="form-control" th:field="*{mil.exemptionVerdict}" hsn:field="mil.exemptionVerdict"/>
         </div>
       </div>
-
-      <div class="form-group" th:if="${akte.is('1862L')}">
-        <label class="col-xs-6 control-label">Nummer ziekte volgens keuringsregelement:</label>
-
-        <div class="col-xs-2">
-          <input type="text" class="form-control" th:field="*{mil.medicalNumber}" hsn:field="mil.medicalNumber"/>
-        </div>
-      </div>
     </div>
 
     <div th:replace="militie/byz-fragment :: byzModal"></div>
@@ -113,8 +105,7 @@
     Redenen loteling (9.1)<br/>
     Advies militieraad (9.2/10)<br/>
     Dagtekening uitspraak (13.1)<br/>
-    Uitspraak (13.2)<br/>
-    Nummer ziekte volgens keuringsregelement (16)
+    Uitspraak (13.2)
   </div>
 
   <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913AL')}">
