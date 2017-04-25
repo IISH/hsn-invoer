@@ -265,7 +265,7 @@ CREATE TABLE `huwttl` (
   `VERSIEO` varchar(5) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `UK_7i9nhq2xmhqnl3wgrytv6dfbe` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`)
+  UNIQUE KEY `UK_7i9nhq2xmhqnl3wgrytv6dfbe` (`IDNR`,`HDAG`,`HMAAND`,`HJAAR`,`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
