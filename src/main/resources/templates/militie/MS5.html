@@ -10,11 +10,28 @@
 
     <div class="extra-top-margin">
       <div class="form-group" th:if="${akte.is('1913A')}">
-        <label class="col-xs-6 control-label">Vroegere uitspraken (redenen uit het verleden):</label>
+        <label class="col-xs-6 control-label">
+          Door wie vroegere uitspraak gedaan:
+        </label>
 
         <div class="col-xs-5">
           <input type="text" class="form-control"
                  th:field="*{mil.earlierDecisions}" hsn:field="mil.earlierDecisions"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1913A')}">
+        <label class="col-xs-6 control-label">Datum vroegere uitspraak:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('mil.dayOfExemptionVerdict', 'mil.monthOfExemptionVerdict', 'mil.yearOfExemptionVerdict')"></div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1913A')}">
+        <label class="col-xs-6 control-label">Aard der uitspraak:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control" th:field="*{mil.exemptionVerdict}" hsn:field="mil.exemptionVerdict"/>
         </div>
       </div>
 
@@ -108,7 +125,15 @@
     Uitspraak (13.2)
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913AL')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913A')}">
+    Door wie vroegere uitspraak gedaan (kolom 5.1)<br/>
+    Datum vroegere uitspraak (kolom 5.2)<br/>
+    Aard der uitspraak (kolom 5.3)<br/>
+    Aangevoerde reden (kolom 6.1)<br/>
+    Advies militieraad (kolom 6.2)
+  </div>
+
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913L')}">
     Redenen verleden (kolom 5.3)<br/>
     Aangevoerde reden (kolom 6.1)<br/>
     Advies militieraad (kolom 6.2)

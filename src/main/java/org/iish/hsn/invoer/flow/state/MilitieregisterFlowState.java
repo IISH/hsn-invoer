@@ -139,4 +139,8 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     public Verdict getVerdictKoning() {
         return verdict.get(Type.KONING);
     }
+
+    public Verdict getVerdictMilitieraad() {
+        return verdict.get(Type.MILITIERAAD);
+    }
 }

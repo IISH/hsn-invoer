@@ -6,9 +6,29 @@
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
-    <div class="form-header letter-spacing">UITSPRAAK GEDEPUTEERDE STATEN:</div>
+    <th:block th:if="${akte.is('1913A')}">
+      <div class="form-header letter-spacing">UITSPRAAK MILITIERAAD:</div>
 
-    <div class="form-header extra-top-margin" th:if="${akte.is('1862', '1913')}">Op bezwaar:</div>
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
+
+        <div class="col-xs-6">
+          <input type="text" class="form-control"
+                 th:field="*{verdictBezwaren.nature}" hsn:field="verdictMilitieraad.nature"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+      <label class="col-xs-4 control-label">Dagtekening der uitspraak:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('verdictMilitieraad.dayOfVerdict', 'verdictMilitieraad.monthOfVerdict', 'verdictMilitieraad.yearOfVerdict')"></div>
+    </div>
+    </th:block>
+
+    <div class="form-header letter-spacing" th:classappend="${akte.is('1913A')} ? 'extra-top-margin'">UITSPRAAK GEDEPUTEERDE STATEN:</div>
+
+    <div class="form-header extra-top-margin" th:if="${akte.is('1862', '1913IL')}">Op bezwaar:</div>
 
     <div class="form-group extra-top-margin">
       <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
@@ -19,7 +39,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" th:if="${akte.is('1815', '1862', '1913IL')}">
       <label class="col-xs-4 control-label">Dagtekening bezwaar:</label>
 
       <div
@@ -33,7 +53,7 @@
           th:replace="fragments/fields :: datum ('verdictBezwaren.dayOfVerdict', 'verdictBezwaren.monthOfVerdict', 'verdictBezwaren.yearOfVerdict')"></div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" th:if="${akte.is('1815', '1862', '1913IAL')}">
       <label class="col-xs-4 control-label" th:if="${akte.mil.is1815()}">Nummer van de zaak in register:</label>
       <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Nummer der uitspraak:</label>
 
@@ -43,7 +63,7 @@
       </div>
     </div>
 
-    <th:block th:if="${akte.is('1862', '1913')}">
+    <th:block th:if="${akte.is('1862', '1913IL')}">
       <div class="form-header extra-top-margin">Krachtens wet:</div>
 
       <div class="form-group extra-top-margin">
@@ -89,8 +109,13 @@
           <input type="text" class="form-control" th:field="*{mil.medicalNumber}" hsn:field="mil.medicalNumber"/>
         </div>
       </div>
+    </th:block>
 
-      <div class="form-header letter-spacing extra-top-margin">
+    <th:block th:if="${akte.is('1862', '1913')}">
+      <div class="form-header letter-spacing extra-top-margin" th:if="${akte.is('1913A')}">
+        UITSPRAAK KONINGIN:
+      </div>
+      <div class="form-header letter-spacing extra-top-margin" th:if="${akte.is('1913A') == false}">
         BESLISSING KONING IN HOGER BEROEP:
       </div>
 
@@ -103,7 +128,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" th:if="${akte.is('1862', '1913IL')}">
         <label class="col-xs-4 control-label">Dagtekening beroep:</label>
 
         <div
@@ -146,6 +171,12 @@
     Krachtens wet (kolom 15.1-3)<br/>
     Nummer ziekte (kolom 16)<br/>
     Beroep koning (kolom  17.1-3)
+  </div>
+
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913A')}">
+    Militieraad (kolom 7.1-3)<br/>
+    Gedeputeerde Staten (kolom 8.1-3)<br/>
+    Koningin (kolom  9.1-2)
   </div>
 </div>
 
