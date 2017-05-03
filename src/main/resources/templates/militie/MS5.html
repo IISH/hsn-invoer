@@ -91,7 +91,8 @@
       </div>
 
       <div class="form-group" th:if="${akte.is('1862L', '1913I')}">
-        <label class="col-xs-6 control-label">Datum vroegere uitspraak:</label>
+        <label class="col-xs-6 control-label" th:if="${akte.is('1862L')}">Datum uitspraak:</label>
+        <label class="col-xs-6 control-label" th:if="${akte.is('1862L')} == false">Datum vroegere uitspraak:</label>
 
         <div
             th:replace="fragments/fields :: datum ('mil.dayOfExemptionVerdict', 'mil.monthOfExemptionVerdict', 'mil.yearOfExemptionVerdict')"></div>
