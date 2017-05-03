@@ -49,6 +49,7 @@
                 var dayVal = $('#pkadres' + index + '\\.dgadrp').getIntegerValue();
 
                 if (yearVal && monthVal && dayVal) {
+                    monthVal = (monthVal < 0 && yearVal > 0) ? 13 : monthVal;
                     var order = (monthVal - 1) * 30 + dayVal + (yearVal - 1900) * 365;
                     if ((order > 0) && (prevOrder !== null) && (order < prevOrder)) {
                         isOrderOk = false;
