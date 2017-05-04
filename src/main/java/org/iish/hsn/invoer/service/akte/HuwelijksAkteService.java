@@ -86,6 +86,9 @@ public class HuwelijksAkteService extends AkteService {
             huwknd.setHuw(huw);
             huwknd.setIdnr(huwttl.getIdnr());
             huwknd.setHuur(huwttl.getHuur());
+            huwknd.setHplts(huwttl.getHplts());
+            huwknd.setHgemnr(huwttl.getHgemnr());
+            huwknd.setHaktenr(huwttl.getHaktenr());
 
             huwknd.setGebsex(refRp.getSex());
             if (refRp.getSex().equals("m")) {
@@ -222,6 +225,13 @@ public class HuwelijksAkteService extends AkteService {
      * @param huwelijksAkteFlow The huwelijks akte flow state.
      */
     public void registerFirstDetails(HuwelijksAkteFlowState huwelijksAkteFlow) {
+        Huwknd huwknd = huwelijksAkteFlow.getHuwknd();
+        Huwttl huwttl = huwelijksAkteFlow.getHuwttl();
+
+        huwknd.setHplts(huwttl.getHplts());
+        huwknd.setHgemnr(huwttl.getHgemnr());
+        huwknd.setHaktenr(huwttl.getHaktenr());
+
         saveHuwknd(huwelijksAkteFlow);
     }
 
