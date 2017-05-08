@@ -5,7 +5,7 @@
 
     function initAddressRenumbering(elem) {
         if (!$.isCorrection()) {
-            var regex = /pkadres([0-9]).vernum/;
+            var regex = /pkadres([0-9]+).vernum/;
             elem.find('.adresRenumbering').blur(function (e) {
                 var target = $(e.target);
                 var code = target.val().trim();
@@ -14,10 +14,21 @@
                     var index = parseInt(target.attr('id').match(regex)[1]);
                     var prevIndex = index - 1;
 
-                    $('#pkadres' + index + '\\.pladrp').val($('#pkadres' + prevIndex + '\\.pladrp').val());
+                    var curPlaats = $('#pkadres' + index + '\\.pladrp');
+                    if (curPlaats.val().trim().length === 0) {
+                        curPlaats.val($('#pkadres' + prevIndex + '\\.pladrp').val());
+                    }
+
                     if (code === 'v') {
-                        $('#pkadres' + index + '\\.stradrp').val($('#pkadres' + prevIndex + '\\.stradrp').val());
-                        $('#pkadres' + index + '\\.lndadrp').val($('#pkadres' + prevIndex + '\\.lndadrp').val());
+                        var curAdres = $('#pkadres' + index + '\\.stradrp');
+                        if (curAdres.val().trim().length === 0) {
+                            curAdres.val($('#pkadres' + prevIndex + '\\.stradrp').val());
+                        }
+
+                        var curLand = $('#pkadres' + index + '\\.lndadrp');
+                        if (curLand.val().trim().length === 0) {
+                            curLand.val($('#pkadres' + prevIndex + '\\.lndadrp').val());
+                        }
                     }
                 }
             });
@@ -38,6 +49,7 @@
                 var dayVal = $('#pkadres' + index + '\\.dgadrp').getIntegerValue();
 
                 if (yearVal && monthVal && dayVal) {
+                    monthVal = (monthVal < 0 && yearVal > 0) ? 13 : monthVal;
                     var order = (monthVal - 1) * 30 + dayVal + (yearVal - 1900) * 365;
                     if ((order > 0) && (prevOrder !== null) && (order < prevOrder)) {
                         isOrderOk = false;

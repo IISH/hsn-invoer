@@ -30,9 +30,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // All pages, except /css/**, /fonts/** and /js/**, require authorization first
+                // All pages, except /css/**, /fonts/**, /js/** and favicon.ico require authorization first
                 .authorizeRequests()
-                    .antMatchers("/css/**", "/fonts/**", "/js/**").permitAll()
+                    .antMatchers("/css/**", "/fonts/**", "/js/**", "/favicon.ico").permitAll()
                     .and()
                 // Disable Cross-Site Request Forgery token
                 .csrf().disable()

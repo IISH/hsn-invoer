@@ -5,7 +5,8 @@
 <head></head>
 <body>
 <fieldset class="title" layout:fragment="title">
-  <legend align="center">INVOER VAN HUWELIJKSAKTEN</legend>
+  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER VAN HUWELIJKSAKTEN</legend>
+  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE VAN HUWELIJKSAKTEN</legend>
 
   <div class="form-main-header">
     eerst volledige identificatie
