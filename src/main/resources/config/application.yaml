@@ -1,6 +1,6 @@
 application:
-  version: "5.0.6"
-  date: "24 maart 2017"
+  version: "5.0.7"
+  date: "8 mei 2017"
 
 spring:
   mvc:
