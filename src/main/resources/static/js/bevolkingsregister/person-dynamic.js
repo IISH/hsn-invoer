@@ -1,18 +1,18 @@
 (function ($) {
     'use strict';
 
-    var onNew = function (self, elems) {
+    function onNew(self, elems) {
         var seqNr = elems.parent.find('.seqNr:last').getIntegerText() + 1;
         seqNr = isNaN(seqNr) ? 1 : seqNr;
         elems.onEdit.find('input[name=dynamicDataSequenceNumber]').val(seqNr);
-    };
+    }
 
-    var onUpdate = function (self, elems) {
+    function onUpdate(self, elems) {
         var seqNr = self.closest('tr').find('.seqNr').text();
         elems.btnSaveUpdate.data('seqnr', seqNr);
-    };
+    }
 
-    var onDelete = function (self) {
+    function onDelete(self) {
         $.ajax({
             type: 'POST',
             dataType: 'text',
@@ -27,9 +27,9 @@
                 self.trigger('crud-table-ajax-success', [result]);
             }
         });
-    };
+    }
 
-    var onSaveNew = function (self, data) {
+    function onSaveNew(self, data) {
         $.ajax({
             type: 'POST',
             dataType: 'text',
@@ -43,9 +43,9 @@
                 self.trigger('crud-table-ajax-success', [result]);
             }
         });
-    };
+    }
 
-    var onSaveUpdate = function (self, data) {
+    function onSaveUpdate(self, data) {
         $.ajax({
             type: 'POST',
             dataType: 'text',
@@ -60,9 +60,9 @@
                 self.trigger('crud-table-ajax-success', [result]);
             }
         });
-    };
+    }
 
-    var onModalOpen = function () {
+    function onModalOpen() {
         var focusElem = $(':focus');
         var personDynamic = focusElem.closest('.personDynamic');
         if (personDynamic.length > 0) {
@@ -105,9 +105,9 @@
                 }
             });
         }
-    };
+    }
 
-    var onModalClose = function () {
+    function onModalClose() {
         var modal = $('.modal.in').first();
 
         var minRecords = modal.getIntegerDataValue('min-records');
@@ -153,7 +153,7 @@
                 }
             });
         }
-    };
+    }
 
     $(document).keydown(function (e) {
         var modal = $.getOpenedModal();

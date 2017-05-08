@@ -3,9 +3,9 @@
 
     var adrAjax = false;
 
-    var initAddressRenumbering = function (elem) {
+    function initAddressRenumbering(elem) {
         if (!$.isCorrection()) {
-            var regex = /pkadres([0-9]).vernum/;
+            var regex = /pkadres([0-9]+).vernum/;
             elem.find('.adresRenumbering').blur(function (e) {
                 var target = $(e.target);
                 var code = target.val().trim();
@@ -14,17 +14,28 @@
                     var index = parseInt(target.attr('id').match(regex)[1]);
                     var prevIndex = index - 1;
 
-                    $('#pkadres' + index + '\\.pladrp').val($('#pkadres' + prevIndex + '\\.pladrp').val());
+                    var curPlaats = $('#pkadres' + index + '\\.pladrp');
+                    if (curPlaats.val().trim().length === 0) {
+                        curPlaats.val($('#pkadres' + prevIndex + '\\.pladrp').val());
+                    }
+
                     if (code === 'v') {
-                        $('#pkadres' + index + '\\.stradrp').val($('#pkadres' + prevIndex + '\\.stradrp').val());
-                        $('#pkadres' + index + '\\.lndadrp').val($('#pkadres' + prevIndex + '\\.lndadrp').val());
+                        var curAdres = $('#pkadres' + index + '\\.stradrp');
+                        if (curAdres.val().trim().length === 0) {
+                            curAdres.val($('#pkadres' + prevIndex + '\\.stradrp').val());
+                        }
+
+                        var curLand = $('#pkadres' + index + '\\.lndadrp');
+                        if (curLand.val().trim().length === 0) {
+                            curLand.val($('#pkadres' + prevIndex + '\\.lndadrp').val());
+                        }
                     }
                 }
             });
         }
-    };
+    }
 
-    var initCheckAddressOrder = function (elem) {
+    function initCheckAddressOrder(elem) {
         elem.find('.day, .month, .year').blur(function () {
             var index = 0;
             var prevOrder = null;
@@ -38,6 +49,7 @@
                 var dayVal = $('#pkadres' + index + '\\.dgadrp').getIntegerValue();
 
                 if (yearVal && monthVal && dayVal) {
+                    monthVal = (monthVal < 0 && yearVal > 0) ? 13 : monthVal;
                     var order = (monthVal - 1) * 30 + dayVal + (yearVal - 1900) * 365;
                     if ((order > 0) && (prevOrder !== null) && (order < prevOrder)) {
                         isOrderOk = false;
@@ -53,9 +65,9 @@
 
             $.setError(!isOrderOk, 'address-order', 'De adressen staan niet op chronologische volgorde, verbeter nu!');
         });
-    };
+    }
 
-    var updateCountry = function (elem) {
+    function updateCountry(elem) {
         var parentElem = elem.closest('.pk-adres');
 
         var plaats = parentElem.find('.plaats');
@@ -66,9 +78,9 @@
             ((plaats.val().trim().length > 0) || (street.val().trim().length > 0))) {
             country.val('Nl');
         }
-    };
+    }
 
-    var updateAdrFields = function (elem, isNext, isPrev) {
+    function updateAdrFields(elem, isNext, isPrev) {
         if (!adrAjax) {
             adrAjax = true;
             $(document).resetInvisibleFormElements();
@@ -108,9 +120,9 @@
                 }
             });
         }
-    };
+    }
 
-    var updateDateFieldsIfEmpty = function (hsnDate) {
+    function updateDateFieldsIfEmpty(hsnDate) {
         var day = hsnDate.day;
         var dayIsZero = (day.isInput && (day.getValue() === 0));
 
@@ -123,7 +135,7 @@
         }
 
         return dayIsZero;
-    };
+    }
 
     $(document).on('blur', '.day, .year', function (e) {
         var self = $(e.target);

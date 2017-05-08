@@ -11,7 +11,7 @@ public interface BeroepRepository extends Repository<Beroep, Integer> {
     @Query("SELECT brp FROM Beroep brp " +
            "WHERE (UPPER(brp.berpnaam) = UPPER(?1)) " +
            "AND (brp.workOrder = ?2 OR brp.workOrder = ?3)")
-    Beroep findByBerpnaam(String berpnaam, WorkOrder emptyWorkOrder, WorkOrder workOrder);
+    List<Beroep> findByBerpnaam(String berpnaam, WorkOrder emptyWorkOrder, WorkOrder workOrder);
 
     @Query("SELECT brp FROM Beroep brp " +
            "WHERE (UPPER(brp.berpnaam) LIKE UPPER(?1)) " +

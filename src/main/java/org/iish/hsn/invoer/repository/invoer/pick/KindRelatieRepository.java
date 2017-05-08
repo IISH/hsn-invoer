@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface KindRelatieRepository extends Repository<KindRelatie, Integer> {
     @Query("SELECT rel FROM KindRelatie rel " +
-           "WHERE (UPPER(rel.relatie) LIKE UPPER(?1)) " +
+           "WHERE (UPPER(rel.relatie) = UPPER(?1)) " +
            "AND (rel.workOrder = ?2 OR rel.workOrder = ?3)")
-    KindRelatie findByRelatie(String relatie, WorkOrder emptyWorkOrder, WorkOrder workOrder);
+    List<KindRelatie> findByRelatie(String relatie, WorkOrder emptyWorkOrder, WorkOrder workOrder);
 
     @Query("SELECT rel FROM KindRelatie rel " +
            "WHERE (UPPER(rel.relatie) LIKE UPPER(?1)) " +

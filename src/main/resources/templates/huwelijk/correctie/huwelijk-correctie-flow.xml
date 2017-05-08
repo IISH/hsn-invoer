@@ -39,26 +39,25 @@
   <!-- HS0A1: IDENTIFICATIE -->
   <view-state id="HS0A1" view="huwelijk/HS0A1" model="akte">
     <transition on="stop" to="stopEnd"/>
-    <transition on="next" to="echtschedingCheck"/>
+    <transition on="next" to="echtschedingCheck">
+      <evaluate expression="huwelijksAkteService.registerFirstDetails(flowScope.akte)"/>
+    </transition>
   </view-state>
 
   <action-state id="echtschedingCheck">
     <evaluate expression="flowScope.akte.huwknd.scheidng == 'j'"/>
 
     <transition on="yes" to="HS0A2"/>
-    <transition on="no" to="registerFirstDetails"/>
+    <transition on="no" to="secondCorrectionCodeCheck"/>
   </action-state>
 
   <!-- HS0A2: ECHTSCHEIDING -->
   <view-state id="HS0A2" view="huwelijk/HS0A2" model="akte">
     <transition on="stop" to="stopEnd"/>
-    <transition on="next" to="registerFirstDetails"/>
+    <transition on="next" to="secondCorrectionCodeCheck">
+      <evaluate expression="huwelijksAkteService.registerFirstDetails(flowScope.akte)"/>
+    </transition>
   </view-state>
-
-  <action-state id="registerFirstDetails">
-    <evaluate expression="huwelijksAkteService.registerFirstDetails(flowScope.akte)"/>
-    <transition to="secondCorrectionCodeCheck"/>
-  </action-state>
 
   <action-state id="secondCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>

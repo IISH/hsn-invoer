@@ -4,11 +4,11 @@
 (function ($) {
     'use strict';
 
-    $.createDateSelector = function (parentSelector) {
+    $.createDateSelector = function createDateSelector(parentSelector) {
         return parentSelector + ' .dateInput';
     };
 
-    $.checkHsnDate = function (hsnDate) {
+    $.checkHsnDate = function checkHsnDate(hsnDate) {
         var error = true;
 
         var dayVal = hsnDate.day.getValue();
@@ -36,7 +36,7 @@
         return error;
     };
 
-    $.prepareDate = function (hsnDate) {
+    $.prepareDate = function prepareDate(hsnDate) {
         if ($.getCurNavigation().isNext) {
             var day = hsnDate.day;
             var dayIsZero = (day.isInput && (day.getValue() === 0));
@@ -57,7 +57,7 @@
         }
     };
 
-    $.fn.getHsnDate = function () {
+    $.fn.getHsnDate = function getHsnDate() {
         function PartOfDate(elem) {
             return {
                 elem: elem,
@@ -83,8 +83,8 @@
         };
     };
 
-    $.initCheckDate = function (selector, prepare, dateCheck) {
-        var doCheckDate = function (elem, prepare, dateCheck, isInit, parent) {
+    $.initCheckDate = function initCheckDate(selector, prepare, dateCheck) {
+        function doCheckDate(elem, prepare, dateCheck, isInit, parent) {
             parent = (parent) ? parent : elem.closest(selector);
 
             var hsnDate = parent.getHsnDate();
@@ -94,7 +94,7 @@
 
             var error = dateCheck(hsnDate, elem);
             elem.hasErrorWhen(error, parent);
-        };
+        }
 
         $(document).ready(function () {
             $(selector).each(function () {

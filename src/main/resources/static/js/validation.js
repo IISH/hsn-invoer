@@ -5,7 +5,7 @@
 (function ($) {
     'use strict';
 
-    $.setError = function (isError, name, errorMessage, elemParent) {
+    $.setError = function setError(isError, name, errorMessage, elemParent) {
         if (name.indexOf('.') >= 0) {
             name = name.substring(0, name.indexOf('.'));
         }
@@ -30,12 +30,12 @@
         });
     };
 
-    $.setErrorWithClass = function (isError, name, elem, errorMessage) {
+    $.setErrorWithClass = function setErrorWithClass(isError, name, elem, errorMessage) {
         addError(isError, null, name + '-error');
         isError ? elem.text(errorMessage).show() : elem.hide();
     };
 
-    $.fn.hasErrorWhen = function (condition, elemParent) {
+    $.fn.hasErrorWhen = function hasErrorWhen(condition, elemParent) {
         if (elemParent === undefined || elemParent === null) {
             elemParent = this.getParentOfFormElement();
         }
@@ -71,7 +71,7 @@
         }
     };
 
-    var getBtnNext = function () {
+    function getBtnNext() {
         var crudTableBtn = $('.crud-table-container:visible').find('.btn-save-new, .btn-save-update');
         if (crudTableBtn.length > 0) {
             return crudTableBtn;
@@ -83,13 +83,13 @@
         }
 
         return $('.btn-next');
-    };
+    }
 
-    var getMessage = function (className) {
+    function getMessage(className) {
         return getMessages().find('.' + className);
-    };
+    }
 
-    var getMessages = function () {
+    function getMessages() {
         var modal = $('.modal.in');
         if (modal.length > 0) {
             // If the modal is a crud table container, then only show messages when the user is editing
@@ -102,9 +102,9 @@
         }
 
         return $();
-    };
+    }
 
-    var addError = function (isError, className, btnNextClassName, onError) {
+    function addError(isError, className, btnNextClassName, onError) {
         var showMsg = typeof className === 'string';
         var message = showMsg ? getMessage(className) : null;
 
@@ -121,9 +121,9 @@
                 hideMessage(message, true);
             }
         }
-    };
+    }
 
-    var showMessage = function (message, isErrorCheck) {
+    function showMessage(message, isErrorCheck) {
         if (!message.is(':visible')) {
             var hiddenByErrorCheck = message.data('error-check');
             if (isErrorCheck || (!hiddenByErrorCheck && !isErrorCheck)) {
@@ -131,9 +131,9 @@
                 getMessages().showNoEvent();
             }
         }
-    };
+    }
 
-    var hideMessage = function (message, isErrorCheck) {
+    function hideMessage(message, isErrorCheck) {
         if (message.is(':visible')) {
             message.data('error-check', isErrorCheck);
             message.hideNoEvent();
@@ -147,9 +147,9 @@
                 messages.hideNoEvent();
             }
         }
-    };
+    }
 
-    var checkByzElement = function (elem) {
+    function checkByzElement(elem) {
         var value = elem.val();
         var parent = elem.getParentOfFormElement();
         var byzOnValues = elem.getMultipleDataValues('byz');
@@ -163,9 +163,9 @@
         }
 
         return isOk;
-    };
+    }
 
-    var checkByzElements = function (elements) {
+    function checkByzElements(elements) {
         var byzOk = true;
         elements.each(function () {
             if (checkByzElement($(this)) === false) {
@@ -173,13 +173,13 @@
             }
         });
         return byzOk;
-    };
+    }
 
-    var checkByz = function () {
+    function checkByz() {
         addError(!checkByzElements($.getDataElem('byz').filter(':visible')), false, 'byz-required');
-    };
+    }
 
-    var checkRequired = function (elem) {
+    function checkRequired(elem) {
         var elems;
         if (elem.is('.required')) {
             elems = elem;
@@ -197,9 +197,9 @@
         });
 
         $.triggerChangeOfState();
-    };
+    }
 
-    var checkErrorMessages = function () {
+    function checkErrorMessages() {
         getMessages().children().each(function () {
             var message = $(this);
             var errorElem = message.data('error-elem');
@@ -212,9 +212,9 @@
                 }
             }
         });
-    };
+    }
 
-    var checkNextByzButton = function () {
+    function checkNextByzButton() {
         var nextBtn = getBtnNext();
         var byzBtn = $('.btn-byz');
 
@@ -254,9 +254,9 @@
         if (byzBtn.is(':focus:disabled')) {
             byzBtn.getNextFormElement().focus();
         }
-    };
+    }
 
-    var init = function (forceRun) {
+    function init(forceRun) {
         if (forceRun || !$.isRunningInit()) {
             if ($.checkByz() && !$.isCorrection()) {
                 checkByz();
@@ -265,7 +265,7 @@
             checkErrorMessages();
             checkNextByzButton();
         }
-    };
+    }
 
     $(document).on('blur', '.form-elem', function (e) {
         var elem = $(e.target);
@@ -296,14 +296,14 @@
         }
     });
 
-    $.triggerChangeOfState = function () {
+    $.triggerChangeOfState = function triggerChangeOfState() {
         if (!$.isRunningInit()) {
             checkErrorMessages();
             checkNextByzButton();
         }
     };
 
-    $.registerInit(function (elem) {
+    $.registerInit(function registerInit(elem) {
         checkRequired(elem);
         init(true);
     });

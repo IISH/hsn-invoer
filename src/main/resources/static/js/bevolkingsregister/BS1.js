@@ -3,15 +3,15 @@
 
     /* Utility methods */
 
-    var isAllLines = function () {
+    function isAllLines() {
         return ($('#registrationAllLines').length === 1);
-    };
+    }
 
-    var getActiveRow = function () {
+    function getActiveRow() {
         return $('#registrationAllLines').find('tr.active');
-    };
+    }
 
-    $.fn.getPersonContainer = function (includePopover) {
+    $.fn.getPersonContainer = function getPersonContainer(includePopover) {
         var selector = '#currentPerson,tr';
         if (includePopover === true) {
             selector += ',.popover';
@@ -21,7 +21,7 @@
 
     /* Overloading of methods */
 
-    $.getCurPerson = function () {
+    $.getCurPerson = function getCurPerson() {
         var person;
         if (isAllLines()) {
             var modal = $('.modal.in');
@@ -42,7 +42,7 @@
         return 0;
     };
 
-    $.getCurPersonModal = function () {
+    $.getCurPersonModal = function getCurPersonModal() {
         if (isAllLines()) {
             return getActiveRow().find('.personModal:first');
         }
@@ -51,7 +51,7 @@
         }
     };
 
-    $.getCurPersonData = function () {
+    $.getCurPersonData = function getCurPersonData() {
         // First check in the case of screen BS1 where all lines are entered at once
         var activeRow = getActiveRow();
         if (activeRow.length > 0) {
@@ -81,7 +81,7 @@
     var determinePrevNext, f9 = false;
 
     // Synchronizes the relatie regel
-    var setRelatieRegel = function (container, value) {
+    function setRelatieRegel(container, value) {
         if ((value !== undefined) && !isNaN(value)) {
             if (value === 0) {
                 value = -1;
@@ -92,32 +92,32 @@
 
             onRelatieRegel(container, value);
         }
-    };
+    }
 
     // Synchronizes the relatie kode
-    var setRelatieKode = function (container, value) {
+    function setRelatieKode(container, value) {
         container.find('.relatieDynamicHidden,.kode').val(value);
-    };
+    }
 
     // Encodes the datum expliciet hoofd and synchronizes the value
-    var onDatumExplicietHoofd = function (container, hsnDate) {
+    function onDatumExplicietHoofd(container, hsnDate) {
         var value = '';
         if (!hsnDate.day.isEmptyVal() && !hsnDate.month.isEmptyVal() && !hsnDate.year.isEmptyVal()) {
             value = '###$' + ('0' + hsnDate.day.getValue()).slice(-2) + '/'
                 + ('0' + hsnDate.month.getValue()).slice(-2) + '/' + hsnDate.year.getValue();
         }
         container.find('.relatieDynamicHidden').val(value);
-    };
+    }
 
     // Also set the relatie kode if the relatie regel is undetermined
-    var onRelatieRegel = function (container, value) {
+    function onRelatieRegel(container, value) {
         if (value === -3) {
             setRelatieKode(container, 9);
         }
-    };
+    }
 
     // Hides the popover and performs the related checks and procedures
-    var hidePopover = function (container, popover, checkError) {
+    function hidePopover(container, popover, checkError) {
         determinePrevNext = false;
 
         // Check for errors first, if necessary
@@ -163,10 +163,10 @@
         }
 
         return false;
-    };
+    }
 
     // Determine what has to happen after a relation has been chosen
-    var onRelationChosen = function (container, force) {
+    function onRelationChosen(container, force) {
         // If the blur was caused by pressing 'F9' or when the container is not within a modal
         // and a modal is visible, don't show the popover
         if (force !== true) {
@@ -240,10 +240,10 @@
                 message
             );
         }
-    };
+    }
 
     // Bind the 'F9' key to open the 'relatie regel' popover or to close the opened relatie popover
-    var relatieOnF9 = function (target, e) {
+    function relatieOnF9(target, e) {
         if (e.which === 120) { // F9
             var popover = $('.popover');
 
@@ -262,10 +262,10 @@
                 $('.popover input').first().focus();
             }
         }
-    };
+    }
 
     // Validate the relation based on the given sex and the other way around
-    var validateRelationSex = function (elem) {
+    function validateRelationSex(elem) {
         var container = elem.getPersonContainer();
         var relatie = container.find('.relatie');
         var sex = container.find('.sex');
@@ -293,9 +293,9 @@
         }
 
         $.setError(error, 'relatie-geslacht-' + relatie.attr('id'), message);
-    };
+    }
 
-    var onRelatiePopoverNavTrigger = function (relatie, isLeft, prevField, popover) {
+    function onRelatiePopoverNavTrigger(relatie, isLeft, prevField, popover) {
         (isLeft) ? relatie.data('nav', 'left') : relatie.data('nav', 'right');
 
         if (!hidePopover(relatie.getPersonContainer(), popover, true)) {
@@ -303,17 +303,17 @@
                 ? popover.find('input').filter(':enabled:visible').last().focus()
                 : popover.find('input').filter(':enabled:visible').first().focus();
         }
-    };
+    }
 
-    var onRelatiePopoverHidden = function (relatie) {
+    function onRelatiePopoverHidden(relatie) {
         if (determinePrevNext) {
             (relatie.data('nav') === 'left') ? relatie.autoPrevFocus(false) : relatie.autoNextFocus(false);
         }
-    };
+    }
 
     /* BS1 next registration specific operations */
 
-    var openNextRpPopover = function (elem) {
+    function openNextRpPopover(elem) {
         var gebDatePerson = elem.closest('.geb-date-person');
         var gebDate = gebDatePerson.getHsnDate();
 
@@ -341,9 +341,9 @@
             $($.getDataElemSelector('op-geb-month')).attr('data-op-geb-month', monthPersonVal);
             $($.getDataElemSelector('op-geb-year')).attr('data-op-geb-year', yearPersonVal);
         }
-    };
+    }
 
-    var isRpCheck = function (target) {
+    function isRpCheck(target) {
         var popover = target.closest('.popover');
         var gebDatePerson = popover.data('bs.popover').$element.closest('.geb-date-person');
         if (gebDatePerson.length > 0) {
@@ -359,20 +359,20 @@
                 gebDatePerson.find('.year').data('popover-closed', true);
             }
         }
-    };
+    }
 
-    var onNextRpPopoverNavTrigger = function (yearPerson, isLeft, prevField, popover) {
+    function onNextRpPopoverNavTrigger(yearPerson, isLeft, prevField, popover) {
         isLeft ? yearPerson.data('nav', 'left') : yearPerson.data('nav', 'right');
         yearPerson.popover('hide');
-    };
+    }
 
-    var onNextRpPopoverHidden = function (yearPerson) {
+    function onNextRpPopoverHidden(yearPerson) {
         (yearPerson.data('nav') === 'left') ? yearPerson.autoPrevFocus(false) : yearPerson.autoNextFocus(false);
-    };
+    }
 
     /* Various other BS1 specific operations */
 
-    var showDatumInschrijving = function (elem) {
+    function showDatumInschrijving(elem) {
         var datumInschrijving = elem.getPersonContainer().find('.datum-inschrijving');
         onDatumInschrijvingToggle(elem, datumInschrijving);
 
@@ -382,9 +382,9 @@
         else {
             datumInschrijving.hide();
         }
-    };
+    }
 
-    var onDatumInschrijving = function (elem) {
+    function onDatumInschrijving(elem) {
         var person = elem.getPersonContainer();
         var hasInschrijving = person.find('.has-inschrijving');
         var datumInschrijving = person.find('.datum-inschrijving');
@@ -399,9 +399,9 @@
             onDatumInschrijvingToggle(hasInschrijving, datumInschrijving);
             hsnDate.year.elem.autoNextFocus(false);
         }
-    };
+    }
 
-    var onDatumInschrijvingToggle = function (hasInschrijvingElem, datumInschrijvingElem) {
+    function onDatumInschrijvingToggle(hasInschrijvingElem, datumInschrijvingElem) {
         var hsnDate = datumInschrijvingElem.getHsnDate();
         if (datumInschrijvingElem.is(':hidden') && hasInschrijvingElem.val() === 'j') {
             hsnDate.day.elem.val('');
@@ -422,9 +422,9 @@
             hsnDate.month.elem.val(-1);
             hsnDate.year.elem.val(-1);
         }
-    };
+    }
 
-    var setPositie = function (elem) {
+    function setPositie(elem) {
         var value = elem.val().trim();
         if ((value === 'N') || (value === 'Z')) {
             elem
@@ -433,9 +433,9 @@
                 .val('n')
                 .autoNextFocus(true);
         }
-    };
+    }
 
-    var updatePositie = function (elem) {
+    function updatePositie(elem) {
         var replaceVal = 0;
         switch (elem.val()) {
             case 'h':
@@ -449,9 +449,9 @@
                 break;
         }
         elem.prev('input[type=hidden]').val(replaceVal);
-    };
+    }
 
-    var showBurgStandAdditional = function (elem) {
+    function showBurgStandAdditional(elem) {
         var burgStandToggle = elem.getPersonContainer().find('.burgStandToggle');
         var value = elem.getIntegerValue();
         if ([2, 3, 5, 9].indexOf(value) > -1) {
@@ -477,9 +477,9 @@
         else {
             burgStandToggle.hide();
         }
-    };
+    }
 
-    var checkBurgStand = function (elem) {
+    function checkBurgStand(elem) {
         var relatie = elem.getIntegerValue();
         var curPerson = $('#currentPerson');
 
@@ -503,9 +503,9 @@
             message
         );
         $.triggerChangeOfState();
-    };
+    }
 
-    var showDatumPlaats = function (elem) {
+    function showDatumPlaats(elem) {
         var field = elem.attr('class').match(/has-([a-z]*)/)[1];
         var toggleFields = elem.getPersonContainer()
             .find('.' + field + '-datum, .' + field + '-plaats, .' + field + '-container');
@@ -516,28 +516,28 @@
         else {
             toggleFields.hide();
         }
-    };
+    }
 
-    var setNationality = function (elem) {
+    function setNationality(elem) {
         if (elem.val().trim().toUpperCase() === 'NL') {
             elem.val('Nederlandse');
         }
-    };
+    }
 
-    var checkLegalPlaceOfLivingInCodes = function (elem) {
+    function checkLegalPlaceOfLivingInCodes(elem) {
         var value = elem.val().trim().toLowerCase();
         var validValues = ['w', 'v', 'n', 'vw', 'wv'];
         elem.hasErrorWhen(validValues.indexOf(value) < 0);
         $.triggerChangeOfState();
-    };
+    }
 
-    var updateBurgRelation = function (self, elems) {
+    function updateBurgRelation(self, elems) {
         var relation = elems.parent.find('.valueOfRelatedPerson:last').getIntegerText();
         relation = isNaN(relation) ? '' : relation;
         elems.onEdit.find('input[name=valueOfRelatedPerson]').val(relation);
-    };
+    }
 
-    var updateNumberOfLines = function () {
+    function updateNumberOfLines() {
         var table = $('#registrationAllLines');
         var fixedLeftTable = table.closest('.fixed-left-column').find('.fixed table');
 
@@ -584,9 +584,9 @@
                 }
             });
         }
-    };
+    }
 
-    var copyLine = function () {
+    function copyLine() {
         var person = $.getCurPerson();
         if (isNaN(person) || (person === 0)) {
             return;
@@ -636,9 +636,9 @@
                 alert('Regel niet aanwezig.');
             }
         });
-    };
+    }
 
-    var nextLine = function () {
+    function nextLine() {
         var nextPersonKeyElem = $('#nextPersonKey');
 
         var person = $.getCurPerson();
@@ -660,9 +660,9 @@
         }
 
         nextPersonKeyElem.val(nextLine);
-    };
+    }
 
-    var copyFromPrevLine = function () {
+    function copyFromPrevLine() {
         var row = getActiveRow();
         if (!$.isCorrection() && (row.data('copy-prev-person') !== 'copy-prev-person')) {
             var prevRow = row.prev();
@@ -707,9 +707,9 @@
                 row.data('copy-prev-person', 'copy-prev-person');
             }
         }
-    };
+    }
 
-    var registerPersons = function () {
+    function registerPersons() {
         $('#registrationAllLines').find('tr.register-person').each(function () {
             var row = $(this);
             row.resetInvisibleFormElements();
@@ -719,17 +719,17 @@
                 + '&_eventId=register-person&ajaxSource=true&person=' + row.data('rp');
             $.ajax({type: 'POST', data: data});
         });
-    };
+    }
 
-    var registerPerson = function () {
+    function registerPerson() {
         var row = getActiveRow();
         if (!row.hasClass('register-person')) {
             registerPersons();
             row.addClass('register-person');
         }
-    };
+    }
 
-    var updateNavCurPerson = function (e) {
+    function updateNavCurPerson(e) {
         var person = parseInt($(e.target).closest('tr').getIntegerDataValue('rp'));
         if (!isNaN(person)) {
             $('.navCurPerson').text(person);
@@ -738,9 +738,9 @@
         else {
             $('.navCurPersonContainer').hideNoEvent();
         }
-    };
+    }
 
-    var updateScrollPosition = function (elem) {
+    function updateScrollPosition(elem) {
         var parent = elem.getParentOfFormElement();
         var scrollable = parent.closest('.scrollable');
 
@@ -773,7 +773,7 @@
                 scrollable.scrollLeft(scrollable.scrollLeft() + firstColumn.offset().left - 50);
             }
         }
-    };
+    }
 
     $(document).keydown(function (e) {
         var target = $(e.target);

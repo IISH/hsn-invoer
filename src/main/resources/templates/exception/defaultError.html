@@ -1,33 +1,28 @@
 <!DOCTYPE html>
-<html layout:decorator="mainLayout">
+<html layout:decorator="mainLayout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
 <head></head>
 <body>
 <header layout:fragment="header" th:include="layoutFragments :: header"></header>
 
 <fieldset layout:fragment="main" class="content-spacing">
-  <div class="default-label text-center">Error: <span th:utext="${exception.message}"></span></div>
+  <div class="form-big-header text-danger">Er is iets fout gegaan!</div>
 
-  <div th:if="${url}" class="default-label text-center extra-top-margin-sm">
-    Pagina:
-    <span th:utext="${url}"></span>
+  <div class="extra-top-margin">
+    <p class="text-center">
+      <strong>Meld alstublieft de volgende foutmelding:</strong> <br/>
+      Fourmelding: <span th:utext="${exception.message}"></span> <br/>
+      Pagina: <span th:utext="${request.requestURL}"></span> <br/>
+    </p>
   </div>
 
-  <div th:if="${status}" class="default-label text-center extra-top-margin-sm">
-    Status:
-    <span th:utext="${exception.message}"></span>
-    <span th:if="${error}" th:text="'(' + ${error} + ')'"></span>
+  <div class="well well-sm scroll extra-top-margin"
+       th:if="${#lists.contains(@environment.getActiveProfiles(), 'development')}">
+    <th:block th:each="ste : ${exception.stackTrace}">
+      <code th:utext="${ste}"></code>
+    </th:block>
   </div>
-
-  <!-- Hidden Exception Details -->
-  <div th:utext="'&lt;!--'" th:remove="tag"></div>
-  <div th:utext="'Failed URL: ' +  ${url}" th:remove="tag"></div>
-  <div th:utext="'Exception: ' + ${exception.message}" th:remove="tag"></div>
-  <ul th:remove="tag">
-    <li th:each="ste : ${exception.stackTrace}" th:remove="tag">
-      <span th:utext="${ste}" th:remove="tag"></span>
-    </li>
-  </ul>
-  <div th:utext="'--&gt;'" th:remove="tag"></div>
 </fieldset>
 
 <footer layout:fragment="footer" th:include="layoutFragments :: footer ('ERROR')"></footer>

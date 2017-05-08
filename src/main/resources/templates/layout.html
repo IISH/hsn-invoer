@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="nl"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <title>HSN-Invoerprogramma</title>
+  <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}"/>
   <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
@@ -11,7 +14,7 @@
   <th:block layout:fragment="content"></th:block>
 </div>
 
-<script src="../static/js/lib/jquery-3.1.1.min.js" th:src="@{/js/lib/jquery-3.1.1.min.js}"></script>
+<script src="../static/js/lib/jquery-3.2.1.min.js" th:src="@{/js/lib/jquery-3.2.1.min.js}"></script>
 <script src="../static/js/lib/bootstrap.min.js" th:src="@{/js/lib/bootstrap.min.js}"></script>
 <script src="../static/js/lib/bootstrap3-typeahead.js" th:src="@{/js/lib/bootstrap3-typeahead.js}"></script>
 

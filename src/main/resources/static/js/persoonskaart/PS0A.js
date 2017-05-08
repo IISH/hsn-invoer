@@ -1,25 +1,25 @@
 (function ($) {
     'use strict';
 
-    var originalIdnrCheck = function () {
+    function originalIdnrCheck() {
         var elem = $('#pkknd\\.idnrp');
         var value = elem.getIntegerValue();
 
         elem.hasErrorWhen(isNaN(value) || value <= 0 || value >= 500000);
         $.triggerChangeOfState();
-    };
+    }
 
-    var typePkCheck = function () {
+    function typePkCheck() {
         var validOptions = [1, 2, 3, 4, 5, 6, 7, 8, 10];
         var elem = $('#pkknd\\.pktype');
         var value = elem.getIntegerValue();
 
         elem.hasErrorWhen(validOptions.indexOf(value) < 0);
         $.triggerChangeOfState();
-    };
+    }
 
     $.initCheckDate(
-        '.checkDatePersBewijs', $.prepareDate, function (hsnDate) {
+        '.checkDatePersBewijs', $.prepareDate, function checkDate(hsnDate) {
             var error = $.checkHsnDate(hsnDate);
             if (error) {
                 return true;

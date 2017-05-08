@@ -15,7 +15,7 @@ public interface PlaatsRepository extends Repository<Plaats, Integer> {
     @Query("SELECT plts FROM Plaats plts " +
            "WHERE (UPPER(plts.gemnaam) = UPPER(?1)) " +
            "AND (plts.workOrder = ?2 OR plts.workOrder = ?3)")
-    Plaats findByGemnaam(String gemnaam, WorkOrder emptyWorkOrder, WorkOrder workOrder);
+    List<Plaats> findByGemnaam(String gemnaam, WorkOrder emptyWorkOrder, WorkOrder workOrder);
 
     @Query("SELECT plts FROM Plaats plts " +
            "WHERE (UPPER(plts.gemnaam) LIKE UPPER(?1)) " +

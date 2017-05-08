@@ -1,32 +1,32 @@
 (function ($) {
     'use strict';
 
-    var initializePlaatsPicklists = function (elem) {
+    function initializePlaatsPicklists(elem) {
         initializeAjaxPickLists(elem.find('.plaats'), 'gemnr', 'gemnaam',
             '/ajax/lookup/plaatsen', '/ajax/picklist/set/plaats', false);
-    };
+    }
 
-    var initializeBeroepPicklists = function (elem) {
+    function initializeBeroepPicklists(elem) {
         initializeAjaxPickLists(elem.find('.beroep'), null, 'berpnaam',
             '/ajax/lookup/beroepen', '/ajax/picklist/set/beroep', false);
-    };
+    }
 
-    var initializeRelatiePicklists = function (elem) {
+    function initializeRelatiePicklists(elem) {
         initializeAjaxPickLists(elem.find('.relatie'), 'relkode', 'relatie',
             '/ajax/lookup/relaties', '/ajax/picklist/set/relatie', false);
-    };
+    }
 
-    var initializeKindRelatiePicklists = function (elem) {
+    function initializeKindRelatiePicklists(elem) {
         initializeAjaxPickLists(elem.find('.kindrelatie'), null, 'relatie',
             '/ajax/lookup/kindrelaties', '/ajax/picklist/set/kindrelatie', false);
-    };
+    }
 
-    var initializeKerkGenootschapPicklists = function (elem) {
+    function initializeKerkGenootschapPicklists(elem) {
         initializeAjaxPickLists(elem.find('.kg'), null, 'kerkgeno',
             '/ajax/lookup/kerkgenootschappen', '/ajax/picklist/set/kerkgenootschap', false);
-    };
+    }
 
-    var initializeBurgStandPicklists = function (elem) {
+    function initializeBurgStandPicklists(elem) {
         initializeSimplePickLists(elem.find('.burgstand'), [
             {id: 1, value: 'Ongehuwd'},
             {id: 2, value: 'Verweduwd'},
@@ -35,13 +35,13 @@
             {id: 6, value: 'Onbekend'},
             {id: 9, value: 'Onb -> huwelijk'}
         ]);
-    };
+    }
 
-    var initializeAdresTypePicklists = function (elem) {
+    function initializeAdresTypePicklists(elem) {
         initializeAjaxPickLists(elem.find('.adrestype'), 'code', 'type', '/ajax/lookup/adrestypes', null, true);
-    };
+    }
 
-    var initializeAjaxPickLists = function (fields, idField, recordField, lookupURL, saveURL, showAllOptions) {
+    function initializeAjaxPickLists(fields, idField, recordField, lookupURL, saveURL, showAllOptions) {
         initializePickLists(fields, idField, recordField, saveURL, showAllOptions, function (isId, query, withRecords) {
             var params = {keyword: query};
             if (isId) {
@@ -55,9 +55,9 @@
                 return withRecords(records);
             });
         });
-    };
+    }
 
-    var initializeSimplePickLists = function (fields, allValues) {
+    function initializeSimplePickLists(fields, allValues) {
         initializePickLists(fields, 'id', 'value', null, true, function (isId, query, withRecords) {
             var records = [];
             var id = parseInt(query);
@@ -71,12 +71,12 @@
 
             return withRecords(records);
         });
-    };
+    }
 
-    var initializePickLists = function (fields, idField, recordField, saveURL, showAllOptions, getRecords) {
+    function initializePickLists(fields, idField, recordField, saveURL, showAllOptions, getRecords) {
         fields.typeahead('destroy');
 
-        fields.each(function (i, field) {
+        fields.each(function initializePickListForField(i, field) {
             field = $(field);
 
             var values = [];
@@ -85,7 +85,7 @@
 
             field.typeahead({
                 minLength: showAllOptions ? 0 : 1,
-                source: function (query, process) {
+                source: function pickListSource(query, process) {
                     return getRecords(isId, query, function (records) {
                         values = [];
                         recordsByLabel = {};
@@ -107,7 +107,7 @@
                         return process(values);
                     });
                 },
-                updater: function (item) {
+                updater: function pickListUpdater(item) {
                     // Should also trigger one of the key events
                     $(document).trigger('keydown').trigger('keypress').trigger('keyup');
 
@@ -169,7 +169,7 @@
                 });
             }
         });
-    };
+    }
 
     $.registerInit(function (elem) {
         initializePlaatsPicklists(elem);

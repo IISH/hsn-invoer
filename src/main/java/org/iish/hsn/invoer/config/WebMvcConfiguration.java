@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.util.MimeType;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.dialect.IDialect;
@@ -19,6 +21,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 
 @Configuration
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
@@ -69,23 +72,31 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         AjaxThymeleafViewResolver resolver = new AjaxThymeleafViewResolver();
         resolver.setViewClass(FlowAjaxThymeleafView.class);
         resolver.setTemplateEngine(this.templateEngine());
-        resolver.setCharacterEncoding(this.thymeleafProperties.getEncoding());
+        resolver.setCharacterEncoding(this.thymeleafProperties.getEncoding().name());
         resolver.setContentType(appendCharset(this.thymeleafProperties.getContentType(),
                 resolver.getCharacterEncoding()));
         resolver.setExcludedViewNames(this.thymeleafProperties.getExcludedViewNames());
         resolver.setViewNames(this.thymeleafProperties.getViewNames());
+        // This resolver acts as a fallback resolver (e.g. like a
+        // InternalResourceViewResolver) so it needs to have low precedence
+        resolver.setOrder(Ordered.LOWEST_PRECEDENCE - 5);
+        resolver.setCache(this.thymeleafProperties.isCache());
         return resolver;
     }
 
     /**
-     * Copied from the ThymeleafViewResolverConfiguration class in Spring Boot for use with the thymeleafViewResolver.
+     * Copied from the AbstractThymeleafViewResolverConfiguration class in Spring Boot
+     * for use with the thymeleafViewResolver.
      *
-     * @see org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration.ThymeleafViewResolverConfiguration
+     * @see org.springframework.boot.autoconfigure.thymeleaf.AbstractThymeleafViewResolverConfiguration
      */
-    private String appendCharset(String type, String charset) {
-        if (type.contains("charset=")) {
-            return type;
+    private static String appendCharset(MimeType type, String charset) {
+        if (type.getCharset() != null) {
+            return type.toString();
         }
-        return type + ";charset=" + charset;
+        LinkedHashMap<String, String> parameters = new LinkedHashMap<>();
+        parameters.put("charset", charset);
+        parameters.putAll(type.getParameters());
+        return new MimeType(type, parameters).toString();
     }
 }
