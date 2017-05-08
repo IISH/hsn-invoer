@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    $.initCheckDate('.checkDateTimeHuw', null, function (hsnDate) {
+    $.initCheckDate('.checkDateTimeHuw', null, function checkDate(hsnDate) {
         var error = true;
 
         var dayVal = hsnDate.day.getValue();

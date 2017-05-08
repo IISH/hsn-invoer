@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    var updateAnaamKind = function () {
+    function updateAnaamKind() {
         var anaamKind = $('#gebknd\\.anmgeb');
         if ((anaamKind.val() === undefined) || (anaamKind.val() === '')) {
             var brgstmr = $('#gebknd\\.brgstmr').getIntegerValue();
@@ -12,7 +12,7 @@
                 anaamKind.val($.getDataElem('anaam-mr').data('anaam-mr'));
             }
         }
-    };
+    }
 
     $(document).ready(function () {
         if (!$.isCorrection()) {

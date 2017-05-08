@@ -3,14 +3,14 @@
 
     var brpAjax = false;
 
-    var setPositie = function (elem) {
+    function setPositie(elem) {
         var value = elem.val().trim();
         if ((value === 'N') || (value === 'Z')) {
             elem.closest('.form-group').find('.positie').val('n');
         }
-    };
+    }
 
-    var updateBrpFields = function (elem, isNext, isPrev) {
+    function updateBrpFields(elem, isNext, isPrev) {
         if (!brpAjax) {
             brpAjax = true;
             $(document).resetInvisibleFormElements();
@@ -46,7 +46,7 @@
                 }
             });
         }
-    };
+    }
 
     $(document).on('keydown', '.beroep', function (e) {
         $.duringNavigation(e, function (self, isNext, isPrev) {

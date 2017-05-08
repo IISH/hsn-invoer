@@ -7,6 +7,8 @@ import org.iish.hsn.invoer.util.InputMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PicklistService {
     @Autowired private InputMetadata         inputMetadata;
@@ -18,9 +20,9 @@ public class PicklistService {
 
     public void setPlaats(String plaats) {
         WorkOrder workOrder = inputMetadata.getWorkOrder();
-        Plaats plaatsEntity = plaatsRepository.findByGemnaam(plaats.trim(), WorkOrder.EMPTY_WORKORDER, workOrder);
-        if (plaatsEntity == null) {
-            plaatsEntity = new Plaats();
+        List<Plaats> plaatsEntities = plaatsRepository.findByGemnaam(plaats.trim(), WorkOrder.EMPTY_WORKORDER, workOrder);
+        if (plaatsEntities.isEmpty()) {
+            Plaats plaatsEntity = new Plaats();
             plaatsEntity.setGemnaam(plaats.trim());
             plaatsEntity.setNwinlst("j");
             plaatsEntity.setRegio("");
@@ -32,9 +34,9 @@ public class PicklistService {
 
     public void setBeroep(String beroep) {
         WorkOrder workOrder = inputMetadata.getWorkOrder();
-        Beroep beroepEntity = beroepRepository.findByBerpnaam(beroep.trim(), WorkOrder.EMPTY_WORKORDER, workOrder);
-        if (beroepEntity == null) {
-            beroepEntity = new Beroep();
+        List<Beroep> beroepEntities = beroepRepository.findByBerpnaam(beroep.trim(), WorkOrder.EMPTY_WORKORDER, workOrder);
+        if (beroepEntities.isEmpty()) {
+            Beroep beroepEntity = new Beroep();
             beroepEntity.setBerpnaam(beroep.trim());
             beroepEntity.setNwinlst("j");
             beroepEntity.setWorkOrder(workOrder);
@@ -45,9 +47,9 @@ public class PicklistService {
 
     public void setRelatie(String relatie) {
         WorkOrder workOrder = inputMetadata.getWorkOrder();
-        Relatie relatieEntity = relatieRepository.findByRelatie(relatie.trim(), WorkOrder.EMPTY_WORKORDER, workOrder);
-        if (relatieEntity == null) {
-            relatieEntity = new Relatie();
+        List<Relatie> relatieEntities = relatieRepository.findByRelatie(relatie.trim(), WorkOrder.EMPTY_WORKORDER, workOrder);
+        if (relatieEntities.isEmpty()) {
+            Relatie relatieEntity = new Relatie();
             relatieEntity.setRelatie(relatie.trim());
             relatieEntity.setNwinlst("j");
             relatieEntity.setWorkOrder(workOrder);
@@ -58,10 +60,10 @@ public class PicklistService {
 
     public void setKindRelatie(String relatie) {
         WorkOrder workOrder = inputMetadata.getWorkOrder();
-        KindRelatie kindRelatieEntity =
+        List<KindRelatie> kindRelatieEntities =
                 kindRelatieRepository.findByRelatie(relatie.trim(), WorkOrder.EMPTY_WORKORDER, workOrder);
-        if (kindRelatieEntity == null) {
-            kindRelatieEntity = new KindRelatie();
+        if (kindRelatieEntities.isEmpty()) {
+            KindRelatie kindRelatieEntity = new KindRelatie();
             kindRelatieEntity.setRelatie(relatie.trim());
             kindRelatieEntity.setNwinlst("j");
             kindRelatieEntity.setWorkOrder(workOrder);
@@ -72,9 +74,9 @@ public class PicklistService {
 
     public void setKg(String kg) {
         WorkOrder workOrder = inputMetadata.getWorkOrder();
-        Kg kgEntity = kgRepository.findByKerkgeno(kg.trim(), WorkOrder.EMPTY_WORKORDER, workOrder);
-        if (kgEntity == null) {
-            kgEntity = new Kg();
+        List<Kg> kgEntities = kgRepository.findByKerkgeno(kg.trim(), WorkOrder.EMPTY_WORKORDER, workOrder);
+        if (kgEntities.isEmpty()) {
+            Kg kgEntity = new Kg();
             kgEntity.setKerkgeno(kg.trim());
             kgEntity.setNwinlst("j");
             kgEntity.setWorkOrder(workOrder);

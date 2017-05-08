@@ -15,7 +15,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-      naming-strategy: org.iish.hsn.invoer.util.HsnNamingStrategy
+      naming:
+        physical-strategy: org.iish.hsn.invoer.util.HsnPhysicalNamingStrategy
 
 hibernate:
   jdbc:
