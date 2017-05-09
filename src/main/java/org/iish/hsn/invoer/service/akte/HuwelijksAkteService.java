@@ -232,6 +232,10 @@ public class HuwelijksAkteService extends AkteService {
         huwknd.setHgemnr(huwttl.getHgemnr());
         huwknd.setHaktenr(huwttl.getHaktenr());
 
+        inputMetadata.saveToEntity(huwttl);
+        huwttl = huwttlRepository.save(huwttl);
+        huwelijksAkteFlow.setHuwttl(huwttl);
+
         saveHuwknd(huwelijksAkteFlow);
     }
 
