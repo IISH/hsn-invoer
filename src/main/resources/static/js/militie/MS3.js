@@ -15,9 +15,16 @@
         elem.hasErrorWhen(isNaN(val) || (val < -3) || (val > 9));
     }
 
+    function setLengthEmpty(elem) {
+        if ($.isCorrection() && isNaN(elem.getIntegerValue())) {
+            $(elem).val(0);
+        }
+    }
+
     $(document).ready(function () {
         var lengths = $('.lengths input');
         lengths.each(function () {
+            setLengthEmpty($(this));
             checkLength($(this));
         });
         lengths.blur(function (e) {
