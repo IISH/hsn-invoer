@@ -84,7 +84,17 @@
 
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
-<div layout:fragment="info"></div>
+
+<div layout:fragment="info">
+  <div class="alert alert-info extra-top-margin" role="alert">
+    Eerdere lichting (9.1)<br/>
+    Waarom onderdeel lichting (9.2)<br/>
+    Militieraad verbeteringen (10-12)<br/>
+    Redenen bij vrijstelling (14)<br/>
+    Beperking jaren (14)<br/>
+    Korps en positie inlijving (15)
+  </div>
+</div>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
 </body>
