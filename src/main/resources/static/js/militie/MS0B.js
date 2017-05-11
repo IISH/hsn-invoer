@@ -11,7 +11,7 @@
 
         var militionsFound = [];
         $.each(militions, function (idx, milition) {
-            if (year == milition.year || municipality == milition.municipality) {
+            if (year === milition.year || municipality === milition.municipality) {
                 militionsFound.push(milition);
             }
         });
@@ -19,7 +19,7 @@
         if (militionsFound.length > 0) {
             var list = message.find('ul').html('');
             $.each(militionsFound, function (idx, milition) {
-                list.append('<li>' + milition.municipality + ' / ' + milition.year + '</li>');
+                list.append('<li>' + milition.municipality + ' / ' + milition.year + ' / ' + milition.type + '</li>');
             });
             message.show();
         }
