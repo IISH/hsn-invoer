@@ -55,12 +55,12 @@
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
 <div layout:fragment="info">
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913A')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913A')}">
     Er is òf een advies van de keuringsraad òf van de militieraad
     (welke hoeft niet te worden aangegeven, zie kolom 11-12).
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913L')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913L')}">
     Er is òf een advies van de keuringsraad òf van de militieraad
     (welke hoeft niet te worden aangegeven, zie kolom 10a-b).
   </div>

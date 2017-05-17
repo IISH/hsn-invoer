@@ -54,7 +54,7 @@
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
 <div layout:fragment="info">
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913IL')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913IL')}">
     In het geval van vrijwillige dienst bij de woonplaats ook het dienstonderdeel vermelden.
   </div>
 </div>

@@ -103,7 +103,7 @@
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
 <div layout:fragment="info">
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1815L')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1815L')}">
     Dagtekening (kolom 12.1)<br/>
     Uitspraak (kolom 12.2)<br/>
     2e Dagtekening (kolom 12.4)<br/>
@@ -112,7 +112,7 @@
     Aard uitspraak (13.2)
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1862L')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1862L')}">
     Uitstel uitspraak (kolom 12.1-2)<br/>
     Uitstel dienst (kolom 13.1-2)
   </div>

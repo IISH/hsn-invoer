@@ -113,19 +113,19 @@
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
 <div layout:fragment="info">
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1815L')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1815L')}">
     Redenen loteling (kolom 9+11)<br/>
     Redenen militieraad (kolom 10)
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1862L')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1862L')}">
     Redenen loteling (9.1)<br/>
     Advies militieraad (9.2/10)<br/>
     Dagtekening uitspraak (13.1)<br/>
     Uitspraak (13.2)
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913A')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913A')}">
     Door wie vroegere uitspraak gedaan (kolom 5.1)<br/>
     Datum vroegere uitspraak (kolom 5.2)<br/>
     Aard der uitspraak (kolom 5.3)<br/>
@@ -133,13 +133,13 @@
     Advies militieraad (kolom 6.2)
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913L')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913L')}">
     Redenen verleden (kolom 5.3)<br/>
     Aangevoerde reden (kolom 6.1)<br/>
     Advies militieraad (kolom 6.2)
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.is('1913I')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913I')}">
     Reden (kolom 7)<br/>
     Wie vrg uitspraak (kolom 9.1)<br/>
     Datum vrg uitspraak (kolom 9.2)<br/>

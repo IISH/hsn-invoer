@@ -31,9 +31,17 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     }
 
     public boolean is(String... years) {
+        return is(false, years);
+    }
+
+    public boolean isStrict(String... years) {
+        return is(true, years);
+    }
+
+    private boolean is(boolean strict, String... years) {
         for (String yearAndTypes : years) {
             String year = yearAndTypes.substring(0, 4);
-            boolean yearMatches = mil.isOtherYear() ||
+            boolean yearMatches = (!strict && mil.isOtherYear()) ||
                     (mil.is1815() && "1815".equals(year)) ||
                     (mil.is1862() && "1862".equals(year)) ||
                     (mil.is1913() && "1913".equals(year)) ||
@@ -42,7 +50,7 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
             if (yearMatches) {
                 String type = "KN".contains(mil.getType().toUpperCase()) ? "L" : mil.getType().toUpperCase();
                 String types = yearAndTypes.substring(4).toUpperCase();
-                return (mil.isOtherYear() || types.isEmpty() || types.contains(type));
+                return ((!strict && mil.isOtherYear()) || types.isEmpty() || types.contains(type));
             }
         }
         return false;
