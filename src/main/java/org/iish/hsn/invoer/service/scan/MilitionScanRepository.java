@@ -15,10 +15,19 @@ import java.util.regex.Pattern;
 public class MilitionScanRepository {
     private static final String MILITIE_ORG_PATH = "militie/";
 
+    // [idnr]_[scannummer].[extensie]
+    // [idnr]_[scanside]_[scannummer].[extensie]
+    // 12345_a_scana.jpg
     private static final Pattern NO_INFO_PATTERN =
             Pattern.compile("^(\\d+)(_([ABab]))?_(\\w+)\\.[a-zA-Z]+$");
+
+    // [idnr] [gemeentenaam] [jaar].[extensie]
+    // [idnr] [gemeentenaam] [jaar] [scanside lowercase].[extensie]
+    // [idnr] [gemeentenaam] [jaar] [type uppercase].[extensie]
+    // [idnr] [gemeentenaam] [jaar] [type uppercase] [scanside lowercase].[extensie]
+    // 12345 Den Haag 1820 A a.pdf
     private static final Pattern INFO_PATTERN =
-            Pattern.compile("^(\\d+)\\s([\\p{IsAlphabetic}\\s]+)\\s(\\d{4})(\\s([A-Za-z&&[^ABab]]))?(\\s([ABab]))?\\.[a-zA-Z]+$");
+            Pattern.compile("^(\\d+)\\s([\\p{IsAlphabetic}\\s]+)\\s(\\d{4})(\\s([A-Z]))?(\\s([ab]))?\\.[a-zA-Z]+$");
 
     private Path root;
 
