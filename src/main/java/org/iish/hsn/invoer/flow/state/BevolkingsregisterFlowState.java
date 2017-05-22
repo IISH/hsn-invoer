@@ -105,14 +105,6 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
         return b3;
     }
 
-    /*public Ref_GBH getRefGbh() {
-        return refGbh;
-    }
-
-    public void setRefGbh(Ref_GBH refGbh) {
-        this.refGbh = refGbh;
-    }*/
-
     public Ref_RP getRefRp() {
         return refRp;
     }

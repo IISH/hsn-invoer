@@ -150,6 +150,7 @@
 
     <div class="col-xs-6">
       <p class="form-control-static fail text-danger op-registration" style="display: none;"></p>
+      <p class="form-control-static fail text-danger op-registration-order" style="display: none;"></p>
     </div>
   </div>
 
@@ -179,7 +180,7 @@
   </div>
 
   <div class="form-group" th:if="${akte.isOneLineEach()} == false">
-    <label class="col-xs-3 control-label">Aantal regels:</label>
+    <label class="col-xs-3 control-label">Aantal personen:</label>
 
     <div class="col-xs-4">
       <input type="text" class="form-control form-control-digit required"
@@ -207,7 +208,7 @@
     </div>
 
     <div class="sub-form-group">
-      <label class="col-xs-3 control-label">Regel:</label>
+      <label class="col-xs-3 control-label">Persoon:</label>
 
       <div class="col-xs-3">
         <input type="text" class="form-control form-control-digit" th:field="*{b4.numberOfHousehold}"
