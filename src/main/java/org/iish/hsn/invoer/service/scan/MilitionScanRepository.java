@@ -91,6 +91,7 @@ public class MilitionScanRepository {
     private void setScan(Map<String, MilitionScan> scans, int idnr, Path path, Matcher matcher) {
         if (Integer.parseInt(matcher.group(1)) == idnr) {
             String municipality = (matcher.groupCount() >= 4) ? matcher.group(4) : null;
+            if (municipality != null) municipality = municipality.replace('_', ' ');
             Integer year = (matcher.groupCount() >= 7) ? Integer.parseInt(matcher.group(7)) : null;
             String type = (matcher.groupCount() >= 10) ? matcher.group(10) : null;
             String side = (matcher.groupCount() >= 13) ? matcher.group(13) : null;
