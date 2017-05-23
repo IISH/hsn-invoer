@@ -15,19 +15,12 @@ import java.util.regex.Pattern;
 public class MilitionScanRepository {
     private static final String MILITIE_ORG_PATH = "militie/";
 
-    // [idnr]_[scannummer].[extensie]
-    // [idnr]_[scanside]_[scannummer].[extensie]
-    // 12345_a_scana.jpg
-    private static final Pattern NO_INFO_PATTERN =
-            Pattern.compile("^(\\d+)(_([ABab]))?_(\\w+)\\.[a-zA-Z]+$");
-
-    // [idnr] [gemeentenaam] [jaar].[extensie]
-    // [idnr] [gemeentenaam] [jaar] [scanside lowercase].[extensie]
-    // [idnr] [gemeentenaam] [jaar] [type uppercase].[extensie]
-    // [idnr] [gemeentenaam] [jaar] [type uppercase] [scanside lowercase].[extensie]
-    // 12345 Den Haag 1820 A a.pdf
-    private static final Pattern INFO_PATTERN =
-            Pattern.compile("^(\\d+)\\s([\\p{IsAlphabetic}\\s]+)\\s(\\d{4})(\\s([A-Z]))?(\\s([ab]))?\\.[a-zA-Z]+$");
+    // Use a space or underscore _ as separator
+    // idnr is mandatory
+    // [idnr] [municipality] [year] [type uppercase (one of I/A/L/K/N)] [scan side lowercase (one of a/b)] [scan number].[extension]
+    // For example: 12345 Den Haag 1820 A a DG77777.pdf
+    private static final Pattern SCAN_PATTERN =
+            Pattern.compile("^(\\d+)((\\s|_)([\\p{IsAlphabetic}\\s_]+))?((\\s|_)(\\d{4}))?((\\s|_)([IALKN]))?((\\s|_)([ab]))?((\\s|_)([A-Za-z0-9]{2,}))?\\.[a-zA-Z]+$");
 
     private Path root;
 
@@ -53,14 +46,9 @@ public class MilitionScanRepository {
         for (Path path : Files.newDirectoryStream(root, idnr + "[ _]*")) {
             String filename = path.getFileName().toString();
 
-            Matcher matcher = INFO_PATTERN.matcher(filename);
+            Matcher matcher = SCAN_PATTERN.matcher(filename);
             if (matcher.matches()) {
-                setScanWithInfo(scans, idnr, path, matcher);
-            }
-
-            matcher = NO_INFO_PATTERN.matcher(filename);
-            if (matcher.matches()) {
-                setScanWithoutInfo(scans, idnr, path, matcher);
+                setScan(scans, idnr, path, matcher);
             }
         }
 
@@ -93,33 +81,6 @@ public class MilitionScanRepository {
     }
 
     /**
-     * Set the milition scan info for the current given scan. (Has little info)
-     *
-     * @param scans   The collected scans.
-     * @param idnr    The idnr of the RP.
-     * @param path    The scan file.
-     * @param matcher The matcher of the information.
-     */
-    private void setScanWithoutInfo(Map<String, MilitionScan> scans, int idnr, Path path, Matcher matcher) {
-        if (Integer.parseInt(matcher.group(1)) == idnr) {
-            String scanId = matcher.group(4);
-            Path sideA = null, sideB = null;
-            if (scans.containsKey(scanId)) {
-                Scan scan = scans.get(scanId);
-                sideA = scan.getSideA();
-                sideB = scan.getSideB();
-            }
-
-            if ((matcher.group(3) == null) || matcher.group(3).equalsIgnoreCase("A"))
-                sideA = path;
-            else
-                sideB = path;
-
-            scans.put(scanId, new MilitionScan(sideA, sideB, idnr));
-        }
-    }
-
-    /**
      * Set the milition scan info for the current given scan. (Has all info)
      *
      * @param scans   The collected scans.
@@ -127,33 +88,50 @@ public class MilitionScanRepository {
      * @param path    The scan file.
      * @param matcher The matcher of the information.
      */
-    private void setScanWithInfo(Map<String, MilitionScan> scans, int idnr, Path path, Matcher matcher) {
+    private void setScan(Map<String, MilitionScan> scans, int idnr, Path path, Matcher matcher) {
         if (Integer.parseInt(matcher.group(1)) == idnr) {
-            String municipality = matcher.group(2);
-            int year = Integer.parseInt(matcher.group(3));
-            String type = matcher.group(5);
+            String municipality = (matcher.groupCount() >= 4) ? matcher.group(4) : null;
+            Integer year = (matcher.groupCount() >= 7) ? Integer.parseInt(matcher.group(7)) : null;
+            String type = (matcher.groupCount() >= 10) ? matcher.group(10) : null;
+            String side = (matcher.groupCount() >= 13) ? matcher.group(13) : null;
+            String number = (matcher.groupCount() >= 16) ? matcher.group(16) : null;
 
-            int hashCode = 1;
-            if (municipality != null)
-                hashCode = 31 * hashCode + municipality.hashCode();
-            hashCode = 31 * hashCode + year;
-            if (type != null)
-                hashCode = 31 * hashCode + type.hashCode();
-            String hashCodeStr = String.valueOf(hashCode);
-
+            String hashCode = computeHashCode(municipality, year, type, number);
             Path sideA = null, sideB = null;
-            if (scans.containsKey(hashCodeStr)) {
-                Scan scan = scans.get(hashCodeStr);
+            if (scans.containsKey(hashCode)) {
+                Scan scan = scans.get(hashCode);
                 sideA = scan.getSideA();
                 sideB = scan.getSideB();
             }
 
-            if ((matcher.group(7) == null) || matcher.group(7).equalsIgnoreCase("A"))
+            if ((side == null) || side.equalsIgnoreCase("a"))
                 sideA = path;
             else
                 sideB = path;
 
-            scans.put(hashCodeStr, new MilitionScan(sideA, sideB, idnr, municipality, year, type));
+            scans.put(hashCode, new MilitionScan(sideA, sideB, idnr, municipality, year, type, number));
         }
+    }
+
+    /**
+     * Computes the hash code of scan information.
+     *
+     * @param municipality The municipality of the register.
+     * @param year         The year of the register.
+     * @param type         The type of the register.
+     * @param number       The number of the register.
+     * @return The computed hash code.
+     */
+    private static String computeHashCode(String municipality, Integer year, String type, String number) {
+        int hashCode = 1;
+        if (municipality != null)
+            hashCode = 31 * hashCode + municipality.hashCode();
+        if (year != null)
+            hashCode = 31 * hashCode + year;
+        if (type != null)
+            hashCode = 31 * hashCode + type.hashCode();
+        if (number != null)
+            hashCode = 31 * hashCode + number.hashCode();
+        return String.valueOf(hashCode);
     }
 }

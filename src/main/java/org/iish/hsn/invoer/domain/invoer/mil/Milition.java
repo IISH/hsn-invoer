@@ -24,6 +24,7 @@ public class Milition extends Invoer implements Serializable {
 
     @Column(name = "SCANA", nullable = false, length = 255) private String scanA = "";
     @Column(name = "SCANB", nullable = false, length = 255) private String scanB = "";
+    @Column(name = "SCANNR", nullable = false, length = 255) private String scanNumber = "";
 
     @Column(name = "ANM", nullable = false, length = 50) private String familyName = "";
     @Column(name = "VNM", nullable = false, length = 50) private String firstName = "";
@@ -255,6 +256,14 @@ public class Milition extends Invoer implements Serializable {
 
     public void setScanB(String scanB) {
         this.scanB = scanB;
+    }
+
+    public String getScanNumber() {
+        return scanNumber;
+    }
+
+    public void setScanNumber(String scanNumber) {
+        this.scanNumber = scanNumber;
     }
 
     public String getFamilyName() {

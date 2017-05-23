@@ -84,6 +84,8 @@ public class MilitieregisterService {
                 milition.setMunicipality(scan.getMunicipality());
             if (scan.getYear() != null)
                 milition.setYear(scan.getYear());
+            if (scan.getNumber() != null)
+                milition.setScanNumber(scan.getNumber());
 
             milition.setIdnr(milition.getIdnr());
             milition.setSeq(milition.getSeq());

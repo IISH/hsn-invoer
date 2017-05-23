@@ -11,6 +11,7 @@ CREATE TABLE `m1` (
   `LOTNR` int(11) NOT NULL,
   `SCANA` varchar(255) NOT NULL,
   `SCANB` varchar(255) NOT NULL,
+  `SCANNR` varchar(255) NOT NULL,
   `ANM` varchar(50) NOT NULL,
   `VNM` varchar(50) NOT NULL,
   `GBD` int(11) NOT NULL,

@@ -10,18 +10,7 @@ public class MilitionScan extends Scan {
     private String municipality;
     private Integer year;
     private String type;
-
-    /**
-     * Creates a new link to a stored scan.
-     *
-     * @param sideA The A side.
-     * @param sideB The B side.
-     * @param idnr  The idnr of the RP.
-     */
-    public MilitionScan(Path sideA, Path sideB, int idnr) {
-        super(sideA, sideB);
-        this.idnr = idnr;
-    }
+    private String number;
 
     /**
      * Creates a new link to a stored scan.
@@ -32,13 +21,16 @@ public class MilitionScan extends Scan {
      * @param municipality The municipality.
      * @param year         The year of the register.
      * @param type         The type of the register.
+     * @param number       The number of the register.
      */
-    public MilitionScan(Path sideA, Path sideB, int idnr, String municipality, Integer year, String type) {
+    public MilitionScan(Path sideA, Path sideB, int idnr, String municipality, Integer year,
+                        String type, String number) {
         super(sideA, sideB);
         this.idnr = idnr;
         this.municipality = municipality;
         this.year = year;
         this.type = type;
+        this.number = number;
     }
 
     public int getIdnr() {
@@ -55,5 +47,9 @@ public class MilitionScan extends Scan {
 
     public String getType() {
         return type;
+    }
+
+    public String getNumber() {
+        return number;
     }
 }
