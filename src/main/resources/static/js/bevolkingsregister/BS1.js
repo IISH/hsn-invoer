@@ -281,11 +281,11 @@
 
         if ((sexVal === 'm') && ((female.indexOf(rel) >= 0) || (rel > 19 && rel < 29) || (rel > 69 && rel < 80))) {
             error = true;
-            message = 'Geslacht is mannelijk en relatiekode is vrouwelijk van aard!';
+            message = 'Geslacht is mannelijk en relatiecode is vrouwelijk van aard!';
         }
         else if ((sexVal === 'v') && ((male.indexOf(rel) >= 0) || (rel > 9 && rel < 19) || (rel > 59 && rel < 70))) {
             error = true;
-            message = 'Geslacht is vrouwelijk en relatiekode is mannelijk van aard!';
+            message = 'Geslacht is vrouwelijk en relatiecode is mannelijk van aard!';
         }
 
         if (isAllLines()) {
@@ -537,70 +537,86 @@
         elems.onEdit.find('input[name=valueOfRelatedPerson]').val(relation);
     }
 
-    function updateNumberOfLines() {
-        var table = $('#registrationAllLines');
-        var fixedLeftTable = table.closest('.fixed-left-column').find('.fixed table');
+    function updateNumberOfLines(update) {
+        var modal = $.getOpenedModal();
 
-        var currentNrOfLines = table.find('tr[data-rp]:last').getIntegerDataValue('rp');
-        if (currentNrOfLines !== undefined && currentNrOfLines !== null) {
-            var nrOfLines = parseInt(prompt('Regelnummers:', currentNrOfLines));
-            if (isNaN(nrOfLines)) {
-                return;
-            }
-
-            $.ajax({
-                type: 'POST',
-                dataType: 'text',
-                data: {
-                    _eventId: 'update-number-of-persons',
-                    ajaxSource: true,
-                    nrOfLines: nrOfLines
-                },
-                success: function (result) {
-                    var resultElem = $(result);
-                    if (nrOfLines > currentNrOfLines) {
-                        for (var i = currentNrOfLines + 1; i <= nrOfLines; i++) {
-                            var row = resultElem.find('tr[data-rp=' + i + ']');
-                            table.find('tr:last').after(row);
-                            fixedLeftTable.find('tr:last').after('<tr><td><span></span></td></tr>');
-                            $(document).trigger('ajax-update', [row]);
-                        }
-                    }
-                    else if (nrOfLines < currentNrOfLines) {
-                        for (var j = currentNrOfLines; j > nrOfLines; j--) {
-                            table.find('tr[data-rp=' + j + ']').remove();
-                            fixedLeftTable.find('tr:last').remove();
-                        }
-                    }
-
-                    var focusElem = $(':input:focus');
-                    if (focusElem.length === 0) {
-                        table.find('tr:last input:first').focus();
-                    }
-                },
-                error: function () {
-                    // TODO: Now it is an assumption that the RP would otherwise have been deleted
-                    alert('U kunt de regel van de OP en voorgaande niet verwijderen.');
-                }
-            });
-        }
-    }
-
-    function copyLine() {
-        var person = $.getCurPerson();
-        if (isNaN(person) || (person === 0)) {
+        var nrOfLines = parseInt(modal.find('input').val());
+        if (!update || isNaN(nrOfLines)) {
+            modal.modal('hide');
             return;
         }
 
-        var copyLine = parseInt(prompt('Kopieren gegevens uit regel:'));
-        if (isNaN(copyLine)) {
+        $.ajax({
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                _eventId: 'update-number-of-persons',
+                ajaxSource: true,
+                nrOfLines: nrOfLines
+            },
+            success: function (result) {
+                var table = $('#registrationAllLines');
+                var fixedLeftTable = table.closest('.fixed-left-column').find('.fixed table');
+                var currentNrOfLines = table.find('tr[data-rp]:last').getIntegerDataValue('rp');
+
+                var resultElem = $(result);
+                if (nrOfLines > currentNrOfLines) {
+                    for (var i = currentNrOfLines + 1; i <= nrOfLines; i++) {
+                        var row = resultElem.find('tr[data-rp=' + i + ']');
+                        table.find('tr:last').after(row);
+                        fixedLeftTable.find('tr:last').after('<tr><td><span></span></td></tr>');
+                        $(document).trigger('ajax-update', [row]);
+                    }
+                }
+                else if (nrOfLines < currentNrOfLines) {
+                    for (var j = currentNrOfLines; j > nrOfLines; j--) {
+                        table.find('tr[data-rp=' + j + ']').remove();
+                        fixedLeftTable.find('tr:last').remove();
+                    }
+                }
+
+                var focusElem = $(':input:focus');
+                if (focusElem.length === 0) {
+                    table.find('tr:last input:first').focus();
+                }
+
+                modal.modal('hide');
+            },
+            error: function () {
+                // TODO: Now it is an assumption that the RP would otherwise have been deleted
+                alert('U kunt de regel van de OP en voorgaande niet verwijderen.');
+                modal.modal('hide');
+            }
+        });
+    }
+
+    function updateNumberOfLinesOpen() {
+        var modal = $('.nrOfLinesModal:first');
+        modal.find('input').val('');
+        modal.modal({keyboard: false, backdrop: 'static'});
+    }
+
+    function copyLine(update) {
+        var modal = $.getOpenedModal();
+
+        var person = modal.data('person');
+        if (isNaN(person) || (person === 0)) {
+            modal.modal('hide');
+            return;
+        }
+
+        var copyLine = parseInt(modal.find('input').val());
+        if (!update || isNaN(copyLine)) {
+            modal.modal('hide');
             return;
         }
         if (copyLine === person) {
             alert('Hetzelfde regelnummer.');
+            modal.modal('hide');
             return;
         }
         if (!confirm('Bent u zeker dat u gegevens wilt kopieren?')) {
+            modal.modal('hide');
             return;
         }
 
@@ -630,39 +646,72 @@
                 target.replaceWith(resultElem);
                 $(document).trigger('ajax-update', [resultElem]);
                 $(document.getElementById(focusElemId)).focus();
+
+                modal.modal('hide');
             },
             error: function () {
                 // TODO: Now it is an assumption that the line is not valid
                 alert('Regel niet aanwezig.');
+                modal.modal('hide');
             }
         });
     }
 
-    function nextLine() {
-        var nextPersonKeyElem = $('#nextPersonKey');
-
+    function copyLineOpen() {
         var person = $.getCurPerson();
-        if (isNaN(person)) {
+        if (isNaN(person) || (person === 0)) {
             return;
         }
 
-        var nextLine = parseInt(prompt('Volgend te bewerken regelnummer:', nextPersonKeyElem.val()));
-        if (isNaN(nextLine)) {
+        var modal = $('.copyLineModal:first');
+        modal.find('input').val('');
+        modal.data('person', person);
+        modal.modal({keyboard: false, backdrop: 'static'});
+    }
+
+    function nextLine(update) {
+        var modal = $.getOpenedModal();
+
+        var person = modal.data('person');
+        if (isNaN(person) || (person === 0)) {
+            modal.modal('hide');
+            return;
+        }
+
+        var nextLine = parseInt(modal.find('input').val());
+        if (!update || isNaN(nextLine)) {
+            modal.modal('hide');
             return;
         }
         if (nextLine === person) {
             alert('Hetzelfde regelnummer.');
+            modal.modal('hide');
             return;
         }
         if (nextLine > person) {
             alert('Het nummer moet kleiner zijn dan ' + person);
+            modal.modal('hide');
             return;
         }
 
-        nextPersonKeyElem.val(nextLine);
+        $('#nextPersonKey').val(nextLine);
+        modal.modal('hide');
     }
 
-    function copyFromPrevLine() {
+    function nextLineOpen() {
+        var person = $.getCurPerson();
+        if (isNaN(person) || (person === 0)) {
+            return;
+        }
+
+        var modal = $('.nextLineModal:first');
+        var nextPersonKeyElem = $('#nextPersonKey');
+        modal.find('input').val(nextPersonKeyElem.val());
+        modal.data('person', person);
+        modal.modal({keyboard: false, backdrop: 'static'});
+    }
+
+    function copyFromPrevLine(elem) {
         var row = getActiveRow();
         if (!$.isCorrection() && (row.data('copy-prev-person') !== 'copy-prev-person')) {
             var prevRow = row.prev();
@@ -679,7 +728,12 @@
 
                 var familyName = row.find('.lastName');
                 if (familyName.val().trim().length === 0) {
-                    familyName.val(prevRow.find('.lastName').val());
+                    if ($.getCurPerson() === 3) {
+                        familyName.val($('#registrationAllLines').find('tr[data-rp=1] .lastName').val());
+                    }
+                    else {
+                        familyName.val(prevRow.find('.lastName').val());
+                    }
                 }
 
                 var placeOfBirth = row.find('.placeOfBirth');
@@ -703,6 +757,9 @@
                 row.find('.vertrek-datum .year').val(prevRow.find('.vertrek-datum .year').val());
                 row.find('.vertrek-plaats').val(prevRow.find('.vertrek-plaats').val());
                 row.find('.has-vertrek').val(prevRow.find('.has-vertrek').val());
+
+                // Make sure the focused element is also checked for required
+                elem.trigger('changeCheckRequired');
 
                 row.data('copy-prev-person', 'copy-prev-person');
             }
@@ -776,24 +833,64 @@
     }
 
     $(document).keydown(function (e) {
+        var modal = $.getOpenedModal();
+        var isModalVisible = (modal.length === 1);
+        var isNrOfLinesModal = (isModalVisible && (modal.hasClass('nrOfLinesModal')));
+        var isCopyLineModal = (isModalVisible && (modal.hasClass('copyLineModal')));
+        var isNextLineModal = (isModalVisible && (modal.hasClass('nextLineModal')));
+
         var target = $(e.target);
         if (target.hasClass('relatie') || target.hasClass('f9-input')) {
             relatieOnF9(target, e);
         }
 
         switch (e.which) {
+            case 27: // Esc
+                if (isNrOfLinesModal) {
+                    updateNumberOfLines(false);
+                    e.preventDefault();
+                }
+                if (isCopyLineModal) {
+                    copyLine(false);
+                    e.preventDefault();
+                }
+                if (isNextLineModal) {
+                    nextLine(false);
+                    e.preventDefault();
+                }
+                break;
             case 114: // F3
-                updateNumberOfLines();
-                e.preventDefault();
+                if (isAllLines()) {
+                    if (isNrOfLinesModal) {
+                        updateNumberOfLines(true);
+                        e.preventDefault();
+                    }
+                    else if (!isModalVisible) {
+                        updateNumberOfLinesOpen();
+                        e.preventDefault();
+                    }
+                }
                 break;
             case 118: // F7
-                copyLine();
-                e.preventDefault();
+                if (isCopyLineModal) {
+                    copyLine(true);
+                    e.preventDefault();
+                }
+                else if (!isModalVisible) {
+                    copyLineOpen();
+                    e.preventDefault();
+                }
                 break;
             case 119: // F8
                 if (!isAllLines()) {
-                    nextLine();
-                    e.preventDefault();
+                    if (isNextLineModal) {
+                        nextLine(true);
+                        e.preventDefault();
+                    }
+                    else if (!isModalVisible) {
+                        nextLineOpen();
+                        e.preventDefault();
+                    }
                 }
                 break;
         }
@@ -809,7 +906,7 @@
         }
         else if (elem.closest('#registrationAllLines').length > 0) {
             registerPerson();
-            copyFromPrevLine();
+            copyFromPrevLine(elem);
             updateScrollPosition(elem);
         }
     }).on('change', 'input', function (e) {

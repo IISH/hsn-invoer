@@ -260,7 +260,7 @@
 
     $('.btn-next').click(function (e) {
         if ($('table span.seqNr').length === 0) {
-            if (!confirm('Er zijn geen addressen ingevoerd, weet u zeker dat dit correct is?')) {
+            if (!confirm('Er zijn geen addressen opgeslagen, weet u zeker dat dit correct is?')) {
                 e.preventDefault();
             }
         }

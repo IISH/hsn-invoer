@@ -316,10 +316,6 @@
             var volgNrOpElem = $('#volgnrOP');
             var aantalRegelsElem = $('#noRegels');
 
-            if ((self.attr('id') === 'volgnrOP') && isNaN(aantalRegelsElem.getIntegerValue())) {
-                aantalRegelsElem.val(volgnummer);
-            }
-
             var onePersonWarning = $('#onePersonWarning');
             if ((registerType === 'A' || registerType === 'I') && (volgnummer > 1)) {
                 onePersonWarning.show();

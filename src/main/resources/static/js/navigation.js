@@ -8,21 +8,26 @@
 (function ($) {
     'use strict';
 
-    var curNav = {
+    var NAV_RESET = {
         isNext: false,
         isPrev: false,
         isUp: false,
         isDown: false,
         isLeft: false,
-        isRight: false
+        isRight: false,
+        isFirstRow: false,
+        isLastRow: false,
+        isFirstTable: false,
+        isLastTable: false
     };
+    var curNav = NAV_RESET;
 
     $.getCurNavigation = function getCurNavigation() {
         return curNav;
     };
 
     var isNavigationLocked = false;
-    
+
     $.lockNavigation = function lockNavigation() {
         isNavigationLocked = true;
     };
@@ -31,141 +36,40 @@
         isNavigationLocked = false;
     };
 
-    $.duringNavigation = function duringNavigation(e, onDefaultNavigation, onTableNavigation) {
-        var self = $(e.target);
-
-        // Disable the enter key, unless the focused element is a button
-        if ((e.which === 13) && !self.is('button')) {
-            if (typeof e.preventDefault === 'function') {
-                e.preventDefault();
-            }
-            return;
-        }
-
-        // Also disable navigation in case the ALT key was pressed
-        if (e.altKey) {
-            return;
-        }
-
-        // Navigation is different inside a table: use arrow keys to navigate through the cells
-        if ((onTableNavigation !== undefined) && (self.closest('table').length > 0)) {
-            var isUp = (e.which === 38); // Arrow up
-            var isDown = (e.which === 40); // Arrow down
-            var isLeft = ((e.which === 9) && (e.shiftKey)); // Tab
-            var isRight = ((e.which === 9) && (!e.shiftKey)); // Shift + Tab
-
-            if (isUp || isDown || isLeft || isRight) {
-                curNav.isUp = isUp;
-                curNav.isDown = isDown;
-                curNav.isLeft = isLeft;
-                curNav.isRight = isRight;
-                curNav.isPrev = isLeft;
-                curNav.isNext = isRight;
-
-                onTableNavigation(self, isUp, isDown, isLeft, isRight);
-            }
-        }
-        else if (onDefaultNavigation !== undefined) {
-            var isNext = ((e.which === 9) && (!e.shiftKey)); // Tab
-            var isPrev = ((e.which === 9) && (e.shiftKey)); // Shift + Tab
-
-            if (isNext || isPrev) {
-                curNav.isPrev = isPrev;
-                curNav.isNext = isNext;
-
-                onDefaultNavigation(self, isNext, isPrev);
-            }
-        }
-    };
-
-    $.fn.autoNextFocus = function autoNextFocus(performBlur) {
-        if (this.length > 0) {
-            // Simulate a TAB
-            $.determineNextFocusElem({
-                target: this[0],
-                which: 9,
-                shiftKey: false
-            }, performBlur);
-        }
-    };
-
-    $.fn.autoPrevFocus = function autoPrevFocus(performBlur) {
-        if (this.length > 0) {
-            // Simulate a Shift + TAB
-            $.determineNextFocusElem({
-                target: this[0],
-                which: 9,
-                shiftKey: true
-            }, performBlur);
-        }
-    };
-
     $.determineNextFocusElem = function determineNextFocusElem(e, performBlur) {
-        function onNavigation(self, determineFocusElem) {
-            function afterBlur() {
-                // If the blur caused a focus on a new element, then ignore default navigation
-                if ($(':focus').filter(':input').not(self).length > 0) {
-                    return;
-                }
-                
-                // If navigation is locked, then return as well
-                if (isNavigationLocked) {
-                    return;
-                }
-
-                var focusElem = determineFocusElem();
-                if (focusElem.hasClass('nav-trigger')) {
-                    var popover = self.closest('.popover');
-                    if (popover.length === 0) {
-                        $('.popover.in').first().find('input').filter(':enabled:visible').first().focus();
-                        return;
-                    }
-                    else {
-                        focusElem.trigger('nav-trigger', [self, popover]);
-                    }
-                }
-                else {
-                    focusElem.focus();
-                    focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
-                }
-
-                // Reset current navigation
-                $.each(curNav, function (k, v) {
-                    curNav[k] = false;
-                });
-            }
-
-            if (typeof e.preventDefault === 'function') {
-                e.preventDefault();
-            }
-            if (performBlur || (performBlur === undefined)) {
-                self.blur(); // Now perform the blur and all event handlers attached to this event
-            }
-
-            // setTimeout can also be used to make IE wait until the blur event has completed
-            if ($.useTimeout()) {
-                setTimeout(afterBlur, 0);
-            }
-            else {
-                afterBlur();
-            }
-        }
-
         $.duringNavigation(e,
-            function defaultNavigation(self, isNext, isPrev) {
-                onNavigation(self, function () {
-                    if (isPrev) {
+            function defaultNavigation(self, curNav) {
+                onNavigation(self, function determineFocusDefault() {
+                    if (curNav.isPrev) {
                         return self.getPrevFormElement();
                     }
                     return self.getNextFormElement();
                 });
             },
-            function tableNavigation(self, isUp, isDown, isLeft, isRight) {
-                onNavigation(self, function () {
-                    var focusElem = null;
+            function tableNavigation(self, curNav) {
+                onNavigation(self, function determineFocusInTable() {
+                    var focusElem = self;
                     var table = self.closest('table');
 
-                    if (isUp || isDown) {
+                    if (curNav.isFirstRow) {
+                        focusElem = self.closest('tr').find('.form-elem:enabled:visible:first');
+                    }
+                    else if (curNav.isLastRow) {
+                        focusElem = self.closest('tr').find('.form-elem:enabled:visible:last');
+                    }
+                    else if (curNav.isFirstTable) {
+                        focusElem = self.closest('tbody').find('.form-elem:enabled:visible:first');
+                    }
+                    else if (curNav.isLastTable) {
+                        focusElem = self.closest('tbody').find('.form-elem:enabled:visible:last');
+                    }
+                    else if (curNav.isLeft) {
+                        focusElem = self.getPrevFormElement();
+                    }
+                    else if (curNav.isRight) {
+                        focusElem = self.getNextFormElement();
+                    }
+                    else if (curNav.isUp || curNav.isDown) {
                         var column = self.closest('td');
                         var row = column.closest('tr');
 
@@ -179,7 +83,7 @@
                         // and thus focus a previous or next element outside the table
                         var prev, next = false;
                         var nextRowIndex = 0;
-                        if (isUp) {
+                        if (curNav.isUp) {
                             nextRowIndex = rowIndex - 1;
                             if (nextRowIndex < 0) {
                                 prev = true;
@@ -216,12 +120,6 @@
                             }
                         }
                     }
-                    else if (isLeft) {
-                        focusElem = self.getPrevFormElement();
-                    }
-                    else {
-                        focusElem = self.getNextFormElement();
-                    }
 
                     if (focusElem.closest('table').length === 0) {
                         table.closest('.scrollable').scrollLeft(0);
@@ -231,6 +129,135 @@
                 });
             }
         );
+
+        function onNavigation(self, determineFocusElem) {
+            if (typeof e.preventDefault === 'function') {
+                e.preventDefault();
+            }
+            if (performBlur || (performBlur === undefined)) {
+                self.blur(); // Now perform the blur and all event handlers attached to this event
+            }
+
+            // setTimeout can also be used to make IE wait until the blur event has completed
+            if ($.useTimeout()) {
+                setTimeout(afterBlur, 0);
+            }
+            else {
+                afterBlur();
+            }
+
+            function afterBlur() {
+                // If the blur caused a focus on a new element, then ignore default navigation
+                if ($(':focus').filter(':input').not(self).length > 0) {
+                    return;
+                }
+
+                // If navigation is locked, then return as well
+                if (isNavigationLocked) {
+                    return;
+                }
+
+                var focusElem = determineFocusElem();
+                if (focusElem.hasClass('nav-trigger')) {
+                    var popover = self.closest('.popover');
+                    if (popover.length === 0) {
+                        $('.popover.in').first().find('input').filter(':enabled:visible').first().focus();
+                        return;
+                    }
+                    else {
+                        focusElem.trigger('nav-trigger', [self, popover]);
+                    }
+                }
+                else {
+                    focusElem.focus();
+                    focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
+                }
+
+                // Reset current navigation
+                $.each(curNav, function (k, v) {
+                    curNav[k] = false;
+                });
+            }
+        }
+    };
+
+    $.duringNavigation = function duringNavigation(e, onDefaultNavigation, onTableNavigation) {
+        var self = $(e.target);
+
+        // Disable the enter key, unless the focused element is a button
+        if ((e.which === 13) && !self.is('button')) {
+            if (typeof e.preventDefault === 'function') {
+                e.preventDefault();
+            }
+            return;
+        }
+
+        // Also disable navigation in case the ALT key was pressed
+        if (e.altKey) {
+            return;
+        }
+
+        // Navigation is different inside a table: use arrow keys to navigate through the cells
+        if ((onTableNavigation !== undefined) && (self.closest('table').length > 0)) {
+            var isUp = (e.which === 38); // Arrow up
+            var isDown = (e.which === 40); // Arrow down
+            var isLeft = ((e.which === 9) && (e.shiftKey)); // Tab
+            var isRight = ((e.which === 9) && (!e.shiftKey)); // Shift + Tab
+            var isFirstRow = ((e.which === 36) && (e.ctrlKey)); // Home + Ctrl
+            var isLastRow = ((e.which === 35) && (e.ctrlKey)); // End + Ctrl
+            var isFirstTable = ((e.which === 38) && (e.ctrlKey)); // Arrow up + Ctrl
+            var isLastTable = ((e.which === 40) && (e.ctrlKey)); // Arrow down + Ctrl
+
+            if (isUp || isDown || isLeft || isRight || isFirstRow || isLastRow || isFirstTable || isLastTable) {
+                curNav = NAV_RESET;
+                curNav.isUp = isUp;
+                curNav.isDown = isDown;
+                curNav.isLeft = isLeft;
+                curNav.isRight = isRight;
+                curNav.isPrev = isLeft;
+                curNav.isNext = isRight;
+                curNav.isFirstRow = isFirstRow;
+                curNav.isLastRow = isLastRow;
+                curNav.isFirstTable = isFirstTable;
+                curNav.isLastTable = isLastTable;
+
+                onTableNavigation(self, curNav);
+            }
+        }
+        else if (onDefaultNavigation !== undefined) {
+            var isNext = ((e.which === 9) && (!e.shiftKey)); // Tab
+            var isPrev = ((e.which === 9) && (e.shiftKey)); // Shift + Tab
+
+            if (isNext || isPrev) {
+                curNav = NAV_RESET;
+                curNav.isPrev = isPrev;
+                curNav.isNext = isNext;
+
+                onDefaultNavigation(self, curNav);
+            }
+        }
+    };
+
+    $.fn.autoNextFocus = function autoNextFocus(performBlur) {
+        if (this.length > 0) {
+            // Simulate a TAB
+            $.determineNextFocusElem({
+                target: this[0],
+                which: 9,
+                shiftKey: false
+            }, performBlur);
+        }
+    };
+
+    $.fn.autoPrevFocus = function autoPrevFocus(performBlur) {
+        if (this.length > 0) {
+            // Simulate a Shift + TAB
+            $.determineNextFocusElem({
+                target: this[0],
+                which: 9,
+                shiftKey: true
+            }, performBlur);
+        }
     };
 
     var autoFocusNext = false;

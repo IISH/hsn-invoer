@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    function openModal(modal, elem) {
+    function openModal(elem) {
         $.ajax({
             url: '/bevolkingsregister/overzicht/persons',
             type: 'GET',
@@ -17,47 +17,66 @@
                 var resultElem = $(result);
                 $('#personsBody').replaceWith(resultElem);
                 $(document).trigger('ajax-update', [resultElem]);
-
-                modal.modal({keyboard: false, backdrop: 'static'});
+                $('#personsModal').modal({keyboard: false, backdrop: 'static'});
             }
         });
     }
 
-    function closeModal(modal) {
-        modal.modal('hide');
-    }
-
     function forIdnr() {
-        var idnr = parseInt(prompt('Identificatienummer Onderzoekspersoon:', '0'));
+        var modal = $.getOpenedModal();
+
+        var idnr = parseInt(modal.find('input').val());
         if (isNaN(idnr)) {
+            modal.modal('hide');
             return;
         }
+
+        modal.modal('hide');
         location.search = "?idnr=" + idnr;
     }
 
+    function forIdnrOpen() {
+        var modal = $('#idnr');
+        modal.find('input').val('0');
+        modal.modal({keyboard: false, backdrop: 'static'});
+    }
+
     $(document).on('click', '.btn-persons', function (e) {
-        openModal($('#personsModal'), $(e.target).closest('tr'));
+        openModal($(e.target).closest('tr'));
     });
 
     $(document).keydown(function (e) {
-        var modal = $('#personsModal');
+        var modal = $.getOpenedModal();
+        var isModalVisible = (modal.length === 1);
+        var isIdnrModal = (isModalVisible && (modal.is('#idnr')));
+        var isPersonsModal = (isModalVisible && (modal.is('#personsModal')));
 
         if (e.shiftKey) {
             switch (e.which) {
                 case 115: // F4
-                    forIdnr();
-                    e.preventDefault();
+                    if (isIdnrModal) {
+                        forIdnr();
+                        e.preventDefault();
+                    }
+                    else if (!isModalVisible) {
+                        forIdnrOpen();
+                        e.preventDefault();
+                    }
                     break;
                 case 114: // F3
-                    if (!modal.hasClass('in')) {
-                        openModal(modal, $(':focus').closest('tr'));
+                    if (isPersonsModal) {
+                        modal.modal('hide');
+                        e.preventDefault();
+                    }
+                    else if (!isModalVisible) {
+                        openModal($(':focus').closest('tr'));
                         e.preventDefault();
                     }
                     break;
             }
         }
-        else if ((e.which == 27) && modal.hasClass('in')) { // Esc
-            closeModal(modal);
+        else if ((e.which === 27) && isModalVisible) { // Esc
+            modal.modal('hide');
             e.preventDefault();
         }
     });

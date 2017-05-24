@@ -284,6 +284,8 @@
         if (!focus.is(self)) {
             checkRequired(self);
         }
+    }).on('changeCheckRequired', '.required', function (e) {
+        checkRequired($(e.target));
     }).on('show', function (e) {
         checkRequired($(e.target));
     }).on('show hide', function (e) {

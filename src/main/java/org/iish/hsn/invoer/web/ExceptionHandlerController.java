@@ -54,6 +54,8 @@ public class ExceptionHandlerController implements HandlerExceptionResolver {
         // Make sure to log the exception
         LOGGER.error(ex.getMessage(), ex);
 
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
         ModelAndView mav = new ModelAndView();
         mav.addObject("request", request);
         mav.addObject("exception", ex);
