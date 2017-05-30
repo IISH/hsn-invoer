@@ -97,7 +97,7 @@ public class MilitionScanRepository {
             String side = (matcher.groupCount() >= 13) ? matcher.group(13) : null;
             String number = (matcher.groupCount() >= 16) ? matcher.group(16) : null;
 
-            String hashCode = computeHashCode(municipality, year, type, number);
+            String hashCode = computeHashCode(municipality, year, type);
             Path sideA = null, sideB = null;
             if (scans.containsKey(hashCode)) {
                 Scan scan = scans.get(hashCode);
@@ -120,10 +120,9 @@ public class MilitionScanRepository {
      * @param municipality The municipality of the register.
      * @param year         The year of the register.
      * @param type         The type of the register.
-     * @param number       The number of the register.
      * @return The computed hash code.
      */
-    private static String computeHashCode(String municipality, Integer year, String type, String number) {
+    private static String computeHashCode(String municipality, Integer year, String type) {
         int hashCode = 1;
         if (municipality != null)
             hashCode = 31 * hashCode + municipality.hashCode();
@@ -131,8 +130,6 @@ public class MilitionScanRepository {
             hashCode = 31 * hashCode + year;
         if (type != null)
             hashCode = 31 * hashCode + type.hashCode();
-        if (number != null)
-            hashCode = 31 * hashCode + number.hashCode();
         return String.valueOf(hashCode);
     }
 }

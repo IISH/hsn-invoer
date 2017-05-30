@@ -53,6 +53,8 @@
 
   <!-- MS2: GEGEVENS OUDERS LOTELING -->
   <view-state id="MS2" view="militie/MS2" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
     <transition on="next" to="descriptionOfPersonCheck">
       <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
     </transition>
