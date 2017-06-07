@@ -38,13 +38,6 @@
             'Deze variant mag niet worden ingevoerd!'
         );
 
-        if (type === 'K') {
-            $('#mil\\.invNumber').getParentOfFormElement().show();
-        }
-        else {
-            $('#mil\\.invNumber').getParentOfFormElement().hide();
-        }
-
         if (((type === 'A') && (year < 1862 || year > 1912))) {
             $('#mil\\.seqRegister').getParentOfFormElement().show();
         }
