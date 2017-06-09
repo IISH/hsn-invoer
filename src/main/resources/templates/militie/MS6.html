@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout" th:with="scroll=true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">MEDISCH ADVIES:</div>
+
+    <div class="form-group extra-top-margin" th:if="${akte.is('1913A')}">
+      <label class="col-xs-6 control-label">Datum uitspraak:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('mil.dayOfMedicalVerdict', 'mil.monthOfMedicalVerdict', 'mil.yearOfMedicalVerdict')"></div>
+    </div>
+
+    <div class="form-group" th:if="${akte.is('1913A')}">
+      <label class="col-xs-6 control-label">Opgegeven gebreken:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control" th:field="*{mil.medicalDefects}" hsn:field="mil.medicalDefects"/>
+      </div>
+    </div>
+
+    <div class="form-group" th:if="${akte.is('1913AL')}" th:classappend="${akte.is('1913L')} ? 'extra-top-margin'">
+      <label class="col-xs-6 control-label">Bevindingen van de geneeskundigen:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control"
+               th:field="*{mil.medicalAdvice}" hsn:field="mil.medicalAdvice"/>
+      </div>
+    </div>
+
+    <div class="form-group" th:if="${akte.is('1913A')}">
+      <label class="col-xs-6 control-label">Aard der uitspraak:</label>
+
+      <div class="col-xs-5">
+        <input type="text" class="form-control" th:field="*{mil.medicalVerdict}" hsn:field="mil.medicalVerdict"/>
+      </div>
+    </div>
+
+    <div class="form-group" th:if="${akte.is('1913A')}">
+      <label class="col-xs-6 control-label">Nummer ongeschiktheid volgens keuringsregelement:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control" th:field="*{mil.medicalNumber}" hsn:field="mil.medicalNumber"/>
+      </div>
+    </div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913A')}">
+    Er is òf een advies van de keuringsraad òf van de militieraad
+    (welke hoeft niet te worden aangegeven, zie kolom 11-12).
+  </div>
+
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913L')}">
+    Er is òf een advies van de keuringsraad òf van de militieraad
+    (welke hoeft niet te worden aangegeven, zie kolom 10a-b).
+  </div>
+</div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+</body>
+</html>

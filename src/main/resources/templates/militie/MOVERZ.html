@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<header layout:fragment="header" th:include="layoutFragments :: header"></header>
+
+<fieldset layout:fragment="main">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Ident. Nummer</th>
+      <th>Auto volgnummer</th>
+      <th>Achternaam</th>
+      <th>Voornamen</th>
+      <th>Jaar</th>
+      <th>Gemeente</th>
+      <th>Type register</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="curMil,stat : ${overview}">
+      <td th:utext="${curMil.idnr}"></td>
+      <td th:utext="${curMil.seq}"></td>
+      <td th:utext="${curMil.familyName}"></td>
+      <td th:utext="${curMil.firstName}"></td>
+      <td th:utext="${curMil.year}"></td>
+      <td th:utext="${curMil.municipality}"></td>
+      <td th:utext="${@militieregisterHelper.getTypeRegister(curMil.type)}"></td>
+    </tr>
+    <tr th:if="${overview.size() == 0}">
+      <td colspan="7" class="text-center">EINDE BESTAND / echter niets gevonden!</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="pull-right content-spacing">
+    <button type="submit" name="stop" class="btn btn-default btn-right-spacing btn-sm btn-stop">
+      Stoppen
+    </button>
+  </div>
+</fieldset>
+
+<footer layout:fragment="footer" th:include="layoutFragments :: footer ('MOVERZ')"></footer>
+</body>
+</html>

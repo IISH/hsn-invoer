@@ -9,6 +9,11 @@
   <th:block th:replace="fragments/groups-of-fields :: voornamen (${vnaam1}, ${vnaam2}, ${vnaam3}, ${leeftijd})"></th:block>
 </div>
 
+<div th:fragment="namen-nieuw (anaam, vnaam)">
+  <th:block th:replace="fragments/complete-fields :: anaam (${anaam})"></th:block>
+  <th:block th:replace="fragments/complete-fields :: vnaam (${vnaam})"></th:block>
+</div>
+
 <div th:fragment="voornamen (vnaam1, vnaam2, vnaam3, leeftijd)">
   <div class="form-group">
     <label class="col-xs-3 control-label">Eerste voornaam:</label>

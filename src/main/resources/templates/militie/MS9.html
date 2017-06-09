@@ -1,0 +1,160 @@
+<!doctype html>
+<html layout:decorator="formViewLayout" th:with="scroll=true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <th:block th:if="${akte.is('1815L', '1862L')}">
+      <div class="form-header letter-spacing">PLAATSVERVANGER:</div>
+
+      <div class="form-group extra-top-margin">
+        <div class="row no-margin">
+          <label class="col-xs-3 control-label">
+            Aanstelling:
+          </label>
+
+          <label class="col-xs-5 control-label left">
+            p = Loteling heeft plaatsvervanger aangesteld
+          </label>
+        </div>
+
+        <div class="row no-margin">
+          <label class="col-xs-offset-3 col-xs-5 control-label left">
+            w = Loteling heeft nummer verwisseld
+          </label>
+        </div>
+
+        <div class="row no-margin">
+          <label class="col-xs-offset-3 col-xs-5 control-label left">
+            n = Niet van toepassing
+          </label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control form-control-digit required" maxlength="1" data-valid-chars="p;w;n"
+                   th:field="*{mil.substitute}" hsn:field="mil.substitute"/>
+          </div>
+        </div>
+      </div>
+
+      <div data-show-when="#mil\.substitute" data-has-values-in="p;w" style="display:none;">
+        <div class="form-group extra-top-margin" th:if="${akte.is('1862')}">
+          <label class="col-xs-3 control-label">Achternaam:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control"
+                   th:field="*{mil.familyNameSubstitute}" hsn:field="mil.familyNameSubstitute"/>
+          </div>
+        </div>
+
+        <div class="form-group" th:if="${akte.is('1862')}">
+          <label class="col-xs-3 control-label">Voornamen:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control"
+                   th:field="*{mil.firstNameSubstitute}" hsn:field="mil.firstNameSubstitute"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-3 control-label">Nummer op register AA:</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control form-control-small"
+                   th:field="*{mil.substituteNumber}" hsn:field="mil.substituteNumber"/>
+          </div>
+        </div>
+      </div>
+    </th:block>
+
+    <div class="form-group extra-top-margin" th:if="${akte.is('1862IL')}">
+      <label class="col-xs-8 control-label">
+        Heeft de loteling verklaard bij de zeemilitie te willen dienen? j / n / o
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
+               maxlength="1" th:field="*{mil.inNaval}" hsn:field="mil.inNaval"/>
+      </div>
+    </div>
+
+    <th:block th:if="${akte.is('1913AL')}">
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Wens loteling korps / positie:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.wishOfRecruit}" hsn:field="mil.wishOfRecruit"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">1e geschikte korps / positie:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.firstSuitability}" hsn:field="mil.firstSuitability"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">2e geschikte korps / positie:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.secondSuitability}" hsn:field="mil.secondSuitability"/>
+        </div>
+      </div>
+    </th:block>
+
+    <th:block th:if="${akte.is('1815', '1862', '1913IL')}">
+      <div class="form-header letter-spacing extra-top-margin" th:if="${akte.mil.is1815()}">DESIGNATIE:</div>
+      <div class="form-header letter-spacing extra-top-margin" th:if="${!akte.mil.is1815()}">AANWIJZING DIENST:</div>
+
+      <th:block th:if="${akte.is('1815L', '1862IL')}">
+        <div class="form-group extra-top-margin">
+          <label class="col-xs-4 control-label">Dagtekening aanwijzing:</label>
+
+          <div
+              th:replace="fragments/fields :: datum ('mil.dayOfDesignation', 'mil.monthOfDesignation', 'mil.yearOfDesignation')"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-4 control-label">Aard van de aanwijzing dienst:</label>
+
+          <div class="col-xs-6">
+            <input type="text" class="form-control" th:field="*{mil.designation}" hsn:field="mil.designation"/>
+          </div>
+        </div>
+      </th:block>
+
+      <th:block th:if="${akte.is('1815L', '1862IL', '1913L')}">
+        <div class="form-group extra-top-margin">
+          <label class="col-xs-4 control-label">Datum van inlijving:</label>
+
+          <div th:replace="fragments/fields :: datum ('mil.dayOfAnnexation', 'mil.monthOfAnnexation', 'mil.yearOfAnnexation')"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-4 control-label">Korps / Positie inlijving:</label>
+
+          <div class="col-xs-6">
+            <input type="text" class="form-control"
+                   th:field="*{mil.positionAnnexation}" hsn:field="mil.positionAnnexation"/>
+          </div>
+        </div>
+      </th:block>
+    </th:block>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info"></div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+</body>
+</html>

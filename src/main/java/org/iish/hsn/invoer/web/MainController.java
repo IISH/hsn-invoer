@@ -19,6 +19,18 @@ public class MainController {
     @Autowired private InputMetadata inputMetadata;
 
     @NoInputMetadataCheck
+    @RequestMapping(value = "/check", method = RequestMethod.GET)
+    public ResponseEntity<String> validateInputMetadata(@RequestParam("ondrzk") String ondrzk,
+                                                        @RequestParam("opdrnr") String opdrnr) {
+        inputMetadata.setOndrzk(ondrzk.trim().toUpperCase());
+        inputMetadata.setOpdrnr(opdrnr.trim().toUpperCase());
+
+        if (!inputMetadata.isValid())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @NoInputMetadataCheck
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String inputMetadataForm(HttpServletRequest request) {
         // Show an authorization failure message in case the user has no access
@@ -29,9 +41,8 @@ public class MainController {
 
     @NoInputMetadataCheck
     @RequestMapping(params = "next", value = "/", method = RequestMethod.POST)
-    public String validateInputMetadataForm(@RequestParam("init") String init, @RequestParam("ondrzk") String ondrzk,
+    public String validateInputMetadataForm(@RequestParam("ondrzk") String ondrzk,
                                             @RequestParam("opdrnr") String opdrnr) {
-        inputMetadata.setInit(init.trim().toUpperCase());
         inputMetadata.setOndrzk(ondrzk.trim().toUpperCase());
         inputMetadata.setOpdrnr(opdrnr.trim().toUpperCase());
 
@@ -44,7 +55,6 @@ public class MainController {
     @NoInputMetadataCheck
     @RequestMapping(params = "logout", value = "/", method = RequestMethod.POST)
     public String logout() {
-        inputMetadata.setInit(null);
         inputMetadata.setOndrzk(null);
         inputMetadata.setOpdrnr(null);
 
@@ -79,8 +89,10 @@ public class MainController {
                 return "redirect:/huwelijk";
             case "4":
                 return "redirect:/persoonskaart";
-            /* TODO: case "5":
+           /* TODO: case "5":
                 return "redirect:/bevolkingsregister";*/
+            case "6":
+                return "redirect:/militie";
             case "s":
                 return "redirect:/?exit=true";
             default:

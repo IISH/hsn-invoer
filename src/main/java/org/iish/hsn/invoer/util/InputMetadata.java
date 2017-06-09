@@ -2,9 +2,17 @@ package org.iish.hsn.invoer.util;
 
 import org.iish.hsn.invoer.domain.invoer.Invoer;
 import org.iish.hsn.invoer.domain.invoer.WorkOrder;
+import org.iish.hsn.invoer.domain.invoer.security.User;
+import org.iish.hsn.invoer.domain.invoer.security.UserWorkOrder;
+import org.iish.hsn.invoer.repository.invoer.security.UserRepository;
+import org.iish.hsn.invoer.repository.invoer.security.UserWorkOrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -19,9 +27,12 @@ public class InputMetadata implements Serializable {
 
     private String ondrzk;
     private String opdrnr;
-    private String init;
 
     @Value("${application.version}") private String version;
+
+    @Autowired private Environment environment;
+    @Autowired private UserRepository userRepository;
+    @Autowired private UserWorkOrderRepository userWorkOrderRepository;
 
     public String getOndrzk() {
         return ondrzk;
@@ -39,22 +50,21 @@ public class InputMetadata implements Serializable {
         this.opdrnr = opdrnr;
     }
 
-    public String getInit() {
-        return init;
-    }
-
-    public void setInit(String init) {
-        this.init = init;
-    }
-
     public String getVersion() {
         return version;
     }
 
     public boolean isValid() {
-        return ((ondrzk != null) && (ondrzk.length() == 3) &&
-                (opdrnr != null) && (opdrnr.length() == 3) &&
-                (init != null) && (init.length() == 3));
+        boolean valid = ((ondrzk != null) && (ondrzk.length() == 3) && (opdrnr != null) && (opdrnr.length() == 3));
+
+        if (valid && !environment.acceptsProfiles("noCheck") && environment.acceptsProfiles("ldapAuth", "dbAuth")) {
+            User user = getLoggedInUser();
+            UserWorkOrder userWorkOrder =
+                    userWorkOrderRepository.findByUserIdAndWorkOrder(user.getId(), getWorkOrder());
+            valid = (userWorkOrder != null);
+        }
+
+        return valid;
     }
 
     public WorkOrder getWorkOrder() {
@@ -63,7 +73,7 @@ public class InputMetadata implements Serializable {
 
     public void saveToEntity(Invoer invoer) {
         invoer.setOpdrnr(opdrnr);
-        invoer.setInit(init);
+        invoer.setInit(getInit());
         invoer.setVersie(version);
         invoer.setDatum(DATE_TIME_FORMAT.format(new Date()));
 
@@ -71,9 +81,22 @@ public class InputMetadata implements Serializable {
         if ((invoer.getOpdrnro() == null) || invoer.getOpdrnro().trim().isEmpty()) {
             invoer.setWorkOrder(getWorkOrder());
             invoer.setOpdrnro(opdrnr);
-            invoer.setInito(init);
+            invoer.setInito(getInit());
             invoer.setVersieo(version);
             invoer.setDatumo(DATE_TIME_FORMAT.format(new Date()));
         }
+    }
+
+    private String getInit() {
+        if (environment.acceptsProfiles("ldapAuth", "dbAuth")) {
+            User user = getLoggedInUser();
+            return user.getTriple();
+        }
+        return "TST";
+    }
+
+    private User getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByInlognaam(authentication.getName());
     }
 }

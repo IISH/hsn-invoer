@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout" th:with="scroll=true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">AANMERKINGEN:</div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-4 control-label">Aanmerkingen:</label>
+
+      <div class="col-xs-6">
+        <textarea class="form-control form-control-small" th:field="*{mil.remarks}" hsn:field="mil.remarks">
+        </textarea>
+      </div>
+    </div>
+
+    <div class="form-header letter-spacing extra-top-margin">BIJZONDERHEDEN:</div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-7 control-label">Zijn er verder nog bijzonderheden om in te voeren?  j / n</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" id="has-byz"
+               data-valid-chars="j;n" maxlength="1"/>
+      </div>
+    </div>
+
+    <div class="form-group extra-top-margin" data-show-when="#has-byz" data-has-values-in="j" style="display:none;">
+      <div class="col-xs-12">
+        <textarea class="form-control" rows="8" th:field="*{mil.byz}" hsn:field="mil.byz">
+        </textarea>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info"></div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, false)"></fieldset>
+</body>
+</html>

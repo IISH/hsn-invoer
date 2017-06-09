@@ -33,10 +33,18 @@
 </fieldset>
 
 <fieldset th:fragment="navigation (mayStop, mayAddByz)">
-  <div th:include="fragments/navigation :: correction-navigation (${mayStop}, false, ${mayAddByz})"></div>
+  <div th:include="fragments/navigation :: navigation-fragment (${mayStop}, false, ${mayAddByz}, false)"></div>
 </fieldset>
 
-<fieldset th:fragment="correction-navigation (mayStop, mayStopCorrection, mayAddByz)">
+<fieldset th:fragment="navigation-byz-modal (mayStop, mayAddByz)">
+  <div th:include="fragments/navigation :: navigation-fragment (${mayStop}, false, ${mayAddByz}, true)"></div>
+</fieldset>
+
+<fieldset th:fragment="correction-navigation (mayAddByz)">
+  <div th:include="fragments/navigation :: navigation-fragment (true, true, ${mayAddByz}, false)"></div>
+</fieldset>
+
+<fieldset th:fragment="navigation-fragment (mayStop, mayStopCorrection, mayAddByz, byzModal)">
   <span class="pull-left">
     <span class="scherm" th:utext="${flowRequestContext.currentState.id}"></span>
   </span>
@@ -51,7 +59,12 @@
     </button>
 
     <button type="submit" name="_eventId_byz" class="btn btn-default btn-byz"
-            th:if="${mayAddByz} and (${akte.isCorrection()} == false)">
+            th:if="${mayAddByz} and ${byzModal == false} and (${akte.isCorrection()} == false)">
+      Bijzonderheden
+    </button>
+
+    <button type="button" id="byz-modal-button" class="btn btn-default btn-byz"
+            th:if="${mayAddByz} and ${byzModal} and (${akte.isCorrection()} == false)">
       Bijzonderheden
     </button>
 

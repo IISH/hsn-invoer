@@ -9,7 +9,7 @@
   <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}"/>
   <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
-<body>
+<body th:classappend="${mainClasses} ? ${mainClasses}">
 <div id="main" class="container">
   <th:block layout:fragment="content"></th:block>
 </div>
@@ -17,7 +17,10 @@
 <script src="../static/js/lib/jquery-3.2.1.min.js" th:src="@{/js/lib/jquery-3.2.1.min.js}"></script>
 <script src="../static/js/lib/bootstrap.min.js" th:src="@{/js/lib/bootstrap.min.js}"></script>
 <script src="../static/js/lib/bootstrap3-typeahead.js" th:src="@{/js/lib/bootstrap3-typeahead.js}"></script>
+<script src="../static/js/lib/fabric.min.js" th:src="@{/js/lib/fabric.min.js}"></script>
+<script src="../static/js/lib/pdf.js" th:src="@{/js/lib/pdf.js}"></script>
 
+<script src="../static/js/hsn-canvas.js" hsn:src="@{/js/hsn-canvas.js}"></script>
 <script src="../static/js/utils.js" hsn:src="@{/js/utils.js}"></script>
 <script src="../static/js/datum.js" hsn:src="@{/js/datum.js}"></script>
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <div class="form-main-header">
+    VERWIJDER MILITIEREGISTER
+  </div>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="alert alert-info" role="alert">
+      <div>
+        Het gaat om <span th:utext="${akte.mil.familyName}"></span>, <span th:utext="${akte.mil.firstName}"></span>
+        <th:block th:if="${akte.refRp}">met identificatienummer <span th:utext="${akte.refRp.idnr}"></span></th:block>
+      </div>
+    </div>
+
+    <div class="form-group form-inline text-center extra-top-margin">
+      <label class="control-label">Alle ingevoerde gegevens van deze bron zullen worden verwijderd! Bevestig met 'bewust':</label>
+
+      <input type="text" class="form-control form-control-small required spacing no-auto-uppercase"
+             id="bewust" name="bewust"/>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: correction-navigation (false)"></fieldset>
+</body>
+</html>
