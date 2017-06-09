@@ -31,7 +31,56 @@
     }
 
     $(document).ready(function () {
+        function loadImage() {
+            var scanSide = sessionStorage.getItem('hsnScanSide');
+            scanSide = (scanSide === null) ? 'A' : scanSide;
+
+            if (sessionStorage.getItem('hsnScanSide') === null)
+                sessionStorage.setItem('hsnScanSide', scanSide);
+
+            var image = sessionStorage.getItem('hsnScan' + scanSide);
+            if (image !== null) {
+                try {
+                    var position = JSON.parse(sessionStorage.getItem('hsnScanPosition' + scanSide));
+                    hsnCanvas.loadImage(image, position);
+                }
+                catch (err) {
+                    hsnCanvas.loadImage(image);
+                }
+            }
+        }
+
         runInit($(document));
+
+        var viewElem = $('#view');
+        if (viewElem.length > 0) {
+            var hsnCanvas = new HsnCanvas('view', false);
+            loadImage();
+
+            hsnCanvas.onNewImagePosition(function (position) {
+                var curScanSide = sessionStorage.getItem('hsnScanSide');
+                sessionStorage.setItem('hsnScanPosition' + curScanSide, JSON.stringify(position));
+            });
+
+            if (sessionStorage.getItem('hsnScanB') !== null) {
+                $(document).keydown(function (e) {
+                    if (e.ctrlKey) {
+                        switch (e.which) {
+                            case 65: // A
+                                e.preventDefault();
+                                sessionStorage.setItem('hsnScanSide', 'A');
+                                loadImage();
+                                break;
+                            case 66: // B
+                                e.preventDefault();
+                                sessionStorage.setItem('hsnScanSide', 'B');
+                                loadImage();
+                                break;
+                        }
+                    }
+                });
+            }
+        }
 
         // Keep the session alive, call keepalive every minute
         setInterval(function () {
@@ -112,7 +161,7 @@
         if (e.namespace === 'bs.modal') {
             $(e.target)
                 .data('focus-element-id', $(':focus').attr('id'))
-                .find('input').filter(':enabled:visible').first().focus();
+                .find('.form-elem').filter(':enabled:visible').first().focus();
         }
     }).on('hidden.bs.modal', function (e) {
         if (e.namespace === 'bs.modal') {
@@ -172,6 +221,14 @@
             .not('[type=hidden]')
             .not('.noResetOnHidden')
             .valNoEvent('');
+    };
+
+    $.imageBlobToDataUrl = function imageBlobToDataUrl(blob, callback) {
+        var reader = new FileReader();
+        reader.onload = function (evt) {
+            callback(evt.target.result);
+        };
+        reader.readAsDataURL(blob);
     };
 
     /* TODO: Prevent using timeout in bevolkingsregister in Chrome */

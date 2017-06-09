@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout" th:with="scroll=true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">VRIJSTELLING:</div>
+
+    <div class="extra-top-margin">
+      <div class="form-group" th:if="${akte.is('1913A')}">
+        <label class="col-xs-6 control-label">
+          Door wie vroegere uitspraak gedaan:
+        </label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.earlierDecisions}" hsn:field="mil.earlierDecisions"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1913A')}">
+        <label class="col-xs-6 control-label">Datum vroegere uitspraak:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('mil.dayOfExemptionVerdict', 'mil.monthOfExemptionVerdict', 'mil.yearOfExemptionVerdict')"></div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1913A')}">
+        <label class="col-xs-6 control-label">Aard der uitspraak:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control" th:field="*{mil.exemptionVerdict}" hsn:field="mil.exemptionVerdict"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1815', '1862', '1913IA')}">
+        <label class="col-xs-6 control-label" th:if="${akte.is('1913I') == false}">
+          Aangevoerde redenen door loteling:
+        </label>
+        <label class="col-xs-6 control-label" th:if="${akte.is('1913I')}">
+          Reden tot vrijstelling of uitsluiting:
+        </label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.reasonsExemption}" hsn:field="mil.reasonsExemption"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1862L')}">
+        <label class="col-xs-6 control-label">Nader bij de militieraad opgegeven redenen:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.extraReasonsExemption}" hsn:field="mil.extraReasonsExemption"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1913IL')}">
+        <label class="col-xs-6 control-label" th:if="${akte.is('1913I') == false}">
+          Redenen uit het verleden:
+        </label>
+        <label class="col-xs-6 control-label" th:if="${akte.is('1913I')}">
+          Door wie vroegere uitspraak gedaan:
+        </label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.earlierDecisions}" hsn:field="mil.earlierDecisions"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1815', '1913L')}">
+        <label class="col-xs-6 control-label">Aangevoerde redenen door militieraad:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.reasonsInapplicability}" hsn:field="mil.reasonsInapplicability"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1815AI', '1862', '1913AL')}">
+        <label class="col-xs-6 control-label">Advies van de militieraad (definitieve reden vrijstelling):</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.advice}" hsn:field="mil.advice"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1862L', '1913I')}">
+        <label class="col-xs-6 control-label">Datum uitspraak:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('mil.dayOfExemptionVerdict', 'mil.monthOfExemptionVerdict', 'mil.yearOfExemptionVerdict')"></div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1862L', '1913I')}">
+        <label class="col-xs-6 control-label">Aard der uitspraak:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control" th:field="*{mil.exemptionVerdict}" hsn:field="mil.exemptionVerdict"/>
+        </div>
+      </div>
+    </div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1815L')}">
+    Redenen loteling (kolom 9+11)<br/>
+    Redenen militieraad (kolom 10)
+  </div>
+
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1862L')}">
+    Redenen loteling (9.1)<br/>
+    Advies militieraad (9.2/10)<br/>
+    Dagtekening uitspraak (13.1)<br/>
+    Uitspraak (13.2)
+  </div>
+
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913A')}">
+    Door wie vroegere uitspraak gedaan (kolom 5.1)<br/>
+    Datum vroegere uitspraak (kolom 5.2)<br/>
+    Aard der uitspraak (kolom 5.3)<br/>
+    Aangevoerde reden (kolom 6.1)<br/>
+    Advies militieraad (kolom 6.2)
+  </div>
+
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913L')}">
+    Redenen verleden (kolom 5.3)<br/>
+    Aangevoerde reden (kolom 6.1)<br/>
+    Advies militieraad (kolom 6.2)
+  </div>
+
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913I')}">
+    Reden (kolom 7)<br/>
+    Wie vrg uitspraak (kolom 9.1)<br/>
+    Datum vrg uitspraak (kolom 9.2)<br/>
+    Aard vrg uitspraak (kolom 9.3)
+  </div>
+</div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html layout:decorator="formViewLayout" th:with="scroll=true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <th:block th:if="${akte.is('1913A')}">
+      <div class="form-header letter-spacing">UITSPRAAK MILITIERAAD:</div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
+
+        <div class="col-xs-6">
+          <input type="text" class="form-control"
+                 th:field="*{verdictBezwaren.nature}" hsn:field="verdictMilitieraad.nature"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+      <label class="col-xs-4 control-label">Dagtekening der uitspraak:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('verdictMilitieraad.dayOfVerdict', 'verdictMilitieraad.monthOfVerdict', 'verdictMilitieraad.yearOfVerdict')"></div>
+    </div>
+    </th:block>
+
+    <div class="form-header letter-spacing" th:classappend="${akte.is('1913A')} ? 'extra-top-margin'">UITSPRAAK GEDEPUTEERDE STATEN:</div>
+
+    <div class="form-header extra-top-margin" th:if="${akte.is('1862', '1913IL')}">Op bezwaar:</div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
+
+      <div class="col-xs-6">
+        <input type="text" class="form-control"
+               th:field="*{verdictBezwaren.nature}" hsn:field="verdictBezwaren.nature"/>
+      </div>
+    </div>
+
+    <div class="form-group" th:if="${akte.is('1815', '1862', '1913IL')}">
+      <label class="col-xs-4 control-label">Dagtekening bezwaar:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('verdictBezwaren.dayOfAppeal', 'verdictBezwaren.monthOfAppeal', 'verdictBezwaren.yearOfAppeal')"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-4 control-label">Dagtekening der uitspraak:</label>
+
+      <div
+          th:replace="fragments/fields :: datum ('verdictBezwaren.dayOfVerdict', 'verdictBezwaren.monthOfVerdict', 'verdictBezwaren.yearOfVerdict')"></div>
+    </div>
+
+    <div class="form-group" th:if="${akte.is('1815', '1862', '1913IAL')}">
+      <label class="col-xs-4 control-label" th:if="${akte.mil.is1815()}">Nummer van de zaak in register:</label>
+      <label class="col-xs-4 control-label" th:if="${!akte.mil.is1815()}">Nummer der uitspraak:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control"
+               th:field="*{verdictBezwaren.numberVerdict}" hsn:field="verdictBezwaren.numberVerdict"/>
+      </div>
+    </div>
+
+    <th:block th:if="${akte.is('1862', '1913IL')}">
+      <div class="form-header extra-top-margin">Krachtens wet:</div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Aard van de uitspraak:</label>
+
+        <div class="col-xs-6">
+          <input type="text" class="form-control"
+                 th:field="*{verdictWet.nature}" hsn:field="verdictWet.nature"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Dagtekening der uitspraak:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('verdictWet.dayOfVerdict', 'verdictWet.monthOfVerdict', 'verdictWet.yearOfVerdict')"></div>
+      </div>
+
+      <div class="form-group">
+        <div class="sub-form-group">
+          <label class="col-xs-4 control-label">Nummer der uitspraak:</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control"
+                   th:field="*{verdictWet.numberVerdict}" hsn:field="verdictWet.numberVerdict"/>
+          </div>
+        </div>
+
+        <div class="sub-form-group">
+          <label class="col-xs-2 control-label">Artikel der wet:</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control"
+                   th:field="*{verdictWet.numberRegulation}" hsn:field="verdictWet.numberRegulation"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group extra-top-margin" th:if="${akte.is('1862L')}">
+        <label class="col-xs-4 control-label">Nummer ziekte volgens reglement:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control" th:field="*{mil.medicalNumber}" hsn:field="mil.medicalNumber"/>
+        </div>
+      </div>
+    </th:block>
+
+    <th:block th:if="${akte.is('1862', '1913')}">
+      <div class="form-header letter-spacing extra-top-margin" th:if="${akte.is('1913A')}">
+        UITSPRAAK KONINGIN:
+      </div>
+      <div class="form-header letter-spacing extra-top-margin" th:if="${akte.is('1913A') == false}">
+        BESLISSING KONING IN HOGER BEROEP:
+      </div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Aard der beslissing:</label>
+
+        <div class="col-xs-6">
+          <input type="text" class="form-control"
+                 th:field="*{verdictKoning.nature}" hsn:field="verdictKoning.nature"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1862', '1913IL')}">
+        <label class="col-xs-4 control-label">Dagtekening beroep:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('verdictKoning.dayOfAppeal', 'verdictKoning.monthOfAppeal', 'verdictKoning.yearOfAppeal')"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Dagtekening der besluit:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('verdictKoning.dayOfVerdict', 'verdictKoning.monthOfVerdict', 'verdictKoning.yearOfVerdict')"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Nummer der besluit:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control"
+                 th:field="*{verdictKoning.numberVerdict}" hsn:field="verdictKoning.numberVerdict"/>
+        </div>
+      </div>
+    </th:block>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1815L')}">
+    Uitspraak (kolom 15.1)<br/>
+    Dagtekening bezwaar (kolom 15.2)<br/>
+    Dagtekening uitspraak (kolom 15.3)<br/>
+    Nummer register (15.4)
+  </div>
+
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1862L')}">
+    Op bezwaar (kolom 14.1-3)<br/>
+    Krachtens wet (kolom 15.1-3)<br/>
+    Nummer ziekte (kolom 16)<br/>
+    Beroep koning (kolom  17.1-3)
+  </div>
+
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913A')}">
+    Militieraad (kolom 7.1-3)<br/>
+    Gedeputeerde Staten (kolom 8.1-3)<br/>
+    Koningin (kolom  9.1-2)
+  </div>
+</div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+</body>
+</html>

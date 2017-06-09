@@ -85,6 +85,7 @@
 
             field.typeahead({
                 minLength: showAllOptions ? 0 : 1,
+                appendTo: $('body'),
                 source: function pickListSource(query, process) {
                     return getRecords(isId, query, function (records) {
                         values = [];
@@ -97,7 +98,7 @@
                                     value = record[idField] + ' ' + value;
                                 }
 
-                                if (!isId || (record[idField] != null)) {
+                                if (!isId || (record[idField] !== null)) {
                                     values.push(value);
                                     recordsByLabel[value] = record;
                                 }

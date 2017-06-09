@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset class="title" layout:fragment="title">
+  <legend align="center" th:if="${akte.isCorrection() == false}">INVOER VAN MILITIEREGISTERS</legend>
+  <legend align="center" th:if="${akte.isCorrection() and akte.isCorrectionDelete() == false}">CORRECTIE VAN MILITIEREGISTERS</legend>
+  <legend align="center" th:if="${akte.isCorrection() and akte.isCorrectionDelete()}">VERWIJDER MILITIEREGISTERS</legend>
+</fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <label class="col-xs-5 control-label">HSN-identificatienummer:</label>
+
+      <div class="col-xs-4">
+        <input type="text" class="form-control rp-idnr m0-lookup required" th:field="*{mil.idnr}" hsn:field="mil.idnr"/>
+      </div>
+    </div>
+
+    <div class="with-op-state" style="display:none;" th:if="${akte.isCorrection()}">
+      <div class="form-group">
+        <label class="col-xs-5 control-label">Automatisch volgnummer:</label>
+
+        <div class="col-xs-1">
+          <input type="text" class="form-control required seq militie-check" th:field="*{mil.seq}" hsn:field="mil.seq"/>
+        </div>
+      </div>
+
+      <div id="volgnummers" class="extra-top-margin">
+        <div class="default-label text-center">De volgende registers zijn ingevoerd, kies het volgnummer:</div>
+        <div class="row">
+          <div class="col-xs-offset-3 col-xs-6">
+            <ol></ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="fail text-danger text-center extra-top-margin" style="display: none;"></p>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: correction-navigation (false)"></fieldset>
+</body>
+</html>

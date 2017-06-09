@@ -13,8 +13,10 @@
     function onUppercase(elem) {
         // If there is already a 'integer-field' or 'data-valid-chars' handler, don't handle the new event
         var caret = elem.getCaret();
-        if (!elem.hasClass('integer-field') && !elem.hasClass('is-id') && !elem.hasClass('no-auto-uppercase')
-            && !elem.is('[data-valid-chars]')) {
+        if (!elem.hasClass('integer-field') &&
+            !elem.hasClass('is-id') &&
+            !elem.hasClass('no-auto-uppercase') &&
+            (!elem.is('[data-valid-chars]') || (elem.is('[data-valid-chars]') && elem.hasClass('auto-uppercase')))) {
 
             var val = elem.val();
             var firstChar = val.substr(0, 1);
@@ -68,6 +70,8 @@
         if (e.charCode !== 0) {
             var validChars = elem.getMultipleDataValues('valid-chars');
             var char = String.fromCharCode(e.which);
+            if (elem.hasClass('auto-uppercase'))
+                char = char.toUpperCase();
             var allow = (validChars.indexOf(char) >= 0);
             if (!allow) e.stopImmediatePropagation();
             return allow;

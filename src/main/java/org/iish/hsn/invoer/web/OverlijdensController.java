@@ -60,6 +60,7 @@ public class OverlijdensController {
     public ModelAndView getOverviewChoices() {
         Map<String, Object> model = new HashMap<>();
         model.put("action", "/overlijden/overzicht/menu");
+        model.put("isAkte", true);
         model.put("isBirthOverview", false);
         model.put("nameOverz", "OOVERZS");
 

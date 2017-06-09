@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-TOP"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-xs-8 col-xs-offset-1">
+          <label class="control-label">Welke gegevens wilt u corrigeren?</label>
+        </div>
+      </div>
+
+      <div class="row extra-top-margin">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">0. Alle gegevens</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">1. Gegevens over het lotingsregister</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">2. Persoonlijke gegevens van loteling en ouders</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">3. Uiterlijke kenmerken</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">4. Aangifte, aanwijzingen en procedure</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">5. Aanstelling</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-7 col-xs-offset-2">
+          <label class="control-label">6. Aanmerkingen en bijzonderheden</label>
+        </div>
+      </div>
+
+      <div class="row extra-top-margin">
+        <div class="col-xs-3 col-xs-offset-2">
+          <label class="control-label">Maak hier uw keuze:</label>
+        </div>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit required zero-allowed"
+                 maxlength="1" data-valid-chars="0;1;2;3;4;5;6" id="correctionCode" name="correctionCode"/>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: correction-navigation (false)"></fieldset>
+</body>
+</html>

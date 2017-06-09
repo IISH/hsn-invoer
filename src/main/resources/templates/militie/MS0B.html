@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout" th:with="scroll=true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">GEGEVENS REGISTER:</div>
+
+    <div class="form-group extra-top-margin">
+      <label class="col-xs-3 control-label">Jaar:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control required year" th:field="*{mil.year}" hsn:field="mil.year"/>
+      </div>
+    </div>
+
+    <div class="form-group" th:include="fragments/complete-fields :: plaats ('mil.municipality', 'Gemeente:')"></div>
+
+    <div class="form-group">
+      <label class="col-xs-3 control-label">
+        Type register:
+      </label>
+
+      <div class="col-xs-1">
+        <input type="text" class="form-control form-control-digit required auto-uppercase" maxlength="1"
+               data-valid-chars="A;I;K;L;N" th:field="*{mil.type}" hsn:field="mil.type"/>
+      </div>
+
+      <ul class="col-xs-3 list-unstyled">
+        <li><span class="code">A</span> Alfabetische naamlijst</li>
+        <li><span class="code">I</span> Inschrijvingsregister</li>
+        <li><span class="code">K</span> Keuringsregister</li>
+        <li><span class="code">L</span> Lotingsregister</li>
+        <li><span class="code">N</span> Niet bekend</li>
+      </ul>
+    </div>
+
+    <div class="extra-top-margin">
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Volgnummer:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control integer-field"
+                 th:field="*{mil.seqRegister}" hsn:field="mil.seqRegister"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Volgnr. inschrijvingsregister:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control integer-field"
+                 th:field="*{mil.seqRefer}" hsn:field="mil.seqRefer"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Lotingsnummer:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control integer-field"
+                 th:field="*{mil.drawnNumber}" hsn:field="mil.drawnNumber"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-4 control-label">Inventarisnummer:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control" th:field="*{mil.invNumber}" hsn:field="mil.invNumber"/>
+        </div>
+      </div>
+    </div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info">
+  <div id="lotingsnummerMessage" class="alert alert-info extra-top-margin" role="alert">
+    Bij het alfabetisch register bevindt zich het lotingsnummer in kolom 14; bij het lotingsregister in kolom 1;
+    bij het inschrijvingsregister kolom 10.
+  </div>
+
+  <div id="scansEnteredMessage" class="alert alert-warning extra-top-margin" role="alert" style="display:none;">
+    Er zijn eerder scans voor dezelfde persoon ingevoerd met een vergelijkbaar jaar en/of gemeente:
+    <ul></ul>
+  </div>
+</div>
+
+<fieldset layout:fragment="navigation"
+          th:include="fragments/navigation :: navigation-byz-modal (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/MS0A.js" hsn:src="@{/js/militie/MS0B.js}"></script>
+</th:block>
+</body>
+</html>

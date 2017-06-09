@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- MS0C: IDENTIFICATIE -->
+  <view-state id="MS0C" view="militie/MS0IC" model="akte">
+    <on-entry>
+      <evaluate expression="militieregisterService.createNewAkteForCorrection()" result="flowScope.akte"/>
+      <evaluate expression="flowScope.akte.setCorrectionDelete()"/>
+    </on-entry>
+
+    <transition on="stop" to="end"/>
+
+    <transition on="next" to="MVERW">
+      <evaluate expression="militieregisterService.editOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- MVERW: VERWIJDEREN -->
+  <view-state id="MVERW" view="militie/MVERW" model="akte">
+    <transition on="stop" to="end"/>
+
+    <transition on="next" to="end">
+      <evaluate expression="militieregisterService.deleteAkte(flowScope.akte, requestParameters.bewust)"/>
+    </transition>
+  </view-state>
+
+  <end-state id="end" view="redirect:/militie/hoofdmenu"/>
+</flow>

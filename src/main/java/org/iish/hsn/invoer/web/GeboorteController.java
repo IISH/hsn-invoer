@@ -65,6 +65,7 @@ public class GeboorteController {
     public ModelAndView getOverviewChoices() {
         Map<String, Object> model = new HashMap<>();
         model.put("action", "/geboorte/overzicht/menu");
+        model.put("isAkte", true);
         model.put("isBirthOverview", true);
         model.put("nameOverz", "GOVERZS");
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<th:block th:fragment="byzModal" th:object="${akte}">
+  <div class="modal byzModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <strong class="modal-title">Invoer / correctie bijzonderheden</strong>
+        </div>
+
+        <div class="modal-body">
+          <textarea class="form-control noResetOnHidden" rows="8" th:field="*{mil.byz}" hsn:field="mil.byz">
+          </textarea>
+        </div>
+
+        <div class="modal-footer">
+          <span class="pull-right">
+            <button type="button" class="btn btn-default btn-byz-save">
+              Opslaan
+            </button>
+
+            <button type="button" class="btn btn-default btn-byz-cancel">
+              Annuleren
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>
+</body>
+</html>

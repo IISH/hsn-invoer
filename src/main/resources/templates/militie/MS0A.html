@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html layout:decorator="formLayout" th:with="mainClasses='two-column'"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-TOP"></fieldset>
+
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="alert alert-info" role="alert">
+      <strong th:if="${akte.isCropSideA() and akte.mil.scanB != ''}">
+        Kant A  <br/><br/>
+      </strong>
+
+      <strong th:if="${!akte.isCropSideA()}">
+        Kant B  <br/><br/>
+      </strong>
+
+      U kunt met de muis de scan selecteren en vervolgens verplaatsen of vergroten/verkleinen. U kunt ook gebruik
+      maken van het toetsenbord met de <kbd>ctrl</kbd> knop. <br/>
+      U kunt dan inzoomen met <kbd><kbd>ctrl</kbd> <kbd>Home</kbd></kbd>
+      en uitzoomen met <kbd><kbd>ctrl</kbd> <kbd>End</kbd></kbd>.
+      U kunt het register verplaatsen met de pijltjestoetsen:
+      <kbd><kbd>ctrl</kbd> <kbd>&leftarrow;</kbd></kbd>, <kbd><kbd>ctrl</kbd> <kbd>&uparrow;</kbd></kbd>,
+      <kbd><kbd>ctrl</kbd> <kbd>&rightarrow;</kbd></kbd>, <kbd><kbd>ctrl</kbd> <kbd>&downarrow;</kbd></kbd>. <br/><br/>
+
+      U kunt een kniplijn aanmaken door <kbd>ctrl</kbd> ingedrukt te houden en op de gewenste plek op de scan te klikken.
+      U kunt een bestaande kniplijn selecteren door <kbd>ctrl</kbd> ingedrukt te houden en te klikken op een kniplijn.
+      U kunt de kniplijn ongedaan maken met <kbd><kbd>ctrl</kbd> <kbd>delete</kbd></kbd>. <br/>
+      Ook kunt u de de kniplijn omhoog of omlaag verplaatsen:
+      <kbd><kbd>ctrl</kbd> <kbd>&uparrow;</kbd></kbd>, <kbd><kbd>ctrl</kbd> <kbd>&downarrow;</kbd></kbd>.
+      Zodra u tevreden bent over het resultaat kunt u terug keren met <kbd><kbd>ctrl</kbd> <kbd>enter</kbd></kbd>.
+    </div>
+
+    <div class="extra-top-margin">
+      <canvas id="cutter" height="500" class="sideA" th:if="${akte.isCropSideA()}"
+              data:image-url="${'/militie/scan?idnr=' + akte.mil.idnr + '&amp;file=' + akte.mil.scanA}">
+      </canvas>
+
+      <canvas id="cutter" height="500" class="sideB" th:if="${!akte.isCropSideA()}"
+              data:image-url="${'/militie/scan?idnr=' + akte.mil.idnr + '&amp;file=' + akte.mil.scanB}">
+      </canvas>
+    </div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<fieldset layout:fragment="navigation"
+          th:include="fragments/navigation :: navigation-byz-modal (true, false)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/MS0A.js" hsn:src="@{/js/militie/MS0A.js}"></script>
+</th:block>
+</body>
+</html>

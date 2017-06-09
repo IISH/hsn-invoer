@@ -22,7 +22,7 @@
     };
 
     var isNavigationLocked = false;
-    
+
     $.lockNavigation = function lockNavigation() {
         isNavigationLocked = true;
     };
@@ -311,10 +311,28 @@
 
     function autoHeightScroll(elem) {
         var windowHeight = $(window).height();
-        var parentHeight = elem.parent().height();
+        var parentHeight = $('#main').height();
         var elementHeight = elem.height();
         var maxHeight = windowHeight - (parentHeight - elementHeight);
         elem.css('max-height', maxHeight + 'px');
+    }
+
+    function onByzModalEnter() {
+        var modal = $('.byzModal');
+        if (modal.length === 1) {
+            modal.data('content', modal.find('textarea').val());
+            modal.modal({keyboard: false, backdrop: 'static'});
+        }
+    }
+
+    function onByzModalExit(save) {
+        var modal = $('.byzModal');
+        if (modal.length === 1) {
+            if (!save) {
+                modal.find('textarea').val(modal.data('content'));
+            }
+            modal.modal('hide');
+        }
     }
 
     $.fn.getPrevFormElement = function getPrevFormElement(originalSrc) {
@@ -356,8 +374,18 @@
         var scrollElem = $('.scroll-height');
         if (scrollElem.length === 1) {
             autoHeightScroll(scrollElem);
-            scrollElem.resize(function () {
+            scrollElem.add(window).resize(function () {
                 autoHeightScroll(scrollElem);
+            });
+        }
+
+        if ($('.byzModal').length > 0) {
+            $('.btn-byz').click(onByzModalEnter);
+            $('.btn-byz-save').click(function () {
+                onByzModalExit(true);
+            });
+            $('.btn-byz-cancel').click(function () {
+                onByzModalExit(false);
             });
         }
     });

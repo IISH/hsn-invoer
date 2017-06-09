@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout" th:with="scroll=true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">GEGEVENS LOTELING:</div>
+
+    <div class="extra-top-margin" th:include="fragments/groups-of-fields :: namen-nieuw ('mil.familyName', 'mil.firstName')">
+    </div>
+
+    <th:block th:if="${akte.is('1815', '1862', '1913IL')}">
+      <div class="form-group extra-top-margin"
+           th:include="fragments/complete-fields :: plaats ('mil.placeOfBirth', 'Geboorteplaats:')"></div>
+
+      <div class="form-group two-line-label" th:if="${akte.is('1815', '1862')}"
+           th:include="fragments/complete-fields :: plaats ('mil.placeOfMilition', ${akte.mil.is1815() ? 'Militiekanton van de geboorteplaats:' : 'Militiedistrict van de geboorteplaats:'})"></div>
+
+      <div class="form-group checkDateDefault">
+        <label class="col-xs-3 control-label">Geboortedatum:</label>
+
+        <div th:replace="fragments/fields :: datum ('mil.dayOfBirth', 'mil.monthOfBirth', 'mil.yearOfBirth')"></div>
+      </div>
+
+      <div class="form-group extra-top-margin"
+           th:include="fragments/complete-fields :: plaats ('mil.placeOfLiving', ${akte.mil.is1815() ? 'Verblijfplaats:' : 'Woonplaats:'})"></div>
+
+      <th:block th:if="${akte.is('1815')}">
+        <div class="form-group extra-top-margin">
+          <label class="col-xs-4 control-label">Woont bij zijn ouders? j / n / o</label>
+
+          <div class="col-xs-2">
+            <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o" maxlength="1"
+                   th:field="*{mil.livesWithParents}" hsn:field="mil.livesWithParents"/>
+          </div>
+        </div>
+      </th:block>
+    </th:block>
+
+    <div class="form-group extra-top-margin" th:if="${akte.is('1913A')}">
+      <label class="col-xs-4 control-label">Bijzondere aantekeningen:</label>
+
+      <div class="col-xs-6">
+        <input type="text" class="form-control" th:field="*{mil.byzRemarks}" hsn:field="mil.byzRemarks"/>
+      </div>
+    </div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913IL')}">
+    In het geval van vrijwillige dienst bij de woonplaats ook het dienstonderdeel vermelden.
+  </div>
+</div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (true, true)"></fieldset>
+</body>
+</html>
