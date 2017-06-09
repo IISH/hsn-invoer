@@ -5,6 +5,7 @@ import org.iish.hsn.invoer.domain.invoer.bev.Registration;
 import org.iish.hsn.invoer.domain.invoer.bev.RegistrationId;
 import org.iish.hsn.invoer.domain.invoer.geb.Geb;
 import org.iish.hsn.invoer.domain.invoer.huw.Huwknd;
+import org.iish.hsn.invoer.domain.invoer.mil.Milition;
 import org.iish.hsn.invoer.domain.invoer.ovl.Ovlknd;
 import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
 import org.iish.hsn.invoer.domain.invoer.pk.Pkknd;
@@ -13,6 +14,7 @@ import org.iish.hsn.invoer.repository.invoer.bev.PersonRepository;
 import org.iish.hsn.invoer.repository.invoer.bev.RegistrationRepository;
 import org.iish.hsn.invoer.repository.invoer.geb.GebRepository;
 import org.iish.hsn.invoer.repository.invoer.huw.HuwkndRepository;
+import org.iish.hsn.invoer.repository.invoer.mil.MilitionRepository;
 import org.iish.hsn.invoer.repository.invoer.ovl.OvlkndRepository;
 import org.iish.hsn.invoer.repository.invoer.pick.PlaatsRepository;
 import org.iish.hsn.invoer.param.GeboorteOverviewParams;
@@ -34,6 +36,7 @@ public class OverviewService {
     @Autowired private OvlkndRepository       ovlkndRepository;
     @Autowired private HuwkndRepository       huwkndRepository;
     @Autowired private PkkndRepository        pkkndRepository;
+    @Autowired private MilitionRepository     militionRepository;
     @Autowired private RegistrationRepository registrationRepository;
     @Autowired private PersonRepository       personRepository;
 
@@ -75,6 +78,13 @@ public class OverviewService {
         Specifications<Pkknd> spec = pk.getSpec(inputMetadata.getWorkOrder());
         spec = getSpecForParams(params, spec, pk);
         return pkkndRepository.findAll(spec);
+    }
+
+    public List<Milition> getMilitionOverview(OverviewParams params) {
+        MilitieSpecifications mil = new MilitieSpecifications();
+        Specifications<Milition> spec = mil.getSpec(inputMetadata.getWorkOrder());
+        spec = getSpecForParams(params, spec, mil);
+        return militionRepository.findAll(spec);
     }
 
     public List<Registration> getPopulationRegisterRegistrationOverview() {

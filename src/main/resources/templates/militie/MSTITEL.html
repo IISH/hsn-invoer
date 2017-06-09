@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<fieldset class="title" th:fragment="MSTITEL-TOP">
+  <legend align="center" th:if="${akte.isCorrection()} == false">INVOER MILITIEREGISTER VAN:</legend>
+  <legend align="center" th:if="${akte.isCorrection()}">CORRECTIE MILITIEREGISTER VAN:</legend>
+
+  <div class="row">
+    <div class="col-xs-offset-1 col-xs-2 text-left">
+      Idnr: <br/>
+      <span th:utext="${akte.mil.idnr} ? ${akte.mil.idnr}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Jaar: <br/>
+      <span th:utext="${akte.mil.year} ? ${akte.mil.year}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Achternaam: <br/>
+      <span th:utext="${akte.mil.familyName} ? ${akte.mil.familyName}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Voornaam: <br/>
+      <span th:utext="${akte.mil.firstName} ? ${akte.mil.firstName}"></span>
+    </div>
+  </div>
+</fieldset>
+
+<div th:fragment="MSTITEL-SIDE">
+  <div class="form-header text-center" th:if="${akte.isCorrection()} == false">INVOER MILITIEREGISTER VAN:</div>
+  <div class="form-header text-center" th:if="${akte.isCorrection()}">CORRECTIE MILITIEREGISTER VAN:</div>
+
+  <div class="row extra-top-margin-sm">
+    <div class="col-xs-offset-1 col-xs-2 text-left">
+      Idnr: <br/>
+      <span class="idnr" th:utext="${akte.mil.idnr} ? ${akte.mil.idnr}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Jaar / Type: <br/>
+      <span class="year" th:utext="${akte.mil.year} ? ${akte.mil.year}"></span> /
+      <span class="type" th:utext="${akte.mil.type} ? ${akte.mil.type}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Achternaam: <br/>
+      <span th:utext="${akte.mil.familyName} ? ${akte.mil.familyName}"></span>
+    </div>
+
+    <div class="col-xs-3 text-left">
+      Voornaam: <br/>
+      <span th:utext="${akte.mil.firstName} ? ${akte.mil.firstName}"></span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

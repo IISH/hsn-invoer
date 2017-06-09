@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+  <!-- MS0I: IDENTIFICATIE NUMMER PERSOON MILITIE REGISTER -->
+  <view-state id="MS0I" view="militie/MS0IC" model="akte">
+    <on-entry>
+      <evaluate expression="militieregisterService.createNewAkteForNewInput()" result="flowScope.akte"/>
+    </on-entry>
+
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="MS0A">
+      <evaluate expression="militieregisterService.registerOP(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- MS0A: SCAN -->
+  <view-state id="MS0A" view="militie/MS0A" model="akte">
+    <transition on="stop" to="stopEnd"/>
+    <transition on="next" to="determineScanSideB"/>
+  </view-state>
+
+  <action-state id="determineScanSideB">
+    <evaluate expression="(akte.mil.scanB != '') and akte.isCropSideA()"/>
+
+    <transition on="yes" to="MS0A">
+      <evaluate expression="akte.setCropSideA(false)"/>
+    </transition>
+
+    <transition on="no" to="MS0B">
+      <evaluate expression="akte.setCropSideA(false)"/>
+    </transition>
+  </action-state>
+
+  <!-- MS0B: GEGEVENS REGISTER -->
+  <view-state id="MS0B" view="militie/MS0B" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="MS1">
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- MS1: GEGEVENS LOTELING -->
+  <view-state id="MS1" view="militie/MS1" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="MS2">
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- MS2: GEGEVENS OUDERS LOTELING -->
+  <view-state id="MS2" view="militie/MS2" model="akte">
+    <transition on="stop" to="stopEnd"/>
+
+    <transition on="next" to="descriptionOfPersonCheck">
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="descriptionOfPersonCheck">
+    <evaluate expression="flowScope.akte.is('1862I', '1913I') == false"/>
+
+    <transition on="yes" to="MS3"/>
+    <transition on="no" to="extraInfoCheck"/>
+  </action-state>
+
+  <!-- MS3: UITERLIJKE KENMKERKEN -->
+  <view-state id="MS3" view="militie/MS3" model="akte">
+    <transition on="next" to="extraInfoCheck">
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="extraInfoCheck">
+    <evaluate expression="flowScope.akte.mil.is1815() and flowScope.akte.mil.type == 'A'"/>
+
+    <transition on="yes" to="MS4a"/>
+    <transition on="no" to="MS4"/>
+  </action-state>
+
+  <!-- MS4: AANGIFTE, AANWIJZINGEN EN PROCEDURE -->
+  <view-state id="MS4" view="militie/MS4" model="akte">
+    <transition on="next" to="includesExemptionCheck">
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- MS4a: EXTRA MILITIE GEGEVENS LOTELING -->
+  <view-state id="MS4a" view="militie/MS4a" model="akte">
+    <transition on="next" to="includesExemptionCheck">
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="includesExemptionCheck">
+    <evaluate expression="flowScope.akte.includesExemption == 'j'"/>
+
+    <transition on="yes" to="MS5"/>
+    <transition on="no" to="includesMedicalCheck"/>
+  </action-state>
+
+  <!-- MS5: VRIJSTELLING -->
+  <view-state id="MS5" view="militie/MS5" model="akte">
+    <transition on="next" to="includesMedicalCheck">
+      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="includesMedicalCheck">
+    <evaluate expression="flowScope.akte.includesMedical == 'j'"/>
+
+    <transition on="yes" to="MS6"/>
+    <transition on="no" to="includesDelayCheck"/>
+  </action-state>
+
+  <!-- MS6: MEDISCH ADVIES -->
+  <view-state id="MS6" view="militie/MS6" model="akte">
+    <transition on="next" to="includesDelayCheck">
+      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="includesDelayCheck">
+    <evaluate expression="flowScope.akte.includesDelay == 'j' or flowScope.akte.includesDelayMilition == 'j'"/>
+
+    <transition on="yes" to="MS7"/>
+    <transition on="no" to="includesAppealCheck"/>
+  </action-state>
+
+  <!-- MS7: UITSTEL -->
+  <view-state id="MS7" view="militie/MS7" model="akte">
+    <transition on="next" to="includesAppealCheck">
+      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="includesAppealCheck">
+    <evaluate expression="flowScope.akte.includesAppeal == 'j'"/>
+
+    <transition on="yes" to="MS8"/>
+    <transition on="no" to="includesAppointed"/>
+  </action-state>
+
+  <!-- MS8: IN BEROEP -->
+  <view-state id="MS8" view="militie/MS8" model="akte">
+    <transition on="next" to="includesAppointed">
+      <evaluate expression="militieregisterService.processVerdicts(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="includesAppointed">
+    <evaluate expression="flowScope.akte.is('1815L', '1862IL', '1913AL')"/>
+
+    <transition on="yes" to="MS9"/>
+    <transition on="no" to="MSBYZ"/>
+  </action-state>
+
+  <!-- MS9: AANSTELLING -->
+  <view-state id="MS9" view="militie/MS9" model="akte">
+    <transition on="next" to="MSBYZ">
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- MSBYZ: AANMERKINGEN EN BIJZONDERHEDEN -->
+  <view-state id="MSBYZ" view="militie/MSBYZ" model="akte">
+    <transition on="next" to="MSNIEUW">
+      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <!-- MSNIEUW: ANOTHER MILITIEREGISTER? -->
+  <view-state id="MSNIEUW" view="militie/MSNIEUW" model="akte">
+    <transition on="next" to="nieuwCheck"/>
+  </view-state>
+
+  <action-state id="nieuwCheck">
+    <evaluate expression="requestParameters.anotherFlow == 'j'"/>
+
+    <transition on="yes" to="MS0I"/>
+    <transition on="no" to="finishEnd"/>
+  </action-state>
+
+  <end-state id="stopEnd" view="redirect:/militie/hoofdmenu">
+    <on-entry>
+      <evaluate expression="militieregisterService.deleteAkte(flowScope.akte)"/>
+    </on-entry>
+  </end-state>
+
+  <end-state id="finishEnd" view="redirect:/militie/hoofdmenu"/>
+</flow>

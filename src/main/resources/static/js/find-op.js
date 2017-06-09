@@ -14,6 +14,7 @@
         self.withoutOpElems = $('.without-op');
         self.withOpStateElems = $('.with-op-state');
         self.huwCheckElem = $('.huw-check');
+        self.militieCheckElem = $('.militie-check');
         self.nextBtnElem = $('.btn-next');
         self.lookup = elem.getDataValue('lookup');
 
@@ -58,6 +59,17 @@
             if ($.getCurNavigation().isNext) {
                 self.blur = $(this);
                 self.marriageLookup();
+            }
+        });
+
+        if (!self.militieCheckElem.is(':input')) {
+            self.militieCheckElem = self.militieCheckElem.find(':input:last');
+        }
+
+        self.militieCheckElem.blur(function () {
+            if ($.getCurNavigation().isNext) {
+                self.blur = $(this);
+                self.militionSequenceLookup();
             }
         });
     }
@@ -133,6 +145,14 @@
                     if (self.idnrElem.hasClass('only-rp-lookup')) {
                         self.onSuccess();
                     }
+                    else if (self.idnrElem.hasClass('m0-lookup')) {
+                        if (!$.isCorrection()) {
+                            self.militionLookup();
+                        }
+                        else {
+                            self.militionSeq();
+                        }
+                    }
                     else {
                         self.noRefRPLookup();
                     }
@@ -140,6 +160,25 @@
                     self.onFailure('De onderzoekspersoon met deze identificatie is niet aanwezig!', false, false, true);
                 });
             }
+        });
+    };
+
+    FindOp.prototype.militionLookup = function militionLookup() {
+        self.withIdnr(function (idnr) {
+            self.serverCall('/ajax/lookup/m0/list', {idnr: idnr} , function (enteredScans) {
+                self.serverCall('/ajax/lookup/m0/scans', {idnr: idnr} , function (availableScans) {
+                    if (enteredScans.length < availableScans.length) {
+                        self.onSuccess();
+                    }
+                    else if (availableScans.length === 0) {
+                        self.onFailure('Er zijn geen scans voor de OP met deze identificatie gevonden ' +
+                            'en/of de naamgeving van de scan is niet correct!', true, false, true);
+                    }
+                    else {
+                        self.onFailure('Alle militieregisters met deze identificatie zijn reeds ingevoerd!', true, false, true);
+                    }
+                });
+            });
         });
     };
 
@@ -192,20 +231,80 @@
         });
     };
 
-    FindOp.prototype.onSuccess = function onSuccess(autoNextElement) {
+    FindOp.prototype.militionSequenceLookup = function militionSequenceLookup() {
+        self.withIdnr(function (idnr) {
+            var seq = parseInt($('.seq').val());
+
+            self.serverCall('/ajax/lookup/m0/list', {idnr: idnr} , function (enteredScans) {
+                if ((seq > 0) && (enteredScans.length >= seq)) {
+                    self.onSuccess();
+                }
+                else {
+                    self.onFailure('Er is/zijn maximaal ' + enteredScans.length + ' register ingevoerd voor deze OP!', false, true, true);
+                }
+            }, function () {
+                self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, true, true);
+            });
+        });
+    };
+
+    FindOp.prototype.militionSeq = function militionSeq() {
+        self.withIdnr(function (idnr) {
+            self.serverCall('/ajax/lookup/m0/list', {idnr: idnr} , function (enteredScans) {
+                if (enteredScans.length > 1) {
+                    enteredScans.sort(function (a, b) { return a.seq > b.seq });
+
+                    var list = $('<ol>');
+                    $.each(enteredScans, function (i, enteredScan) {
+                        var typeRegister = 'Niet bekend';
+                        if (enteredScan.type === 'A')
+                            typeRegister = 'Alfabetische naamlijst';
+                        if (enteredScan.type === 'I')
+                            typeRegister = 'Inschrijvingsregister';
+                        if (enteredScan.type === 'K')
+                            typeRegister = 'Keuringsregister';
+                        if (enteredScan.type === 'L')
+                            typeRegister = 'Lotingsregister';
+
+                        list.append(
+                            $('<li class="spacing">')
+                                .append($('<div>').text(
+                                    enteredScan.familyName + ', ' + enteredScan.firstName
+                                ))
+                                .append($('<div>').text(
+                                    typeRegister + ': ' + enteredScan.municipality + ', ' + enteredScan.year
+                                ))
+                        );
+                    });
+                    $('#volgnummers').find('ol').replaceWith(list);
+
+                    self.onSuccess();
+                }
+                else if (enteredScans.length === 1) {
+                    self.militieCheckElem.val(1);
+                    self.onSuccess(true, false);
+                }
+                else {
+                    self.onFailure('Gegevens met deze identificatie zijn nog niet ingevoerd!', false, false, true);
+                }
+            });
+        });
+    };
+
+    FindOp.prototype.onSuccess = function onSuccess(autoNextElement, showOp) {
+        autoNextElement = (autoNextElement || (autoNextElement === undefined));
+        showOp = (showOp || (showOp === undefined));
         self.failElem.hide();
 
-        self.withOpElems.show();
+        if (showOp) self.withOpElems.show();
         self.withoutOpElems.hide();
 
-        self.withOpStateElems.show();
+        if (showOp) self.withOpStateElems.show();
 
         self.nextBtnElem.removeClass('op-error');
         $.triggerChangeOfState();
 
-        if (autoNextElement || (autoNextElement === undefined))
-            self.blur.getNextFormElement().focus();
-
+        if (autoNextElement) self.blur.getNextFormElement().focus();
         $.triggerChangeOfState();
     };
 

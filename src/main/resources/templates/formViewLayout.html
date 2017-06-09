@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html layout:decorator="layout" th:with="mainClasses='two-column'"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<th:block layout:fragment="content">
+  <div id="view-container">
+    <canvas id="view" height="400"></canvas>
+  </div>
+
+  <form th:object="${akte}" method="post" class="form-horizontal" autocomplete="off"
+        data:is-correction="${akte.isCorrection()}">
+
+    <fieldset class="content-spacing">
+      <div class="row">
+        <div class="col-xs-7" th:classappend="${scroll == true} ? 'scroll-height'">
+          <th:block layout:fragment="fields"></th:block>
+        </div>
+
+        <div class="col-xs-5">
+          <th:block layout:fragment="title"></th:block>
+
+          <th:block layout:fragment="info"></th:block>
+
+          <div class="alert alert-danger extra-top-margin messages" role="alert" style="display:none;"></div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="content-spacing" layout:fragment="navigation"></fieldset>
+  </form>
+</th:block>
+</body>
+</html>

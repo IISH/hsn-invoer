@@ -8,7 +8,8 @@
 
 <fieldset class="content-spacing" layout:fragment="main">
   <div class="form-group">
-    <label class="col-xs-7 control-label">Wilt u een overzicht van alle ingevoerde akten? j / n</label>
+    <label class="col-xs-7 control-label" th:if="${isAkte}">Wilt u een overzicht van alle ingevoerde akten? j / n</label>
+    <label class="col-xs-7 control-label" th:if="${isAkte == false}">Wilt u een overzicht van alle ingevoerde registers? j / n</label>
 
     <div class="col-xs-2">
       <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n" maxlength="1"
@@ -17,7 +18,8 @@
   </div>
 
   <div class="form-group" data-show-when="#alleAkten" data-has-values-in="n" style="display: none;">
-    <label class="col-xs-7 control-label">Wilt u een overzicht van meer dan een akte? j / n</label>
+    <label class="col-xs-7 control-label" th:if="${isAkte}">Wilt u een overzicht van meer dan een akte? j / n</label>
+    <label class="col-xs-7 control-label" th:if="${isAkte == false}">Wilt u een overzicht van meer dan een register? j / n</label>
 
     <div class="col-xs-2">
       <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n" maxlength="1"

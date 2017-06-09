@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout" th:with="scroll=true"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">UITERLIJKE KENMERKEN:</div>
+
+    <div class="form-group extra-top-margin lengths">
+      <div class="form-inline col-xs-offset-2">
+        <div class="form-group">
+          <label class="control-label" th:if="${akte.mil.year le 1824}">el:</label>
+          <label class="control-label" th:if="${akte.mil.year gt 1824}">m:</label>
+          <input type="text" class="form-control form-control-small integer-field required spacing"
+                 maxlength="2" th:field="*{mil.meter}" hsn:field="mil.meter"/>
+        </div>
+
+        <div class="form-group spacing">
+          <label class="control-label" th:if="${akte.mil.year le 1824}">palm:</label>
+          <label class="control-label" th:if="${akte.mil.year gt 1824}">dm:</label>
+          <input type="text" class="form-control form-control-small integer-field required spacing"
+                 maxlength="2" th:field="*{mil.decimeter}" hsn:field="mil.decimeter"/>
+        </div>
+
+        <div class="form-group spacing">
+          <label class="control-label" th:if="${akte.mil.year le 1824}">duim:</label>
+          <label class="control-label" th:if="${akte.mil.year gt 1824}">cm:</label>
+          <input type="text" class="form-control form-control-small integer-field required spacing"
+                 maxlength="2" th:field="*{mil.centimeter}" hsn:field="mil.centimeter"/>
+        </div>
+
+        <div class="form-group spacing">
+          <label class="control-label" th:if="${akte.mil.year le 1824}">streep:</label>
+          <label class="control-label" th:if="${akte.mil.year gt 1824}">mm:</label>
+          <input type="text" class="form-control form-control-small integer-field required spacing"
+                 maxlength="2" th:field="*{mil.millimeter}" hsn:field="mil.millimeter"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group extra-top-margin" th:if="${akte.is('1923')}">
+      <label class="col-xs-2 col-xs-offset-2 control-label">Gewicht in kg:</label>
+
+      <div class="col-xs-1">
+        <input type="text" class="form-control form-control-small integer-field zero-allowed"
+               th:field="*{mil.kg}" hsn:field="mil.kg"/>
+      </div>
+
+      <label class="col-xs-2 control-label">Index:</label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-small" th:field="*{mil.index}" hsn:field="mil.index"/>
+      </div>
+    </div>
+
+    <th:block th:if="${akte.is('1815', '1862')}">
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-4 control-label">Zijn er uiterlijke kenmerken? j / n </label>
+
+        <div class="col-xs-2">
+          <input type="text" id="kenmerken" class="form-control form-control-digit required"
+                 data-valid-chars="j;n" maxlength="1"
+                 th:value="${@militieregisterHelper.hasKenmerken(akte.mil, akte.isCorrection())}"/>
+        </div>
+      </div>
+
+      <div data-show-when="#kenmerken" data-has-values-in="j" style="display:none;">
+        <div class="form-group extra-top-margin">
+          <label class="col-xs-2 control-label">Aangezicht:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.face}" hsn:field="mil.face"/>
+          </div>
+
+          <label class="col-xs-2 control-label">Voorhoofd:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.forehead}" hsn:field="mil.forehead"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-2 control-label">Ogen:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.eyes}" hsn:field="mil.eyes"/>
+          </div>
+
+          <label class="col-xs-2 control-label">Neus:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.nose}" hsn:field="mil.nose"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-2 control-label">Mond:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.mouth}" hsn:field="mil.mouth"/>
+          </div>
+
+          <label class="col-xs-2 control-label">Kin:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.chin}" hsn:field="mil.chin"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-2 control-label">Haar:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.hair}" hsn:field="mil.hair"/>
+          </div>
+
+          <label class="col-xs-2 control-label">Wenkbrauwen:</label>
+
+          <div class="col-xs-4">
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.eyebrows}" hsn:field="mil.eyebrows"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-3 control-label">Merkbare tekenen:</label>
+
+          <div class="col-xs-9">
+            <input type="text" class="form-control no-auto-uppercase"
+                   th:field="*{mil.notableSigns}" hsn:field="mil.notableSigns"/>
+          </div>
+        </div>
+      </div>
+    </th:block>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info"></div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/MS3.js" hsn:src="@{/js/militie/MS3.js}"></script>
+</th:block>
+</body>
+</html>

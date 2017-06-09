@@ -4,6 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Configuration
 public class ConverterConfiguration {
     @Bean
@@ -40,6 +43,15 @@ public class ConverterConfiguration {
                     return source.trim();
                 }
                 return "";
+            }
+        };
+    }
+
+    @Bean
+    public Converter<String, Path> stringToPathConverter() {
+        return new Converter<String, Path>() {
+            public Path convert(String source) {
+                return Paths.get(source);
             }
         };
     }

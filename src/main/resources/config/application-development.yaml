@@ -6,4 +6,4 @@ spring:
   thymeleaf:
     cache: false
 
-random-to-static-source: true
+random-to-static-source: false
