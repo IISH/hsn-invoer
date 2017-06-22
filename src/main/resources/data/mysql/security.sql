@@ -10,7 +10,7 @@ CREATE TABLE `users` (
 
 CREATE TABLE `user_workorders` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `triple` int(11) NOT NULL,
+  `triple` varchar(3) NOT NULL,
   `ONDRZKO` varchar(3) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
   PRIMARY KEY (`ID`),

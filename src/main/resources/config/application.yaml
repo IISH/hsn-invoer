@@ -1,9 +1,9 @@
 application:
   version: "5.1.0"
-  date: "1 augustus 2016"
+  date: "9 juni 2017"
 
 storage:
-  path: "/home/kerim/data/"
+  path: "/data/hsn/"
 
 spring:
   mvc:
