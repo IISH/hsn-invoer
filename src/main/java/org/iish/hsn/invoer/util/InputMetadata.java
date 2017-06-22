@@ -60,7 +60,7 @@ public class InputMetadata implements Serializable {
         if (valid && !environment.acceptsProfiles("noCheck") && environment.acceptsProfiles("ldapAuth", "dbAuth")) {
             User user = getLoggedInUser();
             UserWorkOrder userWorkOrder =
-                    userWorkOrderRepository.findByUserIdAndWorkOrder(user.getId(), getWorkOrder());
+                    userWorkOrderRepository.findByTripleAndWorkOrder(user.getTriple(), getWorkOrder());
             valid = (userWorkOrder != null);
         }
 

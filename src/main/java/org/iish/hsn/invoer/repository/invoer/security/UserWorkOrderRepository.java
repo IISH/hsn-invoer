@@ -5,5 +5,5 @@ import org.iish.hsn.invoer.domain.invoer.security.UserWorkOrder;
 import org.springframework.data.repository.Repository;
 
 public interface UserWorkOrderRepository extends Repository<UserWorkOrder, Integer> {
-    UserWorkOrder findByUserIdAndWorkOrder(int userId, WorkOrder workOrder);
+    UserWorkOrder findByTripleAndWorkOrder(String triple, WorkOrder workOrder);
 }
