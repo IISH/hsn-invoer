@@ -95,7 +95,6 @@
         elems.onNoEdit.show();
         elems.onEdit.hide();
 
-        elems.parent.removeClass('continued');
         elems.parent.find('.btn-update, .btn-delete').removeAttr('disabled');
 
         var row = elems.parent.find('tr.rowToUpdate');

@@ -5,9 +5,9 @@ import org.iish.hsn.invoer.domain.invoer.WorkOrder;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_workorders", uniqueConstraints = @UniqueConstraint(columnNames = {"USERID", "ONDRZKO", "OPDRNRI"}))
+@Table(name = "user_workorders", uniqueConstraints = @UniqueConstraint(columnNames = {"triple", "ONDRZKO", "OPDRNRI"}))
 public class UserWorkOrder {
-    @Column(name = "USERID", nullable = false) private int userId;
+    @Column(name = "triple", nullable = false, length = 3) private String triple;
 
     @Embedded private WorkOrder workOrder = new WorkOrder();
 
@@ -16,8 +16,8 @@ public class UserWorkOrder {
     @Column(name = "ID")
     private Integer id;
 
-    public int getUserId() {
-        return userId;
+    public String getTriple() {
+        return triple;
     }
 
     public WorkOrder getWorkOrder() {

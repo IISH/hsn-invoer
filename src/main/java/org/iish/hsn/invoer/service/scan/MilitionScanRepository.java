@@ -20,7 +20,7 @@ public class MilitionScanRepository {
     // [idnr] [municipality] [year] [type uppercase (one of I/A/L/K/N)] [scan side lowercase (one of a/b)] [scan number].[extension]
     // For example: 12345 Den Haag 1820 A a DG77777.pdf
     private static final Pattern SCAN_PATTERN =
-            Pattern.compile("^(\\d+)((\\s|_)([\\p{IsAlphabetic}\\s_]+))?((\\s|_)(\\d{4}))?((\\s|_)([IALKN]))?((\\s|_)([ab]))?((\\s|_)([A-Za-z0-9]{2,}))?\\.[a-zA-Z]+$");
+            Pattern.compile("^(\\d+)((\\s|_)([\\p{IsAlphabetic}\\s_]+))?((\\s|_)(\\d{4}))?((\\s|_)([IALKN]))?((\\s|_)([ab]))?((\\s|_)([^\\s_\\.]{2,}))?\\.[a-zA-Z]+$");
 
     private Path root;
 

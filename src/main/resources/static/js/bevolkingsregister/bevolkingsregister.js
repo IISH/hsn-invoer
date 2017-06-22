@@ -55,7 +55,8 @@
         if (parent.hasClass('noNeg') && (dayVal <= 0 || monthVal <= 0 || yearVal <= 0)) { // basically 'required'
             error = true;
         }
-        if (parent.hasClass('fullCheck') && (dayVal > 0 && monthVal > 0 && yearVal > 0)) {
+        // TODO: Disable full date check for now
+        if (false && parent.hasClass('fullCheck') && (dayVal > 0 && monthVal > 0 && yearVal > 0)) {
             if (date.getDate() !== dayVal || date.getMonth() !== (monthVal - 1) || date.getFullYear() !== yearVal) {
                 error = true;
             }
@@ -162,6 +163,11 @@
 
     $(document).on('click', '.btn-delete', function (e) {
         if (!confirm('Wilt u deze inschrijving verwijderen?')) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    }).on('click', '.btn-stop', function (e) {
+        if (!confirm('U wilt stoppen, dat betekent dat alle ingevoerde gegevens zullen verdwijnen!')) {
             e.preventDefault();
             e.stopImmediatePropagation();
         }

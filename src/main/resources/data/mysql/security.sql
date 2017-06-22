@@ -10,9 +10,9 @@ CREATE TABLE `users` (
 
 CREATE TABLE `user_workorders` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `USERID` int(11) NOT NULL,
+  `triple` int(11) NOT NULL,
   `ONDRZKO` varchar(3) NOT NULL,
   `OPDRNRI` varchar(3) NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `UK_c5bimtg9kl766vmy6aued6cvg` (`USERID`,`ONDRZKO`,`OPDRNRI`)
+  UNIQUE KEY `UK_c5bimtg9kl766vmy6aued6cvg` (`triple`,`ONDRZKO`,`OPDRNRI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

@@ -233,14 +233,14 @@
 
     /* TODO: Prevent using timeout in bevolkingsregister in Chrome */
 
-    var useTimeout = true;
+    var useATimeout = true;
 
     $.noTimeoutWithNav = function noTimeoutWithNav() {
-        useTimeout = false;
+        useATimeout = false;
     };
 
     $.useTimeout = function useTimeout() {
-        return useTimeout;
+        return useATimeout;
     };
 
     var shouldCheckByz = true;

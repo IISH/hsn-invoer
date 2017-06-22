@@ -308,7 +308,7 @@
     }
 
     function setOverwrite(elem, e) {
-        if (e.charCode !== 0) {
+        if ((e.charCode !== 0) && !elem.prop('readonly')) {
             var text = elem.valNoEvent();
             var caret = elem.getCaret();
 

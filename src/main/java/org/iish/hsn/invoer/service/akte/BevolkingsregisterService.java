@@ -1091,19 +1091,26 @@ public class BevolkingsregisterService {
     private void createNewPersonDynamics(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
         int keyToPerson = person.getKeyToRegistrationPersons();
         for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
+            Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
+
             switch (type) {
+                case RELATIE_TOV_HOOFD:
+                    if (b3.containsKey(keyToPerson)) {
+                        b3.get(keyToPerson).clear();
+                    }
+                    break;
                 case HERKOMST:
                     updateFirstHerkomst(bevolkingsregisterFlow, person);
                     break;
                 case VERTREK:
                     updateFirstVertrek(bevolkingsregisterFlow, person);
                     break;
-                default:
-                    Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
-                    if (!b3.containsKey(keyToPerson) || b3.get(keyToPerson).isEmpty()) {
-                        PersonDynamic personDynamic = createPersonDynamic(bevolkingsregisterFlow, person, type, 1);
-                        b3.put(keyToPerson, new ArrayList<>(Arrays.asList(personDynamic)));
-                    }
+            }
+
+            if ((type != PersonDynamic.Type.HERKOMST) && (type != PersonDynamic.Type.VERTREK)
+                    && (!b3.containsKey(keyToPerson) || b3.get(keyToPerson).isEmpty())) {
+                PersonDynamic personDynamic = createPersonDynamic(bevolkingsregisterFlow, person, type, 1);
+                b3.put(keyToPerson, new ArrayList<>(Arrays.asList(personDynamic)));
             }
         }
     }
@@ -1131,7 +1138,8 @@ public class BevolkingsregisterService {
             person.setMonthOfRegistration(lastPerson.getMonthOfRegistration());
             person.setYearOfRegistration(lastPerson.getYearOfRegistration());
 
-            if ((person.getFamilyName() == null) || person.getFamilyName().trim().isEmpty()) {
+            if (((person.getFamilyName() == null) || person.getFamilyName().trim().isEmpty())
+                    && !lastPerson.getFamilyName().equalsIgnoreCase("GEEN OP")) {
                 person.setFamilyName(lastPerson.getFamilyName());
             }
             if ((person.getPlaceOfBirth() == null) || person.getPlaceOfBirth().trim().isEmpty()) {

@@ -52,7 +52,7 @@
   <th>Relatie tot hoofd</th>
   <th>Geboortedatum</th>
   <th>Geboorteplaats</th>
-  <th>Burgelijke staat</th>
+  <th>Burgerlijke staat</th>
   <th>Rel</th>
   <th>Datum</th>
   <th>Plaats</th>
@@ -271,7 +271,8 @@
   <input type="text" class="form-control form-control-medium beroep required"
          th:field="*{b3Brp[__${rp}__][0].dynamicData2}" hsn:field="b3Brp[__${rp}__][0].dynamicData2"/>
 </td>
-<td class="personDynamic" data-type="BEROEP" data-group="beroep">
+<td class="personDynamic" data-type="BEROEP" data-group="beroep"
+    th:classappend="${akte.b3Brp[__${rp}__].size() > 1} ? 'multiple-person-dynamic'">
   <!-- P -->
   <input type="hidden" th:id="'b3Brp'+__${rp}__+'0.contentOfDynamicData'"
          th:name="'b3Brp['+__${rp}__+'][0].contentOfDynamicData'"
@@ -439,7 +440,7 @@
 </fieldset>
 
 <fieldset layout:fragment="navigation"
-          th:include="fragments/navigation :: bev-reg-navigation (${akte}, false)"></fieldset>
+          th:include="fragments/navigation :: bev-reg-navigation (${akte}, false, ${akte.isCorrection() == false})"></fieldset>
 
 <span layout:fragment="navigational-form">
   <p class="navigational status navCurPersonContainer">

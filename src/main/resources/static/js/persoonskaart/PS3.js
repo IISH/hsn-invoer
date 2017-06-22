@@ -48,11 +48,11 @@
         }
     }
 
-    $(document).on('keydown', '.beroep', function (e) {
-        $.duringNavigation(e, function (self, isNext, isPrev) {
-            setPositie(self);
-            updateBrpFields(self, isNext, isPrev);
-        });
+    $(document).on('blur', '.beroep', function (e) {
+        var self = $(e.target);
+        var curNav = $.getCurNavigation();
+        setPositie(self);
+        updateBrpFields(self, curNav.isNext, curNav.isPrev);
     });
 
     $(document).on('typeahead-change', '.beroep', function (e) {

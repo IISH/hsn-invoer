@@ -208,7 +208,7 @@
     </div>
 
     <div class="sub-form-group">
-      <label class="col-xs-3 control-label">Persoon:</label>
+      <label class="col-xs-3 control-label">Startregel:</label>
 
       <div class="col-xs-3">
         <input type="text" class="form-control form-control-digit" th:field="*{b4.numberOfHousehold}"
@@ -274,14 +274,15 @@
 </th:block>
 
 <div id="onePersonWarning" class="alert alert-info extra-top-margin" role="alert" style="display:none;">
-  In dit type bron kan slechts één persoon (de OP) worden ingevoerd.
+  In dit type bron wordt in de regel slechts één persoon ingevoerd.
+  Het is echter wel mogelijk om meerdere personen in te voeren
 </div>
 
 <th:block th:replace="bevolkingsregister/overview-fragments :: overviewModal"></th:block>
 </th:block>
 </fieldset>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: bev-reg-navigation (${akte}, false)"></fieldset>
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: bev-reg-navigation (${akte}, false, true)"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"

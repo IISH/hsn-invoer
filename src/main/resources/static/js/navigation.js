@@ -36,152 +36,39 @@
         isNavigationLocked = false;
     };
 
-    $.determineNextFocusElem = function determineNextFocusElem(e, performBlur) {
-        $.duringNavigation(e,
-            function defaultNavigation(self, curNav) {
-                onNavigation(self, function determineFocusDefault() {
-                    if (curNav.isPrev) {
-                        return self.getPrevFormElement();
-                    }
-                    return self.getNextFormElement();
-                });
-            },
-            function tableNavigation(self, curNav) {
-                onNavigation(self, function determineFocusInTable() {
-                    var focusElem = self;
-                    var table = self.closest('table');
-
-                    if (curNav.isFirstRow) {
-                        focusElem = self.closest('tr').find('.form-elem:enabled:visible:first');
-                    }
-                    else if (curNav.isLastRow) {
-                        focusElem = self.closest('tr').find('.form-elem:enabled:visible:last');
-                    }
-                    else if (curNav.isFirstTable) {
-                        focusElem = self.closest('tbody').find('.form-elem:enabled:visible:first');
-                    }
-                    else if (curNav.isLastTable) {
-                        focusElem = self.closest('tbody').find('.form-elem:enabled:visible:last');
-                    }
-                    else if (curNav.isLeft) {
-                        focusElem = self.getPrevFormElement();
-                    }
-                    else if (curNav.isRight) {
-                        focusElem = self.getNextFormElement();
-                    }
-                    else if (curNav.isUp || curNav.isDown) {
-                        var column = self.closest('td');
-                        var row = column.closest('tr');
-
-                        var columns = row.find('td');
-                        var rows = row.closest('tbody').find('tr');
-
-                        var columnIndex = columns.index(column);
-                        var rowIndex = rows.index(row);
-
-                        // The booleans prev and next indicate whether we should leave the table
-                        // and thus focus a previous or next element outside the table
-                        var prev, next = false;
-                        var nextRowIndex = 0;
-                        if (curNav.isUp) {
-                            nextRowIndex = rowIndex - 1;
-                            if (nextRowIndex < 0) {
-                                prev = true;
-                            }
-                        }
-                        else {
-                            nextRowIndex = rowIndex + 1;
-                            if (nextRowIndex >= rows.length) {
-                                next = true;
-                            }
-                        }
-
-                        if (!prev && !next) {
-                            // Sometimes there is no input element in the new column
-                            // Then keep moving to the left till a column with an input element to focus is found
-                            while (columnIndex >= 0) {
-                                var input = rows
-                                    .eq(nextRowIndex)
-                                    .find('td')
-                                    .eq(columnIndex)
-                                    .find('.form-elem').filter(':enabled:visible').first();
-                                if (input.length === 1) {
-                                    return input;
-                                }
-                                columnIndex--;
-                            }
-                        }
-                        else {
-                            if (prev) {
-                                focusElem = table.find('.form-elem:first').getPrevFormElement(self);
-                            }
-                            else {
-                                focusElem = table.find('.form-elem:last').getNextFormElement(self);
-                            }
-                        }
-                    }
-
-                    if (focusElem.closest('table').length === 0) {
-                        table.closest('.scrollable').scrollLeft(0);
-                    }
-
-                    return focusElem;
-                });
-            }
-        );
-
-        function onNavigation(self, determineFocusElem) {
-            if (typeof e.preventDefault === 'function') {
-                e.preventDefault();
-            }
-            if (performBlur || (performBlur === undefined)) {
-                self.blur(); // Now perform the blur and all event handlers attached to this event
-            }
-
-            // setTimeout can also be used to make IE wait until the blur event has completed
-            if ($.useTimeout()) {
-                setTimeout(afterBlur, 0);
-            }
-            else {
-                afterBlur();
-            }
-
-            function afterBlur() {
-                // If the blur caused a focus on a new element, then ignore default navigation
-                if ($(':focus').filter(':input').not(self).length > 0) {
-                    return;
-                }
-
-                // If navigation is locked, then return as well
-                if (isNavigationLocked) {
-                    return;
-                }
-
-                var focusElem = determineFocusElem();
-                if (focusElem.hasClass('nav-trigger')) {
-                    var popover = self.closest('.popover');
-                    if (popover.length === 0) {
-                        $('.popover.in').first().find('input').filter(':enabled:visible').first().focus();
-                        return;
-                    }
-                    else {
-                        focusElem.trigger('nav-trigger', [self, popover]);
-                    }
-                }
-                else {
-                    focusElem.focus();
-                    focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
-                }
-
-                // Reset current navigation
-                $.each(curNav, function (k, v) {
-                    curNav[k] = false;
-                });
-            }
+    $.fn.autoNextFocus = function autoNextFocus(performBlur) {
+        if (this.length > 0) {
+            // Simulate a TAB
+            navigateToNext({
+                target: this[0],
+                which: 9,
+                shiftKey: false
+            }, performBlur);
         }
     };
 
-    $.duringNavigation = function duringNavigation(e, onDefaultNavigation, onTableNavigation) {
+    $.fn.autoPrevFocus = function autoPrevFocus(performBlur) {
+        if (this.length > 0) {
+            // Simulate a Shift + TAB
+            navigateToNext({
+                target: this[0],
+                which: 9,
+                shiftKey: true
+            }, performBlur);
+        }
+    };
+
+    $.fn.getPrevFormElement = function getPrevFormElement(originalSrc) {
+        originalSrc = (originalSrc === undefined) ? this : originalSrc;
+        return getNewFormElement(this, originalSrc, true);
+    };
+
+    $.fn.getNextFormElement = function getNextFormElement(originalSrc) {
+        originalSrc = (originalSrc === undefined) ? this : originalSrc;
+        return getNewFormElement(this, originalSrc, false);
+    };
+
+    function navigateToNext(e, performBlur) {
         var self = $(e.target);
 
         // Disable the enter key, unless the focused element is a button
@@ -198,7 +85,8 @@
         }
 
         // Navigation is different inside a table: use arrow keys to navigate through the cells
-        if ((onTableNavigation !== undefined) && (self.closest('table').length > 0)) {
+        var determineFocus = null;
+        if (self.closest('table').length > 0) {
             var isUp = (e.which === 38); // Arrow up
             var isDown = (e.which === 40); // Arrow down
             var isLeft = ((e.which === 9) && (e.shiftKey)); // Tab
@@ -221,10 +109,10 @@
                 curNav.isFirstTable = isFirstTable;
                 curNav.isLastTable = isLastTable;
 
-                onTableNavigation(self, curNav);
+                determineFocus = determineFocusTableNavigation;
             }
         }
-        else if (onDefaultNavigation !== undefined) {
+        else {
             var isNext = ((e.which === 9) && (!e.shiftKey)); // Tab
             var isPrev = ((e.which === 9) && (e.shiftKey)); // Shift + Tab
 
@@ -233,32 +121,140 @@
                 curNav.isPrev = isPrev;
                 curNav.isNext = isNext;
 
-                onDefaultNavigation(self, curNav);
+                determineFocus = determineFocusDefaultNavigation;
             }
         }
-    };
 
-    $.fn.autoNextFocus = function autoNextFocus(performBlur) {
-        if (this.length > 0) {
-            // Simulate a TAB
-            $.determineNextFocusElem({
-                target: this[0],
-                which: 9,
-                shiftKey: false
-            }, performBlur);
-        }
-    };
+        if (determineFocus === null)
+            return;
 
-    $.fn.autoPrevFocus = function autoPrevFocus(performBlur) {
-        if (this.length > 0) {
-            // Simulate a Shift + TAB
-            $.determineNextFocusElem({
-                target: this[0],
-                which: 9,
-                shiftKey: true
-            }, performBlur);
+        if (typeof e.preventDefault === 'function')
+            e.preventDefault();
+
+        if (performBlur || (performBlur === undefined))
+            self.blur(); // Now perform the blur and all event handlers attached to this event
+
+        // setTimeout can also be used to make IE wait until the blur event has completed
+        ($.useTimeout()) ? setTimeout(afterBlur, 0) : afterBlur();
+
+        function afterBlur() {
+            // If the blur caused a focus on a new element, then ignore default navigation
+            if ($(':focus').filter(':input').not(self).length > 0) {
+                return;
+            }
+
+            // If navigation is locked, then return as well
+            if (isNavigationLocked) {
+                return;
+            }
+
+            var focusElem = determineFocus(self, curNav);
+            if (focusElem.hasClass('nav-trigger')) {
+                var popover = self.closest('.popover');
+                if (popover.length === 0) {
+                    $('.popover.in').first().find('input').filter(':enabled:visible').first().focus();
+                    return;
+                }
+                else {
+                    focusElem.trigger('nav-trigger', [self, popover]);
+                }
+            }
+            else {
+                focusElem.focus();
+                focusElem.setCaret(0); // Also make sure the caret is set to the start of the input field
+            }
+
+            // Reset current navigation
+            $.each(curNav, function (k, v) {
+                curNav[k] = false;
+            });
         }
-    };
+    }
+
+    function determineFocusDefaultNavigation(self, curNav) {
+        return curNav.isPrev ? self.getPrevFormElement() : self.getNextFormElement();
+    }
+
+    function determineFocusTableNavigation(self, curNav) {
+        var focusElem = self;
+        var table = self.closest('table');
+
+        if (curNav.isFirstRow) {
+            focusElem = self.closest('tr').find('.form-elem:enabled:visible:first');
+        }
+        else if (curNav.isLastRow) {
+            focusElem = self.closest('tr').find('.form-elem:enabled:visible:last');
+        }
+        else if (curNav.isFirstTable) {
+            focusElem = self.closest('tbody').find('.form-elem:enabled:visible:first');
+        }
+        else if (curNav.isLastTable) {
+            focusElem = self.closest('tbody').find('.form-elem:enabled:visible:last');
+        }
+        else if (curNav.isLeft) {
+            focusElem = self.getPrevFormElement();
+        }
+        else if (curNav.isRight) {
+            focusElem = self.getNextFormElement();
+        }
+        else if (curNav.isUp || curNav.isDown) {
+            var column = self.closest('td');
+            var row = column.closest('tr');
+
+            var columns = row.find('td');
+            var rows = row.closest('tbody').find('tr');
+
+            var columnIndex = columns.index(column);
+            var rowIndex = rows.index(row);
+
+            // The booleans prev and next indicate whether we should leave the table
+            // and thus focus a previous or next element outside the table
+            var prev, next = false;
+            var nextRowIndex = 0;
+            if (curNav.isUp) {
+                nextRowIndex = rowIndex - 1;
+                if (nextRowIndex < 0) {
+                    prev = true;
+                }
+            }
+            else {
+                nextRowIndex = rowIndex + 1;
+                if (nextRowIndex >= rows.length) {
+                    next = true;
+                }
+            }
+
+            if (!prev && !next) {
+                // Sometimes there is no input element in the new column
+                // Then keep moving to the left till a column with an input element to focus is found
+                while (columnIndex >= 0) {
+                    var input = rows
+                        .eq(nextRowIndex)
+                        .find('td')
+                        .eq(columnIndex)
+                        .find('.form-elem').filter(':enabled:visible').first();
+                    if (input.length === 1) {
+                        return input;
+                    }
+                    columnIndex--;
+                }
+            }
+            else {
+                if (prev) {
+                    focusElem = table.find('.form-elem:first').getPrevFormElement(self);
+                }
+                else {
+                    focusElem = table.find('.form-elem:last').getNextFormElement(self);
+                }
+            }
+        }
+
+        if (focusElem.closest('table').length === 0) {
+            table.closest('.scrollable').scrollLeft(0);
+        }
+
+        return focusElem;
+    }
 
     var autoFocusNext = false;
 
@@ -362,21 +358,11 @@
         }
     }
 
-    $.fn.getPrevFormElement = function getPrevFormElement(originalSrc) {
-        originalSrc = (originalSrc === undefined) ? this : originalSrc;
-        return getNewFormElement(this, originalSrc, true);
-    };
-
-    $.fn.getNextFormElement = function getNextFormElement(originalSrc) {
-        originalSrc = (originalSrc === undefined) ? this : originalSrc;
-        return getNewFormElement(this, originalSrc, false);
-    };
-
     $.registerInit(function () {
         // We want to ensure these are always performed last, so unbind and bind them again
         $(document)
-            .off('keydown', $.determineNextFocusElem)
-            .on('keydown', $.determineNextFocusElem)
+            .off('keydown', navigateToNext)
+            .on('keydown', navigateToNext)
             .off('keyup', autoNextFocusElem)
             .on('keyup', autoNextFocusElem)
             .off('keypress', shouldAutoNextFocusElem)

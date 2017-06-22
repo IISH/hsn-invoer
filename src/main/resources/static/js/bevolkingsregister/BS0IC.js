@@ -132,7 +132,7 @@
                 }
             }).fail(function () {
                 if ($.isCorrection() && !isCorrectionOfIdentification) {
-                    onError($('.fail.registration'), 'registration-error', 'Deze door uw opgegeven combinatie van bronnummer en hoofddatum is nog niet ingevoerd!');
+                    onError($('.fail.registration'), 'registration-error', 'Deze door u opgegeven combinatie van bronnummer en hoofddatum is nog niet ingevoerd!');
                 }
                 else {
                     if (!isCorrectionOfIdentification) {
@@ -358,7 +358,7 @@
             $.setError(
                 error,
                 'vorige-inschrijving',
-                'Deze door uw opgegeven combinatie van bronnummer en hoofddatum is nog niet ingevoerd!'
+                'Deze door u opgegeven combinatie van bronnummer en hoofddatum is nog niet ingevoerd!'
             );
         }
     }

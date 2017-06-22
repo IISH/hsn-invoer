@@ -3,7 +3,7 @@
       xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
 <head></head>
 <body>
-<fieldset th:fragment="bev-reg-navigation (akte, singlePersonScreen)">
+<fieldset th:fragment="bev-reg-navigation (akte, singlePersonScreen, mayStop)">
   <span class="pull-left navigational-form" layout:fragment="navigational-form">
   </span>
 
@@ -26,7 +26,7 @@
       Verwijderen
     </button>
 
-    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop" th:if="${!burgstandRelFix}">
+    <button type="submit" name="_eventId_stop" class="btn btn-default btn-stop" th:if="${!burgstandRelFix and mayStop}">
       Stoppen
     </button>
   </span>
