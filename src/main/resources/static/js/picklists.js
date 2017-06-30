@@ -58,7 +58,7 @@
     }
 
     function initializeSimplePickLists(fields, allValues) {
-        initializePickLists(fields, 'id', 'value', null, true, function (isId, query, withRecords) {
+        initializePickLists(fields, 'id', 'value', null, false, function (isId, query, withRecords) {
             var records = [];
             var id = parseInt(query);
             var substrRegex = new RegExp('^' + query, 'i');
@@ -84,8 +84,8 @@
             var isId = field.hasClass('is-id');
 
             field.typeahead({
-                minLength: showAllOptions ? 0 : 1,
                 appendTo: $('body'),
+                showHintOnFocus: showAllOptions ? 'all' : false,
                 source: function pickListSource(query, process) {
                     return getRecords(isId, query, function (records) {
                         values = [];
@@ -141,7 +141,7 @@
             });
 
             if (isId) {
-                field.keydown(function (e, data) {
+                field.keyup(function (e, data) {
                     var curValueId = field.val().trim();
                     var curSelectedId = field.attr('data-selected').trim();
                     if (curValueId !== curSelectedId) {

@@ -765,11 +765,7 @@ public class BevolkingsregisterService {
         List<RegistrationAddress> b6 = bevolkingsregisterFlow.getB6();
         RegistrationAddress registrationAddress = bevolkingsregisterHelper.getRegistrationAddressFor(b6, person, seqNr);
 
-        DataBinder binder = new DataBinder(registrationAddress);
-        binder.bind(new MutablePropertyValues(data));
-        registrationAddress.setLastChangedDate();
-
-        registerRegistrationAddresses(bevolkingsregisterFlow);
+        setRegistrationAddress(bevolkingsregisterFlow, registrationAddress, data);
     }
 
     /**
@@ -783,9 +779,10 @@ public class BevolkingsregisterService {
     public void addNewRegistrationAddress(BevolkingsregisterFlowState bevolkingsregisterFlow, int person, int seqNr,
                                           Map<String, Object> data) {
         List<RegistrationAddress> b6 = bevolkingsregisterFlow.getB6();
-        b6.add(new RegistrationAddress(person, seqNr));
+        RegistrationAddress registrationAddress = new RegistrationAddress(person, seqNr);
+        b6.add(registrationAddress);
 
-        updateRegistrationAddress(bevolkingsregisterFlow, person, seqNr, data);
+        setRegistrationAddress(bevolkingsregisterFlow, registrationAddress, data);
     }
 
     /**
@@ -801,6 +798,22 @@ public class BevolkingsregisterService {
 
         b6.remove(registrationAddress);
         registrationAddressRepository.delete(registrationAddress);
+
+        registerRegistrationAddresses(bevolkingsregisterFlow);
+    }
+
+    /**
+     * Set the registration address data.
+     *
+     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
+     * @param registrationAddress    The registrationaddress in question.
+     * @param data                   The data to bind to the registration address.
+     */
+    private void setRegistrationAddress(BevolkingsregisterFlowState bevolkingsregisterFlow,
+                                        RegistrationAddress registrationAddress, Map<String, Object> data) {
+        DataBinder binder = new DataBinder(registrationAddress);
+        binder.bind(new MutablePropertyValues(data));
+        registrationAddress.setLastChangedDate();
 
         registerRegistrationAddresses(bevolkingsregisterFlow);
     }
@@ -1077,7 +1090,7 @@ public class BevolkingsregisterService {
 
         personDynamic.setRegistrationId(person.getRegistrationId());
         personDynamic.setNatureOfPerson(person.getNatureOfPerson());
-        personDynamic.setValueOfRelatedPerson(-1);
+        //personDynamic.setValueOfRelatedPerson(-1);
 
         return personDynamic;
     }
@@ -1095,7 +1108,7 @@ public class BevolkingsregisterService {
 
             switch (type) {
                 case RELATIE_TOV_HOOFD:
-                    if (b3.containsKey(keyToPerson)) {
+                    if ((keyToPerson == 1) && b3.containsKey(keyToPerson)) {
                         b3.get(keyToPerson).clear();
                     }
                     break;

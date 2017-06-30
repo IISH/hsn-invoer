@@ -448,7 +448,8 @@
       // This is a fixed for IE10/11 that fires the input event when a placehoder is changed
       // (https://connect.microsoft.com/IE/feedback/details/810538/ie-11-fires-input-event-on-focus)
       var currentValue = this.$element.val() || this.$element.text();
-      if (this.value !== currentValue) {
+      // TODO: Change made to allow value changes outside of this object
+      if (true || this.value !== currentValue) {
         this.value = currentValue;
         this.lookup();
       }
@@ -466,8 +467,8 @@
         case 18: // alt
           break;
 
-          case 9: // tab TODO: Enable
-          if (!this.shown /*|| (this.showHintOnFocus && !this.keyPressed)*/) return;
+          case 9: // tab
+          if (!this.shown || (this.showHintOnFocus && !this.keyPressed)) return;
           this.select();
           break;
         // TODO: Disable enter

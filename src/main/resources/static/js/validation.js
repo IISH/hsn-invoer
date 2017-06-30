@@ -72,17 +72,17 @@
     };
 
     function getBtnNext() {
-        var crudTableBtn = $('.crud-table-container:visible').find('.btn-save-new, .btn-save-update');
+        var crudTableBtn = $('.crud-table-container:visible').find('.btn-save-new:visible, .btn-save-update:visible');
         if (crudTableBtn.length > 0) {
             return crudTableBtn;
         }
 
-        var modalBtn = $('.modal.in').find('.btn-save-new, .btn-save-update');
+        var modalBtn = $('.modal.in').find('.btn-save-new:visible, .btn-save-update:visible');
         if (modalBtn.length > 0) {
             return modalBtn;
         }
 
-        return $('.btn-next');
+        return $('.btn-next:visible');
     }
 
     function getMessage(className) {

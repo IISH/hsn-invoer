@@ -279,6 +279,25 @@
 </div>
 
 <th:block th:replace="bevolkingsregister/overview-fragments :: overviewModal"></th:block>
+
+<div id="bewust" class="modal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title">Weet u zeker dat u deze registratie wilt verwijderen?</strong>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="col-xs-5 control-label">Bvestig met 'bewust':</label>
+          <div class="col-xs-5">
+            <input type="text" class="form-control no-auto-uppercase" autocomplete="off"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </th:block>
 </fieldset>
 

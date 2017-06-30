@@ -108,17 +108,12 @@
     }
 
     function onModalClose() {
-        var modal = $('.modal.in').first();
-
+        var modal = $.getOpenedModal();
         var minRecords = modal.getIntegerDataValue('min-records');
-        var maxRecords = modal.getIntegerDataValue('max-records');
 
         var numberOfRecords = modal.find('table span.seqNr').length;
         if (numberOfRecords < minRecords) {
             alert('Minimaal ' + minRecords + ' regels met dynamische gegevens is verplicht.');
-        }
-        else if ((maxRecords > 0) && (numberOfRecords > maxRecords)) {
-            alert('Maximaal ' + maxRecords + ' regels met dynamische gegevens zijn toegestaan.');
         }
         else {
             modal.find('.btn-cancel').click();
@@ -155,6 +150,16 @@
         }
     }
 
+    function checkNewButton() {
+        var modal = $.getOpenedModal();
+        if (modal.length === 1) {
+            var maxRecords = modal.getIntegerDataValue('max-records');
+            var numberOfRecords = modal.find('table span.seqNr').length;
+            var reachedMax = (maxRecords > 0) && (numberOfRecords >= maxRecords);
+            modal.find('.btn-new:first').prop('disabled', reachedMax);
+        }
+    }
+
     $(document).keydown(function (e) {
         var modal = $.getOpenedModal();
         var isModalVisible = (modal.length === 1);
@@ -185,5 +190,7 @@
         onSaveNew($(e.target), data);
     }).on('crud-table-save-update', function (e, elems, data) {
         onSaveUpdate($(e.target), data);
+    }).on('ajax-update', function () {
+        checkNewButton();
     });
 })(jQuery);

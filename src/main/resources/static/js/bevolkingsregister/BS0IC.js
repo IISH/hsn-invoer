@@ -277,7 +277,9 @@
                 var opDate = new Date(opHsnDate.year.getValue(), opHsnDate.month.getValue() - 1, opHsnDate.day.getValue());
                 var hfdDate = new Date(yearVal, monthVal - 1, dayVal);
 
-                checkDateOrder(opDate, hfdDate);
+                if (opHsnDate.day.getValue() > 0 || opHsnDate.month.getValue() > 0 || opHsnDate.year.getValue() > 0) {
+                    checkDateOrder(opDate, hfdDate);
+                }
             }
         }
         return error;
@@ -297,7 +299,9 @@
                 var opDate = new Date(yearVal, monthVal - 1, dayVal);
                 var hfdDate = new Date(hfdHsnDate.year.getValue(), hfdHsnDate.month.getValue() - 1, hfdHsnDate.day.getValue());
 
-                checkDateOrder(opDate, hfdDate);
+                if (hfdHsnDate.day.getValue() > 0 || hfdHsnDate.month.getValue() > 0 || hfdHsnDate.year.getValue() > 0) {
+                    checkDateOrder(opDate, hfdDate);
+                }
             }
         }
         return error;
@@ -313,19 +317,17 @@
     function checkVolgnummer(self) {
         var volgnummer = self.getIntegerValue();
         if (!isNaN(volgnummer)) {
-            var volgNrOpElem = $('#volgnrOP');
-            var aantalRegelsElem = $('#noRegels');
+            var volgNrOp = $('#volgnrOP').getIntegerValue();
+            var aantalRegels = $('#noRegels').getIntegerValue();
 
             var onePersonWarning = $('#onePersonWarning');
-            if ((registerType === 'A' || registerType === 'I') && (volgnummer > 1)) {
+            if ((registerType === 'A' || registerType === 'I') && (volgnummer > 1 || isNaN(aantalRegels))) {
                 onePersonWarning.show();
             }
             else {
                 onePersonWarning.hide();
             }
 
-            var volgNrOp = volgNrOpElem.getIntegerValue();
-            var aantalRegels = aantalRegelsElem.getIntegerValue();
             $.setErrorWithClass(
                 !isNaN(volgNrOp) && !isNaN(aantalRegels) && (volgNrOp > aantalRegels),
                 'volgnummer-op-too-big',
@@ -378,7 +380,37 @@
         $.triggerChangeOfState();
     }
 
-    $(document).ready(function () {
+    $('.check-delete').click(function (e) {
+        var modal = $.getOpenedModal();
+        if ((modal.length === 1) && modal.is('#bewust') && (modal.find('input').val().toLowerCase() === 'bewust')) {
+            return;
+        }
+
+        if (modal.length === 0) {
+            $('#bewust').modal({keyboard: false, backdrop: 'static'});
+        }
+
+        e.preventDefault();
+    });
+
+    $(document).keydown(function (e) {
+        var modal = $.getOpenedModal();
+        var isModalVisible = (modal.length === 1);
+        var isBewustModal = (isModalVisible && (modal.is('#bewust')));
+
+        if (isBewustModal && (e.which === 27)) { // Esc
+            modal.modal('hide');
+            e.preventDefault();
+        }
+    }).keyup(function () {
+        var modal = $.getOpenedModal();
+        var isModalVisible = (modal.length === 1);
+        var isBewustModal = (isModalVisible && (modal.is('#bewust')));
+
+        if (isBewustModal && (modal.find('input').val().toLowerCase() === 'bewust')) {
+            $('.btn-next.check-delete').click();
+        }
+    }).ready(function () {
         $('#b4\\.registrationId\\.keyToRP').filter(':input').blur(checkIdnr);
         $('#b4\\.registrationId\\.keyToSourceRegister').blur(checkBron);
         $('#b4\\.registrationId\\.dayEntryHead, #b4\\.registrationId\\.monthEntryHead, #b4\\.registrationId\\.yearEntryHead').blur(checkHoofdDatum);

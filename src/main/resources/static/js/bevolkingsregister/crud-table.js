@@ -161,7 +161,7 @@
         var char = String.fromCharCode(e.which);
         switch (char) {
             case 'b':
-                var btnNew = getVisibleCrudTableContainer().find('.btn-new').filter(':visible').first();
+                var btnNew = getVisibleCrudTableContainer().find('.btn-new').filter(':visible:enabled').first();
                 if (btnNew.length === 1) {
                     openOnEdit(btnNew, true);
                     e.preventDefault();

@@ -72,14 +72,15 @@
             if ((orgPerson !== person) && blurPerson) {
                 seqNrElem.val(lastSeqNr + 1);
             }
-            else if ((orgPerson === person) && (seqNr > orgSeqNr) && !blurPerson) {
+            else if ((orgPerson === person) && (seqNr > orgSeqNr) && !blurPerson && ((seqNr === 0) || isNaN(seqNr))) {
                 seqNrElem.val(orgSeqNr);
             }
             else if (seqNr > lastSeqNr) {
-                seqNrElem.val(lastSeqNr + 1);
+                seqNrElem.val(lastSeqNr);
             }
         }
         else if (blurPerson || (seqNr > lastSeqNr)) {
+        // TODO: else if ((blurPerson || (seqNr > lastSeqNr)) && ((seqNr === 0) || isNaN(seqNr))) {
             seqNrElem.val(lastSeqNr + 1);
         }
 
@@ -197,6 +198,7 @@
             }, data),
             success: function (result) {
                 self.trigger('crud-table-ajax-success', [result]);
+                // TODO: checkOrder();
             }
         });
     }
@@ -213,8 +215,35 @@
             }, data),
             success: function (result) {
                 self.trigger('crud-table-ajax-success', [result]);
+                // TODO: checkOrder();
             }
         });
+    }
+
+    function checkOrder() {
+        var errors = {}, lastPerson = 0, lastSeqNr = 0;
+        $('#registrationAddressesTable').find('tbody tr').each(function () {
+            var row = $(this);
+            var person = row.find('.person').getIntegerText();
+            var seqNr = row.find('.seqNr').getIntegerText();
+
+            if (lastPerson !== person) {
+                lastPerson = person;
+                lastSeqNr = 0;
+            }
+            if (lastSeqNr !== (seqNr - 1)) {
+                var personErrors = errors[person] || [];
+                personErrors.push([lastSeqNr + ' en ' + seqNr]);
+            }
+            lastSeqNr = seqNr;
+        });
+
+        var messages = [];
+        $.each(errors, function (person, personErrors) {
+            messages.push('Er missen enkele addressen voor persoon ' + person + ' tussen ' + personErrors.join(', '));
+        });
+
+        setError(messages.length > 0, 'order-seqnrs', messages.join('<br/>'));
     }
 
     /* Event registration */

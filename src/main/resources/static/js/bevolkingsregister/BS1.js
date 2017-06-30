@@ -455,13 +455,6 @@
         var burgStandToggle = elem.getPersonContainer().find('.burgStandToggle');
         var value = elem.getIntegerValue();
         if ([2, 3, 5, 9].indexOf(value) > -1) {
-            if ((value === 5) && (burgStandToggle.find('.burg-stand-relatie').val() === '-1')) {
-                burgStandToggle.find('.burg-stand-relatie').val('');
-            }
-            else if ((value !== 5) && (burgStandToggle.find('.burg-stand-relatie').val() === '')) {
-                burgStandToggle.find('.burg-stand-relatie').val('-1');
-            }
-
             if (isAllLines() && burgStandToggle.is(':hidden')) {
                 var data = location.search.substring(1) + '&person=' + $.getCurPerson() + '&type=BURGELIJKE_STAND';
                 $.get('/bevolkingsregister/related-person-dynamics', data, function (personDynamics) {
