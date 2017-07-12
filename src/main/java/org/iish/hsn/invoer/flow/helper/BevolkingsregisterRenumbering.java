@@ -70,6 +70,7 @@ public class BevolkingsregisterRenumbering {
 
             Person newPerson = new Person();
             BeanUtils.copyProperties(person, newPerson);
+            newPerson.setPreviousRp(keyOriginal);
 
             // If the new key is 0 or does not fit in the new list, then remove the person from the list
             if ((keyNew == 0) || (keyNew > renumbered.getB2().size())) {

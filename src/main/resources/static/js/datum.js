@@ -79,7 +79,15 @@
             month: new PartOfDate(dateInputs.filter('.month')),
             year: new PartOfDate(dateInputs.filter('.year')),
             hour: new PartOfDate(dateInputs.filter('.hour')),
-            minute: new PartOfDate(dateInputs.filter('.minute'))
+            minute: new PartOfDate(dateInputs.filter('.minute')),
+
+            isEntered: function () {
+                return (!this.day.isInput || !this.day.isEmptyVal()) &&
+                    (!this.month.isInput || !this.month.isEmptyVal()) &&
+                    (!this.year.isInput || !this.year.isEmptyVal()) &&
+                    (!this.hour.isInput || !this.hour.isEmptyVal()) &&
+                    (!this.minute.isInput || !this.minute.isEmptyVal());
+            }
         };
     };
 

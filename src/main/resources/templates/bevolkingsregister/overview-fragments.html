@@ -26,6 +26,7 @@
                 <th>Begin</th>
                 <th>Eind</th>
                 <th>Pag/Volg of GK</th>
+                <th>&nbsp;</th>
               </tr>
               </thead>
               <tbody th:if="${overview != false}">
@@ -81,6 +82,11 @@
                     /
                     <span th:utext="${curBev.numberOfHousehold}"></span>
                   </th:block>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-default btn-xs btn-remember" th:id="'btn-remember-' + ${stat.index + 1}">
+                    Onthouden
+                  </button>
                 </td>
               </tr>
               <tr th:if="${overview == null || overview.size() == 0}">

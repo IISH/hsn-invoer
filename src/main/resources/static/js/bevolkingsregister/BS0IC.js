@@ -125,7 +125,7 @@
             }, function () {
                 if ($.isCorrection() && !isCorrectionOfIdentification) {
                     onSuccess($('.fail.registration'), 'registration-error');
-                    onSuccessAction($(e.target), isNext);
+                    if (e) onSuccessAction($(e.target), isNext);
                 }
                 else {
                     onError($('.fail.registration'), 'registration-error', 'De combinatie van bronnummer en hoofddatum is reeds ingevoerd!');
@@ -139,7 +139,7 @@
                         checkOtherRegistrations();
                     }
                     onSuccess($('.fail.registration'), 'registration-error');
-                    onSuccessAction($(e.target), isNext);
+                    if (e) onSuccessAction($(e.target), isNext);
                 }
             });
         }
@@ -192,9 +192,9 @@
             var curRegDate = new Date(yearEntryRP, monthEntryRP - 1, dayEntryRP);
             $.each(registrations, function (i, reg) {
                 if (!(  keyToSourceRegister === reg.registrationId.keyToSourceRegister &&
-                        dayEntryHead === reg.registrationId.dayEntryHead &&
-                        monthEntryHead === reg.registrationId.monthEntryHead &&
-                        yearEntryHead === reg.registrationId.yearEntryHead
+                        dayEntryRP === reg.registrationId.dayEntryRP &&
+                        monthEntryRP === reg.registrationId.monthEntryRP &&
+                        yearEntryRP === reg.registrationId.yearEntryRP
                     )) {
                     var thisRegDate = new Date(reg.yearEntryRP, reg.monthEntryRP - 1, reg.dayEntryRP);
                     if ((earlier && ((curRegDate.getTime() - thisRegDate.getTime()) > 0)) ||
@@ -221,7 +221,8 @@
         var monthEntryRP = $('#b4\\.monthEntryRP').getIntegerValue();
         var yearEntryRP = $('#b4\\.yearEntryRP').getIntegerValue();
 
-        if (!isNaN(idnr) && (dayEntryRP > 0 && monthEntryRP > 0 && yearEntryRP > 0)) {
+        if (!isNaN(idnr) && (registerType !== 'A') && (registerType !== 'I')
+            && (dayEntryRP > 0 && monthEntryRP > 0 && yearEntryRP > 0)) {
             $.getJSON('/ajax/lookup/b4/op/list', {idnr: idnr}, function (registrations) {
                 allRegistrationsOfOp = registrations;
 
@@ -277,7 +278,7 @@
                 var opDate = new Date(opHsnDate.year.getValue(), opHsnDate.month.getValue() - 1, opHsnDate.day.getValue());
                 var hfdDate = new Date(yearVal, monthVal - 1, dayVal);
 
-                if (opHsnDate.day.getValue() > 0 || opHsnDate.month.getValue() > 0 || opHsnDate.year.getValue() > 0) {
+                if (opHsnDate.isEntered()) {
                     checkDateOrder(opDate, hfdDate);
                 }
             }
@@ -299,7 +300,7 @@
                 var opDate = new Date(yearVal, monthVal - 1, dayVal);
                 var hfdDate = new Date(hfdHsnDate.year.getValue(), hfdHsnDate.month.getValue() - 1, hfdHsnDate.day.getValue());
 
-                if (hfdHsnDate.day.getValue() > 0 || hfdHsnDate.month.getValue() > 0 || hfdHsnDate.year.getValue() > 0) {
+                if (hfdHsnDate.isEntered()) {
                     checkDateOrder(opDate, hfdDate);
                 }
             }
@@ -335,6 +336,29 @@
                 'Volgnummer OP is hoger dan het aantal regels!'
             );
         }
+    }
+
+    function checkNoRegelsWithDate() {
+        var failElem = $('.fail.op-registration-num-regels');
+
+        var aantalRegels = $('#noRegels').getIntegerValue();
+        if (!isNaN(aantalRegels) && (aantalRegels === 1)) {
+            var dateOp = $('.checkDateOP').getHsnDate();
+            var dateHfd = $('.checkDateHfd').getHsnDate();
+
+            if (dateOp.isEntered() && dateHfd.isEntered()) {
+                var opDate = new Date(dateOp.year.getValue(), dateOp.month.getValue() - 1, dateOp.day.getValue());
+                var hfdDate = new Date(dateHfd.year.getValue(), dateHfd.month.getValue() - 1, dateHfd.day.getValue());
+
+                if (opDate.getTime() !== hfdDate.getTime()) {
+                    onError(failElem, 'op-registration-num-regels-error',
+                        'OPdatum moet gelijk zijn aan Hoofddatum bij één persoon!');
+                    return;
+                }
+            }
+        }
+
+        onSuccess(failElem, 'op-registration-num-regels-error');
     }
 
     function checkVorigeInschrijving() {
@@ -393,7 +417,25 @@
         e.preventDefault();
     });
 
-    $(document).keydown(function (e) {
+    function updateWithLastRemembered() {
+        $.getJSON('/bevolkingsregister/remember', function (registration) {
+            if (registration) {
+                var lastFocus = $(':focus');
+                $('#b4\\.registrationId\\.keyToRP').val(registration.registrationId.keyToRP).blur();
+                $('#b4\\.registrationId\\.keyToSourceRegister').val(registration.registrationId.keyToSourceRegister).blur();
+                $('#b4\\.registrationId\\.dayEntryHead').val(registration.registrationId.dayEntryHead);
+                $('#b4\\.registrationId\\.monthEntryHead').val(registration.registrationId.monthEntryHead);
+                $('#b4\\.registrationId\\.yearEntryHead').val(registration.registrationId.yearEntryHead).blur();
+                lastFocus.focus();
+            }
+        });
+    }
+
+    $(document).on('bevolkingsregister-remember', function () {
+        if ($.isCorrection()) {
+            updateWithLastRemembered();
+        }
+    }).keydown(function (e) {
         var modal = $.getOpenedModal();
         var isModalVisible = (modal.length === 1);
         var isBewustModal = (isModalVisible && (modal.is('#bewust')));
@@ -413,8 +455,14 @@
     }).ready(function () {
         $('#b4\\.registrationId\\.keyToRP').filter(':input').blur(checkIdnr);
         $('#b4\\.registrationId\\.keyToSourceRegister').blur(checkBron);
-        $('#b4\\.registrationId\\.dayEntryHead, #b4\\.registrationId\\.monthEntryHead, #b4\\.registrationId\\.yearEntryHead').blur(checkHoofdDatum);
-        $('#b4\\..dayEntryRP, #b4\\.monthEntryRP, #b4\\.yearEntryRP').blur(checkOpDatum);
+        $('#b4\\.registrationId\\.dayEntryHead, #b4\\.registrationId\\.monthEntryHead, #b4\\.registrationId\\.yearEntryHead').blur(function () {
+            checkHoofdDatum();
+            checkNoRegelsWithDate();
+        });
+        $('#b4\\.dayEntryRP, #b4\\.monthEntryRP, #b4\\.yearEntryRP').blur(function () {
+            checkOpDatum();
+            checkNoRegelsWithDate();
+        });
 
         if (!$.isCorrection()) {
             var volgNrOp = $('#volgnrOP');
@@ -427,7 +475,11 @@
             checkVolgnummer(aantalRegels);
             aantalRegels.blur(function () {
                 checkVolgnummer(aantalRegels);
+                checkNoRegelsWithDate();
             });
+        }
+        else {
+            updateWithLastRemembered();
         }
 
         $('.group-vorige-inschrijving input').blur(function () {

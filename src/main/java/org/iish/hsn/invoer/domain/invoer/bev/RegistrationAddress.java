@@ -37,8 +37,6 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
     @Column(name = "ID")
     private Integer id;
 
-    @Transient private Date lastChangedDate = new Date(); // Helper variable for sorting addresses
-
     public RegistrationAddress() {
     }
 
@@ -167,63 +165,20 @@ public class RegistrationAddress extends Invoer implements Serializable, Compara
         this.id = id;
     }
 
-    public void setLastChangedDate() {
-        this.lastChangedDate = new Date();
-    }
-
     @Override
     public int compareTo(RegistrationAddress registrationAddress) {
-        // If the person, sequence number and the last change date are equal, then attempt to sort on date
-        if ((this.keyToRegistrationPersons == registrationAddress.keyToRegistrationPersons) &&
-                (this.sequenceNumberToAddresses == registrationAddress.sequenceNumberToAddresses) &&
-                this.lastChangedDate.equals(registrationAddress.lastChangedDate)) {
-            if (this.yearOfAddress < registrationAddress.yearOfAddress) {
+        // If the person numbers are the same, then sort on sequence number
+        if (this.keyToRegistrationPersons == registrationAddress.keyToRegistrationPersons) {
+            if (this.sequenceNumberToAddresses < registrationAddress.sequenceNumberToAddresses) {
                 return -1;
             }
-            if (this.yearOfAddress > registrationAddress.yearOfAddress) {
-                return 1;
-            }
-
-            if (this.monthOfAddress < registrationAddress.monthOfAddress) {
-                return -1;
-            }
-            if (this.monthOfAddress > registrationAddress.monthOfAddress) {
-                return 1;
-            }
-
-            if (this.dayOfAddress < registrationAddress.dayOfAddress) {
-                return -1;
-            }
-            if (this.dayOfAddress > registrationAddress.dayOfAddress) {
-                return 1;
-            }
-
-            return 0;
-        }
-
-        // If the person and the sequence number are equal, then sort on last change date
-        if ((this.keyToRegistrationPersons == registrationAddress.keyToRegistrationPersons) &&
-                (this.sequenceNumberToAddresses == registrationAddress.sequenceNumberToAddresses)) {
-            if (this.lastChangedDate.before(registrationAddress.lastChangedDate)) {
-                return 1;
-            }
-            if (this.lastChangedDate.after(registrationAddress.lastChangedDate)) {
-                return -1;
-            }
-        }
-
-        // If the sequence numbers are the same, then sort on person number
-        if (this.sequenceNumberToAddresses == registrationAddress.sequenceNumberToAddresses) {
-            if (this.keyToRegistrationPersons < registrationAddress.keyToRegistrationPersons) {
-                return -1;
-            }
-            if (this.keyToRegistrationPersons > registrationAddress.keyToRegistrationPersons) {
+            if (this.sequenceNumberToAddresses > registrationAddress.sequenceNumberToAddresses) {
                 return 1;
             }
         }
 
-        // Otherwise just sort on sequence numbers
-        if (this.sequenceNumberToAddresses < registrationAddress.sequenceNumberToAddresses) {
+        // Otherwise just sort on person numbers
+        if (this.keyToRegistrationPersons < registrationAddress.keyToRegistrationPersons) {
             return -1;
         }
         return 1;

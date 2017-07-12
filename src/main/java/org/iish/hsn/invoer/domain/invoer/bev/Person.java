@@ -4,6 +4,7 @@ import org.iish.hsn.invoer.domain.invoer.Invoer;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This class handles the static attributes of a person (name, date of birth etc.)
@@ -30,6 +31,7 @@ public class Person extends Invoer implements Serializable {
     @Embedded private RegistrationId registrationId = new RegistrationId();
 
     @Column(name = "B2RNBG", nullable = false) private int keyToRegistrationPersons;
+    @Transient private int lastKeyToRegistrationPersons = 0; // Helper variable for renumbering
 
     @Column(name = "B2FCBG", nullable = false) private int    natureOfPerson;
     @Column(name = "B2RDNR", nullable = false) private int    dayOfRegistration;
@@ -89,8 +91,16 @@ public class Person extends Invoer implements Serializable {
         return keyToRegistrationPersons;
     }
 
+    public int getPreviousRp() {
+        return lastKeyToRegistrationPersons;
+    }
+
     public int getKeyToRegistrationPersons() {
         return keyToRegistrationPersons;
+    }
+
+    public void setPreviousRp(int rp) {
+        this.lastKeyToRegistrationPersons = rp;
     }
 
     public void setKeyToRegistrationPersons(int keyToRegistrationPersons) {

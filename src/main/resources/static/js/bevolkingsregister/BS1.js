@@ -993,6 +993,11 @@
         if (elem.hasClass('year')) {
             onNextRpPopoverHidden(elem);
         }
+    }).on('click', '.btn-stop', function (e) {
+        if (!confirm('U wilt stoppen, dat betekent dat alle ingevoerde gegevens zullen verdwijnen!')) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
     }).ready(function () {
         if (isAllLines()) {
             // Extend the width to create more space in case one enters all lines at once

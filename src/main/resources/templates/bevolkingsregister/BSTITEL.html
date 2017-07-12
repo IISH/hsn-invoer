@@ -16,7 +16,7 @@
     SAMENSTELLING INVOER HUISHOUDEN VAN:
   </legend>
   <legend align="center" th:if="${akte.isCorrection()} and ${flowRequestContext.currentState.id} == 'BS0A1'">
-    SAMENSTELLING CORRECTIE HUISHOUDEN VAN:
+    CORRECTIE SAMENSTELLING INSCHRIJVING:
   </legend>
 
   <th:block th:include="bevolkingsregister/BSTITEL :: registration (${akte.b4}, ${akte.refAinb})"></th:block>

@@ -6,6 +6,7 @@ import org.iish.hsn.invoer.domain.invoer.bev.Registration;
 import org.iish.hsn.invoer.domain.invoer.bev.RegistrationId;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.flow.helper.BevolkingsregisterHelper;
+import org.iish.hsn.invoer.flow.helper.BevolkingsregisterLast;
 import org.iish.hsn.invoer.flow.state.BevolkingsregisterFlowState;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.service.OverviewService;
@@ -45,6 +46,7 @@ public class BevolkingsregisterController {
     @Autowired private LookupService lookupService;
     @Autowired private OverviewService overviewService;
     @Autowired private BevolkingsregisterHelper bevolkingsregisterHelper;
+    @Autowired private BevolkingsregisterLast bevolkingsregisterLast;
 
     @RequestMapping(method = RequestMethod.GET)
     public String start() {
@@ -126,6 +128,18 @@ public class BevolkingsregisterController {
     @RequestMapping(value = "/overzicht", method = RequestMethod.POST)
     public String getOverviewRedirect() {
         return "redirect:/bevolkingsregister/hoofdmenu";
+    }
+
+    @RequestMapping(value = "/remember", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Registration getLastRegistration() {
+        return bevolkingsregisterLast.getLastRegistration();
+    }
+
+    @RequestMapping(value = "/remember", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Registration setLastRegistration(RegistrationId registrationId) throws NotFoundException {
+        Registration registration = lookupService.getRegistration(registrationId, true);
+        bevolkingsregisterLast.setLastRegistration(registration);
+        return registration;
     }
 
     @RequestMapping(value = "/related-person-dynamics", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

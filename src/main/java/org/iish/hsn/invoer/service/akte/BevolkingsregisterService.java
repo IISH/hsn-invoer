@@ -7,6 +7,7 @@ import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.AkteException;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.flow.helper.BevolkingsregisterHelper;
+import org.iish.hsn.invoer.flow.helper.BevolkingsregisterLast;
 import org.iish.hsn.invoer.flow.helper.BevolkingsregisterRenumbering;
 import org.iish.hsn.invoer.flow.state.*;
 import org.iish.hsn.invoer.repository.invoer.bev.PersonDynamicRepository;
@@ -36,6 +37,7 @@ public class BevolkingsregisterService {
     @Autowired private PersonDynamicRepository       personDynamicRepository;
     @Autowired private RegistrationAddressRepository registrationAddressRepository;
     @Autowired private BevolkingsregisterHelper      bevolkingsregisterHelper;
+    @Autowired private BevolkingsregisterLast        bevolkingsregisterLast;
 
     /**
      * Creates a new bevolkingsregister flow state for new input (one line for each person)
@@ -139,7 +141,7 @@ public class BevolkingsregisterService {
 
             for (Person person : bevolkingsregisterFlow.getB2()) {
                 // First initialize the default person dynamics
-                createNewPersonDynamics(bevolkingsregisterFlow, person);
+                createNewPersonDynamics(bevolkingsregisterFlow, person, false);
 
                 // Then obtain the stored person dynamics and replace the default initialized ones by these
                 List<PersonDynamic> personDynamics = personDynamicRepository
@@ -265,7 +267,7 @@ public class BevolkingsregisterService {
             person.setYearOfRegistration(-1);
 
             // Create initial dynamic values for this person
-            createNewPersonDynamics(bevolkingsregisterFlow, person);
+            createNewPersonDynamics(bevolkingsregisterFlow, person, false);
 
             // Update the person with data from the previous person
             // In case all persons are edited at once, let JavaScript take care of that
@@ -358,7 +360,7 @@ public class BevolkingsregisterService {
             b2.add(newPerson.getRp() - 1, newPerson);
 
             // Already create initial dynamic values for this person
-            createNewPersonDynamics(bevolkingsregisterFlow, newPerson);
+            createNewPersonDynamics(bevolkingsregisterFlow, newPerson, true);
 
             // Then clone the first of their dynamic properties
             for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
@@ -459,6 +461,7 @@ public class BevolkingsregisterService {
 
         // Also loop over the persons to make sure the initial dynamic properties records are created
         // Also make sure the nature of the person is still correct
+        boolean renumberedRemainsHead = bevolkingsregisterFlow.getB2().get(0).getPreviousRp() == 1;
         for (Person person : bevolkingsregisterFlow.getB2()) {
             if (bevolkingsregisterFlow.isCorrection()) {
                 if (person.getRp() == Person.NatureOfPerson.FIRST_RP.getNatureOfPerson()) {
@@ -474,7 +477,7 @@ public class BevolkingsregisterService {
                 }
             }
 
-            createNewPersonDynamics(bevolkingsregisterFlow, person);
+            createNewPersonDynamics(bevolkingsregisterFlow, person, renumberedRemainsHead);
         }
 
         // Now make sure we reset the pointer of the current person to the first person
@@ -655,8 +658,10 @@ public class BevolkingsregisterService {
      * Register the registration addresses.
      *
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
+     * @param changed                The changed address.
      */
-    public void registerRegistrationAddresses(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+    public void registerRegistrationAddresses(BevolkingsregisterFlowState bevolkingsregisterFlow,
+                                              RegistrationAddress changed) {
         List<RegistrationAddress> b6 = bevolkingsregisterFlow.getB6();
         Collections.sort(b6);
 
@@ -665,18 +670,29 @@ public class BevolkingsregisterService {
         for (RegistrationAddress registrationAddress : b6) {
             int person = registrationAddress.getKeyToRegistrationPersons();
 
-            int seqNr = 0;
+            int seqNr = 1;
             if (sequenceNumbersPerPerson.containsKey(person)) {
-                seqNr = sequenceNumbersPerPerson.get(person);
+                seqNr = sequenceNumbersPerPerson.get(person) + 1;
             }
 
-            int newSeqNr = seqNr + 1;
-            sequenceNumbersPerPerson.put(person, newSeqNr);
-            registrationAddress.setSequenceNumberToAddresses(newSeqNr);
+            // If the changed address has this sequence number for the same person, move this address down one seq number
+            if ((changed != null) && (changed.getSequenceNumberToAddresses() == seqNr)
+                    && (changed.getKeyToRegistrationPersons() == person) && (changed != registrationAddress)) {
+                seqNr++;
+            }
+
+            // The changed address is already changed! :-)
+            if (changed != registrationAddress) {
+                sequenceNumbersPerPerson.put(person, seqNr);
+                registrationAddress.setSequenceNumberToAddresses(seqNr);
+            }
 
             // Also set the registration id right away
             registrationAddress.setRegistrationId(bevolkingsregisterFlow.getB4().getRegistrationId());
         }
+
+        // Now there are no more doubles, sort one last time
+        Collections.sort(b6);
     }
 
     /**
@@ -799,7 +815,7 @@ public class BevolkingsregisterService {
         b6.remove(registrationAddress);
         registrationAddressRepository.delete(registrationAddress);
 
-        registerRegistrationAddresses(bevolkingsregisterFlow);
+        registerRegistrationAddresses(bevolkingsregisterFlow, null);
     }
 
     /**
@@ -813,9 +829,8 @@ public class BevolkingsregisterService {
                                         RegistrationAddress registrationAddress, Map<String, Object> data) {
         DataBinder binder = new DataBinder(registrationAddress);
         binder.bind(new MutablePropertyValues(data));
-        registrationAddress.setLastChangedDate();
 
-        registerRegistrationAddresses(bevolkingsregisterFlow);
+        registerRegistrationAddresses(bevolkingsregisterFlow, registrationAddress);
     }
 
     /**
@@ -926,6 +941,20 @@ public class BevolkingsregisterService {
     }
 
     /**
+     * Deletes the current bevolkingsregister registration (if incomplete).
+     *
+     * @param bevolkingsregisterFlow The bevolkingsregister flow state.
+     */
+    public void deleteRegistrationIfIncomplete(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+        if (bevolkingsregisterFlow.getVolgnrOP() > bevolkingsregisterFlow.getB2().size()) {
+            deleteRegistration(bevolkingsregisterFlow);
+        }
+        else {
+            registerAndSaveRegistration(bevolkingsregisterFlow);
+        }
+    }
+
+    /**
      * Deletes the current bevolkingsregister registration.
      *
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
@@ -951,6 +980,7 @@ public class BevolkingsregisterService {
         inputMetadata.saveToEntity(b4);
         b4 = registrationRepository.save(b4);
         bevolkingsregisterFlow.setB4(b4);
+        bevolkingsregisterLast.setLastRegistration(b4);
     }
 
     /**
@@ -1006,7 +1036,7 @@ public class BevolkingsregisterService {
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
     public void registerAndSaveRegistrationAddresses(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        registerRegistrationAddresses(bevolkingsregisterFlow);
+        registerRegistrationAddresses(bevolkingsregisterFlow, null);
         List<RegistrationAddress> b6 = bevolkingsregisterFlow.getB6();
 
         for (RegistrationAddress registrationAddress : b6) {
@@ -1090,7 +1120,6 @@ public class BevolkingsregisterService {
 
         personDynamic.setRegistrationId(person.getRegistrationId());
         personDynamic.setNatureOfPerson(person.getNatureOfPerson());
-        //personDynamic.setValueOfRelatedPerson(-1);
 
         return personDynamic;
     }
@@ -1100,15 +1129,17 @@ public class BevolkingsregisterService {
      *
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      * @param person                 The person in question.
+     * @param renumberedRemainsHead  Whether renumbering took place and the original head is still head.
      */
-    private void createNewPersonDynamics(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
+    private void createNewPersonDynamics(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person,
+                                         boolean renumberedRemainsHead) {
         int keyToPerson = person.getKeyToRegistrationPersons();
         for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
             Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
 
             switch (type) {
                 case RELATIE_TOV_HOOFD:
-                    if ((keyToPerson == 1) && b3.containsKey(keyToPerson)) {
+                    if (!renumberedRemainsHead && b3.containsKey(keyToPerson)) {
                         b3.get(keyToPerson).clear();
                     }
                     break;

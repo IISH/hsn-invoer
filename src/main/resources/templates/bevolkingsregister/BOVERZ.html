@@ -99,6 +99,10 @@
             <button type="button" class="btn btn-default btn-xs btn-persons" th:id="'btn-person-' + ${stat.index + 1}">
               Overzicht personen
             </button>
+
+            <button type="button" class="btn btn-default btn-xs btn-remember" th:id="'btn-remember-' + ${stat.index + 1}">
+              Onthouden
+            </button>
           </td>
         </tr>
         <tr th:if="${overview.size() == 0}">
@@ -203,6 +207,7 @@
 <footer layout:fragment="footer" th:include="layoutFragments :: footer ('BOVERZ')"></footer>
 
 <th:block layout:fragment="js">
+  <script src="../../static/js/bevolkingsregister/overview.js" hsn:src="@{/js/bevolkingsregister/overview.js}"></script>
   <script src="../../static/js/bevolkingsregister/BOVERZ.js" hsn:src="@{/js/bevolkingsregister/BOVERZ.js}"></script>
 </th:block>
 </body>

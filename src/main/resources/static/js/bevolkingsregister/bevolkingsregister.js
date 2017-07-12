@@ -113,7 +113,9 @@
         var modal = $('.overviewModal:first');
         if (modal.length === 1) {
             $.get('/bevolkingsregister/overzicht/modal', {}, function (overviewTable) {
-                modal.find('#overviewTable').replaceWith(overviewTable);
+                var resultElem = $(overviewTable);
+                modal.find('#overviewTable').replaceWith(resultElem);
+                $(document).trigger('ajax-update', [resultElem]);
                 modal.modal({keyboard: false, backdrop: 'static'});
             });
         }
@@ -163,11 +165,6 @@
 
     $(document).on('click', '.btn-delete', function (e) {
         if (!confirm('Wilt u deze inschrijving verwijderen?')) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-        }
-    }).on('click', '.btn-stop', function (e) {
-        if (!confirm('U wilt stoppen, dat betekent dat alle ingevoerde gegevens zullen verdwijnen!')) {
             e.preventDefault();
             e.stopImmediatePropagation();
         }

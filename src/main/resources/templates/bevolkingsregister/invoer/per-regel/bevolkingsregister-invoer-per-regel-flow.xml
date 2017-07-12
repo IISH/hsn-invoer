@@ -154,7 +154,7 @@
 
   <end-state id="stopEnd" view="redirect:/bevolkingsregister/hoofdmenu">
     <on-entry>
-      <evaluate expression="bevolkingsregisterService.deleteRegistration(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.deleteRegistrationIfIncomplete(flowScope.akte)"/>
     </on-entry>
   </end-state>
 

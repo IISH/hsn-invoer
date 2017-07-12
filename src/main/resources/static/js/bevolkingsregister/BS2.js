@@ -186,7 +186,7 @@
         });
     }
 
-    function onSaveNew(self, data) {
+    function onSaveNew(self, data, cb) {
         $.ajax({
             type: 'POST',
             dataType: 'text',
@@ -197,7 +197,7 @@
                 seqNr: data.sequenceNumberToAddresses
             }, data),
             success: function (result) {
-                self.trigger('crud-table-ajax-success', [result]);
+                self.trigger('crud-table-ajax-success', [result, cb]);
                 // TODO: checkOrder();
             }
         });
@@ -256,14 +256,19 @@
         onUpdate($(e.target), elems);
     }).on('crud-table-delete', function (e, elems, data) {
         onDelete($(e.target), data);
-    }).on('crud-table-save-new', function (e, elems, data) {
-        onSaveNew($(e.target), data);
+    }).on('crud-table-save-new', function (e, elems, data, cb) {
+        onSaveNew($(e.target), data, cb);
     }).on('crud-table-save-update', function (e, elems, data) {
         onSaveUpdate($(e.target), data);
     }).on('person-byz-save', function (e, person) {
         var serialized = $(e.target).find('textarea').serialize();
         var data = serialized + '&_eventId=register-person&ajaxSource=true&person=' + person;
         $.ajax({type: 'POST', data: data});
+    }).on('click', '.btn-stop', function (e) {
+        if (!confirm('U wilt stoppen, dat betekent dat alle ingevoerde gegevens zullen verdwijnen!')) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
     }).ready(function () {
         // Extend the width to create more space in case one enters all lines at once
         $('#main').addClass('extend-width');

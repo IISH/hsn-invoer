@@ -20,11 +20,12 @@
         </th:block>
         <div class="alert alert-danger modalMessages" role="alert" style="display:none;">
         </div>
-        <div class="alert alert-danger burgStaatInfoMessage" role="alert" th:if="${akte.burgStandRelFix}">
-          Relaties met de regelnummers
+        <div class="alert alert-warning burgStaatInfoMessage" role="alert" th:if="${akte.burgStandRelFix}">
+          Er zijn één of meerdere relaties met de regelnummer(s)
           <span
               th:utext="${#strings.listJoin(@bevolkingsregisterHelper.getRelatedPersonsOfFirstPerson(invalidPersonDynamics), ', ')}"></span>
-          zijn onmogelijk.
+          ingevoerd. <br/>
+          Dit is niet mogelijk en dus zullen deze relaties aangepast moeten worden.
         </div>
       </div>
     </div>

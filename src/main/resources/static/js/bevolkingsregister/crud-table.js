@@ -128,17 +128,18 @@
         resetValues();
 
         if (isNew) {
-            self.trigger('crud-table-save-new', [elems, data]);
-            if (elems.parent.hasClass('continued')) {
-                openOnEdit(elems.parent.find('.btn-new'), true);
-            }
+            self.trigger('crud-table-save-new', [elems, data, function () {
+                if (elems.parent.hasClass('continued')) {
+                    openOnEdit(elems.parent.find('.btn-new'), true);
+                }
+            }]);
         }
         else {
             self.trigger('crud-table-save-update', [elems, data]);
         }
     }
 
-    function onAjaxSuccess(self, result) {
+    function onAjaxSuccess(self, result, cb) {
         var elems = getElems();
         var resultElem = $(result);
         var index = elems.table.find('.free tr').index(elems.table.find('.free tr.rowToUpdate'));
@@ -154,6 +155,10 @@
             else {
                 elems.parent.find('.btn-new:first').focus();
             }
+        }
+
+        if ($.isFunction(cb)) {
+            cb();
         }
     }
 
@@ -220,8 +225,8 @@
                 onSave(elem, false);
             }
         }
-    }).on('crud-table-ajax-success', function (e, result) {
-        onAjaxSuccess($(e.target), result);
+    }).on('crud-table-ajax-success', function (e, result, cb) {
+        onAjaxSuccess($(e.target), result, cb);
     }).ready(function () {
         var elem = getVisibleCrudTableContainer();
         if (elem.hasClass('continued')) {

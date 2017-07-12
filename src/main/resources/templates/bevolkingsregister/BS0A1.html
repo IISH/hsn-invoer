@@ -50,7 +50,7 @@
                      th:name="'b2[' + __${stat.index}__ + '].keyToRegistrationPersons'"
                      th:id="'b2' + __${stat.index}__ + '.keyToRegistrationPersons'"
                      hsn:field="b2[__${stat.index}__].keyToRegistrationPersons"
-                     th:readonly="${@bevolkingsregisterHelper.findKeyOfRp(akte) == (stat.index + 1)} ? 'readonly'"
+                     th:readonly="${akte.isCorrection() == false and @bevolkingsregisterHelper.findKeyOfRp(akte) == (stat.index + 1)} ? 'readonly'"
                      th:value="${@bevolkingsregisterHelper.findKeyOfRp(akte) == (stat.index + 1)} ? ${akte.volgnrOP}"/>
             </td>
             <td>
@@ -84,6 +84,7 @@
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"
           hsn:src="@{/js/bevolkingsregister/bevolkingsregister.js}"></script>
+  <script src="../../static/js/bevolkingsregister/overview.js" hsn:src="@{/js/bevolkingsregister/overview.js}"></script>
   <script src="../../static/js/bevolkingsregister/BS0A1.js" hsn:src="@{/js/bevolkingsregister/BS0A1.js}"></script>
 </th:block>
 </body>
