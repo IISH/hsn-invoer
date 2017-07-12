@@ -93,13 +93,20 @@
   <action-state id="thirdCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
-    <transition on="0" to="MS3"/>
+    <transition on="0" to="descriptionOfPersonCheck"/>
     <transition on="1" to="fourthCorrectionCodeCheck"/>
     <transition on="2" to="fourthCorrectionCodeCheck"/>
-    <transition on="3" to="MS3"/>
+    <transition on="3" to="descriptionOfPersonCheck"/>
     <transition on="4" to="fourthCorrectionCodeCheck"/>
     <transition on="5" to="fourthCorrectionCodeCheck"/>
     <transition on="6" to="fourthCorrectionCodeCheck"/>
+  </action-state>
+
+  <action-state id="descriptionOfPersonCheck">
+    <evaluate expression="flowScope.akte.is('1862I', '1913I') == false"/>
+
+    <transition on="yes" to="MS3"/>
+    <transition on="no" to="fourthCorrectionCodeCheck"/>
   </action-state>
 
   <!-- MS3: UITERLIJKE KENMERKEN -->
