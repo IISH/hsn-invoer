@@ -70,7 +70,7 @@
       <render fragments="currentPerson"/>
     </transition>
 
-    <transition on="stop" to="stopEnd"/>
+    <transition on="stop" to="stopCheck"/>
 
     <transition on="nextPerson" to="nextPersonCheck">
       <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
@@ -80,6 +80,13 @@
       <evaluate expression="bevolkingsregisterService.registerAndSavePerson(flowScope.akte)"/>
     </transition>
   </view-state>
+
+  <action-state id="stopCheck">
+    <evaluate expression="bevolkingsregisterService.deleteRegistrationIfIncomplete(flowScope.akte)"/>
+
+    <transition on="yes" to="stopEnd"/>
+    <transition on="no" to="burgStandRelatieCheck"/>
+  </action-state>
 
   <action-state id="nextPersonCheck">
     <evaluate expression="bevolkingsregisterHelper.registrationHasMaxPersons(flowScope.akte) == false"/>
@@ -143,8 +150,6 @@
       <render fragments="registrationAddresses"/>
     </transition>
 
-    <transition on="stop" to="stopEnd"/>
-
     <transition on="next" to="finishEnd">
       <evaluate expression="bevolkingsregisterService.checkAddresses(flowScope.akte)"/>
       <evaluate expression="bevolkingsregisterService.registerAndSaveRegistration(flowScope.akte)"/>
@@ -152,11 +157,6 @@
     </transition>
   </view-state>
 
-  <end-state id="stopEnd" view="redirect:/bevolkingsregister/hoofdmenu">
-    <on-entry>
-      <evaluate expression="bevolkingsregisterService.deleteRegistrationIfIncomplete(flowScope.akte)"/>
-    </on-entry>
-  </end-state>
-
+  <end-state id="stopEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
   <end-state id="finishEnd" view="redirect:/bevolkingsregister/hoofdmenu"/>
 </flow>

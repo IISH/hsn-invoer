@@ -289,6 +289,7 @@ public class BevolkingsregisterService {
                 if (type == 2) {
                     personDynamic.setContentOfDynamicData(5);
                     personDynamic.setValueOfRelatedPerson(relatedPerson.getRp());
+                    personDynamic.setDynamicData2(relatedPersonDynamic.getDynamicData2());
 
                     person.setDayOfDecease(relatedPersonDynamic.getDayOfMutation());
                     person.setMonthOfDecease(relatedPersonDynamic.getMonthOfMutation());
@@ -300,6 +301,7 @@ public class BevolkingsregisterService {
                     if (bevolkingsregisterHelper.hasOverlijdensData(relatedPerson).equals("j")) {
                         personDynamic.setContentOfDynamicData(2);
                         personDynamic.setValueOfRelatedPerson(relatedPerson.getRp());
+                        personDynamic.setDynamicData2(relatedPersonDynamic.getDynamicData2());
 
                         personDynamic.setDayOfMutation(relatedPerson.getDayOfDecease());
                         personDynamic.setMonthOfMutation(relatedPerson.getMonthOfDecease());
@@ -309,6 +311,7 @@ public class BevolkingsregisterService {
                     else {
                         personDynamic.setContentOfDynamicData(5);
                         personDynamic.setValueOfRelatedPerson(relatedPerson.getRp());
+                        personDynamic.setDynamicData2(relatedPersonDynamic.getDynamicData2());
 
                         personDynamic.setDayOfMutation(relatedPersonDynamic.getDayOfMutation());
                         personDynamic.setMonthOfMutation(relatedPersonDynamic.getMonthOfMutation());
@@ -318,6 +321,7 @@ public class BevolkingsregisterService {
                 else {
                     personDynamic.setContentOfDynamicData(type);
                     personDynamic.setValueOfRelatedPerson(relatedPerson.getRp());
+                    personDynamic.setDynamicData2(relatedPersonDynamic.getDynamicData2());
 
                     personDynamic.setDayOfMutation(relatedPersonDynamic.getDayOfMutation());
                     personDynamic.setMonthOfMutation(relatedPersonDynamic.getMonthOfMutation());
@@ -945,13 +949,12 @@ public class BevolkingsregisterService {
      *
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
-    public void deleteRegistrationIfIncomplete(BevolkingsregisterFlowState bevolkingsregisterFlow) {
+    public boolean deleteRegistrationIfIncomplete(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         if (bevolkingsregisterFlow.getVolgnrOP() > bevolkingsregisterFlow.getB2().size()) {
             deleteRegistration(bevolkingsregisterFlow);
+            return true;
         }
-        else {
-            registerAndSaveRegistration(bevolkingsregisterFlow);
-        }
+        return false;
     }
 
     /**

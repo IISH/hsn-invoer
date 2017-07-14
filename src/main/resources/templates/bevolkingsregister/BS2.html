@@ -62,11 +62,11 @@
           </td>
           <td class="dateOrder">
             <!-- Datum -->
-            <span class="dayOfAddress day" th:utext="${akte.b6[__${stat.index}__].dayOfAddress}"></span>
+            <span class="dayOfAddress day dateInput" th:utext="${akte.b6[__${stat.index}__].dayOfAddress}"></span>
             /
-            <span class="monthOfAddress month" th:utext="${akte.b6[__${stat.index}__].monthOfAddress}"></span>
+            <span class="monthOfAddress month dateInput" th:utext="${akte.b6[__${stat.index}__].monthOfAddress}"></span>
             /
-            <span class="yearOfAddress year" th:utext="${akte.b6[__${stat.index}__].yearOfAddress}"></span>
+            <span class="yearOfAddress year dateInput" th:utext="${akte.b6[__${stat.index}__].yearOfAddress}"></span>
           </td>
           <td th:if="${akte.isCorrection()}">
             <!-- INTERPR -->
@@ -216,12 +216,6 @@
 </div>
 </div>
 
-<div id="dateOrderWarning" class="content-spacing fixed-messages" style="display:none;">
-  <div class="alert alert-danger" role="alert">
-    Datum is niet op chronologische volgorde.
-  </div>
-</div>
-
 <div th:replace="bevolkingsregister/byz-fragments :: registrationByz"></div>
 
 <div class="personByzModals">
@@ -236,7 +230,7 @@
 </fieldset>
 
 <fieldset layout:fragment="navigation"
-          th:include="fragments/navigation :: bev-reg-navigation (${akte}, false, ${akte.isCorrection() == false})"></fieldset>
+          th:include="fragments/navigation :: bev-reg-navigation (${akte}, false, false)"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/bevolkingsregister/bevolkingsregister.js"

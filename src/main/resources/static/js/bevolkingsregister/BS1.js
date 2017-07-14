@@ -994,7 +994,13 @@
             onNextRpPopoverHidden(elem);
         }
     }).on('click', '.btn-stop', function (e) {
-        if (!confirm('U wilt stoppen, dat betekent dat alle ingevoerde gegevens zullen verdwijnen!')) {
+        var message = 'U wilt stoppen, dat betekent dat alle ingevoerde gegevens ' +
+            'van de laatste persoon zullen verdwijnen. Tenzij u nog geen OP heeft ingevoerd, dan verdwijnt alles!';
+        if (isAllLines()) {
+            message = 'U wilt stoppen, dat betekent dat alle ingevoerde gegevens zullen verdwijnen!';
+        }
+
+        if (!confirm(message)) {
             e.preventDefault();
             e.stopImmediatePropagation();
         }

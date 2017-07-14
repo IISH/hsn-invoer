@@ -5,12 +5,12 @@
 (function ($) {
     'use strict';
 
-    $.setError = function setError(isError, name, errorMessage, elemParent) {
+    $.setError = function setError(isError, name, errorMessage, elemParent, allNextBtns) {
         if (name.indexOf('.') >= 0) {
             name = name.substring(0, name.indexOf('.'));
         }
 
-        addError(isError, name, name + '-error', function (messages, message) {
+        addError(isError, name, name + '-error', allNextBtns, function (messages, message) {
             var alertBox = messages;
             if (!messages.hasClass('alert')) {
                 alertBox = messages.find('.alert');
@@ -30,8 +30,8 @@
         });
     };
 
-    $.setErrorWithClass = function setErrorWithClass(isError, name, elem, errorMessage) {
-        addError(isError, null, name + '-error');
+    $.setErrorWithClass = function setErrorWithClass(isError, name, elem, errorMessage, allNextBtns) {
+        addError(isError, null, name + '-error', allNextBtns);
         isError ? elem.text(errorMessage).show() : elem.hide();
     };
 
@@ -71,17 +71,18 @@
         }
     };
 
-    function getBtnNext() {
-        var crudTableBtn = $('.crud-table-container:visible').find('.btn-save-new:visible, .btn-save-update:visible');
-        if (crudTableBtn.length > 0) {
-            return crudTableBtn;
-        }
+    function getBtnNext(all) {
+        if (all) {
+            var crudTableBtn = $('.crud-table-container:visible').find('.btn-save-new:visible, .btn-save-update:visible');
+            if (crudTableBtn.length > 0) {
+                return crudTableBtn;
+            }
 
-        var modalBtn = $('.modal.in').find('.btn-save-new:visible, .btn-save-update:visible');
-        if (modalBtn.length > 0) {
-            return modalBtn;
+            var modalBtn = $('.modal.in').find('.btn-save-new:visible, .btn-save-update:visible');
+            if (modalBtn.length > 0) {
+                return modalBtn;
+            }
         }
-
         return $('.btn-next:visible');
     }
 
@@ -104,19 +105,20 @@
         return $();
     }
 
-    function addError(isError, className, btnNextClassName, onError) {
+    function addError(isError, className, btnNextClassName, allBtnNext, onError) {
         var showMsg = typeof className === 'string';
         var message = showMsg ? getMessage(className) : null;
+        allBtnNext = (allBtnNext === undefined) ? true : allBtnNext;
 
         if (isError) {
-            getBtnNext().addClass(btnNextClassName);
+            getBtnNext(allBtnNext).addClass(btnNextClassName);
             if (showMsg) {
                 message = onError(getMessages(), message);
                 showMessage(message, true);
             }
         }
         else {
-            getBtnNext().removeClass(btnNextClassName);
+            getBtnNext(allBtnNext).removeClass(btnNextClassName);
             if (showMsg) {
                 hideMessage(message, true);
             }
@@ -215,7 +217,7 @@
     }
 
     function checkNextByzButton() {
-        var nextBtn = getBtnNext();
+        var nextBtn = getBtnNext(true);
         var byzBtn = $('.btn-byz');
 
         var hasAnError = [];

@@ -51,12 +51,6 @@
         var person = personElem.getIntegerValue();
         var seqNr = seqNrElem.getIntegerValue();
 
-        var nrOfPersons = $('#registrationAddresses').getIntegerDataValue('number-of-persons');
-        if (isNaN(person) || (person < 0) || (person > nrOfPersons)) {
-            person = 0;
-            personElem.val(0);
-        }
-
         var lastSeqNr = 0;
         $('#registrationAddressesTable').find('tbody tr').each(function () {
             var row = $(this);
@@ -80,7 +74,6 @@
             }
         }
         else if (blurPerson || (seqNr > lastSeqNr)) {
-        // TODO: else if ((blurPerson || (seqNr > lastSeqNr)) && ((seqNr === 0) || isNaN(seqNr))) {
             seqNrElem.val(lastSeqNr + 1);
         }
 
@@ -90,39 +83,35 @@
     }
 
     function checkOrderOfDate() {
-        var warningMsg = $('#dateOrderWarning');
+        var error = false;
+        var lastHsnDate = null, lastPerson = null;
 
-        var row = getActiveRow();
-        var person = row.find('.person').getIntegerValue();
-        var seqNr = row.find('.seqNr').getIntegerValue();
+        $('#registrationAddressesTable').find('tbody tr').each(function () {
+            if (error) return;
 
-        var hsnDate = row.find('.dateOrder').getHsnDate();
-        if (hsnDate.day.getValue() > 0 && hsnDate.month.getValue() > 0 && hsnDate.year.getValue() > 0) {
-            var lastHsnDate = null;
-            $('#registrationAddressesTable').find('tbody tr').each(function () {
-                var row = $(this);
-                if ((row.find('.person').getIntegerText() === person) &&
-                    (row.find('.seqNr').getIntegerText() < seqNr)) {
-                    var foundHsnDate = row.find('.dateOrder').getHsnDate();
-                    if (foundHsnDate.day.getValue() > 0 && foundHsnDate.month.getValue() > 0
-                        && foundHsnDate.year.getValue() > 0) {
-                        lastHsnDate = foundHsnDate;
-                    }
-                }
-            });
+            var row = $(this);
+            var foundHsnDate = row.find('.dateOrder').getHsnDate();
+            var foundPerson = row.find('.person').getIntegerText();
 
-            if (lastHsnDate !== null) {
-                var date = new Date(hsnDate.year.getValue(), hsnDate.month.getValue() - 1, hsnDate.day.getValue());
-                var lastDate = new Date(lastHsnDate.year.getValue(), lastHsnDate.month.getValue() - 1, lastHsnDate.day.getValue());
-
-                if (date.getTime() < lastDate.getTime()) {
-                    warningMsg.show();
-                    return;
-                }
+            if (foundPerson !== lastPerson) {
+                lastHsnDate = null;
+                lastPerson = foundPerson;
             }
-        }
 
-        warningMsg.hide();
+            if (foundHsnDate.day.getValue() > 0 && foundHsnDate.month.getValue() > 0
+                && foundHsnDate.year.getValue() > 0) {
+                if (lastHsnDate !== null) {
+                    var date = new Date(foundHsnDate.year.getValue(), foundHsnDate.month.getValue() - 1, foundHsnDate.day.getValue());
+                    var lastDate = new Date(lastHsnDate.year.getValue(), lastHsnDate.month.getValue() - 1, lastHsnDate.day.getValue());
+                    error = date.getTime() < lastDate.getTime();
+                }
+
+                lastHsnDate = foundHsnDate;
+            }
+        });
+
+        $.setError(error, 'date-order', 'Datum is niet op chronologische volgorde.', undefined, false);
+        $.triggerChangeOfState();
     }
 
     function copyFromLastLine() {
@@ -198,7 +187,7 @@
             }, data),
             success: function (result) {
                 self.trigger('crud-table-ajax-success', [result, cb]);
-                // TODO: checkOrder();
+                checkOrderOfDate();
             }
         });
     }
@@ -215,35 +204,9 @@
             }, data),
             success: function (result) {
                 self.trigger('crud-table-ajax-success', [result]);
-                // TODO: checkOrder();
+                checkOrderOfDate();
             }
         });
-    }
-
-    function checkOrder() {
-        var errors = {}, lastPerson = 0, lastSeqNr = 0;
-        $('#registrationAddressesTable').find('tbody tr').each(function () {
-            var row = $(this);
-            var person = row.find('.person').getIntegerText();
-            var seqNr = row.find('.seqNr').getIntegerText();
-
-            if (lastPerson !== person) {
-                lastPerson = person;
-                lastSeqNr = 0;
-            }
-            if (lastSeqNr !== (seqNr - 1)) {
-                var personErrors = errors[person] || [];
-                personErrors.push([lastSeqNr + ' en ' + seqNr]);
-            }
-            lastSeqNr = seqNr;
-        });
-
-        var messages = [];
-        $.each(errors, function (person, personErrors) {
-            messages.push('Er missen enkele addressen voor persoon ' + person + ' tussen ' + personErrors.join(', '));
-        });
-
-        setError(messages.length > 0, 'order-seqnrs', messages.join('<br/>'));
     }
 
     /* Event registration */
@@ -276,6 +239,14 @@
 
     $('input.person, input.seqNr').blur(function (e) {
         if ($(e.target).hasClass('person')) {
+            var person = $(e.target).getIntegerValue();
+            var nrOfPersons = $('#registrationAddresses').getIntegerDataValue('number-of-persons');
+            $.setError(
+                (isNaN(person) || (person < 0) || (person > nrOfPersons) || (person === 1 && nrOfPersons === 1)),
+                'max-persons',
+                'Er zijn ' + nrOfPersons + ' personen ingevoerd, dus persoon ' + person + ' is niet toegestaan!'
+            );
+
             determineSeqNr(true);
         }
         else {
@@ -294,7 +265,8 @@
 
     $('.btn-next').click(function (e) {
         if ($('table span.seqNr').length === 0) {
-            if (!confirm('Er zijn geen addressen opgeslagen, weet u zeker dat dit correct is?')) {
+            if (!confirm('Er zijn geen addressen opgeslagen, weet u zeker dat dit correct is? ' +
+                    'Zo ja, dan wordt er automatisch een leeg adres toegevoegd!')) {
                 e.preventDefault();
             }
         }
