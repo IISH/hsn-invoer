@@ -59,8 +59,10 @@
                 e.preventDefault();
 
                 hsnCanvas.createNewImage(function (dataUrl) {
-                    if (cutter.hasClass('sideA'))
+                    if (cutter.hasClass('sideA')) {
                         sessionStorage.setItem('hsnScanA', dataUrl);
+                        sessionStorage.removeItem('hsnScanB'); // Also remove the old scan B already, just in case
+                    }
                     else
                         sessionStorage.setItem('hsnScanB', dataUrl);
 
@@ -69,8 +71,8 @@
                 });
 
                 sessionStorage.setItem('hsnScanSide', 'A');
-                sessionStorage.setItem('hsnScanPositionA', null);
-                sessionStorage.setItem('hsnScanPositionB', null);
+                sessionStorage.removeItem('hsnScanPositionA');
+                sessionStorage.removeItem('hsnScanPositionB');
             }
         });
     });

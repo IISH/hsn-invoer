@@ -22,7 +22,7 @@ public class Huwttl extends Invoer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Integer recordID;
+    private Integer id;
 
     public int getIdnr() {
         return idnr;
@@ -73,10 +73,10 @@ public class Huwttl extends Invoer implements Serializable {
     }
 
     public Integer getId() {
-        return recordID;
+        return id;
     }
 
     public void setId(Integer id) {
-        this.recordID = recordID;
+        this.id = id;
     }
 }

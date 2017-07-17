@@ -189,8 +189,6 @@ var HsnCanvas = (function ($, fabric) {
         }
 
         function toSelectionState() {
-            console.log('SELECTION');
-
             state = State.SELECTION;
 
             canvas.defaultCursor = 'pointer';
@@ -208,8 +206,6 @@ var HsnCanvas = (function ($, fabric) {
         }
 
         function toActionState() {
-            console.log('ACTION');
-
             state = State.ACTION;
 
             if (allowCutting !== false) {
@@ -229,8 +225,6 @@ var HsnCanvas = (function ($, fabric) {
         }
 
         function toLineState(line) {
-            console.log('LINE');
-
             state = State.LINE;
 
             canvas.defaultCursor = 'crosshair';

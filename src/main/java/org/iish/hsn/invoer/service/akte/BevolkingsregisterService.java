@@ -16,7 +16,6 @@ import org.iish.hsn.invoer.repository.invoer.bev.RegistrationAddressRepository;
 import org.iish.hsn.invoer.repository.invoer.bev.RegistrationRepository;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.util.InputMetadata;
-import org.iish.hsn.invoer.util.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -359,7 +358,7 @@ public class BevolkingsregisterService {
             Person newPerson = new Person();
 
             // It will obtain a new registration id and a new record id, so don't copy these values
-            BeanUtils.copyProperties(prevPerson, newPerson, "registrationId", "recordID");
+            BeanUtils.copyProperties(prevPerson, newPerson, "registrationId", "id");
             newPerson.setRegistrationId(curRegistrationId);
             b2.add(newPerson.getRp() - 1, newPerson);
 
@@ -385,7 +384,7 @@ public class BevolkingsregisterService {
                         newPersonDynamic = b3ForPerson.get(0);
                     }
 
-                    BeanUtils.copyProperties(prevPersonDynamic, newPersonDynamic, "registrationId", "recordID");
+                    BeanUtils.copyProperties(prevPersonDynamic, newPersonDynamic, "registrationId", "id");
                     newPersonDynamic.setRegistrationId(curRegistrationId);
 
                     if (b3ForPerson.isEmpty()) {
@@ -919,7 +918,7 @@ public class BevolkingsregisterService {
                         }
                         PersonDynamic personDynamicTo = b3To.get(0);
                         PersonDynamic personDynamicFrom = b3From.get(0);
-                        BeanUtils.copyProperties(personDynamicFrom, personDynamicTo, "RecordID",
+                        BeanUtils.copyProperties(personDynamicFrom, personDynamicTo, "id",
                                                  "keyToRegistrationPersons");
                     }
             }
