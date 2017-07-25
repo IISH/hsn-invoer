@@ -83,7 +83,7 @@ public class MilitieregisterHelper {
     }
 
     public String hasVrijgesteld(MilitieregisterFlowState akte) {
-        return getYesOrNo(akte.isCorrection(), akte.getMil().getMilitionChairImprovements());
+        return getYesOrNo(akte.isCorrection(), akte.getMil().getReasonsNotIncluded());
     }
 
     public String hasUitgesteld(MilitieregisterFlowState akte) {
