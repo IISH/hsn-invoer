@@ -455,8 +455,8 @@
     }).ready(function () {
         $('#b4\\.registrationId\\.keyToRP').filter(':input').blur(checkIdnr);
         $('#b4\\.registrationId\\.keyToSourceRegister').blur(checkBron);
-        $('#b4\\.registrationId\\.dayEntryHead, #b4\\.registrationId\\.monthEntryHead, #b4\\.registrationId\\.yearEntryHead').blur(function () {
-            checkHoofdDatum();
+        $('#b4\\.registrationId\\.dayEntryHead, #b4\\.registrationId\\.monthEntryHead, #b4\\.registrationId\\.yearEntryHead').blur(function (e) {
+            checkHoofdDatum(e);
             checkNoRegelsWithDate();
         });
         $('#b4\\.dayEntryRP, #b4\\.monthEntryRP, #b4\\.yearEntryRP').blur(function () {
