@@ -38,7 +38,7 @@
     }
 
     function initializeAdresTypePicklists(elem) {
-        initializeAjaxPickLists(elem.find('.adrestype'), 'code', 'type', '/ajax/lookup/adrestypes', null, true);
+        initializeAjaxPickLists(elem.find('.adrestype'), 'code', 'type', '/ajax/lookup/adrestypes', null, false);
     }
 
     function initializeAjaxPickLists(fields, idField, recordField, lookupURL, saveURL, showAllOptions) {
