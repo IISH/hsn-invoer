@@ -371,8 +371,15 @@
         initTabIndexes();
     });
 
-    $('form:not(.noResetOnSubmit)').submit(function () {
-        $(document).resetInvisibleFormElements();
+    $('form').submit(function () {
+        var form = $(this);
+        var activeElement = document.activeElement;
+        form.find('button[type="submit"]').addClass('submit-disable').prop('disabled', true);
+        $(activeElement).focus();
+
+        if (form.is(':not(.noResetOnSubmit)')) {
+            $(document).resetInvisibleFormElements();
+        }
     });
 
     $(document).ready(function () {
