@@ -3,6 +3,7 @@ package org.iish.hsn.invoer.service.scan;
 import org.iish.hsn.invoer.domain.invoer.mil.Milition;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -43,12 +44,14 @@ public class MilitionScanRepository {
     public Set<MilitionScan> findScans(int idnr) throws IOException {
         Map<String, MilitionScan> scans = new HashMap<>();
 
-        for (Path path : Files.newDirectoryStream(root, idnr + "[ _]*")) {
-            String filename = path.getFileName().toString();
+        try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(root, idnr + "[ _]*")) {
+            for (Path path : dirStream) {
+                String filename = path.getFileName().toString();
 
-            Matcher matcher = SCAN_PATTERN.matcher(filename);
-            if (matcher.matches()) {
-                setScan(scans, idnr, path, matcher);
+                Matcher matcher = SCAN_PATTERN.matcher(filename);
+                if (matcher.matches()) {
+                    setScan(scans, idnr, path, matcher);
+                }
             }
         }
 
