@@ -1,7 +1,7 @@
 /**
  * Add utility methods to the jQuery object.
  */
-(function ($) {
+(function ($, LZString) {
     'use strict';
 
     /**
@@ -38,8 +38,9 @@
             if (sessionStorage.getItem('hsnScanSide') === null)
                 sessionStorage.setItem('hsnScanSide', scanSide);
 
-            var image = sessionStorage.getItem('hsnScan' + scanSide);
-            if (image !== null) {
+            var imageCompressed = sessionStorage.getItem('hsnScan' + scanSide);
+            if (imageCompressed !== null) {
+                var image = LZString.decompress(imageCompressed);
                 try {
                     var position = JSON.parse(sessionStorage.getItem('hsnScanPosition' + scanSide));
                     hsnCanvas.loadImage(image, position);
@@ -400,4 +401,4 @@
     $.fn.valNoEvent = function valNoEvent() {
         return onVal.apply(this, arguments);
     };
-})(jQuery);
+})(jQuery, LZString);

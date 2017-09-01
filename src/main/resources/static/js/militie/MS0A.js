@@ -1,4 +1,4 @@
-(function ($, PDFJS) {
+(function ($, PDFJS, LZString) {
     'use strict';
 
     var hsnCanvas;
@@ -59,15 +59,24 @@
                 e.preventDefault();
 
                 hsnCanvas.createNewImage(function (dataUrl) {
-                    if (cutter.hasClass('sideA')) {
-                        sessionStorage.setItem('hsnScanA', dataUrl);
-                        sessionStorage.removeItem('hsnScanB'); // Also remove the old scan B already, just in case
-                    }
-                    else
-                        sessionStorage.setItem('hsnScanB', dataUrl);
+                    try {
+                        var compressedDataUrl = LZString.compress(dataUrl);
+                        if (cutter.hasClass('sideA')) {
+                            sessionStorage.removeItem('hsnScanB'); // Also remove the old scan B already, just in case
+                            sessionStorage.setItem('hsnScanA', compressedDataUrl);
+                        }
+                        else
+                            sessionStorage.setItem('hsnScanB', compressedDataUrl);
 
-                    submit = true;
-                    $('.btn-next').click();
+                        submit = true;
+                        $('.btn-next').click();
+                    }
+                    catch (error) {
+                        console.error(error);
+                        alert('Het is helaas niet gelukt om de scan op te slaan. ' +
+                            'Dit kan gebeuren als de scan te groot is. ' +
+                            'Na het knippen is er waarschijnlijk geen probleem meer!');
+                    }
                 });
 
                 sessionStorage.setItem('hsnScanSide', 'A');
@@ -76,4 +85,4 @@
             }
         });
     });
-})(jQuery, PDFJS);
+})(jQuery, PDFJS, LZString);

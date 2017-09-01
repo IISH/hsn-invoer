@@ -97,9 +97,9 @@ var HsnCanvas = (function ($, fabric) {
 
                     if (loaded === imgs.length) {
                         if (supportsImage('image/webp'))
-                            callback(hiddenCanvas.toDataURL('image/webp', 80));
+                            callback(hiddenCanvas.toDataURL('image/webp', 0.7));
                         else if (supportsImage('image/jpeg'))
-                            callback(hiddenCanvas.toDataURL('image/jpeg', 80));
+                            callback(hiddenCanvas.toDataURL('image/jpeg', 0.7));
                         else
                             callback(hiddenCanvas.toDataURL('image/png'));
                     }
