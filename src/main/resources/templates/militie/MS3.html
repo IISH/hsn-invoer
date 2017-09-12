@@ -13,28 +13,28 @@
         <div class="form-group">
           <label class="control-label" th:if="${akte.mil.year le 1824}">el:</label>
           <label class="control-label" th:if="${akte.mil.year gt 1824}">m:</label>
-          <input type="text" class="form-control form-control-small integer-field required spacing"
+          <input type="text" class="form-control form-control-small integer-field required zero-allowed spacing"
                  maxlength="2" th:field="*{mil.meter}" hsn:field="mil.meter"/>
         </div>
 
         <div class="form-group spacing">
           <label class="control-label" th:if="${akte.mil.year le 1824}">palm:</label>
           <label class="control-label" th:if="${akte.mil.year gt 1824}">dm:</label>
-          <input type="text" class="form-control form-control-small integer-field required spacing"
+          <input type="text" class="form-control form-control-small integer-field required zero-allowed spacing"
                  maxlength="2" th:field="*{mil.decimeter}" hsn:field="mil.decimeter"/>
         </div>
 
         <div class="form-group spacing">
           <label class="control-label" th:if="${akte.mil.year le 1824}">duim:</label>
           <label class="control-label" th:if="${akte.mil.year gt 1824}">cm:</label>
-          <input type="text" class="form-control form-control-small integer-field required spacing"
+          <input type="text" class="form-control form-control-small integer-field required zero-allowed spacing"
                  maxlength="2" th:field="*{mil.centimeter}" hsn:field="mil.centimeter"/>
         </div>
 
         <div class="form-group spacing">
           <label class="control-label" th:if="${akte.mil.year le 1824}">streep:</label>
           <label class="control-label" th:if="${akte.mil.year gt 1824}">mm:</label>
-          <input type="text" class="form-control form-control-small integer-field required spacing"
+          <input type="text" class="form-control form-control-small integer-field required zero-allowed spacing"
                  maxlength="2" th:field="*{mil.millimeter}" hsn:field="mil.millimeter"/>
         </div>
       </div>
