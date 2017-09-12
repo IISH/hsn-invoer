@@ -43,6 +43,7 @@ public class MilitionScanRepository {
      */
     public Set<MilitionScan> findScans(int idnr) throws IOException {
         Map<String, MilitionScan> scans = new HashMap<>();
+        Map<String, MilitionScan> scansAB = new HashMap<>();
 
         try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(root, idnr + "[ _]*")) {
             for (Path path : dirStream) {
@@ -50,7 +51,7 @@ public class MilitionScanRepository {
 
                 Matcher matcher = SCAN_PATTERN.matcher(filename);
                 if (matcher.matches()) {
-                    setScan(scans, idnr, path, matcher);
+                    setScan(scans, scansAB, idnr, path, matcher);
                 }
             }
         }
@@ -87,11 +88,13 @@ public class MilitionScanRepository {
      * Set the milition scan info for the current given scan. (Has all info)
      *
      * @param scans   The collected scans.
+     * @param scansAB The collected scans which may have a B side as well.
      * @param idnr    The idnr of the RP.
      * @param path    The scan file.
      * @param matcher The matcher of the information.
      */
-    private void setScan(Map<String, MilitionScan> scans, int idnr, Path path, Matcher matcher) {
+    private void setScan(Map<String, MilitionScan> scans, Map<String, MilitionScan> scansAB,
+                         int idnr, Path path, Matcher matcher) {
         if (Integer.parseInt(matcher.group(1)) == idnr) {
             String municipality = (matcher.groupCount() >= 4) ? matcher.group(4) : null;
             if (municipality != null) municipality = municipality.replace('_', ' ');
@@ -100,10 +103,10 @@ public class MilitionScanRepository {
             String side = (matcher.groupCount() >= 13) ? matcher.group(13) : null;
             String number = (matcher.groupCount() >= 16) ? matcher.group(16) : null;
 
-            String hashCode = computeHashCode(municipality, year, type);
+            String hashCode = computeHashCode(municipality, year, type, null);
             Path sideA = null, sideB = null;
-            if (scans.containsKey(hashCode)) {
-                Scan scan = scans.get(hashCode);
+            if (scansAB.containsKey(hashCode)) {
+                Scan scan = scansAB.get(hashCode);
                 sideA = scan.getSideA();
                 sideB = scan.getSideB();
             }
@@ -113,7 +116,9 @@ public class MilitionScanRepository {
             else
                 sideB = path;
 
-            scans.put(hashCode, new MilitionScan(sideA, sideB, idnr, municipality, year, type, number));
+            MilitionScan scan = new MilitionScan(sideA, sideB, idnr, municipality, year, type, number);
+            scansAB.put(hashCode, scan);
+            scans.put(computeHashCode(municipality, year, type, number), scan);
         }
     }
 
@@ -123,9 +128,10 @@ public class MilitionScanRepository {
      * @param municipality The municipality of the register.
      * @param year         The year of the register.
      * @param type         The type of the register.
+     * @param number       The scan number.
      * @return The computed hash code.
      */
-    private static String computeHashCode(String municipality, Integer year, String type) {
+    private static String computeHashCode(String municipality, Integer year, String type, String number) {
         int hashCode = 1;
         if (municipality != null)
             hashCode = 31 * hashCode + municipality.hashCode();
@@ -133,6 +139,8 @@ public class MilitionScanRepository {
             hashCode = 31 * hashCode + year;
         if (type != null)
             hashCode = 31 * hashCode + type.hashCode();
+        if (number != null)
+            hashCode = 31 * hashCode + number.hashCode();
         return String.valueOf(hashCode);
     }
 }
