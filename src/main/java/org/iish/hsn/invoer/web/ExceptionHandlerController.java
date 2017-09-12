@@ -61,6 +61,7 @@ public class ExceptionHandlerController implements HandlerExceptionResolver {
                                          Object handler, Exception ex) {
         // An ExceptionHandler for this exception won't work, so deal with it here
         if (ex instanceof FlowExecutionRestorationFailureException) {
+            LOGGER.warn("Back button used? " + ex.getMessage(), ex);
             return new ModelAndView("exception/backButtonError");
         }
 
