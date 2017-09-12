@@ -100,7 +100,7 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "EXEMPD", nullable = false) private int dayOfExemptionVerdict;
     @Column(name = "EXEMPM", nullable = false) private int monthOfExemptionVerdict;
     @Column(name = "EXEMPJ", nullable = false) private int yearOfExemptionVerdict;
-    @Column(name = "EXEMPU", nullable = false, length = 50) private String exemptionVerdict = "";
+    @Column(name = "EXEMPU", nullable = false, length = 150) private String exemptionVerdict = "";
 
     @Column(name = "MEDD", nullable = false) private int dayOfMedicalVerdict;
     @Column(name = "MEDM", nullable = false) private int monthOfMedicalVerdict;
@@ -139,7 +139,7 @@ public class Milition extends Invoer implements Serializable {
 
     @Column(name = "BYZAAN", nullable = false, length = 100) private String byzRemarks = "";
     @Column(name = "AANMRK", nullable = false, length = 255) private String remarks = "";
-    @Column(name = "BYZ", nullable = false, length = 255) private String byz = "";
+    @Column(name = "BYZ", nullable = false, length = 1028) private String byz = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
