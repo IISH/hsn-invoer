@@ -45,11 +45,11 @@
 
     <th:block th:if="${akte.is('1815IL', '1862I')}">
       <div class="form-group extra-top-margin">
-        <label class="col-xs-5 control-label">Zijn er aanwijzingen? j / n</label>
+        <label class="col-xs-5 control-label">Zijn er aanwijzingen? j / n / o</label>
 
         <div class="col-xs-2">
           <input type="text" id="aanwijzingen" class="form-control form-control-digit required"
-                 data-valid-chars="j;n" maxlength="1"
+                 data-valid-chars="j;n;o" maxlength="1"
                  th:value="${@militieregisterHelper.hasAanwijzingen(akte.mil, akte.isCorrection())}"/>
         </div>
       </div>
@@ -76,10 +76,10 @@
 
         <th:block th:if="${akte.is('1815IL')}">
           <div class="form-group">
-            <label class="col-xs-5 control-label">Behoorde tot een eerdere lichting? j / n</label>
+            <label class="col-xs-5 control-label">Behoorde tot een eerdere lichting? j / n / o</label>
 
             <div class="col-xs-2">
-              <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+              <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
                      id="eerdereLichting" maxlength="1"
                      th:value="${@militieregisterHelper.hasEerdereLichting(akte.mil, akte.isCorrection())}"/>
             </div>
@@ -173,40 +173,40 @@
 
     <th:block th:if="${akte.is('1815L', '1862IL', '1913IAL')}">
       <div class="form-group extra-top-margin">
-        <label class="col-xs-8 control-label">Is er sprake van vrijstelling? (Of aanvraag daarvoor?) j / n</label>
+        <label class="col-xs-8 control-label">Is er sprake van vrijstelling? (Of aanvraag daarvoor?) j / n / o</label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
                  maxlength="1" id="includesExemption" name="includesExemption"
                  th:value="${@militieregisterHelper.hasExemption(akte)}"/>
         </div>
       </div>
 
       <div class="form-group" th:if="${akte.is('1913AL')}">
-        <label class="col-xs-8 control-label">Uitspraak geschiktheid? (Na medisch advies) j / n</label>
+        <label class="col-xs-8 control-label">Uitspraak geschiktheid? (Na medisch advies) j / n / o</label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
                  maxlength="1" id="includesMedical" name="includesMedical"
                  th:value="${@militieregisterHelper.hasMedical(akte)}"/>
         </div>
       </div>
 
       <div class="form-group" th:if="${akte.is('1815L', '1862L')}">
-        <label class="col-xs-8 control-label">Is er sprake van uitstel? (Of aanvraag daarvoor?) j / n</label>
+        <label class="col-xs-8 control-label">Is er sprake van uitstel? (Of aanvraag daarvoor?) j / n / o</label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
                  maxlength="1" id="includesDelay" name="includesDelay"
                  th:value="${@militieregisterHelper.hasDelay(akte)}"/>
         </div>
       </div>
 
       <div class="form-group" th:if="${akte.is('1815L', '1862L')}">
-        <label class="col-xs-8 control-label">Is er sprake van uitstel van de beslissing door de militieraad? j / n</label>
+        <label class="col-xs-8 control-label">Is er sprake van uitstel van de beslissing door de militieraad? j / n / o</label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
                  maxlength="1" id="includesDelayMilition" name="includesDelayMilition"
                  th:value="${@militieregisterHelper.hasDelayMilition(akte)}"/>
         </div>
@@ -214,14 +214,14 @@
 
       <div class="form-group" th:if="${akte.is('1815L', '1862L', '1913A')}">
         <label class="col-xs-8 control-label" th:if="${akte.is('1913A')}">
-          Zijn er uitspraken omtrent vrijstelling en/of uitsluiting? j / n
+          Zijn er uitspraken omtrent vrijstelling en/of uitsluiting? j / n / o
         </label>
         <label class="col-xs-8 control-label" th:if="${akte.is('1913A') == false}">
-          Is er op enige manier sprake van beroep? j / n
+          Is er op enige manier sprake van beroep? j / n / o
         </label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+          <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
                  maxlength="1" id="includesAppeal" name="includesAppeal"
                  th:value="${@militieregisterHelper.hasAppeal(akte)}"/>
         </div>

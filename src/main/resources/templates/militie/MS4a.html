@@ -7,10 +7,10 @@
 <fieldset>
   <th:block layout:fragment="fields">
     <div class="form-group">
-      <label class="col-xs-5 control-label">Behoorde tot een eerdere lichting? j / n</label>
+      <label class="col-xs-5 control-label">Behoorde tot een eerdere lichting? j / n / o</label>
 
       <div class="col-xs-2">
-        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n"
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
                id="eerdereLichting" maxlength="1"
                th:value="${@militieregisterHelper.hasEerdereLichting(akte.mil, akte.isCorrection())}"/>
       </div>
@@ -43,10 +43,10 @@
     </div>
 
     <div class="form-group extra-top-margin">
-      <label class="col-xs-5 control-label">Voor den dienst vrijgesteld? j / n </label>
+      <label class="col-xs-5 control-label">Voor den dienst vrijgesteld? j / n / o</label>
 
       <div class="col-xs-2">
-        <input type="text" id="vrijgesteld" class="form-control form-control-digit required" data-valid-chars="j;n"
+        <input type="text" id="vrijgesteld" class="form-control form-control-digit required" data-valid-chars="j;n;o"
                maxlength="1" th:value="${@militieregisterHelper.hasVrijgesteld(akte)}"/>
       </div>
     </div>
