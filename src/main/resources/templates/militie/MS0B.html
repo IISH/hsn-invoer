@@ -16,7 +16,24 @@
       </div>
     </div>
 
-    <div class="form-group" th:include="fragments/complete-fields :: plaats ('mil.municipality', 'Gemeente:')"></div>
+    <div class="form-group">
+      <label class="col-xs-3 control-label">Motivatie keuze jaar:</label>
+
+      <div class="col-xs-1">
+        <input type="text" class="form-control required form-control-digit zero-allowed init-zero" maxlength="1"
+               data-valid-chars="0;1;2;3;4" th:field="*{mil.yearChoice}" hsn:field="mil.yearChoice"/>
+      </div>
+
+      <ul class="col-xs-5 list-unstyled">
+        <li><span class="code">0</span> Akkoord met keuringsjaar</li>
+        <li><span class="code">1</span> Keuringsjaar via geboortejaar</li>
+        <li><span class="code">2</span> Keuringsjaar via overeenkomst geboortejaren</li>
+        <li><span class="code">3</span> Keuringsjaar op basis van datum uitspraak</li>
+        <li><span class="code">4</span> Keuringsjaar verbeterd op basis van datum</li>
+      </ul>
+    </div>
+
+    <div class="form-group extra-top-margin" th:include="fragments/complete-fields :: plaats ('mil.municipality', 'Gemeente:')"></div>
 
     <div class="form-group">
       <label class="col-xs-3 control-label">

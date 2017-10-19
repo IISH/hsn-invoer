@@ -338,6 +338,12 @@
         }
     }
 
+    function initZero(elem) {
+        if (elem.val().length === 0) {
+            elem.val('0');
+        }
+    }
+
     $(document).on('keyup', '.form-elem', function (e) {
         var elem = $(e.target);
 
@@ -416,5 +422,9 @@
         if (byz.length > 0) {
             prepareByz(byz);
         }
+
+        elem.find('.init-zero').each(function () {
+            initZero($(this));
+        });
     });
 })(jQuery);
