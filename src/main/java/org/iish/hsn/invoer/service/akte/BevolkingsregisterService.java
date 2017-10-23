@@ -514,6 +514,8 @@ public class BevolkingsregisterService {
             }
         }
 
+        Collections.sort(correctionPersons);
+
         // Now make sure we reset the pointer of the current person to the first person
         bevolkingsregisterFlow.setCurB2Index(-1);
     }
