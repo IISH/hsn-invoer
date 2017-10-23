@@ -3,6 +3,7 @@ CREATE TABLE `m1` (
   `IDNR` int(11) NOT NULL,
   `VOLG` int(11) NOT NULL,
   `JAAR` int(11) NOT NULL,
+  `JAARKZ` int(11) NOT NULL,
   `TYPE` varchar(1) NOT NULL,
   `GEMNAAM` varchar(50) NOT NULL,
   `INVNR` varchar(10) NOT NULL,

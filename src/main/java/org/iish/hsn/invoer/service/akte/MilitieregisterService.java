@@ -108,6 +108,10 @@ public class MilitieregisterService {
             if ((scan.getMunicipality() == null) && (plaats != null)) {
                 milition.setMunicipality(plaats.getGemnaam());
             }
+
+            if (milition.getYear() == 8888) {
+                milition.setYearChoice(1);
+            }
         }
         catch (NotFoundException | IOException e) {
             throw new AkteException(e);

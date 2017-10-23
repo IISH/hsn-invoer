@@ -15,6 +15,7 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "VOLG", nullable = false) private int seq = 1;
 
     @Column(name = "JAAR", nullable = false) private int year;
+    @Column(name = "JAARKZ", nullable = false) private int yearChoice;
     @Column(name = "TYPE", nullable = false, length = 1) private String type = "";
     @Column(name = "GEMNAAM", nullable = false, length = 50) private String municipality = "";
     @Column(name = "INVNR", nullable = false, length = 10) private String invNumber = "";
@@ -192,6 +193,14 @@ public class Milition extends Invoer implements Serializable {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public int getYearChoice() {
+        return yearChoice;
+    }
+
+    public void setYearChoice(int yearChoice) {
+        this.yearChoice = yearChoice;
     }
 
     public String getType() {
