@@ -98,9 +98,9 @@ public class PersoonskaartService extends AkteService {
 
                 // TODO: Till here...
 
-                Plaats plaats = lookupService.getPlaats(refRp.getNumberMunicipality(), false);
+                String plaats = Utils.getGemeente(refRp, lookupService);
                 if (plaats != null) {
-                    pkknd.setGplperp(plaats.getGemnaam());
+                    pkknd.setGplperp(plaats);
                 }
             }
         }

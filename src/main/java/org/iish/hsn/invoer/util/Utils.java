@@ -1,5 +1,9 @@
 package org.iish.hsn.invoer.util;
 
+import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
+import org.iish.hsn.invoer.domain.reference.Ref_RP;
+import org.iish.hsn.invoer.exception.NotFoundException;
+import org.iish.hsn.invoer.service.LookupService;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -109,5 +113,31 @@ public class Utils {
      */
     public static String getDateAsString(int day, int month, int year) {
         return day + "-" + month + "-" + year;
+    }
+
+    /**
+     * A helper to obtain the gemeente.
+     *
+     * @param refRp         The person.
+     * @param lookupService The lookup service.
+     * @return The gemeente if found.
+     */
+    public static String getGemeente(Ref_RP refRp, LookupService lookupService) {
+        try {
+            if (refRp != null) {
+                if (!refRp.getNameMunicipality().isEmpty()) {
+                    return refRp.getNameMunicipality();
+                }
+
+                if (refRp.getNumberMunicipality() > 0) {
+                    Plaats plaats = lookupService.getPlaats(refRp.getNumberMunicipality(), true);
+                    return plaats.getGemnaam();
+                }
+            }
+            return null;
+        }
+        catch (NotFoundException nfe) {
+            return null;
+        }
     }
 }

@@ -13,6 +13,7 @@ import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.service.scan.MilitionScan;
 import org.iish.hsn.invoer.service.scan.ScansService;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -104,9 +105,9 @@ public class MilitieregisterService {
             milition.setFamilyNameMother(refRp.getPrefixLastNameMother());
             milition.setFirstNameMother(refRp.getFirstNameMother());
 
-            Plaats plaats = lookupService.getPlaats(refRp.getNumberMunicipality(), false);
-            if ((scan.getMunicipality() == null) && (plaats != null)) {
-                milition.setMunicipality(plaats.getGemnaam());
+            String plaats = Utils.getGemeente(refRp, lookupService);
+            if (plaats != null) {
+                milition.setMunicipality(plaats);
             }
 
             if (milition.getYear() == 8888) {
