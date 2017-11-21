@@ -115,10 +115,13 @@ public class MilitieregisterController {
 
         if (scanPath != null) {
             String contentType = Files.probeContentType(scanPath);
+            long fileSize = Files.size(scanPath);
 
-            // In case of the most common image formats, try to increase the compression for smaller images
-            if (contentType.equals(MediaType.IMAGE_JPEG_VALUE) || contentType.equals(MediaType.IMAGE_GIF_VALUE)
-                    || contentType.equals(MediaType.IMAGE_PNG_VALUE)) {
+            // In case of the most common image formats larger than 6 MB,
+            // try to increase the compression for smaller images
+            if ((fileSize > 6291456L) && (contentType.equals(MediaType.IMAGE_JPEG_VALUE)
+                    || contentType.equals(MediaType.IMAGE_GIF_VALUE)
+                    || contentType.equals(MediaType.IMAGE_PNG_VALUE))) {
                 ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
                 ImageWriteParam jpgWriteParam = jpgWriter.getDefaultWriteParam();
                 jpgWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
