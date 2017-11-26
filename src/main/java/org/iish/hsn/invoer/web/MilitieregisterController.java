@@ -22,6 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -94,7 +101,7 @@ public class MilitieregisterController {
     }
 
     @RequestMapping(value = "/scan", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<ByteArrayResource> getScan(
+    public @ResponseBody ResponseEntity<byte[]> getScan(
             @RequestParam("idnr") int idnr, @RequestParam("file") String file) throws IOException, NotFoundException {
         Path scanPath = null;
 
@@ -107,11 +114,38 @@ public class MilitieregisterController {
         }
 
         if (scanPath != null) {
+            String contentType = Files.probeContentType(scanPath);
+            long fileSize = Files.size(scanPath);
+
+            // In case of the most common image formats larger than 6 MB,
+            // try to increase the compression for smaller images
+            if ((fileSize > 6291456L) && (contentType.equals(MediaType.IMAGE_JPEG_VALUE)
+                    || contentType.equals(MediaType.IMAGE_GIF_VALUE)
+                    || contentType.equals(MediaType.IMAGE_PNG_VALUE))) {
+                ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
+                ImageWriteParam jpgWriteParam = jpgWriter.getDefaultWriteParam();
+                jpgWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                jpgWriteParam.setCompressionQuality(0.5f);
+
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                ImageOutputStream imageOutputStream = new MemoryCacheImageOutputStream(byteArrayOutputStream);
+                jpgWriter.setOutput(imageOutputStream);
+
+                IIOImage outputImage = new IIOImage(ImageIO.read(scanPath.toFile()), null, null);
+                jpgWriter.write(null, outputImage, jpgWriteParam);
+                jpgWriter.dispose();
+
+                HttpHeaders responseHeaders = new HttpHeaders();
+                responseHeaders.setContentType(MediaType.valueOf(MediaType.IMAGE_JPEG_VALUE));
+
+                return new ResponseEntity<>(byteArrayOutputStream.toByteArray(), responseHeaders, HttpStatus.OK);
+            }
+
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.setContentType(MediaType.parseMediaType(Files.probeContentType(scanPath)));
+            responseHeaders.setContentType(MediaType.parseMediaType(contentType));
             ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(scanPath));
 
-            return new ResponseEntity<>(byteArrayResource, responseHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(byteArrayResource.getByteArray(), responseHeaders, HttpStatus.OK);
         }
 
         throw new NotFoundException("Milition scan for RP with idnr " + idnr +
