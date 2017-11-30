@@ -48,8 +48,10 @@
 
 <div th:fragment="handtekening (hndag)">
   <th:block th:with="hndagVal=${__${'akte.' + hndag}__}">
-    <input type="hidden" data-set-value-when="#handtekening-zetten" data-has-values-in="j"
-           data-then-value-of="#handtekening-kode" data-else-value-of="#handtekening-zetten"
+    <input type="hidden" id="handtekening-vertaald" data-set-value-when="#handtekening-zetten" data-has-values-in="n"
+           data-then-value="h" data-else-value-of="#handtekening-zetten"/>
+    <input type="hidden" data-set-value-when="#handtekening-vertaald" data-has-values-in="j"
+           data-then-value-of="#handtekening-kode" data-else-value-of="#handtekening-vertaald"
            th:field="*{__${hndag}__}"/>
 
     <div class="form-group form-inline">
@@ -59,7 +61,7 @@
           j / n / o</label>
         <input type="text" id="handtekening-zetten" name="handtekening"
                class="form-control form-control-digit spacing required" maxlength="1" data-valid-chars="j;n;o"
-               th:value="${#arrays.contains({'a', 'b', 'c', 'd', 'e'}, hndagVal)} ? 'j' : ${hndagVal}"/>
+               th:value="${#arrays.contains({'a', 'b', 'c', 'd', 'e'}, hndagVal)} ? 'j' : ${(hndagVal == 'h') ? 'n' : hndagVal}"/>
       </div>
     </div>
 
