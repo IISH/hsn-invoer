@@ -28,6 +28,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -131,7 +132,9 @@ public class MilitieregisterController {
                 ImageOutputStream imageOutputStream = new MemoryCacheImageOutputStream(byteArrayOutputStream);
                 jpgWriter.setOutput(imageOutputStream);
 
-                IIOImage outputImage = new IIOImage(ImageIO.read(scanPath.toFile()), null, null);
+                ImageIO.setUseCache(false);
+                BufferedImage image = ImageIO.read(scanPath.toFile());
+                IIOImage outputImage = new IIOImage(image, null, null);
                 jpgWriter.write(null, outputImage, jpgWriteParam);
                 jpgWriter.dispose();
 
