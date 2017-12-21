@@ -1,13 +1,15 @@
 package org.iish.hsn.invoer.web;
 
-import org.iish.hsn.invoer.domain.invoer.mil.Milition;
-import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.param.OverviewParams;
 import org.iish.hsn.invoer.service.OverviewService;
 import org.iish.hsn.invoer.service.scan.Scan;
 import org.iish.hsn.invoer.service.scan.ScansService;
 import org.iish.hsn.invoer.service.scan.MilitionScanRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -33,13 +35,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import org.libjpegturbo.turbojpeg.*;
 
 @Controller
 @RequestMapping(value = "/militie")
 public class MilitieregisterController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MilitieregisterController.class);
+
     @Autowired private OverviewService overviewService;
     @Autowired private ScansService scansService;
 
@@ -123,25 +129,13 @@ public class MilitieregisterController {
             if ((fileSize > 6291456L) && (contentType.equals(MediaType.IMAGE_JPEG_VALUE)
                     || contentType.equals(MediaType.IMAGE_GIF_VALUE)
                     || contentType.equals(MediaType.IMAGE_PNG_VALUE))) {
-                ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
-                ImageWriteParam jpgWriteParam = jpgWriter.getDefaultWriteParam();
-                jpgWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                jpgWriteParam.setCompressionQuality(0.5f);
-
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                ImageOutputStream imageOutputStream = new MemoryCacheImageOutputStream(byteArrayOutputStream);
-                jpgWriter.setOutput(imageOutputStream);
-
-                ImageIO.setUseCache(false);
-                BufferedImage image = ImageIO.read(scanPath.toFile());
-                IIOImage outputImage = new IIOImage(image, null, null);
-                jpgWriter.write(null, outputImage, jpgWriteParam);
-                jpgWriter.dispose();
-
                 HttpHeaders responseHeaders = new HttpHeaders();
                 responseHeaders.setContentType(MediaType.valueOf(MediaType.IMAGE_JPEG_VALUE));
 
-                return new ResponseEntity<>(byteArrayOutputStream.toByteArray(), responseHeaders, HttpStatus.OK);
+                BufferedImage bufferedImage = getImage(scanPath);
+                byte[] image = getCompressedImage(bufferedImage);
+
+                return new ResponseEntity<>(image, responseHeaders, HttpStatus.OK);
             }
 
             HttpHeaders responseHeaders = new HttpHeaders();
@@ -153,5 +147,75 @@ public class MilitieregisterController {
 
         throw new NotFoundException("Milition scan for RP with idnr " + idnr +
                 " and filename " + file + " could not be found!");
+    }
+
+    private BufferedImage getImage(Path path) throws IOException {
+        BufferedImage image = null;
+
+        if (Files.probeContentType(path).equals(MediaType.IMAGE_JPEG_VALUE)) {
+            try {
+                byte[] img = Files.readAllBytes(path);
+                TJDecompressor decompressor = new TJDecompressor(img);
+                int width = decompressor.getWidth();
+                int height = decompressor.getHeight();
+                image = decompressor.decompress(width, height, BufferedImage.TYPE_INT_RGB, 0);
+                decompressor.close();
+            }
+            catch (UnsatisfiedLinkError ule) {
+                LOGGER.warn("Couldn't use turbojpeg to read the JPEG image!");
+            }
+            catch (Exception e) {
+                if (e instanceof IOException)
+                    throw (IOException) e;
+                throw new IOException(e);
+            }
+        }
+
+        if (image == null) {
+            ImageIO.setUseCache(false);
+            image = ImageIO.read(path.toFile());
+        }
+
+        return image;
+    }
+
+    private byte[] getCompressedImage(BufferedImage image) throws IOException {
+        byte[] compressedImage = null;
+
+        try {
+            TJCompressor compressor = new TJCompressor();
+            compressor.setJPEGQuality(50);
+            compressor.setSubsamp(TJ.SAMP_444);
+            byte[] img = compressor.compress(image, 0);
+            compressedImage = Arrays.copyOfRange(img, 0, compressor.getCompressedSize());
+        }
+        catch (UnsatisfiedLinkError ule) {
+            LOGGER.warn("Couldn't use turbojpeg to write the JPEG image!");
+        }
+        catch (Exception e) {
+            if (e instanceof IOException)
+                throw (IOException) e;
+            throw new IOException(e);
+        }
+
+        if (compressedImage == null) {
+            ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
+
+            ImageWriteParam jpgWriteParam = jpgWriter.getDefaultWriteParam();
+            jpgWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            jpgWriteParam.setCompressionQuality(0.5f);
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageOutputStream imageOutputStream = new MemoryCacheImageOutputStream(byteArrayOutputStream);
+            jpgWriter.setOutput(imageOutputStream);
+
+            IIOImage outputImage = new IIOImage(image, null, null);
+            jpgWriter.write(null, outputImage, jpgWriteParam);
+            jpgWriter.dispose();
+
+            compressedImage = byteArrayOutputStream.toByteArray();
+        }
+
+        return compressedImage;
     }
 }
