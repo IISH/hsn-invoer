@@ -8,14 +8,16 @@
   <th:block layout:fragment="fields">
     <div class="form-header letter-spacing">MEDISCH ADVIES:</div>
 
-    <div class="form-group extra-top-margin" th:if="${akte.is('1913A')}">
+    <div class="form-header extra-top-margin" th:if="${akte.is('1923A')}">Keuringsraad:</div>
+
+    <div class="form-group extra-top-margin" th:if="${akte.is('1913A', '1923A')}">
       <label class="col-xs-6 control-label">Datum uitspraak:</label>
 
       <div
           th:replace="fragments/fields :: datum ('mil.dayOfMedicalVerdict', 'mil.monthOfMedicalVerdict', 'mil.yearOfMedicalVerdict')"></div>
     </div>
 
-    <div class="form-group" th:if="${akte.is('1913A')}">
+    <div class="form-group" th:if="${akte.is('1913A', '1923A')}">
       <label class="col-xs-6 control-label">Opgegeven gebreken:</label>
 
       <div class="col-xs-5">
@@ -23,7 +25,7 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${akte.is('1913AL')}" th:classappend="${akte.is('1913L')} ? 'extra-top-margin'">
+    <div class="form-group" th:if="${akte.is('1913AL', '1923AL')}" th:classappend="${akte.is('1913L', '1923L')} ? 'extra-top-margin'">
       <label class="col-xs-6 control-label">Bevindingen van de geneeskundigen:</label>
 
       <div class="col-xs-5">
@@ -32,7 +34,7 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${akte.is('1913A')}">
+    <div class="form-group" th:if="${akte.is('1913A', '1923A')}">
       <label class="col-xs-6 control-label">Aard der uitspraak:</label>
 
       <div class="col-xs-5">
@@ -40,13 +42,57 @@
       </div>
     </div>
 
-    <div class="form-group" th:if="${akte.is('1913A')}">
+    <div class="form-group" th:if="${akte.is('1913A', '1923A')}">
       <label class="col-xs-6 control-label">Nummer ongeschiktheid volgens keuringsregelement:</label>
 
       <div class="col-xs-2">
         <input type="text" class="form-control" th:field="*{mil.medicalNumber}" hsn:field="mil.medicalNumber"/>
       </div>
     </div>
+
+    <th:block th:if="${akte.is('1923A')}">
+      <div class="form-header extra-top-margin">Herkeuringsraad:</div>
+
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-6 control-label">Datum uitspraak:</label>
+
+        <div
+            th:replace="fragments/fields :: datum ('mil.dayOfSecondMedicalVerdict', 'mil.monthOfSecondMedicalVerdict', 'mil.yearOfSecondMedicalVerdict')"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-6 control-label">Opgegeven gebreken:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control" th:field="*{mil.secondMedicalDefects}" hsn:field="mil.secondMedicalDefects"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-6 control-label">Bevindingen van de geneeskundigen:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.secondMedicalAdvice}" hsn:field="mil.secondMedicalAdvice"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-6 control-label">Aard der uitspraak:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control" th:field="*{mil.secondMedicalVerdict}" hsn:field="mil.secondMedicalVerdict"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-6 control-label">Nummer ongeschiktheid volgens keuringsregelement:</label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control" th:field="*{mil.secondMedicalNumber}" hsn:field="mil.secondMedicalNumber"/>
+        </div>
+      </div>
+    </th:block>
 
     <div th:replace="militie/byz-fragment :: byzModal"></div>
   </th:block>
@@ -55,12 +101,12 @@
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
 <div layout:fragment="info">
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913A')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913A', '1923A')}">
     Er is òf een advies van de keuringsraad òf van de militieraad
     (welke hoeft niet te worden aangegeven, zie kolom 11-12).
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913L')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913L', '1923L')}">
     Er is òf een advies van de keuringsraad òf van de militieraad
     (welke hoeft niet te worden aangegeven, zie kolom 10a-b).
   </div>

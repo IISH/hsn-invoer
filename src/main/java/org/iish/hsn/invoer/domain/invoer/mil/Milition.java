@@ -77,6 +77,7 @@ public class Milition extends Invoer implements Serializable {
 
     @Column(name = "IVWD", nullable = false, length = 1) private String voluntaryService = "";
     @Column(name = "NMREG", nullable = false, length = 200) private String voluntaryWhere = "";
+    @Column(name = "DRREG", nullable = false, length = 200) private String voluntaryTime = "";
 
     @Column(name = "IVRKL", nullable = false, length = 50) private String formerClass = "";
     @Column(name = "RDNLTR", nullable = false, length = 200) private String formerClassReason = "";
@@ -103,13 +104,21 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "EXEMPJ", nullable = false) private int yearOfExemptionVerdict;
     @Column(name = "EXEMPU", nullable = false, length = 150) private String exemptionVerdict = "";
 
-    @Column(name = "MEDD", nullable = false) private int dayOfMedicalVerdict;
-    @Column(name = "MEDM", nullable = false) private int monthOfMedicalVerdict;
-    @Column(name = "MEDJ", nullable = false) private int yearOfMedicalVerdict;
-    @Column(name = "MEDGEB", nullable = false, length = 100) private String medicalDefects = "";
-    @Column(name = "MEDADV", nullable = false, length = 100) private String medicalAdvice = "";
-    @Column(name = "MEDU", nullable = false, length = 50) private String medicalVerdict = "";
-    @Column(name = "MEDREG", nullable = false, length = 10) private String medicalNumber = "";
+    @Column(name = "MEDD1", nullable = false) private int dayOfMedicalVerdict;
+    @Column(name = "MEDM1", nullable = false) private int monthOfMedicalVerdict;
+    @Column(name = "MEDJ1", nullable = false) private int yearOfMedicalVerdict;
+    @Column(name = "MEDGEB1", nullable = false, length = 100) private String medicalDefects = "";
+    @Column(name = "MEDADV1", nullable = false, length = 100) private String medicalAdvice = "";
+    @Column(name = "MEDU1", nullable = false, length = 50) private String medicalVerdict = "";
+    @Column(name = "MEDREG1", nullable = false, length = 10) private String medicalNumber = "";
+
+    @Column(name = "MEDD2", nullable = false) private int dayOfSecondMedicalVerdict;
+    @Column(name = "MEDM2", nullable = false) private int monthOfSecondMedicalVerdict;
+    @Column(name = "MEDJ2", nullable = false) private int yearOfSecondMedicalVerdict;
+    @Column(name = "MEDGEB2", nullable = false, length = 100) private String secondMedicalDefects = "";
+    @Column(name = "MEDADV2", nullable = false, length = 100) private String secondMedicalAdvice = "";
+    @Column(name = "MEDU2", nullable = false, length = 50) private String secondMedicalVerdict = "";
+    @Column(name = "MEDREG2", nullable = false, length = 10) private String secondMedicalNumber = "";
 
     @Column(name = "UITSTEL", nullable = false, length = 1) private String delayOfService = "";
     @Column(name = "UITSTELD", nullable = false) private int dayOfDelayVerdict;
@@ -123,10 +132,13 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "VNPV", nullable = false, length = 50) private String firstNameSubstitute = "";
     @Column(name = "PVNB", nullable = false, length = 10) private String substituteNumber = "";
 
+    @Column(name = "AARDDP", nullable = false, length = 1) private String natureOfService = "";
     @Column(name = "ZEEMIL", nullable = false, length = 1) private String inNaval = "";
-    @Column(name = "WENS", nullable = false, length = 50) private String wishOfRecruit = "";
+    @Column(name = "WENS1", nullable = false, length = 50) private String firstWishOfRecruit = "";
+    @Column(name = "WENS2", nullable = false, length = 50) private String secondWishOfRecruit = "";
     @Column(name = "GSCHK1", nullable = false, length = 50) private String firstSuitability = "";
     @Column(name = "GSCHK2", nullable = false, length = 50) private String secondSuitability = "";
+    @Column(name = "NGSCHK", nullable = false, length = 50) private String notSuitabile = "";
 
     @Column(name = "AANWD", nullable = false) private int dayOfDesignation;
     @Column(name = "AANWM", nullable = false) private int monthOfDesignation;
@@ -137,6 +149,8 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "INLM", nullable = false) private int monthOfAnnexation;
     @Column(name = "INLJ", nullable = false) private int yearOfAnnexation;
     @Column(name = "KPINL", nullable = false, length = 255) private String positionAnnexation = "";
+    @Column(name = "INLG", nullable = false, length = 50) private String garrisonAnnexation = "";
+    @Column(name = "INLT", nullable = false, length = 50) private String annexationPeriod = "";
 
     @Column(name = "BYZAAN", nullable = false, length = 100) private String byzRemarks = "";
     @Column(name = "AANMRK", nullable = false, length = 255) private String remarks = "";
@@ -595,6 +609,14 @@ public class Milition extends Invoer implements Serializable {
         this.voluntaryWhere = voluntaryWhere;
     }
 
+    public String getVoluntaryTime() {
+        return voluntaryTime;
+    }
+
+    public void setVoluntaryTime(String voluntaryTime) {
+        this.voluntaryTime = voluntaryTime;
+    }
+
     public String getFormerClass() {
         return formerClass;
     }
@@ -811,6 +833,62 @@ public class Milition extends Invoer implements Serializable {
         this.medicalNumber = medicalNumber;
     }
 
+    public int getDayOfSecondMedicalVerdict() {
+        return dayOfSecondMedicalVerdict;
+    }
+
+    public void setDayOfSecondMedicalVerdict(int dayOfSecondMedicalVerdict) {
+        this.dayOfSecondMedicalVerdict = dayOfSecondMedicalVerdict;
+    }
+
+    public int getMonthOfSecondMedicalVerdict() {
+        return monthOfSecondMedicalVerdict;
+    }
+
+    public void setMonthOfSecondMedicalVerdict(int monthOfSecondMedicalVerdict) {
+        this.monthOfSecondMedicalVerdict = monthOfSecondMedicalVerdict;
+    }
+
+    public int getYearOfSecondMedicalVerdict() {
+        return yearOfSecondMedicalVerdict;
+    }
+
+    public void setYearOfSecondMedicalVerdict(int yearOfSecondMedicalVerdict) {
+        this.yearOfSecondMedicalVerdict = yearOfSecondMedicalVerdict;
+    }
+
+    public String getSecondMedicalDefects() {
+        return secondMedicalDefects;
+    }
+
+    public void setSecondMedicalDefects(String secondMedicalDefects) {
+        this.secondMedicalDefects = secondMedicalDefects;
+    }
+
+    public String getSecondMedicalAdvice() {
+        return secondMedicalAdvice;
+    }
+
+    public void setSecondMedicalAdvice(String secondMedicalAdvice) {
+        this.secondMedicalAdvice = secondMedicalAdvice;
+    }
+
+    public String getSecondMedicalVerdict() {
+        return secondMedicalVerdict;
+    }
+
+    public void setSecondMedicalVerdict(String secondMedicalVerdict) {
+        this.secondMedicalVerdict = secondMedicalVerdict;
+    }
+
+    public String getSecondMedicalNumber() {
+        return secondMedicalNumber;
+    }
+
+    public void setSecondMedicalNumber(String secondMedicalNumber) {
+        this.secondMedicalNumber = secondMedicalNumber;
+    }
+
     public String getDelayOfService() {
         return delayOfService;
     }
@@ -899,12 +977,28 @@ public class Milition extends Invoer implements Serializable {
         this.inNaval = inNaval;
     }
 
-    public String getWishOfRecruit() {
-        return wishOfRecruit;
+    public String getNatureOfService() {
+        return natureOfService;
     }
 
-    public void setWishOfRecruit(String wishOfRecruit) {
-        this.wishOfRecruit = wishOfRecruit;
+    public void setNatureOfService(String natureOfService) {
+        this.natureOfService = natureOfService;
+    }
+
+    public String getFirstWishOfRecruit() {
+        return firstWishOfRecruit;
+    }
+
+    public void setFirstWishOfRecruit(String firstWishOfRecruit) {
+        this.firstWishOfRecruit = firstWishOfRecruit;
+    }
+
+    public String getSecondWishOfRecruit() {
+        return secondWishOfRecruit;
+    }
+
+    public void setSecondWishOfRecruit(String secondWishOfRecruit) {
+        this.secondWishOfRecruit = secondWishOfRecruit;
     }
 
     public String getFirstSuitability() {
@@ -921,6 +1015,14 @@ public class Milition extends Invoer implements Serializable {
 
     public void setSecondSuitability(String secondSuitability) {
         this.secondSuitability = secondSuitability;
+    }
+
+    public String getNotSuitabile() {
+        return notSuitabile;
+    }
+
+    public void setNotSuitabile(String notSuitabile) {
+        this.notSuitabile = notSuitabile;
     }
 
     public int getDayOfDesignation() {
@@ -985,6 +1087,22 @@ public class Milition extends Invoer implements Serializable {
 
     public void setPositionAnnexation(String positionAnnexation) {
         this.positionAnnexation = positionAnnexation;
+    }
+
+    public String getGarrisonAnnexation() {
+        return garrisonAnnexation;
+    }
+
+    public void setGarrisonAnnexation(String garrisonAnnexation) {
+        this.garrisonAnnexation = garrisonAnnexation;
+    }
+
+    public String getAnnexationPeriod() {
+        return annexationPeriod;
+    }
+
+    public void setAnnexationPeriod(String annexationPeriod) {
+        this.annexationPeriod = annexationPeriod;
     }
 
     public String getByzRemarks() {

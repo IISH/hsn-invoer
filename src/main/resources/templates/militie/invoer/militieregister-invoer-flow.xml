@@ -61,7 +61,7 @@
   </view-state>
 
   <action-state id="descriptionOfPersonCheck">
-    <evaluate expression="flowScope.akte.is('1862I', '1913I') == false"/>
+    <evaluate expression="flowScope.akte.is('1862I', '1913I', '1923I') == false"/>
 
     <transition on="yes" to="MS3"/>
     <transition on="no" to="extraInfoCheck"/>
@@ -152,7 +152,7 @@
   </view-state>
 
   <action-state id="includesAppointed">
-    <evaluate expression="flowScope.akte.is('1815L', '1862IL', '1913AL')"/>
+    <evaluate expression="flowScope.akte.is('1815L', '1862IL', '1913AL', '1923AL')"/>
 
     <transition on="yes" to="MS9"/>
     <transition on="no" to="MSBYZ"/>

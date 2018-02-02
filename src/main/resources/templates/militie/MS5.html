@@ -9,7 +9,7 @@
     <div class="form-header letter-spacing">VRIJSTELLING:</div>
 
     <div class="extra-top-margin">
-      <div class="form-group" th:if="${akte.is('1913A')}">
+      <div class="form-group" th:if="${akte.is('1913A', '1923A')}">
         <label class="col-xs-6 control-label">
           Door wie vroegere uitspraak gedaan:
         </label>
@@ -20,14 +20,14 @@
         </div>
       </div>
 
-      <div class="form-group" th:if="${akte.is('1913A')}">
+      <div class="form-group" th:if="${akte.is('1913A', '1923A')}">
         <label class="col-xs-6 control-label">Datum vroegere uitspraak:</label>
 
         <div
             th:replace="fragments/fields :: datum ('mil.dayOfExemptionVerdict', 'mil.monthOfExemptionVerdict', 'mil.yearOfExemptionVerdict')"></div>
       </div>
 
-      <div class="form-group" th:if="${akte.is('1913A')}">
+      <div class="form-group" th:if="${akte.is('1913A', '1923A')}">
         <label class="col-xs-6 control-label">Aard der uitspraak:</label>
 
         <div class="col-xs-5">
@@ -35,11 +35,11 @@
         </div>
       </div>
 
-      <div class="form-group" th:if="${akte.is('1815', '1862', '1913IA')}">
-        <label class="col-xs-6 control-label" th:if="${akte.is('1913I') == false}">
+      <div class="form-group" th:if="${akte.is('1815', '1862', '1913IA', '1923IA')}">
+        <label class="col-xs-6 control-label" th:if="${akte.is('1913I', '1923I') == false}">
           Aangevoerde redenen door loteling:
         </label>
-        <label class="col-xs-6 control-label" th:if="${akte.is('1913I')}">
+        <label class="col-xs-6 control-label" th:if="${akte.is('1913I', '1923I')}">
           Reden tot vrijstelling of uitsluiting:
         </label>
 
@@ -58,11 +58,11 @@
         </div>
       </div>
 
-      <div class="form-group" th:if="${akte.is('1913IL')}">
-        <label class="col-xs-6 control-label" th:if="${akte.is('1913I') == false}">
+      <div class="form-group" th:if="${akte.is('1913IL', '1923IL')}">
+        <label class="col-xs-6 control-label" th:if="${akte.is('1913I', '1923I') == false}">
           Redenen uit het verleden:
         </label>
-        <label class="col-xs-6 control-label" th:if="${akte.is('1913I')}">
+        <label class="col-xs-6 control-label" th:if="${akte.is('1913I', '1923I')}">
           Door wie vroegere uitspraak gedaan:
         </label>
 
@@ -72,7 +72,7 @@
         </div>
       </div>
 
-      <div class="form-group" th:if="${akte.is('1815', '1913L')}">
+      <div class="form-group" th:if="${akte.is('1815', '1913L', '1923L')}">
         <label class="col-xs-6 control-label">Aangevoerde redenen door militieraad:</label>
 
         <div class="col-xs-5">
@@ -81,7 +81,7 @@
         </div>
       </div>
 
-      <div class="form-group" th:if="${akte.is('1815AI', '1862', '1913AL')}">
+      <div class="form-group" th:if="${akte.is('1815AI', '1862', '1913AL', '1923AL')}">
         <label class="col-xs-6 control-label">Advies van de militieraad (definitieve reden vrijstelling):</label>
 
         <div class="col-xs-5">
@@ -90,14 +90,14 @@
         </div>
       </div>
 
-      <div class="form-group" th:if="${akte.is('1862L', '1913I')}">
+      <div class="form-group" th:if="${akte.is('1862L', '1913I', '1923I')}">
         <label class="col-xs-6 control-label">Datum uitspraak:</label>
 
         <div
             th:replace="fragments/fields :: datum ('mil.dayOfExemptionVerdict', 'mil.monthOfExemptionVerdict', 'mil.yearOfExemptionVerdict')"></div>
       </div>
 
-      <div class="form-group" th:if="${akte.is('1862L', '1913I')}">
+      <div class="form-group" th:if="${akte.is('1862L', '1913I', '1923I')}">
         <label class="col-xs-6 control-label">Aard der uitspraak:</label>
 
         <div class="col-xs-5">
@@ -125,7 +125,7 @@
     Uitspraak (13.2)
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913A')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913A', '1923A')}">
     Door wie vroegere uitspraak gedaan (kolom 5.1)<br/>
     Datum vroegere uitspraak (kolom 5.2)<br/>
     Aard der uitspraak (kolom 5.3)<br/>
@@ -133,13 +133,13 @@
     Advies militieraad (kolom 6.2)
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913L')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913L', '1923L')}">
     Redenen verleden (kolom 5.3)<br/>
     Aangevoerde reden (kolom 6.1)<br/>
     Advies militieraad (kolom 6.2)
   </div>
 
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913I')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913I', '1923I')}">
     Reden (kolom 7)<br/>
     Wie vrg uitspraak (kolom 9.1)<br/>
     Datum vrg uitspraak (kolom 9.2)<br/>

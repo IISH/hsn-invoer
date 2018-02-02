@@ -68,6 +68,17 @@
       </div>
     </th:block>
 
+    <div class="form-group extra-top-margin" th:if="${akte.is('1923A')}">
+      <label class="col-xs-6 control-label">
+        Aard dienstplicht? 1: Gewoon 2: Buitengewoon
+      </label>
+
+      <div class="col-xs-2">
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="1;2"
+               maxlength="1" th:field="*{mil.natureOfService}" hsn:field="mil.natureOfService"/>
+      </div>
+    </div>
+
     <div class="form-group extra-top-margin" th:if="${akte.is('1862IL')}">
       <label class="col-xs-8 control-label">
         Heeft de loteling verklaard bij de zeemilitie te willen dienen? j / n / o
@@ -79,13 +90,23 @@
       </div>
     </div>
 
-    <th:block th:if="${akte.is('1913AL')}">
+    <th:block th:if="${akte.is('1913AL', '1923AL')}">
       <div class="form-group extra-top-margin">
-        <label class="col-xs-4 control-label">Wens loteling korps / positie:</label>
+        <label class="col-xs-4 control-label" th:if="${!akte.isStrict('1923A')}">Wens loteling korps / positie:</label>
+        <label class="col-xs-4 control-label" th:if="${akte.isStrict('1923A')}">1e wens loteling korps / positie:</label>
 
         <div class="col-xs-5">
           <input type="text" class="form-control"
-                 th:field="*{mil.wishOfRecruit}" hsn:field="mil.wishOfRecruit"/>
+                 th:field="*{mil.firstWishOfRecruit}" hsn:field="mil.firstWishOfRecruit"/>
+        </div>
+      </div>
+
+      <div class="form-group" th:if="${akte.is('1923A')}">
+        <label class="col-xs-4 control-label">2e wens loteling korps / positie:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.secondWishOfRecruit}" hsn:field="mil.secondWishOfRecruit"/>
         </div>
       </div>
 
@@ -106,9 +127,18 @@
                  th:field="*{mil.secondSuitability}" hsn:field="mil.secondSuitability"/>
         </div>
       </div>
+
+      <div class="form-group" th:if="${akte.is('1923A')}">
+        <label class="col-xs-4 control-label">Minder geschikt voor:</label>
+
+        <div class="col-xs-5">
+          <input type="text" class="form-control"
+                 th:field="*{mil.notSuitabile}" hsn:field="mil.notSuitabile"/>
+        </div>
+      </div>
     </th:block>
 
-    <th:block th:if="${akte.is('1815', '1862', '1913IL')}">
+    <th:block th:if="${akte.is('1815', '1862', '1913IL', '1923IAL')}">
       <div class="form-header letter-spacing extra-top-margin" th:if="${akte.mil.is1815()}">DESIGNATIE:</div>
       <div class="form-header letter-spacing extra-top-margin" th:if="${!akte.mil.is1815()}">AANWIJZING DIENST:</div>
 
@@ -129,7 +159,7 @@
         </div>
       </th:block>
 
-      <th:block th:if="${akte.is('1815L', '1862IL', '1913L')}">
+      <th:block th:if="${akte.is('1815L', '1862IL', '1913L', '1923AL')}">
         <div class="form-group extra-top-margin">
           <label class="col-xs-4 control-label">Datum van inlijving:</label>
 
@@ -142,6 +172,24 @@
           <div class="col-xs-6">
             <input type="text" class="form-control"
                    th:field="*{mil.positionAnnexation}" hsn:field="mil.positionAnnexation"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-4 control-label">Garnizoen inlijving:</label>
+
+          <div class="col-xs-6">
+            <input type="text" class="form-control"
+                   th:field="*{mil.garrisonAnnexation}" hsn:field="mil.garrisonAnnexation"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-4 control-label">Tijdvak inlijving:</label>
+
+          <div class="col-xs-6">
+            <input type="text" class="form-control"
+                   th:field="*{mil.annexationPeriod}" hsn:field="mil.annexationPeriod"/>
           </div>
         </div>
       </th:block>

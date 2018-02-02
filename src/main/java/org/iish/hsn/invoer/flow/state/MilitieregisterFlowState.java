@@ -45,7 +45,7 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
                     (mil.is1815() && "1815".equals(year)) ||
                     (mil.is1862() && "1862".equals(year)) ||
                     (mil.is1913() && "1913".equals(year)) ||
-                    (mil.is1923() && ("1913".equals(year) || "1923".equals(year)));
+                    (mil.is1923() && "1923".equals(year));
 
             if (yearMatches) {
                 String type = "KN".contains(mil.getType().toUpperCase()) ? "L" : mil.getType().toUpperCase();

@@ -11,7 +11,7 @@
     <div class="extra-top-margin" th:include="fragments/groups-of-fields :: namen-nieuw ('mil.familyName', 'mil.firstName')">
     </div>
 
-    <th:block th:if="${akte.is('1815', '1862', '1913IL')}">
+    <th:block th:if="${akte.is('1815', '1862', '1913IL', '1923AIL')}">
       <div class="form-group extra-top-margin"
            th:include="fragments/complete-fields :: plaats ('mil.placeOfBirth', 'Geboorteplaats:')"></div>
 
@@ -39,7 +39,7 @@
       </th:block>
     </th:block>
 
-    <div class="form-group extra-top-margin" th:if="${akte.is('1913A')}">
+    <div class="form-group extra-top-margin" th:if="${akte.is('1913A', '1923A')}">
       <label class="col-xs-4 control-label">Bijzondere aantekeningen:</label>
 
       <div class="col-xs-6">
@@ -54,7 +54,7 @@
 <div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
 
 <div layout:fragment="info">
-  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913IL')}">
+  <div class="alert alert-info extra-top-margin" role="alert" th:if="${akte.isStrict('1913IL', '1923IL')}">
     In het geval van vrijwillige dienst bij de woonplaats ook het dienstonderdeel vermelden.
   </div>
 </div>
