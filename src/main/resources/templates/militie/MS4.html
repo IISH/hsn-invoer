@@ -136,7 +136,8 @@
         <th:block th:if="${akte.is('1815IL', '1862I', '1923A')}">
           <div class="form-group">
             <label class="col-xs-5 control-label" th:if="${akte.mil.is1815()}">Loteling is geconfineerd? j / n / o</label>
-            <label class="col-xs-5 control-label" th:if="${!akte.mil.is1815()}">Bevindt zich in een gesticht? j / n / o</label>
+            <label class="col-xs-5 control-label" th:if="${akte.isStrict('1923A')}">Bevindt zich in een inrichting? j / n / o</label>
+            <label class="col-xs-5 control-label" th:if="${!akte.mil.is1815() and !akte.isStrict('1923A')}">Bevindt zich in een gesticht? j / n / o</label>
 
             <div class="col-xs-2">
               <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
@@ -146,7 +147,8 @@
 
           <div data-show-when="#mil\.inGesticht" data-has-values-in="j" style="display:none;">
             <div class="form-group">
-              <label class="col-xs-5 control-label">Naam gesticht:</label>
+              <label class="col-xs-5 control-label" th:if="${akte.isStrict('1923A')}">Naam inrichting:</label>
+              <label class="col-xs-5 control-label" th:if="${!akte.isStrict('1923A')}">Naam gesticht:</label>
 
               <div class="col-xs-7">
                 <input type="text" class="form-control" th:field="*{mil.nameGesticht}" hsn:field="mil.nameGesticht"/>
@@ -154,7 +156,8 @@
             </div>
 
             <div class="form-group">
-              <label class="col-xs-5 control-label">Is het gesticht een gevangenis? j / n / o</label>
+              <label class="col-xs-5 control-label" th:if="${akte.isStrict('1923A')}">Is de inrichting een gevangenis? j / n / o</label>
+              <label class="col-xs-5 control-label" th:if="${!akte.isStrict('1923A')}">Is het gesticht een gevangenis? j / n / o</label>
 
               <div class="col-xs-2">
                 <input type="text" class="form-control form-control-digit required" data-valid-chars="j;n;o"
