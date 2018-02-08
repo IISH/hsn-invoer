@@ -358,7 +358,7 @@ public class BevolkingsregisterService {
             Person newPerson = new Person();
 
             // It will obtain a new registration id and a new record id, so don't copy these values
-            BeanUtils.copyProperties(prevPerson, newPerson, "registrationId", "id");
+            BeanUtils.copyProperties(prevPerson, newPerson, "registrationId", "id", "remarks2");
             newPerson.setRegistrationId(curRegistrationId);
             b2.add(newPerson.getRp() - 1, newPerson);
 
