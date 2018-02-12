@@ -358,7 +358,10 @@ public class BevolkingsregisterService {
             Person newPerson = new Person();
 
             // It will obtain a new registration id and a new record id, so don't copy these values
-            BeanUtils.copyProperties(prevPerson, newPerson, "registrationId", "id", "remarks2");
+            BeanUtils.copyProperties(prevPerson, newPerson, "registrationId", "id",
+                    "dayOfRegistration", "monthOfRegistration", "yearOfRegistration",
+                    "dayOfRegistrationAfterInterpretation", "monthOfRegistrationAfterInterpretation",
+                    "yearOfRegistrationAfterInterpretation", "remarks2");
             newPerson.setRegistrationId(curRegistrationId);
             b2.add(newPerson.getRp() - 1, newPerson);
 
@@ -384,7 +387,14 @@ public class BevolkingsregisterService {
                         newPersonDynamic = b3ForPerson.get(0);
                     }
 
-                    BeanUtils.copyProperties(prevPersonDynamic, newPersonDynamic, "registrationId", "id");
+                    String[] ignoreProps = new String[] {"registrationId", "id"};
+                    if (type == PersonDynamic.Type.HERKOMST || type == PersonDynamic.Type.VERTREK) {
+                        ignoreProps = new String[]{"registrationId", "id", "dayOfMutation", "monthOfMutation",
+                                "yearOfMutation", "dynamicData2", "dayOfMutationAfterInterpretation",
+                                "monthOfMutationAfterInterpretation", "yearOfMutationAfterInterpretation"};
+                    }
+
+                    BeanUtils.copyProperties(prevPersonDynamic, newPersonDynamic, ignoreProps);
                     newPersonDynamic.setRegistrationId(curRegistrationId);
 
                     if (b3ForPerson.isEmpty()) {
