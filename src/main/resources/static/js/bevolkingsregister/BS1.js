@@ -637,6 +637,7 @@
                 if (table.length > 0) {
                     target = table.find('tr[data-rp=' + person + ']');
                     resultElem = resultElem.find('tr[data-rp=' + person + ']');
+                    resultElem.data('copy-prev-person', 'copy-prev-person');
                 }
                 else {
                     target = $('#currentPerson');
