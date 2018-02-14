@@ -103,6 +103,9 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "EXEMPM", nullable = false) private int monthOfExemptionVerdict;
     @Column(name = "EXEMPJ", nullable = false) private int yearOfExemptionVerdict;
     @Column(name = "EXEMPU", nullable = false, length = 150) private String exemptionVerdict = "";
+    @Column(name = "BRPD", nullable = false) private int dayOfAppeal;
+    @Column(name = "BRPM", nullable = false) private int monthOfAppeal;
+    @Column(name = "BRPJ", nullable = false) private int yearOfAppeal;
 
     @Column(name = "MEDD1", nullable = false) private int dayOfMedicalVerdict;
     @Column(name = "MEDM1", nullable = false) private int monthOfMedicalVerdict;
@@ -775,6 +778,30 @@ public class Milition extends Invoer implements Serializable {
 
     public void setExemptionVerdict(String exemptionVerdict) {
         this.exemptionVerdict = exemptionVerdict;
+    }
+
+    public int getDayOfAppeal() {
+        return dayOfAppeal;
+    }
+
+    public void setDayOfAppeal(int dayOfAppeal) {
+        this.dayOfAppeal = dayOfAppeal;
+    }
+
+    public int getMonthOfAppeal() {
+        return monthOfAppeal;
+    }
+
+    public void setMonthOfAppeal(int monthOfAppeal) {
+        this.monthOfAppeal = monthOfAppeal;
+    }
+
+    public int getYearOfAppeal() {
+        return yearOfAppeal;
+    }
+
+    public void setYearOfAppeal(int yearOfAppeal) {
+        this.yearOfAppeal = yearOfAppeal;
     }
 
     public int getDayOfMedicalVerdict() {
