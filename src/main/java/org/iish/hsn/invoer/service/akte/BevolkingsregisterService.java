@@ -343,7 +343,7 @@ public class BevolkingsregisterService {
      *
      * @param bevolkingsregisterFlow The bevolkingsregister flow state.
      */
-    public void setUpWithPrevRegistration(BevolkingsregisterFlowState bevolkingsregisterFlow) throws NotFoundException {
+    public void setUpWithPrevRegistration(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         RegistrationId curRegistrationId = bevolkingsregisterFlow.getB4().getRegistrationId();
         RegistrationId prevRegistrationId = bevolkingsregisterFlow.getPrevRegistration();
 
@@ -379,28 +379,11 @@ public class BevolkingsregisterService {
                     List<PersonDynamic> b3ForPerson = b3.get(prevPerson.getRp());
                     PersonDynamic newPersonDynamic;
 
-                    // If there is no initial value (usually herkomst/vertrek) then create one
-                    if (b3ForPerson.isEmpty()) {
-                        newPersonDynamic = createPersonDynamic(bevolkingsregisterFlow, newPerson, type, 1);
-                    }
-                    else {
+                    // If there is no initial value (or herkomst/vertrek) then no need to clone anything
+                    if (!b3ForPerson.isEmpty() || (type != PersonDynamic.Type.HERKOMST && type != PersonDynamic.Type.VERTREK)) {
                         newPersonDynamic = b3ForPerson.get(0);
-                    }
-
-                    String[] ignoreProps = new String[] {"registrationId", "id"};
-                    if (type == PersonDynamic.Type.HERKOMST || type == PersonDynamic.Type.VERTREK) {
-                        ignoreProps = new String[]{"registrationId", "id", "dayOfMutation", "monthOfMutation",
-                                "yearOfMutation", "dynamicData2", "dayOfMutationAfterInterpretation",
-                                "monthOfMutationAfterInterpretation", "yearOfMutationAfterInterpretation"};
-                    }
-
-                    BeanUtils.copyProperties(prevPersonDynamic, newPersonDynamic, ignoreProps);
-                    newPersonDynamic.setRegistrationId(curRegistrationId);
-
-                    if (b3ForPerson.isEmpty()) {
-                        b3ForPerson.add(newPersonDynamic);
-                    }
-                    else {
+                        BeanUtils.copyProperties(prevPersonDynamic, newPersonDynamic, "registrationId", "id");
+                        newPersonDynamic.setRegistrationId(curRegistrationId);
                         b3ForPerson.set(0, newPersonDynamic);
                     }
                 }
