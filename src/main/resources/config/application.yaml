@@ -1,6 +1,6 @@
 application:
-  version: "5.2.1"
-  date: "26 november 2017"
+  version: "5.3.0"
+  date: "19 februari 2018"
 
 storage:
   path: "/data/hsn/"
