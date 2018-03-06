@@ -12,7 +12,8 @@
       <label class="col-xs-3 control-label">Jaar:</label>
 
       <div class="col-xs-2">
-        <input type="text" class="form-control required year" th:field="*{mil.year}" hsn:field="mil.year"/>
+        <input type="text" class="form-control required year" data-min-value="1800" data-max-value="2000"
+               th:field="*{mil.year}" hsn:field="mil.year"/>
       </div>
     </div>
 
