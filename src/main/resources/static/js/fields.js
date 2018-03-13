@@ -91,7 +91,7 @@
         var minValue = elem.getIntegerDataValue('min-value');
         var number = elem.getIntegerValue();
 
-        if ((number !== -1) && (isNaN(number) || (number < minValue))) {
+        if ((elem.hasClass('strict-min-check') || (number !== -1)) && (isNaN(number) || (number < minValue))) {
             elem.val('');
         }
         else {
