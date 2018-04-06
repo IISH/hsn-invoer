@@ -70,11 +70,11 @@
 
     <div class="form-group extra-top-margin" th:if="${akte.is('1923A')}">
       <label class="col-xs-6 control-label">
-        Aard dienstplicht? 1: Gewoon 2: Buitengewoon
+        Aard dienstplicht? 1: Gewoon 2: Buitengewoon N: Geen gegevens
       </label>
 
       <div class="col-xs-2">
-        <input type="text" class="form-control form-control-digit required" data-valid-chars="1;2"
+        <input type="text" class="form-control form-control-digit required" data-valid-chars="1;2;N;n"
                maxlength="1" th:field="*{mil.natureOfService}" hsn:field="mil.natureOfService"/>
       </div>
     </div>
