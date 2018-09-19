@@ -25,6 +25,7 @@ import java.util.Date;
 public class InputMetadata implements Serializable {
     private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
+    private String init;
     private String ondrzk;
     private String opdrnr;
 
@@ -33,6 +34,10 @@ public class InputMetadata implements Serializable {
     @Autowired private Environment environment;
     @Autowired private UserRepository userRepository;
     @Autowired private UserWorkOrderRepository userWorkOrderRepository;
+
+    public void setInit(String init) {
+        this.init = init;
+    }
 
     public String getOndrzk() {
         return ondrzk;
@@ -63,6 +68,9 @@ public class InputMetadata implements Serializable {
                     userWorkOrderRepository.findByTripleAndWorkOrder(user.getTriple(), getWorkOrder());
             valid = (userWorkOrder != null);
         }
+        else if (valid && !environment.acceptsProfiles("ldapAuth", "dbAuth")) {
+            valid = ((init != null) && (init.length() == 3));
+        }
 
         return valid;
     }
@@ -92,7 +100,7 @@ public class InputMetadata implements Serializable {
             User user = getLoggedInUser();
             return user.getTriple();
         }
-        return "TST";
+        return this.init;
     }
 
     private User getLoggedInUser() {

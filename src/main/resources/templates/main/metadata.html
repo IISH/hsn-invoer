@@ -7,6 +7,15 @@
 <header layout:fragment="header" th:include="layoutFragments :: header"></header>
 
 <fieldset class="content-spacing" layout:fragment="main">
+  <div class="form-group" th:if="${@environment.acceptsProfiles('ldapAuth', 'dbAuth') == false}">
+    <label class="col-xs-5 control-label">Initialen:</label>
+
+    <div class="col-xs-2">
+      <input type="text" class="form-control form-control-small" id="init" name="init" maxlength="3"
+             style="text-transform:uppercase;"/>
+    </div>
+  </div>
+
   <div class="form-group">
     <label class="col-xs-5 control-label">Afkorting onderzoek:</label>
 

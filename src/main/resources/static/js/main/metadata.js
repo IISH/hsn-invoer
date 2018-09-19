@@ -9,12 +9,13 @@
         var errorMessage = 'Helaas mag u voor deze werk order niet invoeren of correcties uitvoeren!';
 
         if ($('.has-an-error:visible').length === 0) {
+            var init = $('#init').val();
             var ondrzk = $('#ondrzk').val();
             var opdrnr = $('#opdrnr').val();
 
             $.ajax('/check', {
                 type: 'GET',
-                data: {ondrzk: ondrzk, opdrnr: opdrnr},
+                data: {init: init, ondrzk: ondrzk, opdrnr: opdrnr},
                 success: function () {
                     $.setError(false, 'metadata', errorMessage);
                     $.triggerChangeOfState();
@@ -32,7 +33,7 @@
     }
 
     $(document).ready(function () {
-        $('#ondrzk, #opdrnr').blur(function () {
+        $('#init, #ondrzk, #opdrnr').blur(function () {
             checkLength($(this));
             checkAccess();
             $.triggerChangeOfState();

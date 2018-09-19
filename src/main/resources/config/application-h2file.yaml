@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.iish.hsn.invoer.util.HsnPhysicalNamingStrategy
+
+hibernate:
+  jdbc:
+    batch_size: 30
+    batch_versioned_data: true
+  order_inserts: true
+  order_updates: true
+
