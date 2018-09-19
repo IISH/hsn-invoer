@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfig
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
+import java.awt.Desktop;
+import java.net.URI;
+
 import static org.springframework.boot.Banner.Mode;
 
 // As we use two databases instead of one, we will do the JPA repositories configuration, so disable auto configuration
@@ -29,6 +32,8 @@ public class Application extends SpringBootServletInitializer {
         SpringApplication application = new SpringApplication(Application.class);
         application.setBannerMode(Mode.OFF);
         application.run(args);
+
+        openBrowser();
     }
 
     @Override
@@ -36,5 +41,15 @@ public class Application extends SpringBootServletInitializer {
         return application
                 .sources(Application.class)
                 .bannerMode(Mode.OFF);
+    }
+
+    private static void openBrowser() {
+        try {
+            Desktop desktop = Desktop.getDesktop();
+            desktop.browse(new URI("http://localhost:8080"));
+        }
+        catch (Exception e) {
+            LOGGER.warn("Could not start the browser automatically!");
+        }
     }
 }
