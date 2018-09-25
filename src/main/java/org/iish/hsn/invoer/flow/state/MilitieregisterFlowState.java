@@ -1,11 +1,13 @@
 package org.iish.hsn.invoer.flow.state;
 
+import org.iish.hsn.invoer.domain.invoer.mil.Career;
 import org.iish.hsn.invoer.domain.invoer.mil.Milition;
 import org.iish.hsn.invoer.domain.invoer.mil.Verdict;
 import org.iish.hsn.invoer.domain.invoer.mil.Verdict.Type;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,6 +19,9 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
 
     private Map<Type, Verdict> verdict;
 
+    private List<Career> professions;
+    private List<Career> educations;
+
     private boolean cropSideA = true;
 
     private String includesExemption = "n";
@@ -25,9 +30,12 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     private String includesDelayMilition = "n";
     private String includesAppeal = "n";
 
-    public MilitieregisterFlowState(Milition mil, Map<Type, Verdict> verdict) {
+    public MilitieregisterFlowState(Milition mil, Map<Type, Verdict> verdict,
+                                    List<Career> professions, List<Career> educations) {
         this.mil = mil;
         this.verdict = verdict;
+        this.professions = professions;
+        this.educations = educations;
     }
 
     public boolean is(String... years) {
@@ -41,7 +49,7 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     private boolean is(boolean strict, String... years) {
         for (String yearAndTypes : years) {
             String year = yearAndTypes.substring(0, 4);
-            boolean yearMatches = (!strict && mil.isOtherYear()) ||
+            boolean yearMatches = (!strict && mil.isOtherYear()) || "****".equals(year) ||
                     (mil.is1815() && "1815".equals(year)) ||
                     (mil.is1862() && "1862".equals(year)) ||
                     (mil.is1913() && "1913".equals(year)) ||
@@ -50,10 +58,33 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
             if (yearMatches) {
                 String type = "KN".contains(mil.getType().toUpperCase()) ? "L" : mil.getType().toUpperCase();
                 String types = yearAndTypes.substring(4).toUpperCase();
-                return ((!strict && mil.isOtherYear()) || types.isEmpty() || types.contains(type));
+
+                if ((!strict && mil.isOtherYear()) || types.isEmpty() || types.contains(type))
+                    return true;
             }
         }
         return false;
+    }
+
+    public List<Career> getCareerForType(Career.Type type) {
+        switch (type) {
+            case BEROEP:
+                return this.professions;
+            case ONDERWIJS:
+                return this.educations;
+        }
+        return null;
+    }
+
+    public void setCareerForType(Career.Type type, List<Career> careerHistory) {
+        switch (type) {
+            case BEROEP:
+                this.professions = careerHistory;
+                break;
+            case ONDERWIJS:
+                this.educations = careerHistory;
+                break;
+        }
     }
 
     public boolean isCropSideA() {
@@ -62,6 +93,14 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
 
     public void setCropSideA(boolean cropSideA) {
         this.cropSideA = cropSideA;
+    }
+
+    public boolean hasScan() {
+        return !this.mil.getScanA().isEmpty();
+    }
+
+    public boolean hasTwoScans() {
+        return !this.mil.getScanB().isEmpty();
     }
 
     public Ref_RP getRefRp() {
@@ -150,5 +189,21 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
 
     public Verdict getVerdictMilitieraad() {
         return verdict.get(Type.MILITIERAAD);
+    }
+
+    public List<Career> getProfessions() {
+        return professions;
+    }
+
+    public void setProfessions(List<Career> professions) {
+        this.professions = professions;
+    }
+
+    public List<Career> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<Career> educations) {
+        this.educations = educations;
     }
 }

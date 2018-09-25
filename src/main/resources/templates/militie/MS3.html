@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorator="formViewLayout" th:with="scroll=true"
+<html layout:decorator="formViewLayout" th:with="scroll=true,hasView=${akte.hasScan()}"
       xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
       xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
 <head></head>
@@ -40,22 +40,53 @@
       </div>
     </div>
 
-    <div class="form-group extra-top-margin" th:if="${akte.is('1923')}">
-      <label class="col-xs-2 col-xs-offset-2 control-label">Gewicht in kg:</label>
+    <div class="form-group extra-top-margin" th:if="${akte.is('1923', '****FMD')}">
+      <div class="sub-form-group weight">
+        <label class="col-xs-2 col-xs-offset-2 control-label">Gewicht in kg:</label>
 
-      <div class="col-xs-1">
-        <input type="text" class="form-control form-control-small integer-field zero-allowed"
-               th:field="*{mil.kg}" hsn:field="mil.kg"/>
+        <div class="col-xs-3 form-inline">
+          <input type="text" class="form-control form-control-small integer-field zero-allowed"
+                 th:field="*{mil.kg}" hsn:field="mil.kg"/>
+          ,
+          <input type="text" class="form-control form-control-digit integer-field zero-allowed" maxlength="1"
+                 th:field="*{mil.gram}" hsn:field="mil.gram"/>
+        </div>
       </div>
 
-      <label class="col-xs-2 control-label">Index:</label>
+      <div class="sub-form-group" th:if="${akte.is('1923') and akte.isStrict('****FMD') == false}">
+        <label class="col-xs-2 control-label">Index:</label>
 
-      <div class="col-xs-2">
-        <input type="text" class="form-control form-control-small" th:field="*{mil.index}" hsn:field="mil.index"/>
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-small" th:field="*{mil.index}" hsn:field="mil.index"/>
+        </div>
       </div>
     </div>
 
-    <th:block th:if="${akte.is('1815', '1862')}">
+    <th:block th:if="${akte.isStrict('****FMD')}">
+      <div class="form-group extra-top-margin">
+        <label class="col-xs-5 control-label">
+          Intelligentie: (Score van 1 t/m 5)
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit" maxlength="1" data-valid-chars="1;2;3;4;5"
+                 th:field="*{mil.intelligence}" hsn:field="mil.intelligence"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-5 control-label">
+          Stabiliteit: (Score van 1 t/m 5)
+        </label>
+
+        <div class="col-xs-2">
+          <input type="text" class="form-control form-control-digit" maxlength="1" data-valid-chars="1;2;3;4;5"
+                 th:field="*{mil.stability}" hsn:field="mil.stability"/>
+        </div>
+      </div>
+    </th:block>
+
+    <th:block th:if="${akte.is('1815', '1862') and akte.isStrict('****FMD') == false}">
       <div class="form-group extra-top-margin">
         <label class="col-xs-4 control-label">Zijn er uiterlijke kenmerken? j / n </label>
 

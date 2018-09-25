@@ -15,7 +15,7 @@
         elem.hasErrorWhen(isNaN(val) || (val < -3) || (val > 9));
     }
 
-    function setLengthEmpty(elem) {
+    function setEmpty(elem) {
         if ($.isCorrection() && isNaN(elem.getIntegerValue())) {
             $(elem).val(0);
         }
@@ -24,11 +24,16 @@
     $(document).ready(function () {
         var lengths = $('.lengths input');
         lengths.each(function () {
-            setLengthEmpty($(this));
+            setEmpty($(this));
             checkLength($(this));
         });
         lengths.blur(function (e) {
             checkLength($(e.target));
+        });
+
+        var weights = $('.weights input');
+        weights.each(function () {
+            setEmpty($(this));
         });
     });
 })(jQuery);

@@ -147,7 +147,7 @@
                     }
                     else if (self.idnrElem.hasClass('m0-lookup')) {
                         if (!$.isCorrection()) {
-                            self.militionLookup();
+                            self.onSuccess();
                         }
                         else {
                             self.militionSeq();
@@ -160,25 +160,6 @@
                     self.onFailure('De onderzoekspersoon met deze identificatie is niet aanwezig!', false, false, true);
                 });
             }
-        });
-    };
-
-    FindOp.prototype.militionLookup = function militionLookup() {
-        self.withIdnr(function (idnr) {
-            self.serverCall('/ajax/lookup/m0/list', {idnr: idnr} , function (enteredScans) {
-                self.serverCall('/ajax/lookup/m0/scans', {idnr: idnr} , function (availableScans) {
-                    if (enteredScans.length < availableScans.length) {
-                        self.onSuccess();
-                    }
-                    else if (availableScans.length === 0) {
-                        self.onFailure('Er zijn geen scans voor de OP met deze identificatie gevonden ' +
-                            'en/of de naamgeving van de scan is niet correct!', true, false, true);
-                    }
-                    else {
-                        self.onFailure('Alle militieregisters met deze identificatie zijn reeds ingevoerd!', true, false, true);
-                    }
-                });
-            });
         });
     };
 

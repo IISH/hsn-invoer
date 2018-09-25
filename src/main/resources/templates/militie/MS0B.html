@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorator="formViewLayout" th:with="scroll=true"
+<html layout:decorator="formViewLayout" th:with="scroll=true,hasView=${akte.hasScan()}"
       xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
       xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
 <head></head>
@@ -9,12 +9,47 @@
     <div class="form-header letter-spacing">GEGEVENS REGISTER:</div>
 
     <div class="form-group extra-top-margin">
+      <label class="col-xs-3 control-label">
+        Type register:
+      </label>
+
+      <div class="col-xs-1">
+        <input type="text" class="form-control form-control-digit required auto-uppercase" maxlength="1"
+               data-valid-chars="A;I;K;L;F;M;D;N" th:field="*{mil.type}" hsn:field="mil.type"/>
+      </div>
+
+      <div class="col-xs-8">
+        <div class="row">
+          <ul class="col-xs-6 list-unstyled">
+            <li><span class="code">A</span> Alfabetische naamlijst</li>
+            <li><span class="code">I</span> Inschrijvingsregister</li>
+            <li><span class="code">K</span> Keuringsregister</li>
+            <li><span class="code">L</span> Lotingsregister</li>
+          </ul>
+
+          <ul class="col-xs-6 list-unstyled">
+            <li><span class="code">F</span> Filmrollen</li>
+            <li><span class="code">M</span> Microfiches (ijzeren kast)</li>
+            <li><span class="code">D</span> Microfiches (dozen)</li>
+            <li><span class="code">N</span> Niet bekend</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group extra-top-margin onlyYear">
       <label class="col-xs-3 control-label">Jaar:</label>
 
       <div class="col-xs-2">
         <input type="text" class="form-control required year strict-min-check"
                data-min-value="1800" data-max-value="2000" th:field="*{mil.year}" hsn:field="mil.year"/>
       </div>
+    </div>
+
+    <div class="form-group extra-top-margin fullDate checkYearMilitie" style="display:none;">
+      <label class="col-xs-3 control-label">Datum:</label>
+
+      <div th:replace="fragments/fields :: datum ('mil.day', 'mil.month', 'mil.year')"></div>
     </div>
 
     <div class="form-group">
@@ -35,25 +70,6 @@
     </div>
 
     <div class="form-group extra-top-margin" th:include="fragments/complete-fields :: plaats ('mil.municipality', 'Gemeente:')"></div>
-
-    <div class="form-group">
-      <label class="col-xs-3 control-label">
-        Type register:
-      </label>
-
-      <div class="col-xs-1">
-        <input type="text" class="form-control form-control-digit required auto-uppercase" maxlength="1"
-               data-valid-chars="A;I;K;L;N" th:field="*{mil.type}" hsn:field="mil.type"/>
-      </div>
-
-      <ul class="col-xs-3 list-unstyled">
-        <li><span class="code">A</span> Alfabetische naamlijst</li>
-        <li><span class="code">I</span> Inschrijvingsregister</li>
-        <li><span class="code">K</span> Keuringsregister</li>
-        <li><span class="code">L</span> Lotingsregister</li>
-        <li><span class="code">N</span> Niet bekend</li>
-      </ul>
-    </div>
 
     <div class="extra-top-margin">
       <div class="form-group">

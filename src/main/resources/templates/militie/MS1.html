@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorator="formViewLayout" th:with="scroll=true"
+<html layout:decorator="formViewLayout" th:with="scroll=true,hasView=${akte.hasScan()}"
       xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
       xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
 <head></head>
@@ -11,11 +11,11 @@
     <div class="extra-top-margin" th:include="fragments/groups-of-fields :: namen-nieuw ('mil.familyName', 'mil.firstName')">
     </div>
 
-    <th:block th:if="${akte.is('1815', '1862', '1913IL', '1923AIL')}">
+    <th:block th:if="${akte.is('1815', '1862', '1913IL', '1923AIL', '****FMD')}">
       <div class="form-group extra-top-margin"
            th:include="fragments/complete-fields :: plaats ('mil.placeOfBirth', 'Geboorteplaats:')"></div>
 
-      <div class="form-group two-line-label" th:if="${akte.is('1815', '1862')}"
+      <div class="form-group two-line-label" th:if="${akte.is('1815', '1862') and akte.isStrict('****FMD') == false}"
            th:include="fragments/complete-fields :: plaats ('mil.placeOfMilition', ${akte.mil.is1815() ? 'Militiekanton van de geboorteplaats:' : 'Militiedistrict van de geboorteplaats:'})"></div>
 
       <div class="form-group checkDateDefault">
@@ -27,7 +27,7 @@
       <div class="form-group extra-top-margin"
            th:include="fragments/complete-fields :: plaats ('mil.placeOfLiving', ${akte.mil.is1815() ? 'Verblijfplaats:' : 'Woonplaats:'})"></div>
 
-      <th:block th:if="${akte.is('1815')}">
+      <th:block th:if="${akte.is('1815') and akte.isStrict('****FMD') == false}">
         <div class="form-group extra-top-margin">
           <label class="col-xs-4 control-label">Woont bij zijn ouders? j / n / o</label>
 

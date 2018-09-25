@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout" th:with="scroll=true,hasView=${akte.hasScan()}"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">BEROEPSCARRIÈRE:</div>
+
+    <div id="brp" class="extra-top-margin" th:fragment="brp" th:object="${akte}">
+      <th:block th:each="curProfession,stat : *{professions}">
+        <div class="beroepen" th:with="seq=${akte.professions[__${stat.index}__].seq2}">
+          <div class="form-group">
+            <div class="sub-form-group noAutoNext">
+              <label class="col-xs-1 control-label"
+                     th:utext="${seq + 'e beroep:'}" style="width:14%;">1e beroep:</label>
+
+              <div class="col-xs-1" style="width:25%;">
+                <input type="text" class="form-control beroep"
+                       th:field="*{professions[__${stat.index}__].value}"
+                       hsn:field="professions[__${stat.index}__].value"/>
+              </div>
+            </div>
+
+            <div class="sub-form-group checkDateDefault">
+              <label class="col-xs-3 control-label" style="width:9%;">Datum:</label>
+
+              <div class="col-xs-3 form-inline"
+                   th:include="fragments/fields :: datum ('professions[__${stat.index}__].day', 'professions[__${stat.index}__].month', 'professions[__${stat.index}__].year')"></div>
+            </div>
+
+            <div class="sub-form-group">
+              <label class="col-xs-1 control-label" style="width:14%;">Aantal jaren:</label>
+
+              <div class="col-xs-1" style="width:13%;">
+                <input type="text" class="form-control form-control-small integer-field"
+                       th:field="*{professions[__${stat.index}__].numberOfYears}" hsn:field="professions[__${stat.index}__].numberOfYears"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </th:block>
+    </div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info"></div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/MS3a.js" hsn:src="@{/js/militie/MS3a.js}"></script>
+</th:block>
+</body>
+</html>

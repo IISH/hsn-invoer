@@ -5,7 +5,7 @@
 <head></head>
 <body>
 <th:block layout:fragment="content">
-  <div id="view-container">
+  <div id="view-container" th:if="${hasView == true}">
     <canvas id="view" height="400"></canvas>
   </div>
 

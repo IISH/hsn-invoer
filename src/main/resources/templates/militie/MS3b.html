@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html layout:decorator="formViewLayout" th:with="scroll=true,hasView=${akte.hasScan()}"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<fieldset>
+  <th:block layout:fragment="fields">
+    <div class="form-header letter-spacing">ONDERWIJSCARRIÈRE:</div>
+
+    <div id="onderwijs" class="extra-top-margin" th:fragment="onderwijs" th:object="${akte}">
+      <th:block th:each="curEducation,stat : *{educations}">
+        <div class="onderwijs-elems" th:with="seq=${akte.educations[__${stat.index}__].seq2}">
+          <div class="form-group">
+            <div class="sub-form-group noAutoNext">
+              <label class="col-xs-1 control-label"
+                     th:utext="${seq + 'e onderwijs:'}" style="width:14%;">1e onderwijs:</label>
+
+              <div class="col-xs-1" style="width:25%;">
+                <input type="text" class="form-control onderwijs"
+                       th:field="*{educations[__${stat.index}__].value}"
+                       hsn:field="educations[__${stat.index}__].value"/>
+              </div>
+            </div>
+
+            <div class="sub-form-group checkDateDefault">
+              <label class="col-xs-3 control-label" style="width:9%;">Datum:</label>
+
+              <div class="col-xs-3 form-inline"
+                   th:include="fragments/fields :: datum ('educations[__${stat.index}__].day', 'educations[__${stat.index}__].month', 'educations[__${stat.index}__].year')"></div>
+            </div>
+
+            <div class="sub-form-group">
+              <label class="col-xs-1 control-label" style="width:14%;">Aantal jaren:</label>
+
+              <div class="col-xs-1" style="width:13%;">
+                <input type="text" class="form-control form-control-small integer-field"
+                       th:field="*{educations[__${stat.index}__].numberOfYears}" hsn:field="educations[__${stat.index}__].numberOfYears"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </th:block>
+    </div>
+
+    <div th:replace="militie/byz-fragment :: byzModal"></div>
+  </th:block>
+</fieldset>
+
+<div class="well well-sm" layout:fragment="title" th:include="militie/MSTITEL :: MSTITEL-SIDE"></div>
+
+<div layout:fragment="info"></div>
+
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/MS3b.js" hsn:src="@{/js/militie/MS3b.js}"></script>
+</th:block>
+</body>
+</html>

@@ -18,6 +18,12 @@ public class MilitieregisterHelper {
                 return "Keuringsregister";
             case "L":
                 return "Lotingsregister";
+            case "F":
+                return "Filmrollen";
+            case "M":
+                return "Microfiches (ijzeren kast)";
+            case "D":
+                return "Microfiches (dozen)";
             default:
                 return "Niet bekend";
         }

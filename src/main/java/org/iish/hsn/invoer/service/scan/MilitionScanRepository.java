@@ -5,6 +5,7 @@ import org.iish.hsn.invoer.domain.invoer.mil.Milition;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -54,6 +55,9 @@ public class MilitionScanRepository {
                     setScan(scans, scansAB, idnr, path, matcher);
                 }
             }
+        }
+        catch (NoSuchFileException nsfe) {
+            // TODO: Ignore for now
         }
 
         return new HashSet<>(scans.values());

@@ -18,8 +18,15 @@
   <!-- MCOR: CORRECTIE SCHERM -->
   <view-state id="MCOR" view="militie/MCOR" model="akte">
     <transition on="stop" to="stopEnd"/>
-    <transition on="next" to="MS0A"/>
+    <transition on="next" to="hasScanCheck"/>
   </view-state>
+
+  <action-state id="hasScanCheck">
+    <evaluate expression="akte.hasScan()"/>
+
+    <transition on="yes" to="MS0A"/>
+    <transition on="no" to="firstCorrectionCodeCheck"/>
+  </action-state>
 
   <!-- MS0A: SCAN -->
   <view-state id="MS0A" view="militie/MS0A" model="akte">
@@ -28,7 +35,7 @@
   </view-state>
 
   <action-state id="determineScanSideB">
-    <evaluate expression="(akte.mil.scanB != '') and akte.isCropSideA()"/>
+    <evaluate expression="akte.hasTwoScans() and akte.isCropSideA()"/>
 
     <transition on="yes" to="MS0A">
         <evaluate expression="akte.setCropSideA(false)"/>
@@ -56,7 +63,7 @@
     <transition on="stop" to="stopEnd"/>
 
     <transition on="next" to="secondCorrectionCodeCheck">
-      <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+      <evaluate expression="militieregisterService.registerMetadata(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -113,8 +120,47 @@
   <view-state id="MS3" view="militie/MS3" model="akte">
     <transition on="stop" to="stopEnd"/>
 
-    <transition on="next" to="fourthCorrectionCodeCheck">
+    <transition on="next" to="includesCareers">
       <evaluate expression="militieregisterService.saveMil(flowScope.akte)"/>
+    </transition>
+  </view-state>
+
+  <action-state id="includesCareers">
+    <evaluate expression="flowScope.akte.isStrict('****FMD')"/>
+
+    <transition on="yes" to="MS3a"/>
+    <transition on="no" to="fourthCorrectionCodeCheck"/>
+  </action-state>
+
+  <!-- MS3a: BEROEPSCARRIERE -->
+  <view-state id="MS3a" view="militie/MS3a" model="akte">
+    <on-entry>
+      <evaluate expression="militieregisterService.updateCareer(flowScope.akte, T(org.iish.hsn.invoer.domain.invoer.mil.Career.Type).BEROEP)"/>
+    </on-entry>
+
+    <transition on="ajax">
+      <evaluate expression="militieregisterService.updateCareer(flowScope.akte, T(org.iish.hsn.invoer.domain.invoer.mil.Career.Type).BEROEP)"/>
+      <render fragments="brp"/>
+    </transition>
+
+    <transition on="next" to="MS3b">
+      <evaluate expression="militieregisterService.registerCareer(flowScope.akte, T(org.iish.hsn.invoer.domain.invoer.mil.Career.Type).BEROEP)"/>
+    </transition>
+  </view-state>
+
+  <!-- MS3b: ONDERWIJSCARRIERE -->
+  <view-state id="MS3b" view="militie/MS3b" model="akte">
+    <on-entry>
+      <evaluate expression="militieregisterService.updateCareer(flowScope.akte, T(org.iish.hsn.invoer.domain.invoer.mil.Career.Type).ONDERWIJS)"/>
+    </on-entry>
+
+    <transition on="ajax">
+      <evaluate expression="militieregisterService.updateCareer(flowScope.akte, T(org.iish.hsn.invoer.domain.invoer.mil.Career.Type).ONDERWIJS)"/>
+      <render fragments="onderwijs"/>
+    </transition>
+
+    <transition on="next" to="MSBYZ">
+      <evaluate expression="militieregisterService.registerCareer(flowScope.akte, T(org.iish.hsn.invoer.domain.invoer.mil.Career.Type).ONDERWIJS)"/>
     </transition>
   </view-state>
 

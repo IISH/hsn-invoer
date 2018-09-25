@@ -14,6 +14,8 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "IDNR", nullable = false) private int idnr;
     @Column(name = "VOLG", nullable = false) private int seq = 1;
 
+    @Column(name = "DAG", nullable = false) private int day;
+    @Column(name = "MAAND", nullable = false) private int month;
     @Column(name = "JAAR", nullable = false) private int year;
     @Column(name = "JAARKZ", nullable = false) private int yearChoice;
     @Column(name = "TYPE", nullable = false, length = 1) private String type = "";
@@ -42,6 +44,8 @@ public class Milition extends Invoer implements Serializable {
 
     @Column(name = "OUDERS", nullable = false, length = 1) private String livesWithParents = "";
     @Column(name = "ONDRWS", nullable = false, length = 100) private String education = "";
+    @Column(name = "NRKIND", nullable = false) private int numberOfChildren;
+    @Column(name = "RANGORDE", nullable = false) private int hierarchy;
 
     @Column(name = "ANVDR", nullable = false, length = 50) private String familyNameFather = "";
     @Column(name = "VNVDR", nullable = false, length = 50) private String firstNameFather = "";
@@ -61,7 +65,11 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "LGTMM", nullable = false) private int millimeter;
 
     @Column(name = "GEWICHT", nullable = false) private int kg;
+    @Column(name = "GEWICHT2", nullable = false) private int gram;
     @Column(name = "IDX", nullable = false, length = 10) private String index = "";
+
+    @Column(name = "INTEL", nullable = false) private int intelligence;
+    @Column(name = "STABIEL", nullable = false) private int stability;
 
     @Column(name = "SGMGEZ", nullable = false, length = 50) private String face = "";
     @Column(name = "SGMVHF", nullable = false, length = 50) private String forehead = "";
@@ -202,6 +210,22 @@ public class Milition extends Invoer implements Serializable {
 
     public void setSeq(int seq) {
         this.seq = seq;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
     }
 
     public int getYear() {
@@ -388,6 +412,22 @@ public class Milition extends Invoer implements Serializable {
         this.education = education;
     }
 
+    public int getNumberOfChildren() {
+        return numberOfChildren;
+    }
+
+    public void setNumberOfChildren(int numberOfChildren) {
+        this.numberOfChildren = numberOfChildren;
+    }
+
+    public int getHierarchy() {
+        return hierarchy;
+    }
+
+    public void setHierarchy(int hierarchy) {
+        this.hierarchy = hierarchy;
+    }
+
     public String getFamilyNameFather() {
         return familyNameFather;
     }
@@ -508,12 +548,36 @@ public class Milition extends Invoer implements Serializable {
         this.kg = kg;
     }
 
+    public int getGram() {
+        return gram;
+    }
+
+    public void setGram(int gram) {
+        this.gram = gram;
+    }
+
     public String getIndex() {
         return index;
     }
 
     public void setIndex(String index) {
         this.index = index;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
+    }
+
+    public int getStability() {
+        return stability;
+    }
+
+    public void setStability(int stability) {
+        this.stability = stability;
     }
 
     public String getFace() {

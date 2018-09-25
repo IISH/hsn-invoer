@@ -58,11 +58,24 @@
         else {
             $('#mil\\.drawnNumber').getParentOfFormElement().hide();
         }
+
+        if ((type === 'F') || (type === 'M') || (type === 'D')) {
+            $('.onlyYear').hide().find('.year').attr('name', '');
+            $('.fullDate').show().find('.year').attr('name', 'mil.year');
+            $('#mil\\.yearChoice').getParentOfFormElement().hide();
+            $('#mil\\.invNumber').getParentOfFormElement().hide();
+        }
+        else {
+            $('.fullDate').hide().find('.year').attr('name', '');
+            $('.onlyYear').show().find('.year').attr('name', 'mil.year');
+            $('#mil\\.yearChoice').getParentOfFormElement().show();
+            $('#mil\\.invNumber').getParentOfFormElement().show();
+        }
     }
 
     $.initCheckDate('.checkYearMilitie', null, function dateCheckMilition(hsnDate) {
         var yearVal = hsnDate.year.getValue();
-        return (yearVal === 0 || yearVal <= 1700 || yearVal >= 2025);
+        return (yearVal === 0 || yearVal < 1800 || yearVal > 2000);
     });
 
     $(document).on('focus', '.form-elem', function onFocus(e) {

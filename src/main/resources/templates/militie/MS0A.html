@@ -9,7 +9,7 @@
 <fieldset>
   <th:block layout:fragment="fields">
     <div class="alert alert-info" role="alert">
-      <strong th:if="${akte.isCropSideA() and akte.mil.scanB != ''}">
+      <strong th:if="${akte.isCropSideA() and akte.hasTwoScans()}">
         Kant A  <br/><br/>
       </strong>
 
