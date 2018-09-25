@@ -60,7 +60,7 @@ public class JpaConfiguration {
         if (env.acceptsProfiles("h2file")) {
             String path = (System.getProperty("database") != null)
                     ? System.getProperty("database") : System.getProperty("user.home");
-            dataSourceBuilder.url("jdbc:h2:" + path + "/" + name + ";MODE=MySQL");
+            dataSourceBuilder.url("jdbc:h2:" + path + "/" + name + ";MODE=MySQL;DB_CLOSE_DELAY=-1");
         }
         return dataSourceBuilder.build();
     }
