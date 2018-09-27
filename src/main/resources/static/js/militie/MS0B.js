@@ -59,7 +59,7 @@
             $('#mil\\.drawnNumber').getParentOfFormElement().hide();
         }
 
-        if ((type === 'F') || (type === 'M') || (type === 'D')) {
+        if ((type === 'F') || (type === 'M') || (type === 'D') || (type === 'B')) {
             $('.onlyYear').hide().find('.year').attr('name', '');
             $('.fullDate').show().find('.year').attr('name', 'mil.year');
             $('#mil\\.yearChoice').getParentOfFormElement().hide();

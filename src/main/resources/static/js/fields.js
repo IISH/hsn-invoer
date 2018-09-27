@@ -49,7 +49,7 @@
             // If the character is not allowed, but we are about to replace the first character,
             // then check if the first character starts with a dash to indicate a negative number
             if (!allow && (elem.getCaret() === 0)) {
-                allow = (char === '-');
+                allow = (char === '-') && (!elem.attr('maxlength') || elem.attr('maxlength') > 1);
             }
 
             if (!allow) e.stopImmediatePropagation();

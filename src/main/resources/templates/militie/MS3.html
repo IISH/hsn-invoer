@@ -13,7 +13,7 @@
         <div class="form-group">
           <label class="control-label" th:if="${akte.mil.year le 1824}">el:</label>
           <label class="control-label" th:if="${akte.mil.year gt 1824}">m:</label>
-          <input type="text" class="form-control form-control-small integer-field required zero-allowed spacing"
+          <input type="text" class="form-control form-control-small integer-field required zero-allowed spacing meter"
                  maxlength="2" th:field="*{mil.meter}" hsn:field="mil.meter"/>
         </div>
 
@@ -40,12 +40,12 @@
       </div>
     </div>
 
-    <div class="form-group extra-top-margin" th:if="${akte.is('1923', '****FMD')}">
+    <div class="form-group extra-top-margin" th:if="${akte.is('1923', '****FMDB')}">
       <div class="sub-form-group weight">
         <label class="col-xs-2 col-xs-offset-2 control-label">Gewicht in kg:</label>
 
         <div class="col-xs-3 form-inline">
-          <input type="text" class="form-control form-control-small integer-field zero-allowed"
+          <input type="text" class="form-control form-control-small integer-field zero-allowed" data-max-value="200"
                  th:field="*{mil.kg}" hsn:field="mil.kg"/>
           ,
           <input type="text" class="form-control form-control-digit integer-field zero-allowed" maxlength="1"
@@ -53,7 +53,7 @@
         </div>
       </div>
 
-      <div class="sub-form-group" th:if="${akte.is('1923') and akte.isStrict('****FMD') == false}">
+      <div class="sub-form-group" th:if="${akte.is('1923') and akte.isStrict('****FMDB') == false}">
         <label class="col-xs-2 control-label">Index:</label>
 
         <div class="col-xs-2">
@@ -62,14 +62,14 @@
       </div>
     </div>
 
-    <th:block th:if="${akte.isStrict('****FMD')}">
+    <th:block th:if="${akte.isStrict('****FMDB')}">
       <div class="form-group extra-top-margin">
         <label class="col-xs-5 control-label">
           Intelligentie: (Score van 1 t/m 5)
         </label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit" maxlength="1" data-valid-chars="1;2;3;4;5"
+          <input type="text" class="form-control form-control-digit integer-field required score"
                  th:field="*{mil.intelligence}" hsn:field="mil.intelligence"/>
         </div>
       </div>
@@ -80,13 +80,13 @@
         </label>
 
         <div class="col-xs-2">
-          <input type="text" class="form-control form-control-digit" maxlength="1" data-valid-chars="1;2;3;4;5"
+          <input type="text" class="form-control form-control-digit integer-field required score"
                  th:field="*{mil.stability}" hsn:field="mil.stability"/>
         </div>
       </div>
     </th:block>
 
-    <th:block th:if="${akte.is('1815', '1862') and akte.isStrict('****FMD') == false}">
+    <th:block th:if="${akte.is('1815', '1862') and akte.isStrict('****FMDB') == false}">
       <div class="form-group extra-top-margin">
         <label class="col-xs-4 control-label">Zijn er uiterlijke kenmerken? j / n </label>
 

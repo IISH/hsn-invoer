@@ -6,7 +6,7 @@
 <body>
 <fieldset>
   <th:block layout:fragment="fields">
-    <th:block th:if="${akte.isStrict('****FMD') == false}">
+    <th:block th:if="${akte.isStrict('****FMDB') == false}">
       <div class="form-header letter-spacing">AANMERKINGEN:</div>
 
       <div class="form-group extra-top-margin">
@@ -21,8 +21,8 @@
 
     <div class="form-header letter-spacing extra-top-margin">BIJZONDERHEDEN:</div>
 
-    <div class="form-group extra-top-margin">
-      <label class="col-xs-7 control-label">Zijn er verder nog bijzonderheden om in te voeren?  j / n</label>
+    <div class="form-group extra-top-margin" th:if="${akte.isCorrection()} == false">
+      <label class="col-xs-7 control-label">Zijn er verder nog bijzonderheden om in te voeren? j / n</label>
 
       <div class="col-xs-2">
         <input type="text" class="form-control form-control-digit required" id="has-byz"
@@ -30,7 +30,8 @@
       </div>
     </div>
 
-    <div class="form-group extra-top-margin" data-show-when="#has-byz" data-has-values-in="j" style="display:none;">
+    <div class="form-group extra-top-margin" data:show-when="${akte.isCorrection()} == false ? '#has-byz'"
+         data:has-values-in="${akte.isCorrection()} == false ? 'j'" th:attr="style=${akte.isCorrection()} == false ? 'display:none;'">
       <div class="col-xs-12">
         <textarea class="form-control noResetOnHidden" rows="8" th:field="*{mil.byz}" hsn:field="mil.byz">
         </textarea>

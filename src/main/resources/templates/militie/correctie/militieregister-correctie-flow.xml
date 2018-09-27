@@ -126,7 +126,7 @@
   </view-state>
 
   <action-state id="includesCareers">
-    <evaluate expression="flowScope.akte.isStrict('****FMD')"/>
+    <evaluate expression="flowScope.akte.isStrict('****FMDB')"/>
 
     <transition on="yes" to="MS3a"/>
     <transition on="no" to="fourthCorrectionCodeCheck"/>

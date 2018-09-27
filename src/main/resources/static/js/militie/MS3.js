@@ -4,7 +4,7 @@
     $(document).on('keyup', '.lengths input', function validateLengths(e) {
         var elem = $(e.target);
         var val = elem.val();
-        if ((e.which !== 9) && (val.indexOf('-') !== 0) && (val.length === 1)) {
+        if ((e.which !== 9) && (e.which !== 16) && (val.indexOf('-') !== 0) && (val.length === 1)) {
             elem.autoNextFocus(true);
         }
         return true;
@@ -12,7 +12,12 @@
 
     function checkLength(elem) {
         var val = elem.getIntegerValue();
-        elem.hasErrorWhen(isNaN(val) || (val < -3) || (val > 9));
+        elem.hasErrorWhen(isNaN(val) || (val < -3) || (val > 9) || (elem.hasClass('meter') && (val > 2)));
+    }
+
+    function checkScore(elem) {
+        var val = elem.getIntegerValue();
+        elem.hasErrorWhen(isNaN(val) || (val < -2) || (val > 5));
     }
 
     function setEmpty(elem) {
@@ -34,6 +39,11 @@
         var weights = $('.weights input');
         weights.each(function () {
             setEmpty($(this));
+        });
+
+        var scores = $('.score');
+        scores.blur(function (e) {
+            checkScore($(e.target));
         });
     });
 })(jQuery);

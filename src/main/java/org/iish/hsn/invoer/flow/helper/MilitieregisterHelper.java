@@ -21,9 +21,11 @@ public class MilitieregisterHelper {
             case "F":
                 return "Filmrollen";
             case "M":
-                return "Microfiches (ijzeren kast)";
+                return "Microfiches (stalen kast)";
             case "D":
                 return "Microfiches (dozen)";
+            case "B":
+                return "Microfiches (bakjes)";
             default:
                 return "Niet bekend";
         }
