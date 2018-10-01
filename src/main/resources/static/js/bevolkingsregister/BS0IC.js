@@ -453,8 +453,10 @@
             $('.btn-next.check-delete').click();
         }
     }).ready(function () {
+        var bron = $('#b4\\.registrationId\\.keyToSourceRegister');
+
         $('#b4\\.registrationId\\.keyToRP').filter(':input').blur(checkIdnr);
-        $('#b4\\.registrationId\\.keyToSourceRegister').blur(checkBron);
+        bron.blur(checkBron);
         $('#b4\\.registrationId\\.dayEntryHead, #b4\\.registrationId\\.monthEntryHead, #b4\\.registrationId\\.yearEntryHead').blur(function (e) {
             checkHoofdDatum(e);
             checkNoRegelsWithDate();
@@ -478,7 +480,7 @@
                 checkNoRegelsWithDate();
             });
         }
-        else {
+        else if (!bron.hasClass('no-auto-fill-remembered')) {
             updateWithLastRemembered();
         }
 
