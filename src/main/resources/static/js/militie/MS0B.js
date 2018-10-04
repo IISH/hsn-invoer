@@ -46,13 +46,18 @@
         }
 
         if ((type !== 'L' && type !== 'K' && type !== 'N')) {
-            $('#mil\\.seqRefer').getParentOfFormElement().show();
+            var elem = $('#mil\\.seqRefer').getParentOfFormElement();
+            if ((type === 'F') || (type === 'M') || (type === 'D') || (type === 'B')) {
+                elem.find('label').text('Administratief nummer:');
+            }
+            elem.show();
         }
         else {
             $('#mil\\.seqRefer').getParentOfFormElement().hide();
         }
 
-        if (!(type === 'I' && year >= 1815 && year <= 1861)) {
+        if (!(type === 'I' && year >= 1815 && year <= 1861) &&
+            !((type === 'F') || (type === 'M') || (type === 'D') || (type === 'B'))) {
             $('#mil\\.drawnNumber').getParentOfFormElement().show();
         }
         else {

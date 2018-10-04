@@ -138,5 +138,9 @@
 <div layout:fragment="info"></div>
 
 <fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (true, true)"></fieldset>
+
+<th:block layout:fragment="js">
+  <script src="../../static/js/militie/MS2.js" hsn:src="@{/js/militie/MS2.js}"></script>
+</th:block>
 </body>
 </html>
