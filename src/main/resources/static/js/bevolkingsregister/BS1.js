@@ -759,8 +759,8 @@
                 row.find('.vertrek-plaats').val(prevRow.find('.vertrek-plaats').val());
                 row.find('.has-vertrek').val(prevRow.find('.has-vertrek').val());
 
-                // Make sure the focused element is also checked for required
-                elem.trigger('changeCheckRequired');
+                // Make sure the focused element is also checked for errors
+                elem.trigger('changeCheckErrors');
 
                 row.data('copy-prev-person', 'copy-prev-person');
             }

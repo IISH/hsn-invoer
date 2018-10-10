@@ -45,16 +45,21 @@
 
         // Determine if the field is empty
         // In case of dates, the day, month and year have to be filled out completely
-        var allFieldsEntered = true;
+        var allFieldsEntered = false, allFieldsDates = false;
         var inputElems = elemParent.find(':input:visible');
         if (elemParent.find('.day, .month, .year').filter(':visible').length > 0) {
             inputElems = inputElems.filter('.day, .month, .year');
+            allFieldsDates = true;
+            allFieldsEntered = true;
         }
 
         inputElems.each(function () {
             var val = $(this).val().trim();
-            if ((val.length === 0) || (parseInt(val) === 0)) {
+            if (allFieldsDates && ((val.length === 0) || (parseInt(val) === 0))) {
                 allFieldsEntered = false;
+            }
+            else if (!allFieldsDates && ((val.length > 0) || (parseInt(val) > 0))) {
+                allFieldsEntered = true;
             }
         });
 
@@ -181,24 +186,38 @@
         addError(!checkByzElements($.getDataElem('byz').filter(':visible')), false, 'byz-required');
     }
 
-    function checkRequired(elem) {
-        var elems;
-        if (elem.is('.required')) {
+    function checkErrors(elem) {
+        var elems = [];
+        if (elem.is('.required') ||
+            elem.is($.getDataElemSelector('min-value')) || elem.is($.getDataElemSelector('max-value'))) {
             elems = elem;
         }
         else {
-            elems = elem.find('.required');
+            elems = elem.find('.required,' + $.getDataElemSelector('min-value') + ',' + $.getDataElemSelector('max-value'));
         }
 
-        elems.each(function () {
-            var elem = $(this);
-            elem.hasErrorWhen(
-                (elem.val() === undefined) || (elem.val().trim() === '') ||
-                (!elem.hasClass('zero-allowed') && (elem.getIntegerValue() === 0))
-            );
-        });
+        if (elems.length > 0) {
+            elems.each(function () {
+                var elem = $(this);
+                var number = elem.getIntegerValue();
+                var minValue = elem.getIntegerDataValue('min-value');
+                var maxValue = elem.getIntegerDataValue('max-value');
 
-        $.triggerChangeOfState();
+                var errorRequired = elem.is('.required') &&
+                    ((elem.val() === undefined) || (elem.val().trim() === '')
+                        || (!elem.hasClass('zero-allowed') && (number === 0)));
+
+                var errorMinValue = elem.is($.getDataElemSelector('min-value')) &&
+                    (elem.hasClass('strict-min-check') || (number !== -1)) && (isNaN(number) || (number < minValue));
+
+                var errorMaxValue = elem.is($.getDataElemSelector('max-value')) &&
+                    (number !== -1) && (isNaN(number) || (number > maxValue));
+
+                elem.hasErrorWhen(errorRequired || errorMinValue || errorMaxValue);
+            });
+
+            $.triggerChangeOfState();
+        }
     }
 
     function checkErrorMessages() {
@@ -272,24 +291,21 @@
     $(document).on('blur', '.form-elem', function (e) {
         var elem = $(e.target);
 
-        if (elem.hasClass('required')) {
-            checkRequired(elem);
-        }
-
+        checkErrors(elem);
         if (elem.closest('form').length > 0) {
             init();
         }
-    }).on('change', '.required', function (e) {
+    }).on('change', '.form-elem', function (e) {
         var self = $(e.target);
         var focus = $(':focus');
 
         if (!focus.is(self)) {
-            checkRequired(self);
+            checkErrors(self);
         }
-    }).on('changeCheckRequired', '.required', function (e) {
-        checkRequired($(e.target));
+    }).on('changeCheckErrors', function (e) {
+        checkErrors($(e.target));
     }).on('show', function (e) {
-        checkRequired($(e.target));
+        checkErrors($(e.target));
     }).on('show hide', function (e) {
         if (!$.isRunningInit()) {
             // Prevent a endless loop: call init, show message, 'show' event called, back to call init ...
@@ -308,7 +324,7 @@
     };
 
     $.registerInit(function registerInit(elem) {
-        checkRequired(elem);
+        checkErrors(elem);
         init(true);
     });
 })(jQuery);

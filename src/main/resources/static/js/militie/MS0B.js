@@ -45,12 +45,9 @@
             $('#mil\\.seqRegister').getParentOfFormElement().hide();
         }
 
-        if ((type !== 'L' && type !== 'K' && type !== 'N')) {
-            var elem = $('#mil\\.seqRefer').getParentOfFormElement();
-            if ((type === 'F') || (type === 'M') || (type === 'D') || (type === 'B')) {
-                elem.find('label').text('Administratief nummer:');
-            }
-            elem.show();
+        if (type !== 'L' && type !== 'K' && type !== 'N' && type !== 'F'
+            && type !== 'M' && type !== 'D' && type !== 'B') {
+            $('#mil\\.seqRefer').getParentOfFormElement().show();
         }
         else {
             $('#mil\\.seqRefer').getParentOfFormElement().hide();
@@ -68,13 +65,13 @@
             $('.onlyYear').hide().find('.year').attr('name', '');
             $('.fullDate').show().find('.year').attr('name', 'mil.year');
             $('#mil\\.yearChoice').getParentOfFormElement().hide();
-            $('#mil\\.invNumber').getParentOfFormElement().hide();
+            $('#mil\\.invNumber').getParentOfFormElement().find('label').text('Administratief nummer:');
         }
         else {
             $('.fullDate').hide().find('.year').attr('name', '');
             $('.onlyYear').show().find('.year').attr('name', 'mil.year');
             $('#mil\\.yearChoice').getParentOfFormElement().show();
-            $('#mil\\.invNumber').getParentOfFormElement().show();
+            $('#mil\\.invNumber').getParentOfFormElement().find('label').text('Inventarisnummer:');
         }
     }
 

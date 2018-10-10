@@ -80,38 +80,6 @@
     }
 
     /**
-     * Only allow a value of a field within a certain range, otherwise clear the field.
-     * Some examples:
-     * 1)   data-min-value="100" data-max-value="200"
-     *      Only entered numbers that fall within the range of (including) 100 and 200 can be entered.
-     * 2)   data-min-value="150"
-     *      Only if 150 or larger was entered, the value is accepted.
-     */
-    function onMinValue(elem) {
-        var minValue = elem.getIntegerDataValue('min-value');
-        var number = elem.getIntegerValue();
-
-        if ((elem.hasClass('strict-min-check') || (number !== -1)) && (isNaN(number) || (number < minValue))) {
-            elem.val('');
-        }
-        else {
-            elem.val(number);
-        }
-    }
-
-    function onMaxValue(elem) {
-        var maxValue = elem.getIntegerDataValue('max-value');
-        var number = elem.getIntegerValue();
-
-        if ((number !== -1) && (isNaN(number) || (number > maxValue))) {
-            elem.val('');
-        }
-        else {
-            elem.val(number);
-        }
-    }
-
-    /**
      * Replace certain values of a field with another value.
      * Some examples:
      * 1)   data-replace="1:2;3:4"
@@ -371,14 +339,6 @@
         return allow;
     }).on('blur', 'input', function (e) {
         var elem = $(e.target);
-
-        if (elem.is($.getDataElemSelector('min-value'))) {
-            onMinValue(elem);
-        }
-
-        if (elem.is($.getDataElemSelector('max-value'))) {
-            onMaxValue(elem);
-        }
 
         if (elem.is($.getDataElemSelector('replace'))) {
             onReplace(elem);

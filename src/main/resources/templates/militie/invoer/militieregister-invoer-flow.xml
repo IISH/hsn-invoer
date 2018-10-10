@@ -115,7 +115,7 @@
       <render fragments="onderwijs"/>
     </transition>
 
-    <transition on="next" to="MSBYZ">
+    <transition on="next" to="MSNIEUW">
       <evaluate expression="militieregisterService.registerCareer(flowScope.akte, T(org.iish.hsn.invoer.domain.invoer.mil.Career.Type).ONDERWIJS)"/>
     </transition>
   </view-state>

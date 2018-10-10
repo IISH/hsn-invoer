@@ -9,7 +9,7 @@
     <th:block th:if="${akte.is('1815', '1862', '1913IL', '1923AIL', '****FMDB')}">
       <div class="form-header letter-spacing">GEGEVENS OUDERS LOTELING:</div>
 
-      <div class="form-group extra-top-margin">
+      <div class="form-group extra-top-margin" th:if="${akte.isStrict('****FMDB') == false}">
         <label class="col-xs-3 control-label">Gegevens voogd? j / n </label>
 
         <div class="col-xs-2">
@@ -58,7 +58,8 @@
       <div class="form-group" th:if="${akte.isStrict('1923A') == false}"
            th:include="fragments/complete-fields :: plaats ('mil.placeParents', 'Woonplaats ouders:')"></div>
 
-      <div data-show-when="#voogd" data-has-values-in="j" style="display:none;">
+      <div data-show-when="#voogd" data-has-values-in="j" style="display:none;"
+           th:if="${akte.isStrict('****FMDB') == false}">
         <div class="form-group extra-top-margin">
           <label class="col-xs-3 control-label">Achternaam voogd:</label>
 
@@ -96,6 +97,7 @@
            th:include="fragments/complete-fields :: beroep ('mil.professionMother', 'Beroep moeder:')"></div>
 
       <div class="form-group" data-show-when="#voogd" data-has-values-in="j" style="display:none;"
+           th:if="${akte.isStrict('****FMDB') == false}"
            th:include="fragments/complete-fields :: beroep ('mil.professionGuardian', 'Beroep voogd:')"></div>
     </th:block>
 
@@ -137,7 +139,7 @@
 
 <div layout:fragment="info"></div>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (true, true)"></fieldset>
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (true, ${akte.isStrict('****FMDB') == false})"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/militie/MS2.js" hsn:src="@{/js/militie/MS2.js}"></script>

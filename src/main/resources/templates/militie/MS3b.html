@@ -51,7 +51,7 @@
 
 <div layout:fragment="info"></div>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, true)"></fieldset>
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (false, ${akte.isStrict('****FMDB') == false})"></fieldset>
 
 <th:block layout:fragment="js">
   <script src="../../static/js/militie/MS3b.js" hsn:src="@{/js/militie/MS3b.js}"></script>

@@ -47,6 +47,9 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     }
 
     private boolean is(boolean strict, String... years) {
+        if ("FMDB".contains(mil.getType().toUpperCase()))
+            strict = true;
+
         for (String yearAndTypes : years) {
             String year = yearAndTypes.substring(0, 4);
             boolean yearMatches = (!strict && mil.isOtherYear()) || "****".equals(year) ||

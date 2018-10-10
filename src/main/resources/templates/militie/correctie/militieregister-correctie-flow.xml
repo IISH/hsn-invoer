@@ -159,7 +159,7 @@
       <render fragments="onderwijs"/>
     </transition>
 
-    <transition on="next" to="MSBYZ">
+    <transition on="next" to="MSNIEUW">
       <evaluate expression="militieregisterService.registerCareer(flowScope.akte, T(org.iish.hsn.invoer.domain.invoer.mil.Career.Type).ONDERWIJS)"/>
     </transition>
   </view-state>
@@ -180,6 +180,13 @@
     <evaluate expression="flowScope.akte.is('1815A')"/>
 
     <transition on="yes" to="MS4a"/>
+    <transition on="no" to="secondExtraInfoCheck"/>
+  </action-state>
+
+  <action-state id="secondExtraInfoCheck">
+    <evaluate expression="flowScope.akte.isStrict('****FMDB')"/>
+
+    <transition on="yes" to="fifthCorrectionCodeCheck"/>
     <transition on="no" to="MS4"/>
   </action-state>
 
@@ -296,13 +303,20 @@
   <action-state id="sixthCorrectionCodeCheck">
     <evaluate expression="flowScope.akte.correctionCode.toString()"/>
 
-    <transition on="0" to="MSBYZ"/>
+    <transition on="0" to="byzCheck"/>
     <transition on="1" to="MSNIEUW"/>
     <transition on="2" to="MSNIEUW"/>
     <transition on="3" to="MSNIEUW"/>
     <transition on="4" to="MSNIEUW"/>
     <transition on="5" to="MSNIEUW"/>
-    <transition on="6" to="MSBYZ"/>
+    <transition on="6" to="byzCheck"/>
+  </action-state>
+
+  <action-state id="byzCheck">
+    <evaluate expression="flowScope.akte.isStrict('****FMDB')"/>
+
+    <transition on="yes" to="MSNIEUW"/>
+    <transition on="no" to="MSBYZ"/>
   </action-state>
 
   <!-- MSBYZ: AANMERKINGEN EN BIJZONDERHEDEN -->

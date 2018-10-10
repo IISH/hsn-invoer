@@ -59,6 +59,6 @@
   </div>
 </div>
 
-<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (true, true)"></fieldset>
+<fieldset layout:fragment="navigation" th:include="fragments/navigation :: navigation-byz-modal (true, ${akte.isStrict('****FMDB') == false})"></fieldset>
 </body>
 </html>
