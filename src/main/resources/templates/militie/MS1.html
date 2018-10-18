@@ -11,7 +11,7 @@
     <div class="extra-top-margin" th:include="fragments/groups-of-fields :: namen-nieuw ('mil.familyName', 'mil.firstName')">
     </div>
 
-    <th:block th:if="${akte.is('1815', '1862', '1913IL', '1923AIL')}">
+    <th:block th:if="${akte.is('1815', '1862', '1913AIL', '1923AIL')}">
       <div class="form-group extra-top-margin"
            th:include="fragments/complete-fields :: plaats ('mil.placeOfBirth', 'Geboorteplaats:')"></div>
 
