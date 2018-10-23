@@ -120,8 +120,9 @@ public class PersoonskaartService extends AkteService {
             Pkknd pkknd = persoonskaartFlow.getPkknd();
             int idnr = pkknd.getIdnr();
 
-            persoonskaartFlow.setRefRp(lookupService.getRefRp(idnr, true));
             persoonskaartFlow.setPkknd(lookupService.getPkknd(idnr, true));
+            if (pkknd.getIdnr() < 500000)
+                persoonskaartFlow.setRefRp(lookupService.getRefRp(idnr, true));
 
             P7 p7 = p7Repository.findByIdnrAndWorkOrder(idnr, inputMetadata.getWorkOrder());
             if (p7 != null) {
