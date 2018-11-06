@@ -118,12 +118,6 @@
         $('#ovlknd\\.ovldag, #ovlknd\\.ovlmnd, #ovlknd\\.ovljr, #ovlknd\\.ovluur, #ovlknd\\.ovlmin')
             .blur(checkDeathAfterAkteDate);
 
-        $('#ovlknd\\.ovlmin').blur(function () {
-            if (!$(this).closest('.form-group').hasClass('has-an-error')) {
-                $('.ageContainer').show();
-            }
-        });
-
         var ageInput = $('.age input');
         if (!$.isCorrection()) {
             var calculatedAge = false;
