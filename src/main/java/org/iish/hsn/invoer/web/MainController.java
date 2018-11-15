@@ -20,10 +20,12 @@ public class MainController {
 
     @NoInputMetadataCheck
     @RequestMapping(value = "/check", method = RequestMethod.GET)
-    public ResponseEntity<String> validateInputMetadata(@RequestParam("init") String init,
+    public ResponseEntity<String> validateInputMetadata(@RequestParam(value = "init", required = false) String init,
                                                         @RequestParam("ondrzk") String ondrzk,
                                                         @RequestParam("opdrnr") String opdrnr) {
-        inputMetadata.setInit(init.trim().toUpperCase());
+        if (init != null)
+            inputMetadata.setInit(init.trim().toUpperCase());
+
         inputMetadata.setOndrzk(ondrzk.trim().toUpperCase());
         inputMetadata.setOpdrnr(opdrnr.trim().toUpperCase());
 
