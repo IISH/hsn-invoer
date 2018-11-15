@@ -45,10 +45,12 @@ public class MainController {
 
     @NoInputMetadataCheck
     @RequestMapping(params = "next", value = "/", method = RequestMethod.POST)
-    public String validateInputMetadataForm(@RequestParam("init") String init,
+    public String validateInputMetadataForm(@RequestParam(value = "init", required = false) String init,
                                             @RequestParam("ondrzk") String ondrzk,
                                             @RequestParam("opdrnr") String opdrnr) {
-        inputMetadata.setInit(init.trim().toUpperCase());
+        if (init != null)
+            inputMetadata.setInit(init.trim().toUpperCase());
+
         inputMetadata.setOndrzk(ondrzk.trim().toUpperCase());
         inputMetadata.setOpdrnr(opdrnr.trim().toUpperCase());
 
