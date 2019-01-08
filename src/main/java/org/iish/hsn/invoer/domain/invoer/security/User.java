@@ -8,6 +8,7 @@ public class User {
     @Column(name = "inlognaam", nullable = false, length = 30) private String inlognaam = "";
     @Column(name = "wachtwoord", nullable = true, length = 60) private String wachtwoord;
     @Column(name = "triple", nullable = false, length = 3) private String triple = "";
+    @Column(name = "type", nullable = false, length = 5) private String type = "USER";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +29,9 @@ public class User {
 
     public String getTriple() {
         return triple;
+    }
+
+    public String getType() {
+        return type;
     }
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html layout:decorator="layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hsn="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org" xmlns:data="http://www.thymeleaf.org">
+<head></head>
+<body>
+<th:block layout:fragment="content">
+  <form method="post" class="form-horizontal" autocomplete="off" enctype="multipart/form-data">
+    <fieldset class="title content-spacing">
+      <legend align="center">IMPORT VAN MILITIEREGISTERS</legend>
+    </fieldset>
+
+    <fieldset class="content-spacing">
+      <div class="form-group">
+        <label class="col-xs-5 control-label">
+          Selecteer de database file
+        </label>
+
+        <div class="col-xs-7">
+          <input type="file" name="dbFile" id="dbFile"/>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="content-spacing">
+      <span class="pull-right">
+        <button type="submit" name="upload" class="btn btn-default">
+          UPLOAD
+          <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+        </button>
+      </span>
+    </fieldset>
+  </form>
+</th:block>
+</body>
+</html>

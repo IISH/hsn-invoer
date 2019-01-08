@@ -4,12 +4,15 @@ import org.iish.hsn.invoer.domain.invoer.Invoer;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * This class handles the static attributes of a verdict
  */
 @Entity
-@Table(name = "m2", indexes = {@Index(columnList = "IDNR, VOLG, TYPE"), @Index(columnList = "ONDRZKO, OPDRNRI")})
+@Table(name = "m2",
+       uniqueConstraints = {@UniqueConstraint(columnNames = {"IDNR", "VOLG", "TYPE", "ONDRZKO", "OPDRNRI"})},
+       indexes = {@Index(columnList = "ONDRZKO, OPDRNRI")})
 public class Verdict extends Invoer implements Serializable {
     public enum Type {
         UITSTEL(1), TWEEDE_UITSTEL(2), BEZWAREN(3), WET(4), KONING(5), MILITIERAAD(6);
@@ -50,6 +53,8 @@ public class Verdict extends Invoer implements Serializable {
     @Column(name = "APPLD", nullable = false) private int dayOfAppeal;
     @Column(name = "APPLM", nullable = false) private int monthOfAppeal;
     @Column(name = "APPLJ", nullable = false) private int yearOfAppeal;
+
+    @Column(name = "IMPORT") private Timestamp importDate;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -165,5 +170,13 @@ public class Verdict extends Invoer implements Serializable {
 
     public void setYearOfAppeal(int yearOfAppeal) {
         this.yearOfAppeal = yearOfAppeal;
+    }
+
+    public Timestamp getImportDate() {
+        return importDate;
+    }
+
+    public void setImportDate(Timestamp importDate) {
+        this.importDate = importDate;
     }
 }

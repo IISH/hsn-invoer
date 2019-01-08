@@ -1,6 +1,6 @@
 application:
-  version: "5.4.0"
-  date: "6 november 2018"
+  version: "5.4.1"
+  date: "8 januari 2019"
 
 storage:
   path: "/data/hsn/"
@@ -9,3 +9,12 @@ spring:
   mvc:
     locale: nl_NL
     date-format: dd-MM-yyyy
+
+  servlet:
+    multipart:
+      max-file-size: '50MB'
+      max-request-size: '50MB'
+
+  http:
+    multipart:
+      enabled: true

@@ -75,6 +75,15 @@ public class InputMetadata implements Serializable {
         return valid;
     }
 
+    public boolean isAdmin() {
+        if (environment.acceptsProfiles("ldapAuth", "dbAuth")) {
+            User user = getLoggedInUser();
+            return user.getType().equalsIgnoreCase("ADMIN");
+        }
+
+        return false;
+    }
+
     public WorkOrder getWorkOrder() {
         return new WorkOrder(ondrzk, opdrnr);
     }

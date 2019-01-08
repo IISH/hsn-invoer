@@ -102,6 +102,9 @@ public class MainController {
                 return "redirect:/bevolkingsregister";
             case "6":
                 return "redirect:/militie";
+            case "a":
+                if (inputMetadata.isAdmin())
+                    return "redirect:/admin";
             case "s":
                 return "redirect:/?exit=true";
             default:

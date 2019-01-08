@@ -4,12 +4,15 @@ import org.iish.hsn.invoer.domain.invoer.Invoer;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * This class handles the static attributes of a registration
  */
 @Entity
-@Table(name = "m1", indexes = {@Index(columnList = "IDNR, VOLG"), @Index(columnList = "ONDRZKO, OPDRNRI")})
+@Table(name = "m1",
+       uniqueConstraints = {@UniqueConstraint(columnNames = {"IDNR", "VOLG", "ONDRZKO", "OPDRNRI"})},
+       indexes = {@Index(columnList = "ONDRZKO, OPDRNRI")})
 public class Milition extends Invoer implements Serializable {
     @Column(name = "IDNR", nullable = false) private int idnr;
     @Column(name = "VOLG", nullable = false) private int seq = 1;
@@ -166,6 +169,8 @@ public class Milition extends Invoer implements Serializable {
     @Column(name = "BYZAAN", nullable = false, length = 100) private String byzRemarks = "";
     @Column(name = "AANMRK", nullable = false, length = 255) private String remarks = "";
     @Column(name = "BYZ", nullable = false, length = 1028) private String byz = "";
+
+    @Column(name = "IMPORT") private Timestamp importDate;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -1226,5 +1231,13 @@ public class Milition extends Invoer implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Timestamp getImportDate() {
+        return importDate;
+    }
+
+    public void setImportDate(Timestamp importDate) {
+        this.importDate = importDate;
     }
 }

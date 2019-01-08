@@ -4,12 +4,15 @@ import org.iish.hsn.invoer.domain.invoer.Invoer;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * This class handles the attributes of a career history of a milition registry
  */
 @Entity
-@Table(name = "m3", indexes = {@Index(columnList = "IDNR, VOLG, TYPE, VOLG2"), @Index(columnList = "ONDRZKO, OPDRNRI")})
+@Table(name = "m3",
+       uniqueConstraints = {@UniqueConstraint(columnNames = {"IDNR", "VOLG", "TYPE", "VOLG2", "ONDRZKO", "OPDRNRI"})},
+       indexes = {@Index(columnList = "ONDRZKO, OPDRNRI")})
 public class Career extends Invoer implements Serializable {
     public enum Type {
         BEROEP(1), ONDERWIJS(2);
@@ -47,6 +50,8 @@ public class Career extends Invoer implements Serializable {
     @Column(name = "JAAR", nullable = false) private int year;
 
     @Column(name = "JAREN", nullable = false) private int numberOfYears;
+
+    @Column(name = "IMPORT") private Timestamp importDate;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -139,5 +144,13 @@ public class Career extends Invoer implements Serializable {
 
     public void setNumberOfYears(int numberOfYears) {
         this.numberOfYears = numberOfYears;
+    }
+
+    public Timestamp getImportDate() {
+        return importDate;
+    }
+
+    public void setImportDate(Timestamp importDate) {
+        this.importDate = importDate;
     }
 }
