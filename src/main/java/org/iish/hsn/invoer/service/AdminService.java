@@ -39,6 +39,8 @@ public class AdminService {
 
     public void uploadMilitionDb(MultipartFile dbFile) {
         try {
+            Class.forName("org.h2.Driver");
+
             Path filePath = Paths.get(System.getProperty("java.io.tmpdir"), dbFile.getName() + ".mv.db");
             dbFile.transferTo(filePath.toFile());
 
@@ -53,7 +55,7 @@ public class AdminService {
             insertCareers(connection, timestamp);
             connection.close();
         }
-        catch (IOException | SQLException | IllegalAccessException e) {
+        catch (IOException | SQLException | IllegalAccessException | ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
