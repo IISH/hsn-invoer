@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.Column;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
@@ -53,7 +54,9 @@ public class AdminService {
             insertMilitions(connection, timestamp);
             insertVerdicts(connection, timestamp);
             insertCareers(connection, timestamp);
+
             connection.close();
+            Files.delete(filePath);
         }
         catch (IOException | SQLException | IllegalAccessException | ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
