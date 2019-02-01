@@ -38,10 +38,17 @@ public class AdminService {
     private static final List<Field> CAREER_FIELDS =
             FieldUtils.getFieldsListWithAnnotation(Career.class, Column.class);
 
-    public void uploadMilitionDb(MultipartFile dbFile) {
+    static {
         try {
             Class.forName("org.h2.Driver");
+        }
+        catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public void uploadMilitionDb(MultipartFile dbFile) {
+        try {
             Path filePath = Paths.get(System.getProperty("java.io.tmpdir"), dbFile.getName() + ".mv.db");
             dbFile.transferTo(filePath.toFile());
 
@@ -50,7 +57,7 @@ public class AdminService {
 
             Timestamp timestamp = new Timestamp(new java.util.Date().getTime());
 
-            Connection connection = DriverManager.getConnection("jdbc:h2:" + path + ";MODE=MySQL;DB_CLOSE_DELAY=-1");
+            Connection connection = DriverManager.getConnection("jdbc:h2:" + path + ";MODE=MySQL");
             insertMilitions(connection, timestamp);
             insertVerdicts(connection, timestamp);
             insertCareers(connection, timestamp);
@@ -58,7 +65,7 @@ public class AdminService {
             connection.close();
             Files.delete(filePath);
         }
-        catch (IOException | SQLException | IllegalAccessException | ClassNotFoundException e) {
+        catch (IOException | SQLException | IllegalAccessException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
