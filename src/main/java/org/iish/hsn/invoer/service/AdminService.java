@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Service for performing administrative actions
@@ -49,7 +50,7 @@ public class AdminService {
 
     public void uploadMilitionDb(MultipartFile dbFile) {
         try {
-            Path filePath = Paths.get(System.getProperty("java.io.tmpdir"), dbFile.getName() + ".mv.db");
+            Path filePath = Paths.get(System.getProperty("java.io.tmpdir"), UUID.randomUUID().toString() + ".mv.db");
             dbFile.transferTo(filePath.toFile());
 
             String path = filePath.toString();
