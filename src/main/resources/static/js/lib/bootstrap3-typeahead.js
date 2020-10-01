@@ -407,12 +407,16 @@
         case 13: // enter
         case 27: // escape
           e.preventDefault();
+          // TODO: Make sure keyup is called also
+          e.stopPropagation();
           break;
 
         case 38: // up arrow
           // with the shiftKey (this is actually the left parenthesis)
           if (e.shiftKey) return;
           e.preventDefault();
+          // TODO: Make sure keyup is called also
+          e.stopPropagation();
           this.prev();
           break;
 
@@ -420,12 +424,11 @@
           // with the shiftKey (this is actually the right parenthesis)
           if (e.shiftKey) return;
           e.preventDefault();
+          // TODO: Make sure keyup is called also
+          e.stopPropagation();
           this.next();
           break;
       }
-
-      // TODO: Make sure keyup is called also
-      e.stopPropagation();
     },
 
     keydown: function (e) {
