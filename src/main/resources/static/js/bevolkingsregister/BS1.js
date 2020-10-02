@@ -176,7 +176,6 @@
         }
 
         var relatie = container.find('.relatie:first');
-        var relatieRegelPopup = container.find('.relatieRegelPopup:first');
         var relatieDateHoofdPopup = container.find('.relatieDateHoofdPopup:first');
         var relatieRegelInterprPopup = container.find('.relatieRegelInterprPopup:first');
 
@@ -767,16 +766,37 @@
         }
     }
 
-    function registerPersons() {
+    function registerPersonAjaxCall(row) {
+        row.resetInvisibleFormElements();
+
+        var data = row.find('.form-elem').serialize()
+            + '&b4.remarks=' + $('[name=b4\\.remarks]').val()
+            + '&_eventId=register-person&ajaxSource=true&person=' + row.data('rp');
+        var ajaxRequest = $.ajax({type: 'POST', data: data});
+
+        row.removeClass('register-person');
+        rpsNotSubmitted = rpsNotSubmitted.not(row);
+
+        return ajaxRequest;
+    }
+
+    function registerPersons(cb) {
+        var ajaxRequests = [];
         $('#registrationAllLines').find('tr.register-person').each(function () {
-            var row = $(this);
-            row.resetInvisibleFormElements();
-            row.removeClass('register-person');
-            var data = row.find('.form-elem').serialize()
-                + '&b4.remarks=' + $('[name=b4\\.remarks]').val()
-                + '&_eventId=register-person&ajaxSource=true&person=' + row.data('rp');
-            $.ajax({type: 'POST', data: data});
+            ajaxRequests.push(registerPersonAjaxCall($(this)));
         });
+
+        if (cb && rpsNotSubmitted.length > 0) {
+            rpsNotSubmitted.each(function () {
+                ajaxRequests.push(registerPersonAjaxCall($(this)));
+            });
+        }
+
+        if (cb && ajaxRequests.length > 0) {
+            $.when.apply($, ajaxRequests).done(cb);
+        }
+
+        return ajaxRequests;
     }
 
     function registerPerson() {
@@ -808,8 +828,9 @@
 
             if (position > minLeft) {
                 var firstColumn, lastGroup;
-                var column = (parent.is('td')) ? parent : parent.closest('td');
-                var lastColumn = column;
+                var focusColumn = (parent.is('td')) ? parent : parent.closest('td');
+                var column = focusColumn;
+                var lastColumn = focusColumn;
 
                 while (!firstColumn) {
                     var curGroup = column.data('group');
@@ -828,10 +849,19 @@
                     }
                 }
 
+                if (firstColumn.is(focusColumn)) {
+                    var beforeFirstColumn = firstColumn.prev('td');
+                    if (beforeFirstColumn) {
+                        firstColumn = beforeFirstColumn;
+                    }
+                }
+
                 scrollable.scrollLeft(scrollable.scrollLeft() + firstColumn.offset().left - 50);
             }
         }
     }
+
+    var rpsNotSubmitted = [];
 
     $(document).keydown(function (e) {
         var modal = $.getOpenedModal();
@@ -1013,6 +1043,18 @@
             // Also person registration is done via AJAX, so don't submit data on next/cancel
             // This is done by binding the submit buttons to another empty form
             $('form button[type=submit]').attr('form', 'no-form');
+
+            rpsNotSubmitted = $('#registrationAllLines').find('tr[data-rp]');
+
+            $('form').submit(function (e) {
+                const noAjaxRequests = registerPersons(function () {
+                    $('form').submit();
+                });
+
+                if (noAjaxRequests.length > 0) {
+                    e.preventDefault();
+                }
+            });
         }
         else {
             $(document).on('blur', 'input', function (e) {
