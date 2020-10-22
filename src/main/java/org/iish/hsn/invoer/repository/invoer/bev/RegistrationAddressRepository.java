@@ -17,11 +17,11 @@ public interface RegistrationAddressRepository extends Repository<RegistrationAd
            "ra.dayOfAddress, ra.monthOfAddress, ra.yearOfAddress ASC")
     List<RegistrationAddress> findByRegistrationId(RegistrationId registrationId, WorkOrder workOrder);
 
-    List<RegistrationAddress> save(Iterable<RegistrationAddress> entities);
+    List<RegistrationAddress> saveAll(Iterable<RegistrationAddress> entities);
 
     void delete(RegistrationAddress entity);
 
-    void delete(Iterable<? extends RegistrationAddress> entities);
+    void deleteAll(Iterable<? extends RegistrationAddress> entities);
 
     @Modifying
     @Transactional

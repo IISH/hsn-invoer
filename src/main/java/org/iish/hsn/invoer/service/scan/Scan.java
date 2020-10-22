@@ -7,8 +7,8 @@ import java.nio.file.Path;
  * Representation of a stored scan.
  */
 public class Scan {
-    private @JsonIgnore Path sideA;
-    private @JsonIgnore Path sideB;
+    private final @JsonIgnore Path sideA;
+    private final @JsonIgnore Path sideB;
 
     /**
      * Creates a new link to a stored scan.

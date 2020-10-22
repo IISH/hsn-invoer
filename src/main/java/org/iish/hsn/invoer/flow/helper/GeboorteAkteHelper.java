@@ -56,7 +56,7 @@ public class GeboorteAkteHelper {
         if (brgstmr.equals("5")) {
             return "j";
         }
-        if (Arrays.asList(1,2,3,4,6,7,8).contains(new Integer(brgstmr))) {
+        if (Arrays.asList(1,2,3,4,6,7,8).contains(Integer.valueOf(brgstmr))) {
             return "n";
         }
 

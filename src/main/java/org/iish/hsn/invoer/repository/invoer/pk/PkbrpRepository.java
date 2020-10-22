@@ -15,6 +15,6 @@ public interface PkbrpRepository extends Repository<Pkbrp, Integer> {
 
     void delete(Pkbrp entity);
 
-    void delete(Iterable<? extends Pkbrp> entities);
+    void deleteAll(Iterable<? extends Pkbrp> entities);
 }
 

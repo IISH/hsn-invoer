@@ -17,7 +17,7 @@ public class Verdict extends Invoer implements Serializable {
     public enum Type {
         UITSTEL(1), TWEEDE_UITSTEL(2), BEZWAREN(3), WET(4), KONING(5), MILITIERAAD(6);
 
-        private int type;
+        private final int type;
 
         Type(int type) {
             this.type = type;

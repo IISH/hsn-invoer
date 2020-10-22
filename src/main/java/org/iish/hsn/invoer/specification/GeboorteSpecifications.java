@@ -15,22 +15,18 @@ public class GeboorteSpecifications extends AkteSpecifications<Geb, Integer> {
     }
 
     public Specification<Geb> isInGemeente(final int gemnr) {
-        return new Specification<Geb>() {
-            public Predicate toPredicate(Root<Geb> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                query.orderBy(getOrderBy(root, cb));
-                return cb.equal(root.get(Geb_.gemnr), gemnr);
-            }
+        return (root, query, cb) -> {
+            query.orderBy(getOrderBy(root, cb));
+            return cb.equal(root.get(Geb_.gemnr), gemnr);
         };
     }
 
     public Specification<Geb> isInCohort(final int cohortNumber) {
         final Cohort cohort = Cohort.getCohortByNumber(cohortNumber);
-        return new Specification<Geb>() {
-            public Predicate toPredicate(Root<Geb> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                query.orderBy(getOrderBy(root, cb));
-                return cb.and(cb.greaterThanOrEqualTo(root.get(Geb_.jaar), cohort.getStartYear()),
-                        cb.lessThanOrEqualTo(root.get(Geb_.jaar), cohort.getEndYear()));
-            }
+        return (root, query, cb) -> {
+            query.orderBy(getOrderBy(root, cb));
+            return cb.and(cb.greaterThanOrEqualTo(root.get(Geb_.jaar), cohort.getStartYear()),
+                    cb.lessThanOrEqualTo(root.get(Geb_.jaar), cohort.getEndYear()));
         };
     }
 

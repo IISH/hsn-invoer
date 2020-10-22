@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 public class ConverterConfiguration {
     @Bean
      public Converter<String, Integer> stringToIntegerConverter() {
-        return new Converter<String, Integer>() {
+        return new Converter<>() {
             public Integer convert(String source) {
                 try {
                     return Integer.valueOf(source);
@@ -25,7 +25,7 @@ public class ConverterConfiguration {
 
     @Bean
     public Converter<Integer, String> integerToStringConverter() {
-        return new Converter<Integer, String>() {
+        return new Converter<>() {
             public String convert(Integer source) {
                 if ((source == null) || (source == 0)) {
                     return "";
@@ -37,7 +37,7 @@ public class ConverterConfiguration {
 
     @Bean
     public Converter<String, String> stringTrimmerConverter() {
-        return new Converter<String, String>() {
+        return new Converter<>() {
             public String convert(String source) {
                 if (source != null) {
                     return source.trim();
@@ -49,7 +49,7 @@ public class ConverterConfiguration {
 
     @Bean
     public Converter<String, Path> stringToPathConverter() {
-        return new Converter<String, Path>() {
+        return new Converter<>() {
             public Path convert(String source) {
                 return Paths.get(source);
             }

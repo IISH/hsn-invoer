@@ -15,5 +15,5 @@ public interface CareerRepository extends Repository<Career, Integer> {
 
     void delete(Career entity);
 
-    void delete(Iterable<? extends Career> entities);
+    void deleteAll(Iterable<? extends Career> entities);
 }

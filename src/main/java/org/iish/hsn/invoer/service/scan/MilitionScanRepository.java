@@ -24,7 +24,7 @@ public class MilitionScanRepository {
     private static final Pattern SCAN_PATTERN =
             Pattern.compile("^(\\d+)((\\s|_)([\\p{IsAlphabetic}\\s_]+))?((\\s|_)(\\d{4}))?((\\s|_)([IALKN]))?((\\s|_)([ab]))?((\\s|_)([^\\s_\\.]{2,}))?\\.[a-zA-Z]+$");
 
-    private Path root;
+    private final Path root;
 
     /**
      * Creates a new representation of a milition scan repository.

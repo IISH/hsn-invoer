@@ -8,7 +8,7 @@ import java.util.Map;
 public class PersoonskaartViewNames implements ViewNames {
     private static final Map<String, String> byzViewNames = new HashMap<>();
 
-    private ViewStateHistory viewStateHistory;
+    private final ViewStateHistory viewStateHistory;
 
     static {
         byzViewNames.put("PS0I", "Identificatie nummer PK-houder");

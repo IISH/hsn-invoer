@@ -28,7 +28,7 @@ public class AkteFlowExecutionListener extends FlowExecutionListenerAdapter {
      */
     @Override
     public void stateEntered(RequestContext context, StateDefinition previousState, StateDefinition newState) {
-        AttributeMap flowScope = context.getFlowScope();
+        AttributeMap<Object> flowScope = context.getFlowScope();
         if (newState.isViewState() && flowScopeContainsAkte(flowScope)) {
             ByzAkteFlowState byzAkteFlowState = getAkteFlowState(flowScope);
             ViewStateHistory viewStateHistory = byzAkteFlowState.getViewStateHistory();
@@ -47,7 +47,7 @@ public class AkteFlowExecutionListener extends FlowExecutionListenerAdapter {
      *
      * @return Whether the flow scope contains an 'akte'.
      */
-    private static boolean flowScopeContainsAkte(AttributeMap flowScope) {
+    private static boolean flowScopeContainsAkte(AttributeMap<Object> flowScope) {
         return (flowScope.contains("akte") && (flowScope.get("akte") instanceof ByzAkteFlowState));
     }
 
@@ -58,7 +58,7 @@ public class AkteFlowExecutionListener extends FlowExecutionListenerAdapter {
      *
      * @return The 'akte' from the flow scope.
      */
-    private static ByzAkteFlowState getAkteFlowState(AttributeMap flowScope) {
+    private static ByzAkteFlowState getAkteFlowState(AttributeMap<Object> flowScope) {
         return (ByzAkteFlowState) flowScope.get("akte");
     }
 

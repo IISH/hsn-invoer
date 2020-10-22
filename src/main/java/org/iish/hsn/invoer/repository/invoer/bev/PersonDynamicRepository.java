@@ -23,11 +23,11 @@ public interface PersonDynamicRepository extends Repository<PersonDynamic, Integ
     List<PersonDynamic> findAllPersonDynamicForPerson(RegistrationId registrationId,
                                                              int keyToRegistrationPersons, WorkOrder workOrder);
 
-    List<PersonDynamic> save(Iterable<PersonDynamic> entities);
+    List<PersonDynamic> saveAll(Iterable<PersonDynamic> entities);
 
     void delete(PersonDynamic entity);
 
-    void delete(Iterable<? extends PersonDynamic> entities);
+    void deleteAll(Iterable<? extends PersonDynamic> entities);
 
     @Modifying
     @Transactional

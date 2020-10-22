@@ -8,8 +8,8 @@ import java.util.Map;
 public class OverlijdensAkteViewNames implements ViewNames {
     private static final Map<String, String> byzViewNames = new HashMap<>();
 
-    private ViewStateHistory viewStateHistory;
-    private int curAangeverIndex;
+    private final ViewStateHistory viewStateHistory;
+    private final int curAangeverIndex;
 
     static {
         byzViewNames.put("OS0I", "Controle identificatie OVL akte");

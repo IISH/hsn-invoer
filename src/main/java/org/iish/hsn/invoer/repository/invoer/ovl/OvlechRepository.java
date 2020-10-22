@@ -15,5 +15,5 @@ public interface OvlechRepository extends Repository<Ovlech, Integer> {
 
     void delete(Ovlech entity);
 
-    void delete(Iterable<? extends Ovlech> entities);
+    void deleteAll(Iterable<? extends Ovlech> entities);
 }

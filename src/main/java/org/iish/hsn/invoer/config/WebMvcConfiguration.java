@@ -12,11 +12,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.util.MimeType;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.dialect.IDialect;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.view.AjaxThymeleafViewResolver;
-import org.thymeleaf.spring4.view.FlowAjaxThymeleafView;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.webflow.view.AjaxThymeleafViewResolver;
+import org.thymeleaf.spring5.webflow.view.FlowAjaxThymeleafView;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 
 @Configuration
-public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
+public class WebMvcConfiguration implements WebMvcConfigurer {
     @Value("${random-to-static-source:false}")
     private boolean randomToStaticSource;
 
@@ -73,8 +73,10 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         resolver.setViewClass(FlowAjaxThymeleafView.class);
         resolver.setTemplateEngine(this.templateEngine());
         resolver.setCharacterEncoding(this.thymeleafProperties.getEncoding().name());
-        resolver.setContentType(appendCharset(this.thymeleafProperties.getContentType(),
+        resolver.setContentType(appendCharset(this.thymeleafProperties.getServlet().getContentType(),
                 resolver.getCharacterEncoding()));
+        resolver.setProducePartialOutputWhileProcessing(
+                this.thymeleafProperties.getServlet().isProducePartialOutputWhileProcessing());
         resolver.setExcludedViewNames(this.thymeleafProperties.getExcludedViewNames());
         resolver.setViewNames(this.thymeleafProperties.getViewNames());
         // This resolver acts as a fallback resolver (e.g. like a
@@ -88,7 +90,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
      * Copied from the AbstractThymeleafViewResolverConfiguration class in Spring Boot
      * for use with the thymeleafViewResolver.
      *
-     * @see org.springframework.boot.autoconfigure.thymeleaf.AbstractThymeleafViewResolverConfiguration
+     * @see org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration
      */
     private static String appendCharset(MimeType type, String charset) {
         if (type.getCharset() != null) {

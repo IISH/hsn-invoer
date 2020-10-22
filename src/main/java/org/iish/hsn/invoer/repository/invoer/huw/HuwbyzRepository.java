@@ -14,5 +14,5 @@ public interface HuwbyzRepository extends Repository<Huwbyz, Integer> {
 
     void delete(Huwbyz entity);
 
-    void delete(Iterable<? extends Huwbyz> entities);
+    void deleteAll(Iterable<? extends Huwbyz> entities);
 }

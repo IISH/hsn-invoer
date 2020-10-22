@@ -2,6 +2,8 @@ package org.iish.hsn.invoer.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -23,7 +25,8 @@ import java.util.Map;
                        entityManagerFactoryRef = "invoerEntityManagerFactory")
 public class InvoerDataSourceConfiguration {
     @Autowired private Environment env;
-    @Autowired private JpaProperties properties;
+    @Autowired private JpaProperties jpaProperties;
+    @Autowired private HibernateProperties hibernateProperties;
 
     @Bean
     @Primary
@@ -36,7 +39,8 @@ public class InvoerDataSourceConfiguration {
     @Primary
     public LocalContainerEntityManagerFactoryBean invoerEntityManagerFactory(EntityManagerFactoryBuilder builder) {
         DataSource dataSource = this.invoerDataSource();
-        Map<String, String> properties = this.properties.getHibernateProperties(dataSource);
+        Map<String, Object> properties = this.hibernateProperties.determineHibernateProperties(
+                this.jpaProperties.getProperties(), new HibernateSettings());
 
         return builder
                 .dataSource(dataSource)

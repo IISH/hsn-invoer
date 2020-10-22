@@ -16,7 +16,7 @@ public class PersonDynamic extends Invoer implements Serializable {
     public enum Type {
         RELATIE_TOV_HOOFD(1), BURGELIJKE_STAND(2), KERKGENOOTSCHAP(3), BEROEP(5), HERKOMST(6), VERTREK(7);
 
-        private int type;
+        private final int type;
 
         Type(int type) {
             this.type = type;

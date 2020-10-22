@@ -2,7 +2,6 @@ package org.iish.hsn.invoer.service.akte;
 
 import org.iish.hsn.invoer.domain.invoer.Byz;
 import org.iish.hsn.invoer.domain.invoer.geb.*;
-import org.iish.hsn.invoer.domain.invoer.geb.Stpb;
 import org.iish.hsn.invoer.exception.AkteException;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.flow.state.*;
@@ -86,7 +85,7 @@ public class GeboorteAkteService extends AkteService {
             if ((oldGebakte != null) && (newGebakte.getGebkode() == 1)) {
                 List<Gebbyz> gebbyz =
                         gebbyzRepository.findByIdnrAndWorkOrder(newGebakte.getIdnr(), inputMetadata.getWorkOrder());
-                gebbyzRepository.delete(gebbyz);
+                gebbyzRepository.deleteAll(gebbyz);
             }
 
             geboorteAkteFlow.setStpb(stpb);
@@ -237,7 +236,7 @@ public class GeboorteAkteService extends AkteService {
 
         // Delete the information about the father if during correction the father happens to be the declarant as well
         String brgstmr = geboorteAkteFlow.getGebknd().getBrgstmr();
-        if (geboorteAkteFlow.isCorrection() && Arrays.asList(5, 7, 8).contains(new Integer(brgstmr))) {
+        if (geboorteAkteFlow.isCorrection() && Arrays.asList(5, 7, 8).contains(Integer.valueOf(brgstmr))) {
             gebvdrRepository.delete(geboorteAkteFlow.getGebvdr());
         }
     }
@@ -263,13 +262,13 @@ public class GeboorteAkteService extends AkteService {
 
         // Make sure certain fields are emptied (difference between a previous husband due to a divorce or due to death)
         String brgstmr = geboorteAkteFlow.getGebknd().getBrgstmr();
-        if (new Integer(brgstmr) != 2) {
+        if (Integer.parseInt(brgstmr) != 2) {
             gebvdr.setG5vood(0);
             gebvdr.setG5voom(0);
             gebvdr.setG5vooj(0);
             gebvdr.setG5vogo("");
         }
-        if (new Integer(brgstmr) != 3) {
+        if (Integer.parseInt(brgstmr) != 3) {
             gebvdr.setG5oosd(0);
             gebvdr.setG5oosm(0);
             gebvdr.setG5oosj(0);
@@ -452,8 +451,8 @@ public class GeboorteAkteService extends AkteService {
         gebkndRepository.delete(geboorteAkteFlow.getGebknd());
         gebvdrRepository.delete(geboorteAkteFlow.getGebvdr());
         gebkantRepository.delete(geboorteAkteFlow.getGebkant());
-        gebgtgRepository.delete(Arrays.asList(geboorteAkteFlow.getGebgtg()));
-        gebbyzRepository.delete(geboorteAkteFlow.getGebbyz());
+        gebgtgRepository.deleteAll(Arrays.asList(geboorteAkteFlow.getGebgtg()));
+        gebbyzRepository.deleteAll(geboorteAkteFlow.getGebbyz());
     }
 
     /**

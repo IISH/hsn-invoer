@@ -15,5 +15,5 @@ public interface PkhuwRepository extends Repository<Pkhuw, Integer> {
 
     void delete(Pkhuw entity);
 
-    void delete(Iterable<? extends Pkhuw> entities);
+    void deleteAll(Iterable<? extends Pkhuw> entities);
 }

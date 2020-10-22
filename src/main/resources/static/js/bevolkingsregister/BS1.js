@@ -769,13 +769,16 @@
     function registerPersonAjaxCall(row) {
         row.resetInvisibleFormElements();
 
+        var rp = row.getIntegerDataValue('rp');
         var data = row.find('.form-elem').serialize()
             + '&b4.remarks=' + $('[name=b4\\.remarks]').val()
             + '&_eventId=register-person&ajaxSource=true&person=' + row.data('rp');
         var ajaxRequest = $.ajax({type: 'POST', data: data});
 
         row.removeClass('register-person');
-        rpsNotSubmitted = rpsNotSubmitted.not(row);
+        if (rpsNotSubmitted.indexOf(rp) >= 0) {
+            rpsNotSubmitted.splice(rpsNotSubmitted.indexOf(rp), 1);
+        }
 
         return ajaxRequest;
     }
@@ -787,8 +790,9 @@
         });
 
         if (cb && rpsNotSubmitted.length > 0) {
-            rpsNotSubmitted.each(function () {
-                ajaxRequests.push(registerPersonAjaxCall($(this)));
+            $.each(rpsNotSubmitted.slice(), function (idx, rp) {
+                var row = $('#registrationAllLines').find('tr[data-rp=' + rp + ']');
+                ajaxRequests.push(registerPersonAjaxCall(row));
             });
         }
 
@@ -1044,15 +1048,19 @@
             // This is done by binding the submit buttons to another empty form
             $('form button[type=submit]').attr('form', 'no-form');
 
-            rpsNotSubmitted = $('#registrationAllLines').find('tr[data-rp]');
+            rpsNotSubmitted = $('#registrationAllLines').find('tr[data-rp]').map(function () {
+                return $(this).getIntegerDataValue('rp');
+            }).get();
 
             $('form').submit(function (e) {
-                const noAjaxRequests = registerPersons(function () {
-                    $('form').submit();
-                });
+                if ($(document.activeElement).hasClass('btn-next')) {
+                    const noAjaxRequests = registerPersons(function () {
+                        $('.btn-next').click();
+                    });
 
-                if (noAjaxRequests.length > 0) {
-                    e.preventDefault();
+                    if (noAjaxRequests.length > 0) {
+                        e.preventDefault();
+                    }
                 }
             });
         }

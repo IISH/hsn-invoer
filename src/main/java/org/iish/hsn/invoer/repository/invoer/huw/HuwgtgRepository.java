@@ -16,5 +16,5 @@ public interface HuwgtgRepository extends Repository<Huwgtg, Integer> {
 
     void delete(Huwgtg entity);
 
-    void delete(Iterable<? extends Huwgtg> entities);
+    void deleteAll(Iterable<? extends Huwgtg> entities);
 }

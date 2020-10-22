@@ -15,5 +15,5 @@ public interface VerdictRepository extends Repository<Verdict, Integer> {
 
     void delete(Verdict entity);
 
-    void delete(Iterable<? extends Verdict> entities);
+    void deleteAll(Iterable<? extends Verdict> entities);
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,26 +31,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // All pages, except /css/**, /fonts/**, /js/** and favicon.ico require authorization first
-                .authorizeRequests()
-                    .antMatchers("/css/**", "/fonts/**", "/js/**", "/favicon.ico").permitAll()
-                    .and()
+                .authorizeRequests().and()
                 // Disable Cross-Site Request Forgery token
                 .csrf().disable()
                 // Disable HTTP Basic authentication
-                .httpBasic().disable()
-                // What is our login/logout page?
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .and()
-                .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/logout/success")
-                    .permitAll();
+                .httpBasic().disable();
 
         // If we are running H2 in development mode, then make sure we can always reach the H2 console
-        if (this.env.acceptsProfiles("development") && this.env.acceptsProfiles("h2")) {
+        if (this.env.acceptsProfiles(Profiles.of("development")) && this.env.acceptsProfiles(Profiles.of("h2"))) {
             httpSecurity
                     .authorizeRequests()
                         .antMatchers("/console/**").permitAll()
@@ -59,16 +48,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         }
 
         // If an auth profile has been chosen, close all other requests: the user needs to be authenticated first
-        if (this.env.acceptsProfiles("ldapAuth", "dbAuth")) {
-            httpSecurity.authorizeRequests()
-                    .antMatchers("/").authenticated()
-                    .anyRequest().hasRole("USER");
+        if (this.env.acceptsProfiles(Profiles.of("ldapAuth", "dbAuth"))) {
+            httpSecurity
+                    // What is the login page
+                    .formLogin()
+                        .loginPage("/login")
+                        .permitAll()
+                        .and()
+                    // What is the logout page
+                    .logout()
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/logout/success")
+                        .permitAll()
+                        .and()
+                    // Any request needs authentication first (except static resources)
+                    .authorizeRequests()
+                        .antMatchers("/css/**", "/fonts/**", "/js/**", "/favicon.ico").permitAll()
+                        .anyRequest().authenticated();
         }
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        if (this.env.acceptsProfiles("ldapAuth")) {
+        if (this.env.acceptsProfiles(Profiles.of("ldapAuth"))) {
             DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(this.ldapUrl);
             contextSource.setUserDn(this.ldapManagerDn);
             contextSource.setPassword(this.ldapManagerPassword);
@@ -79,13 +81,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
             authenticationManagerBuilder
                     .ldapAuthentication()
-                        .contextSource(contextSource)
-                        .userSearchBase(this.ldapSearchBase)
-                        .userSearchFilter(this.ldapSearchFilter)
-                        .ldapAuthoritiesPopulator(ldapAuthoritiesPopulator);
+                    .contextSource(contextSource)
+                    .userSearchBase(this.ldapSearchBase)
+                    .userSearchFilter(this.ldapSearchFilter)
+                    .ldapAuthoritiesPopulator(ldapAuthoritiesPopulator);
         }
 
-        if (this.env.acceptsProfiles("dbAuth")) {
+        if (this.env.acceptsProfiles(Profiles.of("dbAuth"))) {
             authenticationManagerBuilder
                     .userDetailsService(this.userDetailsService)
                     .passwordEncoder(new BCryptPasswordEncoder(10));

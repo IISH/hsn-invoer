@@ -1,7 +1,6 @@
 package org.iish.hsn.invoer.service.akte;
 
 import org.iish.hsn.invoer.domain.invoer.Byz;
-import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
 import org.iish.hsn.invoer.domain.invoer.pk.*;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.AkteException;
@@ -317,7 +316,7 @@ public class PersoonskaartService extends AkteService {
         // Then remove the instances that fall out of range
         if (pkbrp.size() > totalNumber) {
             List<Pkbrp> toDelete = pkbrp.subList(totalNumber, pkbrp.size());
-            pkbrpRepository.delete(toDelete);
+            pkbrpRepository.deleteAll(toDelete);
 
             pkbrp = new ArrayList<>(pkbrp.subList(0, totalNumber));
             persoonskaartFlow.setPkbrp(pkbrp);
@@ -359,8 +358,8 @@ public class PersoonskaartService extends AkteService {
      */
     public void deleteMarriages(PersoonskaartFlowState persoonskaartFlow) {
         List<Pkhuw> pkhuw = persoonskaartFlow.getPkhuw();
-        pkhuwRepository.delete(pkhuw);
-        persoonskaartFlow.setPkhuw(new ArrayList<Pkhuw>());
+        pkhuwRepository.deleteAll(pkhuw);
+        persoonskaartFlow.setPkhuw(new ArrayList<>());
     }
 
     /**
@@ -389,7 +388,7 @@ public class PersoonskaartService extends AkteService {
         int pkhuwIndex = persoonskaartFlow.getCurPkhuwIndex() + 1;
 
         if ((pkhuwIndex > 0) && (pkhuwIndex < pkhuw.size())) {
-            pkhuwRepository.delete(pkhuw.subList(pkhuwIndex, pkhuw.size()));
+            pkhuwRepository.deleteAll(pkhuw.subList(pkhuwIndex, pkhuw.size()));
         }
     }
 
@@ -457,7 +456,7 @@ public class PersoonskaartService extends AkteService {
         // Then remove the instances that fall out of range
         if (pkadres.size() > totalNumber) {
             List<Pkadres> toDelete = pkadres.subList(totalNumber, pkadres.size());
-            pkadresRepository.delete(toDelete);
+            pkadresRepository.deleteAll(toDelete);
 
             pkadres = new ArrayList<>(pkadres.subList(0, totalNumber));
             persoonskaartFlow.setPkadres(pkadres);
@@ -500,8 +499,8 @@ public class PersoonskaartService extends AkteService {
      */
     public void deleteKinderen(PersoonskaartFlowState persoonskaartFlow) {
         List<Pkeigknd> pkeigknd = persoonskaartFlow.getPkeigknd();
-        pkeigkndRepository.delete(pkeigknd);
-        persoonskaartFlow.setPkeigknd(new ArrayList<Pkeigknd>());
+        pkeigkndRepository.deleteAll(pkeigknd);
+        persoonskaartFlow.setPkeigknd(new ArrayList<>());
     }
 
     /**
@@ -537,7 +536,7 @@ public class PersoonskaartService extends AkteService {
         int pkeigkndIndex = persoonskaartFlow.getCurPkeigkndIndex() + 1;
 
         if ((pkeigkndIndex > 0) && (pkeigkndIndex < pkeigknd.size())) {
-            pkeigkndRepository.delete(pkeigknd.subList(pkeigkndIndex, pkeigknd.size()));
+            pkeigkndRepository.deleteAll(pkeigknd.subList(pkeigkndIndex, pkeigknd.size()));
         }
     }
 
@@ -582,11 +581,11 @@ public class PersoonskaartService extends AkteService {
         p7Repository.delete(persoonskaartFlow.getP7());
         p8Repository.delete(persoonskaartFlow.getP8Origin());
         p8Repository.delete(persoonskaartFlow.getP8CurWhereabouts());
-        pkbrpRepository.delete(persoonskaartFlow.getPkbrp());
-        pkhuwRepository.delete(persoonskaartFlow.getPkhuw());
-        pkadresRepository.delete(persoonskaartFlow.getPkadres());
-        pkeigkndRepository.delete(persoonskaartFlow.getPkeigknd());
-        pkbyzRepository.delete(persoonskaartFlow.getPkbyz());
+        pkbrpRepository.deleteAll(persoonskaartFlow.getPkbrp());
+        pkhuwRepository.deleteAll(persoonskaartFlow.getPkhuw());
+        pkadresRepository.deleteAll(persoonskaartFlow.getPkadres());
+        pkeigkndRepository.deleteAll(persoonskaartFlow.getPkeigknd());
+        pkbyzRepository.deleteAll(persoonskaartFlow.getPkbyz());
     }
 
     /**

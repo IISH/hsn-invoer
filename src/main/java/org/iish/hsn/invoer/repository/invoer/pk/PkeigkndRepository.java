@@ -15,5 +15,5 @@ public interface PkeigkndRepository extends Repository<Pkeigknd, Integer> {
 
     void delete(Pkeigknd entity);
 
-    void delete(Iterable<? extends Pkeigknd> entities);
+    void deleteAll(Iterable<? extends Pkeigknd> entities);
 }

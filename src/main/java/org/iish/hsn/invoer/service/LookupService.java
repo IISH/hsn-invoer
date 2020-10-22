@@ -27,7 +27,6 @@ import org.iish.hsn.invoer.repository.reference.Ref_AINBRepository;
 import org.iish.hsn.invoer.repository.invoer.geb.StpbRepository;
 import org.iish.hsn.invoer.repository.reference.Ref_RPRepository;
 import org.iish.hsn.invoer.service.scan.MilitionScan;
-import org.iish.hsn.invoer.service.scan.MilitionScanRepository;
 import org.iish.hsn.invoer.service.scan.ScansService;
 import org.iish.hsn.invoer.util.InputMetadata;
 import org.springframework.beans.factory.annotation.Autowired;

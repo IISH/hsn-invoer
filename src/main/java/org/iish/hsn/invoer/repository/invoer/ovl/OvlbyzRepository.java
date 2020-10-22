@@ -13,5 +13,5 @@ public interface OvlbyzRepository extends Repository<Ovlbyz, Integer> {
 
     void delete(Ovlbyz entity);
 
-    void delete(Iterable<? extends Ovlbyz> entities);
+    void deleteAll(Iterable<? extends Ovlbyz> entities);
 }

@@ -2,6 +2,8 @@ package org.iish.hsn.invoer.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -22,7 +24,8 @@ import java.util.Map;
                        entityManagerFactoryRef = "referenceEntityManagerFactory")
 public class ReferenceDataSourceConfiguration {
     @Autowired private Environment env;
-    @Autowired private JpaProperties properties;
+    @Autowired private JpaProperties jpaProperties;
+    @Autowired private HibernateProperties hibernateProperties;
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.reference")
@@ -33,7 +36,8 @@ public class ReferenceDataSourceConfiguration {
     @Bean
     public LocalContainerEntityManagerFactoryBean referenceEntityManagerFactory(EntityManagerFactoryBuilder builder) {
         DataSource dataSource = this.referenceDataSource();
-        Map<String, String> properties = this.properties.getHibernateProperties(dataSource);
+        Map<String, Object> properties = this.hibernateProperties.determineHibernateProperties(
+                this.jpaProperties.getProperties(), new HibernateSettings());
 
         return builder
                 .dataSource(dataSource)

@@ -115,8 +115,10 @@ public class MilitieregisterHelper {
     private String getYesOrNo(boolean isCorrection, String... values) {
         boolean isEntered = false;
         for (String value : values) {
-            if (!value.isEmpty())
+            if (!value.isEmpty()) {
                 isEntered = true;
+                break;
+            }
         }
 
         if (isEntered)

@@ -13,5 +13,5 @@ public interface GebgtgRepository extends Repository<Gebgtg, Integer> {
 
     Gebgtg save(Gebgtg entity);
 
-    void delete(Iterable<? extends Gebgtg> entities);
+    void deleteAll(Iterable<? extends Gebgtg> entities);
 }

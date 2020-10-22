@@ -29,5 +29,5 @@
         </property>
     </bean>
 
-    <bean id="thymeleafViewResolver" class="org.thymeleaf.spring4.view.AjaxThymeleafViewResolver"/>
+    <bean id="thymeleafViewResolver" class="org.thymeleaf.spring5.webflow.view.AjaxThymeleafViewResolver"/>
 </beans>

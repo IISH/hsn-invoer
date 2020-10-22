@@ -13,5 +13,5 @@ public interface PkbyzRepository extends Repository<Pkbyz, Integer> {
 
     void delete(Pkbyz entity);
 
-    void delete(Iterable<? extends Pkbyz> entities);
+    void deleteAll(Iterable<? extends Pkbyz> entities);
 }

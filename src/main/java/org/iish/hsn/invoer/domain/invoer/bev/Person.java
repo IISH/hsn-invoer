@@ -4,7 +4,6 @@ import org.iish.hsn.invoer.domain.invoer.Invoer;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * This class handles the static attributes of a person (name, date of birth etc.)
@@ -17,7 +16,7 @@ public class Person extends Invoer implements Serializable {
     public enum NatureOfPerson {
         FIRST_RP(1), NO_RP(2), NEXT_RP(5);
 
-        private int natureOfPerson;
+        private final int natureOfPerson;
 
         NatureOfPerson(int natureOfPerson) {
             this.natureOfPerson = natureOfPerson;

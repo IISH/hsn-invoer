@@ -369,7 +369,7 @@ public class HuwelijksAkteService extends AkteService {
         // Then remove the instances that fall out of range
         if (huwafk.size() > totalNumber) {
             List<Huwafk> toDelete = huwafk.subList(totalNumber, huwafk.size());
-            huwafkRepository.delete(toDelete);
+            huwafkRepository.deleteAll(toDelete);
 
             huwafk = new ArrayList<>(huwafk.subList(0, totalNumber));
         }
@@ -409,10 +409,10 @@ public class HuwelijksAkteService extends AkteService {
 
         // If no previous marriages, delete everything, else delete all that has not been corrected after correction
         if (huwelijksAkteFlow.getHuwknd().getBsthm().equals("1")) {
-            huweerRepository.delete(huweerGroom);
+            huweerRepository.deleteAll(huweerGroom);
         }
         else if ((huweerGroomIndex > 0) && (huweerGroomIndex < huweerGroom.size())) {
-            huweerRepository.delete(huweerGroom.subList(huweerGroomIndex, huweerGroom.size()));
+            huweerRepository.deleteAll(huweerGroom.subList(huweerGroomIndex, huweerGroom.size()));
         }
 
         List<Huweer> huweerBride = huwelijksAkteFlow.getHuweerBride();
@@ -420,10 +420,10 @@ public class HuwelijksAkteService extends AkteService {
 
         // Same for the bride
         if (huwelijksAkteFlow.getHuwknd().getBsthv().equals("1")) {
-            huweerRepository.delete(huweerBride);
+            huweerRepository.deleteAll(huweerBride);
         }
         else if ((huweerBrideIndex > 0) && (huweerBrideIndex < huweerBride.size())) {
-            huweerRepository.delete(huweerBride.subList(huweerBrideIndex, huweerBride.size()));
+            huweerRepository.deleteAll(huweerBride.subList(huweerBrideIndex, huweerBride.size()));
         }
     }
 
@@ -514,7 +514,7 @@ public class HuwelijksAkteService extends AkteService {
 
         if (deleteVoorkinderen.equals("j")) {
             huwknd.setErken("n");
-            huwvrkndRepository.delete(Arrays.asList(huwelijksAkteFlow.getHuwvrknd()));
+            huwvrkndRepository.deleteAll(Arrays.asList(huwelijksAkteFlow.getHuwvrknd()));
         }
         else if (deleteVoorkinderen.equals("n")) {
             huwknd.setErken("j");
@@ -587,7 +587,7 @@ public class HuwelijksAkteService extends AkteService {
 
         int nGtg = huwelijksAkteFlow.getHuwknd().getNgtg();
         if (nGtg == -5) {
-            huwgtgRepository.delete(Arrays.asList(huwgtg));
+            huwgtgRepository.deleteAll(Arrays.asList(huwgtg));
         }
         else if (nGtg == 0) {
             huwelijksAkteFlow.getHuwknd().setNgtg(huwgtg.length);
@@ -606,7 +606,7 @@ public class HuwelijksAkteService extends AkteService {
 
             if (huwgtg.length >= newHuwgtg.length) {
                 List<Huwgtg> toDelete = Arrays.asList(huwgtg).subList(newHuwgtg.length, huwgtg.length);
-                huwgtgRepository.delete(toDelete);
+                huwgtgRepository.deleteAll(toDelete);
             }
 
             huwelijksAkteFlow.setHuwgtg(newHuwgtg);
@@ -682,12 +682,12 @@ public class HuwelijksAkteService extends AkteService {
             huwttlRepository.delete(huwelijksAkteFlow.getHuwttl());
         }
         huwkndRepository.delete(huwelijksAkteFlow.getHuwknd());
-        huwafkRepository.delete(huwelijksAkteFlow.getHuwafk());
-        huweerRepository.delete(huwelijksAkteFlow.getHuweerGroom());
-        huweerRepository.delete(huwelijksAkteFlow.getHuweerBride());
-        huwvrkndRepository.delete(Arrays.asList(huwelijksAkteFlow.getHuwvrknd()));
-        huwgtgRepository.delete(Arrays.asList(huwelijksAkteFlow.getHuwgtg()));
-        huwbyzRepository.delete(huwelijksAkteFlow.getHuwbyz());
+        huwafkRepository.deleteAll(huwelijksAkteFlow.getHuwafk());
+        huweerRepository.deleteAll(huwelijksAkteFlow.getHuweerGroom());
+        huweerRepository.deleteAll(huwelijksAkteFlow.getHuweerBride());
+        huwvrkndRepository.deleteAll(Arrays.asList(huwelijksAkteFlow.getHuwvrknd()));
+        huwgtgRepository.deleteAll(Arrays.asList(huwelijksAkteFlow.getHuwgtg()));
+        huwbyzRepository.deleteAll(huwelijksAkteFlow.getHuwbyz());
     }
 
     /**

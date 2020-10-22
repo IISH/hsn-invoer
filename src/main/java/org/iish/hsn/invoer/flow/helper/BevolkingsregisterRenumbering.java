@@ -12,14 +12,14 @@ import java.util.*;
  * Takes care of the renumbering of persons.
  */
 public class BevolkingsregisterRenumbering {
-    private BevolkingsregisterFlowState original;
-    private BevolkingsregisterFlowState renumbered;
+    private final BevolkingsregisterFlowState original;
+    private final BevolkingsregisterFlowState renumbered;
 
-    private Set<Person>              deletedB2;
-    private Set<PersonDynamic>       deletedB3;
-    private Set<RegistrationAddress> deletedB6;
+    private final Set<Person> deletedB2;
+    private final Set<PersonDynamic> deletedB3;
+    private final Set<RegistrationAddress> deletedB6;
 
-    private List<Integer> missingKeys;
+    private final List<Integer> missingKeys;
 
     /**
      * Starts the renumbering of persons.
@@ -41,7 +41,7 @@ public class BevolkingsregisterRenumbering {
         this.missingKeys = new ArrayList<>();
 
         // Already initialize the missing keys list, we remove those that are not missing later
-        for (int i=1; i<=renumbered.getB2().size(); i++) {
+        for (int i = 1; i <= renumbered.getB2().size(); i++) {
             missingKeys.add(i);
         }
     }

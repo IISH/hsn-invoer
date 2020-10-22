@@ -17,7 +17,7 @@ public class Career extends Invoer implements Serializable {
     public enum Type {
         BEROEP(1), ONDERWIJS(2);
 
-        private int type;
+        private final int type;
 
         Type(int type) {
             this.type = type;

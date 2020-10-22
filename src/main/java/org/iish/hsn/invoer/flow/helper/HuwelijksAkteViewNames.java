@@ -8,8 +8,8 @@ import java.util.Map;
 public class HuwelijksAkteViewNames implements ViewNames {
     private static final Map<String, String> byzViewNames = new HashMap<>();
 
-    private ViewStateHistory viewStateHistory;
-    private int curGebgtgIndex;
+    private final ViewStateHistory viewStateHistory;
+    private final int curGebgtgIndex;
 
     static {
         byzViewNames.put("HS0I", "Identificatie");

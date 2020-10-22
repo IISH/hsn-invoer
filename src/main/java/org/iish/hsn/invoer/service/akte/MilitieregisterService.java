@@ -247,7 +247,7 @@ public class MilitieregisterService {
         // Then remove the instances that fall out of range
         if (careerHistory.size() > totalNumber) {
             List<Career> toDelete = careerHistory.subList(totalNumber, careerHistory.size());
-            careerRepository.delete(toDelete);
+            careerRepository.deleteAll(toDelete);
 
             careerHistory = new ArrayList<>(careerHistory.subList(0, totalNumber));
             militieregisterFlow.setCareerForType(type, careerHistory);
@@ -295,9 +295,9 @@ public class MilitieregisterService {
         if (militieregisterFlow.getMil().getId() != null) {
             militionRepository.delete(militieregisterFlow.getMil());
         }
-        verdictRepository.delete(militieregisterFlow.getVerdict().values());
-        careerRepository.delete(militieregisterFlow.getProfessions());
-        careerRepository.delete(militieregisterFlow.getEducations());
+        verdictRepository.deleteAll(militieregisterFlow.getVerdict().values());
+        careerRepository.deleteAll(militieregisterFlow.getProfessions());
+        careerRepository.deleteAll(militieregisterFlow.getEducations());
 
         // Renumber the sequences
         int seq = 1;

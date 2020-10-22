@@ -1,5 +1,6 @@
 package org.iish.hsn.invoer.service;
 
+import org.iish.hsn.invoer.domain.invoer.Invoer;
 import org.iish.hsn.invoer.domain.invoer.bev.Person;
 import org.iish.hsn.invoer.domain.invoer.bev.Registration;
 import org.iish.hsn.invoer.domain.invoer.bev.RegistrationId;
@@ -22,13 +23,12 @@ import org.iish.hsn.invoer.repository.invoer.pk.PkkndRepository;
 import org.iish.hsn.invoer.specification.*;
 import org.iish.hsn.invoer.util.InputMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@SuppressWarnings("unchecked")
 public class OverviewService {
     @Autowired private InputMetadata          inputMetadata;
     @Autowired private PlaatsRepository       plaatsRepository;
@@ -42,7 +42,7 @@ public class OverviewService {
 
     public List<Geb> getBirthOverview(GeboorteOverviewParams params) {
         GeboorteSpecifications geb = new GeboorteSpecifications();
-        Specifications<Geb> spec = geb.getSpec(inputMetadata.getWorkOrder());
+        Specification<Geb> spec = geb.getSpec(inputMetadata.getWorkOrder());
         spec = getSpecForParams(params, spec, geb);
 
         if ((params.getGemeente() != null) && !params.getGemeente().trim().isEmpty()) {
@@ -61,28 +61,28 @@ public class OverviewService {
 
     public List<Ovlknd> getDeathOverview(OverviewParams params) {
         OverlijdensSpecifications ovl = new OverlijdensSpecifications();
-        Specifications<Ovlknd> spec = ovl.getSpec(inputMetadata.getWorkOrder());
+        Specification<Ovlknd> spec = ovl.getSpec(inputMetadata.getWorkOrder());
         spec = getSpecForParams(params, spec, ovl);
         return ovlkndRepository.findAll(spec);
     }
 
     public List<Huwknd> getMarriageOverview(OverviewParams params) {
         HuwelijksSpecifications huw = new HuwelijksSpecifications();
-        Specifications<Huwknd> spec = huw.getSpec(inputMetadata.getWorkOrder());
+        Specification<Huwknd> spec = huw.getSpec(inputMetadata.getWorkOrder());
         spec = getSpecForParams(params, spec, huw);
         return huwkndRepository.findAll(spec);
     }
 
     public List<Pkknd> getPersonCardOverview(OverviewParams params) {
         PersoonskaartSpecifications pk = new PersoonskaartSpecifications();
-        Specifications<Pkknd> spec = pk.getSpec(inputMetadata.getWorkOrder());
+        Specification<Pkknd> spec = pk.getSpec(inputMetadata.getWorkOrder());
         spec = getSpecForParams(params, spec, pk);
         return pkkndRepository.findAll(spec);
     }
 
     public List<Milition> getMilitionOverview(OverviewParams params) {
         MilitieSpecifications mil = new MilitieSpecifications();
-        Specifications<Milition> spec = mil.getSpec(inputMetadata.getWorkOrder());
+        Specification<Milition> spec = mil.getSpec(inputMetadata.getWorkOrder());
         spec = getSpecForParams(params, spec, mil);
         return militionRepository.findAll(spec);
     }
@@ -102,9 +102,10 @@ public class OverviewService {
         return personRepository.findByRegistrationIdAndWorkOrder(registrationId, inputMetadata.getWorkOrder());
     }
 
-    private Specifications getSpecForParams(OverviewParams params, Specifications spec, AkteSpecifications akteSpecs) {
+    private <X extends Invoer> Specification<X> getSpecForParams(OverviewParams params, Specification<X> spec,
+                                                                 AkteSpecifications<X, Integer> akteSpecs) {
         if ((params.getLaagsteIdnr() != null) && (params.getHoogsteIdnr() != null) &&
-            (params.getLaagsteIdnr() > 0) && (params.getHoogsteIdnr() > 0)) {
+                (params.getLaagsteIdnr() > 0) && (params.getHoogsteIdnr() > 0)) {
             spec = spec.and(akteSpecs.isBetweenLowestAndHighestIdnr(params.getLaagsteIdnr(), params.getHoogsteIdnr()));
         }
 

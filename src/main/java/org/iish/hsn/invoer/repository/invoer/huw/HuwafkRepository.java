@@ -14,6 +14,6 @@ public interface HuwafkRepository extends Repository<Huwafk, Integer> {
 
     Huwafk save(Huwafk entity);
 
-    void delete(Iterable<? extends Huwafk> entities);
+    void deleteAll(Iterable<? extends Huwafk> entities);
 }
 

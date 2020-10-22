@@ -6,11 +6,11 @@ import java.nio.file.Path;
  * Representation of a stored milition scan.
  */
 public class MilitionScan extends Scan {
-    private int idnr;
-    private String municipality;
-    private Integer year;
-    private String type;
-    private String number;
+    private final int idnr;
+    private final String municipality;
+    private final Integer year;
+    private final String type;
+    private final String number;
 
     /**
      * Creates a new link to a stored scan.

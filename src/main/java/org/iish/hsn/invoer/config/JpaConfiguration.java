@@ -1,12 +1,13 @@
 package org.iish.hsn.invoer.config;
 
 import org.h2.server.web.WebServlet;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -21,8 +22,8 @@ public class JpaConfiguration {
      */
     @Bean
     @Profile("h2")
-    public ServletRegistrationBean h2ConsoleServletRegistration() {
-        ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
+    public ServletRegistrationBean<WebServlet> h2ConsoleServletRegistration() {
+        ServletRegistrationBean<WebServlet> registrationBean = new ServletRegistrationBean<>(new WebServlet());
         registrationBean.addUrlMappings("/console/*");
         return registrationBean;
     }
@@ -56,8 +57,8 @@ public class JpaConfiguration {
      * @return A new datasource.
      */
     static DataSource createDataSource(Environment env, String name) {
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        if (env.acceptsProfiles("h2file")) {
+        DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
+        if (env.acceptsProfiles(Profiles.of("h2file"))) {
             String path = (System.getProperty("database") != null)
                     ? System.getProperty("database") : System.getProperty("user.home");
             dataSourceBuilder.url("jdbc:h2:" + path + "/" + name + ";MODE=MySQL;DB_CLOSE_DELAY=-1");

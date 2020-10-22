@@ -7,10 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
-
-import java.awt.Desktop;
-import java.net.URI;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 import static org.springframework.boot.Banner.Mode;
 
@@ -28,12 +25,10 @@ public class Application extends SpringBootServletInitializer {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication application = new SpringApplication(Application.class);
         application.setBannerMode(Mode.OFF);
         application.run(args);
-
-        openBrowser();
     }
 
     @Override
@@ -41,15 +36,5 @@ public class Application extends SpringBootServletInitializer {
         return application
                 .sources(Application.class)
                 .bannerMode(Mode.OFF);
-    }
-
-    private static void openBrowser() {
-        try {
-            Desktop desktop = Desktop.getDesktop();
-            desktop.browse(new URI("http://localhost:8080"));
-        }
-        catch (Exception e) {
-            LOGGER.warn("Could not start the browser automatically!");
-        }
     }
 }

@@ -13,5 +13,5 @@ public interface GebbyzRepository extends Repository<Gebbyz, Integer> {
 
     void delete(Gebbyz entity);
 
-    void delete(Iterable<? extends Gebbyz> entities);
+    void deleteAll(Iterable<? extends Gebbyz> entities);
 }

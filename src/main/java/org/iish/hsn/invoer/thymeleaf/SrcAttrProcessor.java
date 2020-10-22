@@ -1,55 +1,46 @@
 package org.iish.hsn.invoer.thymeleaf;
 
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.spring4.requestdata.RequestDataValueProcessorUtils;
-import org.thymeleaf.standard.processor.attr.AbstractStandardSingleAttributeModifierAttrProcessor;
+import org.thymeleaf.IEngineConfiguration;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.engine.AttributeName;
+import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
+import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.spring5.requestdata.RequestDataValueProcessorUtils;
+import org.thymeleaf.standard.expression.IStandardExpression;
+import org.thymeleaf.standard.expression.IStandardExpressionParser;
+import org.thymeleaf.standard.expression.StandardExpressions;
+import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.Random;
 
 /**
  * Adds a random value to the source URL attribute to prevent caching.
  */
-public class SrcAttrProcessor extends AbstractStandardSingleAttributeModifierAttrProcessor {
+public class SrcAttrProcessor extends AbstractAttributeTagProcessor {
     private static final Random RANDOM = new Random();
 
     private final boolean randomToStaticSource;
 
-    public SrcAttrProcessor(final boolean randomToStaticSource) {
-        super("src");
+    public SrcAttrProcessor(final String dialectPrefix, final boolean randomToStaticSource) {
+        super(TemplateMode.HTML, dialectPrefix, null, false,
+                "src", true, 0, true);
         this.randomToStaticSource = randomToStaticSource;
     }
 
     @Override
-    public int getPrecedence() {
-        return 0;
-    }
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
+                             String attributeValue, IElementTagStructureHandler structureHandler) {
+        IEngineConfiguration configuration = context.getConfiguration();
+        IStandardExpressionParser expressionParser = StandardExpressions.getExpressionParser(configuration);
+        IStandardExpression expression = expressionParser.parseExpression(context, attributeValue);
 
-    @Override
-    protected String getTargetAttributeName(Arguments arguments, Element element, String attributeName) {
-        return "src";
-    }
+        String url = (String) expression.execute(context);
+        url = RequestDataValueProcessorUtils.processUrl(context, url);
 
-    @Override
-    protected String getTargetAttributeValue(final Arguments arguments, final Element element,
-                                             final String attributeName) {
-        final String attributeValue = super.getTargetAttributeValue(arguments, element, attributeName);
-        String url = RequestDataValueProcessorUtils.processUrl(arguments.getConfiguration(), arguments, attributeValue);
-
-        if (randomToStaticSource)
-            return url + "?r=" + Math.abs(RANDOM.nextInt());
-        return url;
-    }
-
-    @Override
-    protected ModificationType getModificationType(final Arguments arguments, final Element element,
-                                                   final String attributeName, final String newAttributeName) {
-        return ModificationType.SUBSTITUTION;
-    }
-
-    @Override
-    protected boolean removeAttributeIfEmpty(final Arguments arguments, final Element element,
-                                             final String attributeName, final String newAttributeName) {
-        return false;
+        if (randomToStaticSource) {
+            url += "?r=" + Math.abs(RANDOM.nextInt());
+        }
+        structureHandler.setAttribute("src", url);
     }
 }

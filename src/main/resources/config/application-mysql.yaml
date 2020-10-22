@@ -1,8 +1,9 @@
 spring:
   datasource:
     invoer:
-      driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/invoer
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/invoer?useSSL=false&serverTimezone=UTC
+      jdbcUrl: jdbc:mysql://localhost:3306/invoer?useSSL=false&serverTimezone=UTC
       username: root
       password: rootroot
 
@@ -25,8 +26,9 @@ spring:
       rewriteBatchedStatements: true
 
     reference:
-      driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/reference
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/reference?useSSL=false&serverTimezone=UTC
+      jdbcUrl: jdbc:mysql://localhost:3306/reference?useSSL=false&serverTimezone=UTC
       username: root
       password: rootroot
 

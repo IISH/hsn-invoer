@@ -13,8 +13,8 @@ public interface PkadresRepository extends Repository<Pkadres, Integer> {
 
     Pkadres save(Pkadres entity);
 
-    void delete(Iterable<? extends Pkadres> entities);
-
     void delete(Pkadres entity);
+
+    void deleteAll(Iterable<? extends Pkadres> entities);
 }
 

@@ -15,5 +15,5 @@ public interface OvlagvRepository extends Repository<Ovlagv, Integer> {
 
     void delete(Ovlagv entity);
 
-    void delete(Iterable<? extends Ovlagv> entities);
+    void deleteAll(Iterable<? extends Ovlagv> entities);
 }

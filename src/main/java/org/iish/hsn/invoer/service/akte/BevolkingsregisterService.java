@@ -429,7 +429,7 @@ public class BevolkingsregisterService {
                 if (i == 0) {
                     b3Renumbered.clear();
                 }
-                b3Renumbered.put(i + 1, new ArrayList<PersonDynamic>());
+                b3Renumbered.put(i + 1, new ArrayList<>());
             }
         }
 
@@ -451,9 +451,9 @@ public class BevolkingsregisterService {
         bevolkingsregisterFlow.setCorrectionPersons(bevolkingsregisterRenumbering.getMissingKeys());
 
         // And delete the deleted records also in the database
-        personRepository.delete(bevolkingsregisterRenumbering.getDeletedB2());
-        personDynamicRepository.delete(bevolkingsregisterRenumbering.getDeletedB3());
-        registrationAddressRepository.delete(bevolkingsregisterRenumbering.getDeletedB6());
+        personRepository.deleteAll(bevolkingsregisterRenumbering.getDeletedB2());
+        personDynamicRepository.deleteAll(bevolkingsregisterRenumbering.getDeletedB3());
+        registrationAddressRepository.deleteAll(bevolkingsregisterRenumbering.getDeletedB6());
 
         // Also loop over the persons to make sure the initial dynamic properties records are created
         // Also make sure the nature of the person is still correct
@@ -584,8 +584,8 @@ public class BevolkingsregisterService {
             // Delete all dynamic properties of this person
             for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
                 Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
-                personDynamicRepository.delete(b3.get(person.getKeyToRegistrationPersons()));
-                b3.put(person.getKeyToRegistrationPersons(), new ArrayList<PersonDynamic>());
+                personDynamicRepository.deleteAll(b3.get(person.getKeyToRegistrationPersons()));
+                b3.put(person.getKeyToRegistrationPersons(), new ArrayList<>());
             }
 
             PersonDynamic b3Her = bevolkingsregisterFlow.getFirstB3Her().get(person.getKeyToRegistrationPersons());
@@ -1000,7 +1000,7 @@ public class BevolkingsregisterService {
             for (PersonDynamic personDynamic : b3Person) {
                 inputMetadata.saveToEntity(personDynamic);
             }
-            b3Person = personDynamicRepository.save(b3Person);
+            b3Person = personDynamicRepository.saveAll(b3Person);
             b3.put(person.getRp(), b3Person);
         }
     }
@@ -1017,14 +1017,14 @@ public class BevolkingsregisterService {
             registerPerson(bevolkingsregisterFlow, person);
             inputMetadata.saveToEntity(person);
         }
-        personRepository.save(persons);
+        personRepository.saveAll(persons);
 
         // Next store input metadata and save all person dynamics (Register already happened when person was registered)
         List<PersonDynamic> personDynamics = new ArrayList<>(bevolkingsregisterFlow.getAllB3());
         for (PersonDynamic personDynamic : personDynamics) {
             inputMetadata.saveToEntity(personDynamic);
         }
-        personDynamicRepository.save(personDynamics);
+        personDynamicRepository.saveAll(personDynamics);
     }
 
     /**
@@ -1040,7 +1040,7 @@ public class BevolkingsregisterService {
             inputMetadata.saveToEntity(registrationAddress);
         }
 
-        b6 = registrationAddressRepository.save(b6);
+        b6 = registrationAddressRepository.saveAll(b6);
         bevolkingsregisterFlow.setB6(b6);
     }
 
@@ -1291,8 +1291,8 @@ public class BevolkingsregisterService {
         List<PersonDynamic> personDynamics = b3.get(person.getKeyToRegistrationPersons());
         PersonDynamic personDynamic = firstB3.get(person.getKeyToRegistrationPersons());
         if (personDynamic.getDayOfMutation() == 0) {
-            personDynamicRepository.delete(personDynamics);
-            b3.put(person.getKeyToRegistrationPersons(), new ArrayList<PersonDynamic>());
+            personDynamicRepository.deleteAll(personDynamics);
+            b3.put(person.getKeyToRegistrationPersons(), new ArrayList<>());
         }
         else if (personDynamics.size() > 0) {
             personDynamics.set(0, personDynamic);
@@ -1319,7 +1319,7 @@ public class BevolkingsregisterService {
                                             Map<Integer, PersonDynamic> firstB3) {
         int personKey = person.getKeyToRegistrationPersons();
         if (!b3.containsKey(personKey) || b3.get(personKey).isEmpty()) {
-            b3.put(personKey, new ArrayList<PersonDynamic>());
+            b3.put(personKey, new ArrayList<>());
         }
 
         PersonDynamic personDynamic = createPersonDynamic(bevolkingsregisterFlow, person, type, 1);

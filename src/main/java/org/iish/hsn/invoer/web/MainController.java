@@ -4,6 +4,7 @@ import org.iish.hsn.invoer.util.InputMetadata;
 import org.iish.hsn.invoer.util.NoInputMetadataCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,9 @@ public class MainController {
 
     @NoInputMetadataCheck
     @RequestMapping(value = "/check", method = RequestMethod.GET)
-    public ResponseEntity<String> validateInputMetadata(@RequestParam(value = "init", required = false) String init,
-                                                        @RequestParam("ondrzk") String ondrzk,
-                                                        @RequestParam("opdrnr") String opdrnr) {
+    public ResponseEntity<?> validateInputMetadata(@RequestParam(value = "init", required = false) String init,
+                                                   @RequestParam("ondrzk") String ondrzk,
+                                                   @RequestParam("opdrnr") String opdrnr) {
         if (init != null)
             inputMetadata.setInit(init.trim().toUpperCase());
 
@@ -38,7 +39,7 @@ public class MainController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String inputMetadataForm(HttpServletRequest request) {
         // Show an authorization failure message in case the user has no access
-        if (env.acceptsProfiles("ldapAuth", "dbAuth") && !request.isUserInRole("ROLE_USER"))
+        if (env.acceptsProfiles(Profiles.of("ldapAuth", "dbAuth")) && !request.isUserInRole("ROLE_USER"))
             return "main/auth";
         return "main/metadata";
     }
@@ -119,7 +120,7 @@ public class MainController {
 
     @NoInputMetadataCheck
     @RequestMapping(value = "/keepalive", method = RequestMethod.POST)
-    public ResponseEntity keepAlive() {
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<?> keepAlive() {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

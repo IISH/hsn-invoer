@@ -9,6 +9,7 @@ import org.springframework.binding.convert.service.DefaultConversionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.webflow.config.AbstractFlowConfiguration;
 import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
@@ -39,8 +40,7 @@ public class WebFlowConfiguration extends AbstractFlowConfiguration {
         FlowHandlerMapping handlerMapping = new FlowHandlerMapping();
         handlerMapping.setOrder(-1);
         handlerMapping.setFlowRegistry(flowRegistry());
-        handlerMapping
-                .setInterceptors(new InputMetadataInterceptor[]{new InputMetadataInterceptor(this.inputMetadata)});
+        handlerMapping.setInterceptors(new InputMetadataInterceptor(this.inputMetadata));
         return handlerMapping;
     }
 
@@ -55,9 +55,10 @@ public class WebFlowConfiguration extends AbstractFlowConfiguration {
     @Bean
     public FlowExecutor flowExecutor() {
         // There is no going back to a previous screen, unless we're running with the development profile
-        int maxFlowExecutionSnapshots = this.env.acceptsProfiles("development") ? -1 : 0;
-        return getFlowExecutorBuilder(flowRegistry()).setMaxFlowExecutionSnapshots(maxFlowExecutionSnapshots)
-                                                     .addFlowExecutionListener(new AkteFlowExecutionListener()).build();
+        int maxFlowExecutionSnapshots = this.env.acceptsProfiles(Profiles.of("development")) ? -1 : 0;
+        return getFlowExecutorBuilder(flowRegistry())
+                .setMaxFlowExecutionSnapshots(maxFlowExecutionSnapshots)
+                .addFlowExecutionListener(new AkteFlowExecutionListener()).build();
     }
 
     @Bean
@@ -72,7 +73,7 @@ public class WebFlowConfiguration extends AbstractFlowConfiguration {
     public FlowBuilderServices flowBuilderServices() {
         return getFlowBuilderServicesBuilder()
                 .setViewFactoryCreator(mvcViewFactoryCreator())
-                .setDevelopmentMode(this.env.acceptsProfiles("development"))
+                .setDevelopmentMode(this.env.acceptsProfiles(Profiles.of("development")))
                 .setConversionService(new DefaultConversionService(this.mvcConversionService))
                 .build();
     }

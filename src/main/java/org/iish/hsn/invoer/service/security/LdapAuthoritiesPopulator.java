@@ -16,7 +16,7 @@ import java.util.Set;
  * Provides authorities for users logged in with LDAP for Spring Security to use.
  */
 public class LdapAuthoritiesPopulator extends DefaultLdapAuthoritiesPopulator {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     /**
      * Constructor for group search scenarios. <tt>userRoleAttributes</tt> may still be set as a property.
@@ -44,7 +44,7 @@ public class LdapAuthoritiesPopulator extends DefaultLdapAuthoritiesPopulator {
      */
     @Override
     public Set<GrantedAuthority> getAdditionalRoles(DirContextOperations user, String username) {
-        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        Set<GrantedAuthority> authorities = new HashSet<>();
         User userEntity = userRepository.findByInlognaam(username);
         if (userEntity != null) {
             authorities.addAll(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));

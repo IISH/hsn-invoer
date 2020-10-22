@@ -18,5 +18,5 @@ public interface HuweerRepository extends Repository<Huweer, Integer> {
 
     void delete(Huweer entity);
 
-    void delete(Iterable<? extends Huweer> entities);
+    void deleteAll(Iterable<? extends Huweer> entities);
 }

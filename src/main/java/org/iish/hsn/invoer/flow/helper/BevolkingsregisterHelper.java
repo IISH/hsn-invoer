@@ -31,9 +31,7 @@ public class BevolkingsregisterHelper {
                 }
 
                 // As long as the current person is not the last one in the list, then we still have correction persons
-                if (correctionPersonKeyIdx >= 0 && correctionPersonKeyIdx <= (correctionPersons.size() - 2)) {
-                    return true;
-                }
+                return correctionPersonKeyIdx >= 0 && correctionPersonKeyIdx <= (correctionPersons.size() - 2);
             }
         }
 
@@ -60,9 +58,6 @@ public class BevolkingsregisterHelper {
     }
 
     public boolean registrationHasMaxPersons(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        /*Ref_AINB refAinb = bevolkingsregisterFlow.getRefAinb();
-        int curPerson = bevolkingsregisterFlow.getCurPersonKey();*/
-
         // If we are in correction, there is no max as long as not all correction persons were corrected
         if (bevolkingsregisterFlow.isCorrection()) {
             if (hasCorrectionPersons(bevolkingsregisterFlow)) {
@@ -70,14 +65,8 @@ public class BevolkingsregisterHelper {
             }
 
             // However, in the case of a renumbering, we will stop after all correction persons were corrected
-            if (bevolkingsregisterFlow.getCorrectionCode() == 6) {
-                return true;
-            }
+            return bevolkingsregisterFlow.getCorrectionCode() == 6;
         }
-
-        // TODO: No hard limit on number of persons allowed, also in case of an 'A' or 'I' register?
-        // Only one person is allowed in case of an A or I register (correction may lead to multiple persons though)
-        // return ((curPerson >= 1) && (refAinb.getTypeRegister().equals("A") || refAinb.getTypeRegister().equals("I")));
 
         return false;
     }
@@ -98,7 +87,7 @@ public class BevolkingsregisterHelper {
     }
 
     public Set<Integer> getRelatedPersonsOfFirstPerson(List<PersonDynamic> personDynamics) {
-        Integer person = -1;
+        int person = -1;
         Set<Integer> relatedPersons = new HashSet<>();
 
         for (PersonDynamic personDynamic : personDynamics) {
@@ -233,7 +222,9 @@ public class BevolkingsregisterHelper {
             Matcher matcher = DATE_EXPLICIET_HOOFD.matcher(date);
             if (matcher.matches()) {
                 return new int[]{
-                        new Integer(matcher.group(1)), new Integer(matcher.group(2)), new Integer(matcher.group(3))
+                        Integer.parseInt(matcher.group(1)),
+                        Integer.parseInt(matcher.group(2)),
+                        Integer.parseInt(matcher.group(3))
                 };
             }
         }

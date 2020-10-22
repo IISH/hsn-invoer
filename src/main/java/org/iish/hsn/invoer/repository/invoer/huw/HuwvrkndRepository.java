@@ -16,5 +16,5 @@ public interface HuwvrkndRepository extends Repository<Huwvrknd, Integer> {
 
     void delete(Huwvrknd entity);
 
-    void delete(Iterable<? extends Huwvrknd> entities);
+    void deleteAll(Iterable<? extends Huwvrknd> entities);
 }

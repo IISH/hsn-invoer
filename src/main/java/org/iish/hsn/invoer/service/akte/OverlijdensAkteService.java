@@ -254,7 +254,7 @@ public class OverlijdensAkteService extends AkteService {
         // Now if it is an extract or if the father is one and the only one of the aangevers.
         // Then delete all previously inserted aangevers, if there were any.
         if (ovlknd.getExtract().equals("j") || (ovlknd.getAgvvadr().equals("j") && (ovlknd.getNagvr() == 1))) {
-            ovlagvRepository.delete(Arrays.asList(ovlagv));
+            ovlagvRepository.deleteAll(Arrays.asList(ovlagv));
         }
         // If there are two aangevers and one of them is the father.
         // Then delete the first aangever, if het was previously inserted.
@@ -319,7 +319,7 @@ public class OverlijdensAkteService extends AkteService {
         saveOvlknd(overlijdensAkteFlow);
 
         Ovlech[] ovlech = overlijdensAkteFlow.getOvlech();
-        ovlechRepository.delete(Arrays.asList(ovlech));
+        ovlechRepository.deleteAll(Arrays.asList(ovlech));
 
         // Initialize one new echtgenoot if later echtgenotes will be added again.
         Ovlech[] newOvlech = {new Ovlech(1)};
@@ -389,9 +389,9 @@ public class OverlijdensAkteService extends AkteService {
         OverlijdensAkteFlowState overlijdensAkteFlow = (OverlijdensAkteFlowState) akteFlow;
 
         ovlkndRepository.delete(overlijdensAkteFlow.getOvlknd());
-        ovlagvRepository.delete(Arrays.asList(overlijdensAkteFlow.getOvlagv()));
-        ovlechRepository.delete(Arrays.asList(overlijdensAkteFlow.getOvlech()));
-        ovlbyzRepository.delete(overlijdensAkteFlow.getOvlbyz());
+        ovlagvRepository.deleteAll(Arrays.asList(overlijdensAkteFlow.getOvlagv()));
+        ovlechRepository.deleteAll(Arrays.asList(overlijdensAkteFlow.getOvlech()));
+        ovlbyzRepository.deleteAll(overlijdensAkteFlow.getOvlbyz());
     }
 
     /**

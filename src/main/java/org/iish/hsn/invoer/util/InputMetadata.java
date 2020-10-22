@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -62,13 +63,14 @@ public class InputMetadata implements Serializable {
     public boolean isValid() {
         boolean valid = ((ondrzk != null) && (ondrzk.length() == 3) && (opdrnr != null) && (opdrnr.length() == 3));
 
-        if (valid && !environment.acceptsProfiles("noCheck") && environment.acceptsProfiles("ldapAuth", "dbAuth")) {
+        if (valid && !environment.acceptsProfiles(Profiles.of("noCheck"))
+                && environment.acceptsProfiles(Profiles.of("ldapAuth", "dbAuth"))) {
             User user = getLoggedInUser();
             UserWorkOrder userWorkOrder =
                     userWorkOrderRepository.findByTripleAndWorkOrder(user.getTriple(), getWorkOrder());
             valid = (userWorkOrder != null);
         }
-        else if (valid && !environment.acceptsProfiles("ldapAuth", "dbAuth")) {
+        else if (valid && !environment.acceptsProfiles(Profiles.of("ldapAuth", "dbAuth"))) {
             valid = ((init != null) && (init.length() == 3));
         }
 
@@ -76,7 +78,7 @@ public class InputMetadata implements Serializable {
     }
 
     public boolean isAdmin() {
-        if (environment.acceptsProfiles("ldapAuth", "dbAuth")) {
+        if (environment.acceptsProfiles(Profiles.of("ldapAuth", "dbAuth"))) {
             User user = getLoggedInUser();
             return user.getType().equalsIgnoreCase("ADMIN");
         }
@@ -105,7 +107,7 @@ public class InputMetadata implements Serializable {
     }
 
     private String getInit() {
-        if (environment.acceptsProfiles("ldapAuth", "dbAuth")) {
+        if (environment.acceptsProfiles(Profiles.of("ldapAuth", "dbAuth"))) {
             User user = getLoggedInUser();
             return user.getTriple();
         }
