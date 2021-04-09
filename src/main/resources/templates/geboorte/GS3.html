@@ -78,8 +78,8 @@
 
     <div class="form-header extra-top-margin">KIND</div>
 
-    <div data:anaam-ag="${T(org.iish.hsn.invoer.util.Utils).getCleanedLastName(akte.gebknd.anmag)}"
-         data:anaam-mr="${T(org.iish.hsn.invoer.util.Utils).getCleanedLastName(akte.gebknd.anmmr)}"
+    <div data:anaam-ag="${@utils.getCleanedLastName(akte.gebknd.anmag)}"
+         data:anaam-mr="${@utils.getCleanedLastName(akte.gebknd.anmmr)}"
          th:include="fragments/groups-of-fields :: namen ('gebknd.anmgeb', 'gebknd.vrn1geb', 'gebknd.vrn2geb', 'gebknd.vrn3geb', false)">
     </div>
   </th:block>

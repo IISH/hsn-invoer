@@ -363,26 +363,27 @@ public class BevolkingsregisterService {
                     "dayOfRegistrationAfterInterpretation", "monthOfRegistrationAfterInterpretation",
                     "yearOfRegistrationAfterInterpretation", "remarks2");
             newPerson.setRegistrationId(curRegistrationId);
-            b2.add(newPerson.getRp() - 1, newPerson);
+            b2.add(newPerson);
 
             // Already create initial dynamic values for this person
             createNewPersonDynamics(bevolkingsregisterFlow, newPerson, true);
 
-            // Then clone the first of their dynamic properties
+            // Then clone the last of their dynamic properties
             for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
-                PersonDynamic prevPersonDynamic = personDynamicRepository
-                        .findFirstPersonDynamicForPerson(prevRegistrationId, prevPerson.getRp(), type.getType(),
-                                                         inputMetadata.getWorkOrder());
+                List<PersonDynamic> prevPersonDynamics =
+                        personDynamicRepository.findAllPersonDynamicForPerson(
+                                prevRegistrationId, prevPerson.getRp(), type.getType(), inputMetadata.getWorkOrder());
 
-                if (prevPersonDynamic != null) {
+                if (prevPersonDynamics != null && !prevPersonDynamics.isEmpty()) {
                     Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
                     List<PersonDynamic> b3ForPerson = b3.get(prevPerson.getRp());
                     PersonDynamic newPersonDynamic;
 
                     // If there is no initial value (or herkomst/vertrek) then no need to clone anything
                     if (!b3ForPerson.isEmpty() || (type != PersonDynamic.Type.HERKOMST && type != PersonDynamic.Type.VERTREK)) {
+                        PersonDynamic lastPersonDynamic = prevPersonDynamics.get(prevPersonDynamics.size() - 1);
                         newPersonDynamic = b3ForPerson.get(0);
-                        BeanUtils.copyProperties(prevPersonDynamic, newPersonDynamic, "registrationId", "id");
+                        BeanUtils.copyProperties(lastPersonDynamic, newPersonDynamic, "registrationId", "id");
                         newPersonDynamic.setRegistrationId(curRegistrationId);
                         b3ForPerson.set(0, newPersonDynamic);
                     }
@@ -597,7 +598,7 @@ public class BevolkingsregisterService {
             // Reset person dynamics with new instances
             PersonDynamic personDynamicRel =
                     createPersonDynamic(bevolkingsregisterFlow, person, PersonDynamic.Type.RELATIE_TOV_HOOFD, 1);
-            personDynamicRel.setContentOfDynamicData(-1);
+            personDynamicRel.setContentOfDynamicData(-3);
             bevolkingsregisterFlow.getB3Rel().get(person.getKeyToRegistrationPersons()).add(personDynamicRel);
 
             PersonDynamic personDynamicBrg =
@@ -1106,6 +1107,7 @@ public class BevolkingsregisterService {
                     personDynamic.setContentOfDynamicData(1);
                 }
                 break;
+            case BURGELIJKE_STAND:
             case KERKGENOOTSCHAP:
             case BEROEP:
                 // These types have no date

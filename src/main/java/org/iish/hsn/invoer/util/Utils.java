@@ -4,7 +4,9 @@ import org.iish.hsn.invoer.domain.invoer.pick.Plaats;
 import org.iish.hsn.invoer.domain.reference.Ref_RP;
 import org.iish.hsn.invoer.exception.NotFoundException;
 import org.iish.hsn.invoer.service.LookupService;
+
 import org.springframework.util.StringUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +15,7 @@ import java.util.List;
 /**
  * Utility methods.
  */
+@Component
 public class Utils {
 
     /**

@@ -12,6 +12,7 @@
 
     <transition on="next" to="prevRegistrationCheck">
       <evaluate expression="bevolkingsregisterService.registerOP(flowScope.akte)"/>
+      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistration(flowScope.akte)"/>
     </transition>
   </view-state>
 
@@ -118,7 +119,6 @@
 
     <transition on="next" to="finishEnd">
       <evaluate expression="bevolkingsregisterService.checkAddresses(flowScope.akte)"/>
-      <evaluate expression="bevolkingsregisterService.registerAndSaveRegistration(flowScope.akte)"/>
       <evaluate expression="bevolkingsregisterService.registerAndSaveRegistrationAddresses(flowScope.akte)"/>
     </transition>
   </view-state>

@@ -41,14 +41,14 @@
         return data;
     }
 
-    function openOnEdit(self, isNew) {
+    function openOnEdit(self, state) {
         var elems = getElems();
 
         var row = self.closest('tr');
         row.addClass('rowToUpdate');
 
-        isNew ? elems.btnSaveNew.show() : elems.btnSaveNew.hide();
-        isNew ? elems.btnSaveUpdate.hide() : elems.btnSaveUpdate.show();
+        state !== 'update' ? elems.btnSaveNew.show() : elems.btnSaveNew.hide();
+        state !== 'update' ? elems.btnSaveUpdate.hide() : elems.btnSaveUpdate.show();
 
         elems.onNoEdit.hide();
         elems.onEdit.show();
@@ -80,11 +80,16 @@
         elems.onEdit.trigger('show');
         elems.onEdit.find('input').filter(':enabled:visible').first().change().focus();
 
-        if (isNew) {
-            self.trigger('crud-table-new', [elems]);
-        }
-        else {
-            self.trigger('crud-table-update', [elems]);
+        switch (state) {
+            case 'new':
+                self.trigger('crud-table-new', [elems]);
+                break;
+            case 'update':
+                self.trigger('crud-table-update', [elems]);
+                break;
+            case 'duplicate':
+                self.trigger('crud-table-duplicate', [elems]);
+                break;
         }
     }
 
@@ -130,7 +135,7 @@
         if (isNew) {
             self.trigger('crud-table-save-new', [elems, data, function () {
                 if (elems.parent.hasClass('continued')) {
-                    openOnEdit(elems.parent.find('.btn-new'), true);
+                    openOnEdit(elems.parent.find('.btn-new'), 'new');
                 }
             }]);
         }
@@ -168,14 +173,21 @@
             case 'b':
                 var btnNew = getVisibleCrudTableContainer().find('.btn-new').filter(':visible:enabled').first();
                 if (btnNew.length === 1) {
-                    openOnEdit(btnNew, true);
+                    openOnEdit(btnNew, 'new');
+                    e.preventDefault();
+                }
+                break;
+            case 'd':
+                var btnDuplicate = getVisibleCrudTableContainer().find('tr.active .btn-duplicate').filter(':enabled').first();
+                if (btnDuplicate.length === 1) {
+                    openOnEdit(btnDuplicate, 'duplicate');
                     e.preventDefault();
                 }
                 break;
             case 'c':
                 var btnCor = getVisibleCrudTableContainer().find('tr.active .btn-update').filter(':enabled').first();
                 if (btnCor.length === 1) {
-                    openOnEdit(btnCor, false);
+                    openOnEdit(btnCor, 'update');
                     e.preventDefault();
                 }
                 break;
@@ -202,11 +214,15 @@
         var container = elem.closest('.crud-table-container');
         if ((container.length > 0) && (container.is(':visible'))) {
             if (elem.hasClass('btn-new')) {
-                openOnEdit(elem, true);
+                openOnEdit(elem, 'new');
+            }
+
+            if (elem.hasClass('btn-duplicate')) {
+                openOnEdit(elem, 'duplicate');
             }
 
             if (elem.hasClass('btn-update')) {
-                openOnEdit(elem, false);
+                openOnEdit(elem, 'update');
             }
 
             if (elem.hasClass('btn-cancel')) {
@@ -230,7 +246,7 @@
     }).ready(function () {
         var elem = getVisibleCrudTableContainer();
         if (elem.hasClass('continued')) {
-            openOnEdit(elem.find('.btn-new'), true);
+            openOnEdit(elem.find('.btn-new'), 'new');
         }
     });
 

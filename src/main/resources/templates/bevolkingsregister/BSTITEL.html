@@ -50,7 +50,7 @@
       <span class="year-hfd-datum" th:utext="${reg.registrationId.yearEntryHead} ? ${reg.registrationId.yearEntryHead}"></span>
     </div>
 
-    <div class="col-xs-7">
+    <div class="col-xs-7" th:if="${ainb != null}">
       Aard reg: &nbsp;
       <span th:utext="${ainb.getBron()} ? ${ainb.getBron()}"></span>
     </div>

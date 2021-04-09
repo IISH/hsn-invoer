@@ -20,7 +20,7 @@ public class Registration extends Invoer implements Serializable {
     @Column(name = "B2FMBG", nullable = false) private int monthEntryRP;
     @Column(name = "B2FJBG", nullable = false) private int yearEntryRP;
 
-    @Column(name = "B2PGBG", nullable = false, length = 8) private  String pageNumberOfSource = "";
+    @Column(name = "B2PGBG", nullable = false, length = 20) private  String pageNumberOfSource = "";
     @Column(name = "B2VHBG", nullable = false) private              int    numberOfHousehold;
     @Column(name = "B4GKBG", nullable = false, length = 50) private String infoFamilyCardsSystem = "";
     @Column(name = "B4SPBG", nullable = false, length = 50) private String specialDataEntryCodes = "";

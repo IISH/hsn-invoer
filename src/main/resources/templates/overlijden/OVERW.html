@@ -15,7 +15,7 @@
     <div class="alert alert-info" role="alert">
       <div>
         Het gaat om <span
-          th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.ovlknd.anmovl, akte.ovlknd.vrn1ovl, akte.ovlknd.vrn2ovl, akte.ovlknd.vrn3ovl)}"></span>
+          th:utext="${@utils.getCompleteName(akte.ovlknd.anmovl, akte.ovlknd.vrn1ovl, akte.ovlknd.vrn2ovl, akte.ovlknd.vrn3ovl)}"></span>
         <th:block th:if="${akte.refRp}">met identificatienummer <span th:utext="${akte.refRp.idnr}"></span></th:block>
       </div>
     </div>

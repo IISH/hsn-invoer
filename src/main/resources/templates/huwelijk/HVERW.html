@@ -16,22 +16,22 @@
       <th:block th:if="${akte.huwknd.gebsex == 'm'}">
         <div>
           Het gaat om <span
-            th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.huwknd.anmhm, akte.huwknd.vrn1hm, akte.huwknd.vrn2hm, akte.huwknd.vrn3hm)}"></span>
+            th:utext="${@utils.getCompleteName(akte.huwknd.anmhm, akte.huwknd.vrn1hm, akte.huwknd.vrn2hm, akte.huwknd.vrn3hm)}"></span>
           <th:block th:if="${akte.refRp}">met identificatienummer <span th:utext="${akte.refRp.idnr}"></span></th:block>
         </div>
         <div>Gehuwd met <span
-            th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.huwknd.anmhv, akte.huwknd.vrn1hv, akte.huwknd.vrn2hv, akte.huwknd.vrn3hv)}"></span>
+            th:utext="${@utils.getCompleteName(akte.huwknd.anmhv, akte.huwknd.vrn1hv, akte.huwknd.vrn2hv, akte.huwknd.vrn3hv)}"></span>
         </div>
       </th:block>
 
       <th:block th:if="${akte.huwknd.gebsex == 'v'}">
         <div>
           Het gaat om <span
-            th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.huwknd.anmhv, akte.huwknd.vrn1hv, akte.huwknd.vrn2hv, akte.huwknd.vrn3hv)}"></span>
+            th:utext="${@utils.getCompleteName(akte.huwknd.anmhv, akte.huwknd.vrn1hv, akte.huwknd.vrn2hv, akte.huwknd.vrn3hv)}"></span>
           <th:block th:if="${akte.refRp}">met identificatienummer <span th:utext="${akte.refRp.idnr}"></span></th:block>
         </div>
         <div>Gehuwd met <span
-            th:utext="${T(org.iish.hsn.invoer.util.Utils).getCompleteName(akte.huwknd.anmhm, akte.huwknd.vrn1hm, akte.huwknd.vrn2hm, akte.huwknd.vrn3hm)}"></span>
+            th:utext="${@utils.getCompleteName(akte.huwknd.anmhm, akte.huwknd.vrn1hm, akte.huwknd.vrn2hm, akte.huwknd.vrn3hm)}"></span>
         </div>
       </th:block>
     </div>

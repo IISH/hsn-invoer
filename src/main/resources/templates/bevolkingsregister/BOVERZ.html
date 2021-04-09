@@ -70,19 +70,19 @@
           </td>
           <td>
             <!-- Type -->
-            <span th:utext="${ainb.typeRegister}"></span>
+            <span th:utext="${(ainb != null) ? ainb.typeRegister : '-'}"></span>
           </td>
           <td>
             <!-- Plaats -->
-            <span th:utext="${ainb.municipality}"></span>
+            <span th:utext="${(ainb != null) ? ainb.municipality : '-'}"></span>
           </td>
           <td>
             <!-- Begin -->
-            <span th:utext="${ainb.startYearRegister}"></span>
+            <span th:utext="${(ainb != null) ? ainb.startYearRegister : '-'}"></span>
           </td>
           <td>
             <!-- Eind -->
-            <span th:utext="${ainb.endYearRegister}"></span>
+            <span th:utext="${(ainb != null) ? ainb.endYearRegister : '-'}"></span>
           </td>
           <td>
             <!-- Pag/Volg of GK -->

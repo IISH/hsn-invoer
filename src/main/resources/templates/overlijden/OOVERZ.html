@@ -21,8 +21,8 @@
     <tr th:each="curOvl,stat : ${overview}">
       <td th:utext="${curOvl.idnr}"></td>
       <td th:utext="${curOvl.anmovl}"></td>
-      <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getFirstNames(curOvl.vrn1ovl, curOvl.vrn2ovl, curOvl.vrn3ovl)}"></td>
-      <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getAgeAsString(curOvl.lftdovl, curOvl.lftwovl, curOvl.lftmovl, curOvl.lftjovl)}"></td>
+      <td th:utext="${@utils.getFirstNames(curOvl.vrn1ovl, curOvl.vrn2ovl, curOvl.vrn3ovl)}"></td>
+      <td th:utext="${@utils.getAgeAsString(curOvl.lftdovl, curOvl.lftwovl, curOvl.lftmovl, curOvl.lftjovl)}"></td>
       <td th:utext="${stat.index + 1}"></td>
     </tr>
     <tr th:if="${overview.size() == 0}">

@@ -1,13 +1,15 @@
 application:
-  version: "5.5.0"
-  date: "22 oktober 2020"
+  version: "5.6.0"
+  date: "9 april 2021"
 
 storage:
   path: "/data/hsn/"
 
 spring:
-  mvc:
+  web:
     locale: nl_NL
+
+  mvc:
     format:
       date: dd-MM-yyyy
 

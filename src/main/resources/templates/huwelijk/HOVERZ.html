@@ -22,13 +22,17 @@
       <td th:utext="${curHuw.idnr}"></td>
       <th:block th:if="${curHuw.gebsex == 'm'}">
         <td th:utext="${curHuw.anmhm}"></td>
-        <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getFirstNames(curHuw.vrn1hm, curHuw.vrn2hm, curHuw.vrn3hm)}"></td>
+        <td th:utext="${@utils.getFirstNames(curHuw.vrn1hm, curHuw.vrn2hm, curHuw.vrn3hm)}"></td>
       </th:block>
       <th:block th:if="${curHuw.gebsex == 'v'}">
         <td th:utext="${curHuw.anmhv}"></td>
-        <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getFirstNames(curHuw.vrn1hv, curHuw.vrn2hv, curHuw.vrn3hv)}"></td>
+        <td th:utext="${@utils.getFirstNames(curHuw.vrn1hv, curHuw.vrn2hv, curHuw.vrn3hv)}"></td>
       </th:block>
-      <td th:utext="${T(org.iish.hsn.invoer.util.Utils).getDateAsString(curHuw.huw.hdag, curHuw.huw.hmaand, curHuw.huw.hjaar)}"></td>
+      <th:block th:if="${curHuw.gebsex != 'v' or curHuw.gebsex != 'm'}">
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </th:block>
+      <td th:utext="${@utils.getDateAsString(curHuw.huw.hdag, curHuw.huw.hmaand, curHuw.huw.hjaar)}"></td>
       <td th:utext="${stat.index + 1}"></td>
     </tr>
     <tr th:if="${overview.size() == 0}">

@@ -158,6 +158,10 @@
         elems.btnSaveUpdate.data('seqNr', seqNr).data('person', person);
     }
 
+    function onDuplicate(self, elems) {
+        elems.onEdit.find('.seqNr').val('');
+    }
+
     function onDelete(self) {
         var row = self.closest('tr');
         $.ajax({
@@ -215,6 +219,8 @@
         onReset();
     }).on('crud-table-new', function (e, elems) {
         onNew($(e.target), elems);
+    }).on('crud-table-duplicate', function (e, elems) {
+        onDuplicate($(e.target), elems);
     }).on('crud-table-update', function (e, elems) {
         onUpdate($(e.target), elems);
     }).on('crud-table-delete', function (e, elems, data) {
@@ -266,7 +272,7 @@
     $('.btn-next').click(function (e) {
         if ($('table span.seqNr').length === 0) {
             if (!confirm('Er zijn geen addressen opgeslagen, weet u zeker dat dit correct is? ' +
-                    'Zo ja, dan wordt er automatisch een leeg adres toegevoegd!')) {
+                'Zo ja, dan wordt er automatisch een leeg adres toegevoegd!')) {
                 e.preventDefault();
             }
         }

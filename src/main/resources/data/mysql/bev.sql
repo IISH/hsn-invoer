@@ -97,7 +97,7 @@ CREATE TABLE `b4` (
   `B2FDBG` int(11) NOT NULL,
   `B2FMBG` int(11) NOT NULL,
   `B2FJBG` int(11) NOT NULL,
-  `B2PGBG` varchar(8) NOT NULL,
+  `B2PGBG` varchar(20) NOT NULL,
   `B2VHBG` int(11) NOT NULL,
   `B4GKBG` varchar(50) NOT NULL,
   `B4SPBG` varchar(50) NOT NULL,
