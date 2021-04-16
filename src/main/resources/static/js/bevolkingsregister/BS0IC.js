@@ -128,18 +128,36 @@
                     if (e) onSuccessAction($(e.target), isNext);
                 }
                 else {
-                    onError($('.fail.registration'), 'registration-error', 'De combinatie van bronnummer en hoofddatum is reeds ingevoerd!');
+                    onError($('.fail.registration'), 'registration-error',
+                        'Let op! Deze akte of inschrijving is al ingevoerd binnen het kader van je opdrachtnummer!');
                 }
             }).fail(function () {
                 if ($.isCorrection() && !isCorrectionOfIdentification) {
-                    onError($('.fail.registration'), 'registration-error', 'Deze door u opgegeven combinatie van bronnummer en hoofddatum is nog niet ingevoerd!');
+                    onError($('.fail.registration'), 'registration-error',
+                        'Deze door u opgegeven combinatie van bronnummer en hoofddatum is nog niet ingevoerd!');
                 }
                 else {
-                    if (!isCorrectionOfIdentification) {
-                        checkOtherRegistrations();
-                    }
-                    onSuccess($('.fail.registration'), 'registration-error');
-                    if (e) onSuccessAction($(e.target), isNext);
+                    $.getJSON('/ajax/lookup/b4/all', {
+                        keyToSourceRegister: keyToSourceRegister,
+                        dayEntryHead: day,
+                        monthEntryHead: month,
+                        yearEntryHead: year,
+                        keyToRP: idnr
+                    }, function (registrations) {
+                        if (registrations.length === 0) {
+                            if (!isCorrectionOfIdentification) {
+                                checkOtherRegistrations();
+                            }
+                            onSuccess($('.fail.registration'), 'registration-error');
+                            if (e) onSuccessAction($(e.target), isNext);
+                        }
+                        else {
+                            onError($('.fail.registration'), 'registration-error',
+                                'Deze akte of inschrijving is al ingevoerd (bij een ander opdrachtnummer); ' +
+                                'maak aantekening op werkopdrachtformulier ' +
+                                'en geef dit ook meteen door aan de HSN invoermanager.');
+                        }
+                    });
                 }
             });
         }

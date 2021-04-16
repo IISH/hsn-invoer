@@ -11,6 +11,8 @@ import java.util.List;
 public interface RegistrationRepository extends Repository<Registration, Integer> {
     Registration findByRegistrationIdAndWorkOrder(RegistrationId registrationId, WorkOrder workOrder);
 
+    List<Registration> findAllByRegistrationId(RegistrationId registrationId);
+
     @Query("SELECT r FROM Registration r WHERE r.registrationId.keyToRP = ?1 AND r.workOrder = ?2 " +
            "ORDER BY r.yearEntryRP, r.monthEntryRP, r.dayEntryRP ASC")
     List<Registration> findByKeyToRPAndWorkOrder(int keyToRP, WorkOrder workOrder);

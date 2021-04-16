@@ -211,6 +211,16 @@ public class LookupService {
     }
 
     /**
+     * Returns the registrations (b4) for the given registration id (regardless of the workorder).
+     *
+     * @param registrationId The registration id.
+     * @return The registrations (b4).
+     */
+    public List<Registration> getRegistrations(RegistrationId registrationId) {
+        return registrationRepository.findAllByRegistrationId(registrationId);
+    }
+
+    /**
      * Returns the registration (b4) for the given OP and date.
      *
      * @param idnr           The id number.

@@ -47,9 +47,9 @@
             </td>
             <td>
               <input type="text" class="form-control form-control-digit new-key" data-min="0"
-                     th:name="'b2[' + __${stat.index}__ + '].keyToRegistrationPersons'"
-                     th:id="'b2' + __${stat.index}__ + '.keyToRegistrationPersons'"
-                     hsn:field="b2[__${stat.index}__].keyToRegistrationPersons"
+                     th:name="'b2[' + __${stat.index}__ + '].newKeyToRegistrationPersons'"
+                     th:id="'b2' + __${stat.index}__ + '.newKeyToRegistrationPersons'"
+                     hsn:field="b2[__${stat.index}__].newKeyToRegistrationPersons"
                      th:readonly="${akte.isCorrection() == false and @bevolkingsregisterHelper.findKeyOfRp(akte) == (stat.index + 1)} ? 'readonly'"
                      th:value="${@bevolkingsregisterHelper.findKeyOfRp(akte) == (stat.index + 1)} ? ${akte.volgnrOP}"/>
             </td>

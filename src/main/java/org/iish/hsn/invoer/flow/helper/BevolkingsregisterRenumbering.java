@@ -65,12 +65,14 @@ public class BevolkingsregisterRenumbering {
     public void renumber() {
         // Renumber the existing persons from the original list and move them to the other lists
         for (Person person : original.getB2()) {
-            int keyOriginal = original.getB2().indexOf(person) + 1;
-            int keyNew = person.getRp();
+            int keyOriginal = person.getRp();
+            int keyNew = person.getNewRp();
 
             Person newPerson = new Person();
             BeanUtils.copyProperties(person, newPerson);
+
             newPerson.setPreviousRp(keyOriginal);
+            newPerson.setKeyToRegistrationPersons(keyNew);
 
             // If the new key is 0 or does not fit in the new list, then remove the person from the list
             if ((keyNew == 0) || (keyNew > renumbered.getB2().size())) {
@@ -82,6 +84,7 @@ public class BevolkingsregisterRenumbering {
                 renumberRegistrationAddresses(keyOriginal, keyNew, true);
             }
             else {
+
                 renumbered.getB2().set(keyNew - 1, newPerson);
                 missingKeys.remove((Integer) keyNew); // Casting to make sure the right method is called
 

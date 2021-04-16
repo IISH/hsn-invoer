@@ -31,6 +31,7 @@ public class Person extends Invoer implements Serializable {
 
     @Column(name = "B2RNBG", nullable = false) private int keyToRegistrationPersons;
     @Transient private int lastKeyToRegistrationPersons = 0; // Helper variable for renumbering
+    @Transient private int newKeyToRegistrationPersons = 0; // Helper variable for renumbering
 
     @Column(name = "B2FCBG", nullable = false) private int    natureOfPerson;
     @Column(name = "B2RDNR", nullable = false) private int    dayOfRegistration;
@@ -90,6 +91,11 @@ public class Person extends Invoer implements Serializable {
         return keyToRegistrationPersons;
     }
 
+    // Alias of getNewKeyToRegistrationPersons()
+    public int getNewRp() {
+        return newKeyToRegistrationPersons;
+    }
+
     public int getPreviousRp() {
         return lastKeyToRegistrationPersons;
     }
@@ -98,12 +104,20 @@ public class Person extends Invoer implements Serializable {
         return keyToRegistrationPersons;
     }
 
-    public void setPreviousRp(int rp) {
-        this.lastKeyToRegistrationPersons = rp;
-    }
-
     public void setKeyToRegistrationPersons(int keyToRegistrationPersons) {
         this.keyToRegistrationPersons = keyToRegistrationPersons;
+    }
+
+    public int getNewKeyToRegistrationPersons() {
+        return newKeyToRegistrationPersons;
+    }
+
+    public void setNewKeyToRegistrationPersons(int newKeyToRegistrationPersons) {
+        this.newKeyToRegistrationPersons = newKeyToRegistrationPersons;
+    }
+
+    public void setPreviousRp(int rp) {
+        this.lastKeyToRegistrationPersons = rp;
     }
 
     public int getNatureOfPerson() {

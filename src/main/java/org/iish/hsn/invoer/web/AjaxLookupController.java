@@ -84,6 +84,11 @@ public class AjaxLookupController {
         return lookupService.getRegistration(registrationId, true);
     }
 
+    @RequestMapping(value = "/b4/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<Registration> getRegistrations(RegistrationId registrationId) {
+        return lookupService.getRegistrations(registrationId);
+    }
+
     @RequestMapping(value = "/b4/op", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Registration getRegistrationForOPDate(int idnr, int day, int month, int year)
             throws NotFoundException {

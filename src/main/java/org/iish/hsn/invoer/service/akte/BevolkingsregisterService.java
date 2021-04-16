@@ -412,8 +412,8 @@ public class BevolkingsregisterService {
         int noLines = bevolkingsregisterFlow.getNoRegels();
         if (bevolkingsregisterFlow.isOneLineEach()) {
             for (Person person : bevolkingsregisterFlow.getB2()) {
-                if (person.getRp() > noLines) {
-                    noLines = person.getRp();
+                if (person.getNewRp() > noLines) {
+                    noLines = person.getNewRp();
                 }
             }
         }
@@ -598,7 +598,7 @@ public class BevolkingsregisterService {
             // Reset person dynamics with new instances
             PersonDynamic personDynamicRel =
                     createPersonDynamic(bevolkingsregisterFlow, person, PersonDynamic.Type.RELATIE_TOV_HOOFD, 1);
-            personDynamicRel.setContentOfDynamicData(-3);
+            personDynamicRel.setContentOfDynamicData(-1);
             bevolkingsregisterFlow.getB3Rel().get(person.getKeyToRegistrationPersons()).add(personDynamicRel);
 
             PersonDynamic personDynamicBrg =
@@ -1100,7 +1100,7 @@ public class BevolkingsregisterService {
                 }
                 // No relation allowed if type is 'C'
                 if (refAinb.getTypeRegister().equals("C")) {
-                    personDynamic.setContentOfDynamicData(-3);
+                    personDynamic.setContentOfDynamicData(-1);
                 }
                 // First one is usually the head
                 if (person.getKeyToRegistrationPersons() == 1) {
