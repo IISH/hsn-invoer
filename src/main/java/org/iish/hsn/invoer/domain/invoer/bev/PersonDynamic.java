@@ -43,7 +43,7 @@ public class PersonDynamic extends Invoer implements Serializable {
     @Column(name = "B3VRNR", nullable = false) private int dynamicDataSequenceNumber;
 
     @Column(name = "B3KODE", nullable = false) private int contentOfDynamicData;
-    @Column(name = "B3RGLN", nullable = false) private int valueOfRelatedPerson = -1;
+    @Column(name = "B3RGLN", nullable = false) private int valueOfRelatedPerson;
     @Column(name = "B2FCBG", nullable = false) private int natureOfPerson;
     @Column(name = "B3MDNR", nullable = false) private int dayOfMutation;
     @Column(name = "B3MMNR", nullable = false) private int monthOfMutation;

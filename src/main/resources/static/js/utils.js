@@ -401,4 +401,7 @@
     $.fn.valNoEvent = function valNoEvent() {
         return onVal.apply(this, arguments);
     };
+
+    $.fn.tooltip.Constructor.DEFAULTS.whiteList.label = [/.*/];
+    $.fn.tooltip.Constructor.DEFAULTS.whiteList.input = [/.*/];
 })(jQuery, LZString);

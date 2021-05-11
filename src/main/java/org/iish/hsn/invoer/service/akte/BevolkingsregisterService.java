@@ -599,20 +599,27 @@ public class BevolkingsregisterService {
             PersonDynamic personDynamicRel =
                     createPersonDynamic(bevolkingsregisterFlow, person, PersonDynamic.Type.RELATIE_TOV_HOOFD, 1);
             personDynamicRel.setContentOfDynamicData(-1);
+            personDynamicRel.setValueOfRelatedPerson(-1);
             bevolkingsregisterFlow.getB3Rel().get(person.getKeyToRegistrationPersons()).add(personDynamicRel);
 
             PersonDynamic personDynamicBrg =
                     createPersonDynamic(bevolkingsregisterFlow, person, PersonDynamic.Type.BURGELIJKE_STAND, 1);
             personDynamicBrg.setContentOfDynamicData(6);
+            personDynamicBrg.setValueOfRelatedPerson(-1);
+            personDynamicBrg.setDayOfMutation(-3);
+            personDynamicBrg.setMonthOfMutation(-3);
+            personDynamicBrg.setYearOfMutation(-3);
             bevolkingsregisterFlow.getB3Brg().get(person.getKeyToRegistrationPersons()).add(personDynamicBrg);
 
             PersonDynamic personDynamicKg =
                     createPersonDynamic(bevolkingsregisterFlow, person, PersonDynamic.Type.KERKGENOOTSCHAP, 1);
             personDynamicKg.setDynamicData2("N");
+            personDynamicKg.setValueOfRelatedPerson(-1);
             bevolkingsregisterFlow.getB3Kg().get(person.getKeyToRegistrationPersons()).add(personDynamicKg);
 
             PersonDynamic personDynamicBrp =
                     createPersonDynamic(bevolkingsregisterFlow, person, PersonDynamic.Type.BEROEP, 1);
+            personDynamicBrp.setValueOfRelatedPerson(-1);
             bevolkingsregisterFlow.getB3Brp().get(person.getKeyToRegistrationPersons()).add(personDynamicBrp);
         }
 
@@ -1107,7 +1114,6 @@ public class BevolkingsregisterService {
                     personDynamic.setContentOfDynamicData(1);
                 }
                 break;
-            case BURGELIJKE_STAND:
             case KERKGENOOTSCHAP:
             case BEROEP:
                 // These types have no date
