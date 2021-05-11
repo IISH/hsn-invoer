@@ -13,9 +13,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class InputMetadataInterceptor implements HandlerInterceptor {
     private final InputMetadata inputMetadata;
+    private final InputMetadataChecker inputMetadataChecker;
 
-    public InputMetadataInterceptor(InputMetadata inputMetadata) {
+    public InputMetadataInterceptor(InputMetadata inputMetadata, InputMetadataChecker inputMetadataChecker) {
         this.inputMetadata = inputMetadata;
+        this.inputMetadataChecker = inputMetadataChecker;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class InputMetadataInterceptor implements HandlerInterceptor {
         if (handler instanceof ResourceHttpRequestHandler)
             methodAllowsCheckAndRedirect = false;
 
-        if (methodAllowsCheckAndRedirect && !inputMetadata.isValid()) {
+        if (methodAllowsCheckAndRedirect && !inputMetadataChecker.isValid(inputMetadata)) {
             response.sendRedirect(request.getContextPath() + "/");
             return false;
         }

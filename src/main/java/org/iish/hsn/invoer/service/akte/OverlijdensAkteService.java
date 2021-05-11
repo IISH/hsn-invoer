@@ -15,6 +15,7 @@ import org.iish.hsn.invoer.repository.invoer.ovl.OvlechRepository;
 import org.iish.hsn.invoer.repository.invoer.ovl.OvlkndRepository;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.InputMetadataChecker;
 import org.iish.hsn.invoer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,11 @@ import java.util.*;
  */
 @Service
 public class OverlijdensAkteService extends AkteService {
-    @Autowired private OverlijdensStart overlijdensStart;
-    @Autowired private InputMetadata    inputMetadata;
-    @Autowired private LookupService    lookupService;
+    @Autowired private OverlijdensStart     overlijdensStart;
+    @Autowired private InputMetadata        inputMetadata;
+    @Autowired private InputMetadataChecker inputMetadataChecker;
+    @Autowired private LookupService        lookupService;
+
     @Autowired private OvlkndRepository ovlkndRepository;
     @Autowired private OvlagvRepository ovlagvRepository;
     @Autowired private OvlechRepository ovlechRepository;
@@ -209,7 +212,7 @@ public class OverlijdensAkteService extends AkteService {
             ovlknd.setVrn1ovl("NN");
         }
 
-        inputMetadata.saveToEntity(ovlknd);
+        inputMetadataChecker.saveToEntity(ovlknd, inputMetadata);
         ovlknd = ovlkndRepository.save(ovlknd);
         overlijdensAkteFlow.setOvlknd(ovlknd);
     }
@@ -235,7 +238,7 @@ public class OverlijdensAkteService extends AkteService {
             overlijdensAkteFlow.setCurOvlagvIndex(1);
         }
 
-        inputMetadata.saveToEntity(ovlknd);
+        inputMetadataChecker.saveToEntity(ovlknd, inputMetadata);
         ovlknd = ovlkndRepository.save(ovlknd);
         overlijdensAkteFlow.setOvlknd(ovlknd);
     }
@@ -281,7 +284,7 @@ public class OverlijdensAkteService extends AkteService {
             ovlagvCur.setLftagv(-1);
         }
 
-        inputMetadata.saveToEntity(ovlagvCur);
+        inputMetadataChecker.saveToEntity(ovlagvCur, inputMetadata);
         ovlagvCur = ovlagvRepository.save(ovlagvCur);
 
         Ovlagv[] ovlagv = overlijdensAkteFlow.getOvlagv();
@@ -339,7 +342,7 @@ public class OverlijdensAkteService extends AkteService {
         Ovlech ovlechCur = overlijdensAkteFlow.getCurOvlech();
         ovlechCur.setIdnr(ovlknd.getIdnr());
 
-        inputMetadata.saveToEntity(ovlechCur);
+        inputMetadataChecker.saveToEntity(ovlechCur, inputMetadata);
         ovlechCur = ovlechRepository.save(ovlechCur);
 
         // If this is the first one entered, then we also now know how many we can expect
@@ -406,7 +409,7 @@ public class OverlijdensAkteService extends AkteService {
         Ovlbyz ovlbyz = (Ovlbyz) byz;
 
         ovlbyz.setIdnr(overlijdensAkteFlowState.getOvlknd().getIdnr());
-        inputMetadata.saveToEntity(ovlbyz);
+        inputMetadataChecker.saveToEntity(ovlbyz, inputMetadata);
         ovlbyz = ovlbyzRepository.save(ovlbyz);
 
         overlijdensAkteFlowState.addToOvlbyz(ovlbyz);
@@ -449,7 +452,7 @@ public class OverlijdensAkteService extends AkteService {
      */
     private void saveOvlknd(OverlijdensAkteFlowState overlijdensAkteFlow) {
         Ovlknd ovlknd = overlijdensAkteFlow.getOvlknd();
-        inputMetadata.saveToEntity(ovlknd);
+        inputMetadataChecker.saveToEntity(ovlknd, inputMetadata);
         ovlknd = ovlkndRepository.save(ovlknd);
         overlijdensAkteFlow.setOvlknd(ovlknd);
     }

@@ -3,6 +3,7 @@ package org.iish.hsn.invoer.config;
 import org.iish.hsn.invoer.thymeleaf.HSNThymeleafDialect;
 import org.iish.hsn.invoer.util.CachingInterceptor;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.InputMetadataChecker;
 import org.iish.hsn.invoer.util.InputMetadataInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     private InputMetadata inputMetadata;
 
     @Autowired
+    private InputMetadataChecker inputMetadataChecker;
+
+    @Autowired
     private ThymeleafProperties thymeleafProperties;
 
     @Autowired
@@ -42,7 +46,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new InputMetadataInterceptor(this.inputMetadata));
+        registry.addInterceptor(new InputMetadataInterceptor(this.inputMetadata, this.inputMetadataChecker));
         registry.addInterceptor(new CachingInterceptor());
     }
 

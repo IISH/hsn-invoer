@@ -9,6 +9,7 @@ import org.iish.hsn.invoer.flow.state.*;
 import org.iish.hsn.invoer.repository.invoer.pk.*;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.InputMetadataChecker;
 import org.iish.hsn.invoer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,10 @@ import java.util.*;
  */
 @Service
 public class PersoonskaartService extends AkteService {
-    @Autowired private InputMetadata      inputMetadata;
-    @Autowired private LookupService      lookupService;
+    @Autowired private InputMetadata        inputMetadata;
+    @Autowired private InputMetadataChecker inputMetadataChecker;
+    @Autowired private LookupService        lookupService;
+
     @Autowired private PkkndRepository    pkkndRepository;
     @Autowired private P7Repository       p7Repository;
     @Autowired private P8Repository       p8Repository;
@@ -187,7 +190,7 @@ public class PersoonskaartService extends AkteService {
 
         // Only save during correction, the user might still stop the flow if it is not correction
         if (persoonskaartFlow.isCorrection()) {
-            inputMetadata.saveToEntity(pkknd);
+            inputMetadataChecker.saveToEntity(pkknd, inputMetadata);
             pkknd = pkkndRepository.save(pkknd);
             persoonskaartFlow.setPkknd(pkknd);
         }
@@ -265,7 +268,7 @@ public class PersoonskaartService extends AkteService {
         Pkknd pkknd = persoonskaartFlow.getPkknd();
         P7 p7 = persoonskaartFlow.getP7();
 
-        inputMetadata.saveToEntity(pkknd);
+        inputMetadataChecker.saveToEntity(pkknd, inputMetadata);
         pkknd = pkkndRepository.save(pkknd);
         persoonskaartFlow.setPkknd(pkknd);
 
@@ -285,7 +288,7 @@ public class PersoonskaartService extends AkteService {
             pkknd.setOplperp("");
 
             p7.setIdnr(pkknd.getIdnr());
-            inputMetadata.saveToEntity(p7);
+            inputMetadataChecker.saveToEntity(p7, inputMetadata);
             p7 = p7Repository.save(p7);
             persoonskaartFlow.setP7(p7);
         }
@@ -338,7 +341,7 @@ public class PersoonskaartService extends AkteService {
         for (int i = 0; i < (pkbrp.size() - 1); i++) {
             Pkbrp curPkbrp = pkbrp.get(i);
             curPkbrp.setIdnr(pkknd.getIdnr());
-            inputMetadata.saveToEntity(curPkbrp);
+            inputMetadataChecker.saveToEntity(curPkbrp, inputMetadata);
             curPkbrp = pkbrpRepository.save(curPkbrp);
             pkbrp.set(i, curPkbrp);
         }
@@ -401,7 +404,7 @@ public class PersoonskaartService extends AkteService {
         Pkhuw curPkhuw = persoonskaartFlow.getCurPkhuw();
         curPkhuw.setIdnr(persoonskaartFlow.getPkknd().getIdnr());
 
-        inputMetadata.saveToEntity(curPkhuw);
+        inputMetadataChecker.saveToEntity(curPkhuw, inputMetadata);
         curPkhuw = pkhuwRepository.save(curPkhuw);
 
         List<Pkhuw> pkhuw = persoonskaartFlow.getPkhuw();
@@ -421,8 +424,8 @@ public class PersoonskaartService extends AkteService {
         p8Origin.setIdnr(pkknd.getIdnr());
         p8CurWhereabouts.setIdnr(pkknd.getIdnr());
 
-        inputMetadata.saveToEntity(p8Origin);
-        inputMetadata.saveToEntity(p8CurWhereabouts);
+        inputMetadataChecker.saveToEntity(p8Origin, inputMetadata);
+        inputMetadataChecker.saveToEntity(p8CurWhereabouts, inputMetadata);
 
         p8Origin = p8Repository.save(p8Origin);
         p8CurWhereabouts = p8Repository.save(p8CurWhereabouts);
@@ -479,7 +482,7 @@ public class PersoonskaartService extends AkteService {
             Pkadres curPkadres = pkadres.get(i);
             curPkadres.setIdnr(pkknd.getIdnr());
 
-            inputMetadata.saveToEntity(curPkadres);
+            inputMetadataChecker.saveToEntity(curPkadres, inputMetadata);
             curPkadres = pkadresRepository.save(curPkadres);
             pkadres.set(i, curPkadres);
         }
@@ -549,7 +552,7 @@ public class PersoonskaartService extends AkteService {
         Pkeigknd curPkeigknd = persoonskaartFlow.getCurPkeigknd();
         curPkeigknd.setIdnr(persoonskaartFlow.getPkknd().getIdnr());
 
-        inputMetadata.saveToEntity(curPkeigknd);
+        inputMetadataChecker.saveToEntity(curPkeigknd, inputMetadata);
         curPkeigknd = pkeigkndRepository.save(curPkeigknd);
 
         List<Pkeigknd> pkeigknd = persoonskaartFlow.getPkeigknd();
@@ -563,7 +566,7 @@ public class PersoonskaartService extends AkteService {
      */
     public void registerByzCheck(PersoonskaartFlowState persoonskaartFlow) {
         Pkknd pkknd = persoonskaartFlow.getPkknd();
-        inputMetadata.saveToEntity(pkknd);
+        inputMetadataChecker.saveToEntity(pkknd, inputMetadata);
         pkknd = pkkndRepository.save(pkknd);
         persoonskaartFlow.setPkknd(pkknd);
     }
@@ -601,7 +604,7 @@ public class PersoonskaartService extends AkteService {
 
         pkbyz.setIdnr(persoonskaartFlow.getPkknd().getIdnr());
 
-        inputMetadata.saveToEntity(pkbyz);
+        inputMetadataChecker.saveToEntity(pkbyz, inputMetadata);
         pkbyz = pkbyzRepository.save(pkbyz);
         persoonskaartFlow.addToPkbyz(pkbyz);
     }

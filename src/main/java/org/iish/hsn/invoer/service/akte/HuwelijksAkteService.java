@@ -13,6 +13,7 @@ import org.iish.hsn.invoer.flow.state.ViewStateHistory;
 import org.iish.hsn.invoer.repository.invoer.huw.*;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.InputMetadataChecker;
 import org.iish.hsn.invoer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,10 @@ import java.util.*;
  */
 @Service
 public class HuwelijksAkteService extends AkteService {
-    @Autowired private InputMetadata      inputMetadata;
-    @Autowired private LookupService      lookupService;
+    @Autowired private InputMetadata        inputMetadata;
+    @Autowired private InputMetadataChecker inputMetadataChecker;
+    @Autowired private LookupService        lookupService;
+
     @Autowired private HuwttlRepository   huwttlRepository;
     @Autowired private HuwkndRepository   huwkndRepository;
     @Autowired private HuwafkRepository   huwafkRepository;
@@ -232,7 +235,7 @@ public class HuwelijksAkteService extends AkteService {
         huwknd.setHgemnr(huwttl.getHgemnr());
         huwknd.setHaktenr(huwttl.getHaktenr());
 
-        inputMetadata.saveToEntity(huwttl);
+        inputMetadataChecker.saveToEntity(huwttl, inputMetadata);
         huwttl = huwttlRepository.save(huwttl);
         huwelijksAkteFlow.setHuwttl(huwttl);
 
@@ -333,11 +336,11 @@ public class HuwelijksAkteService extends AkteService {
             }
 
             Huwttl huwttl = huwelijksAkteFlow.getHuwttl();
-            inputMetadata.saveToEntity(huwttl);
+            inputMetadataChecker.saveToEntity(huwttl, inputMetadata);
             huwttl = huwttlRepository.save(huwttl);
             huwelijksAkteFlow.setHuwttl(huwttl);
 
-            inputMetadata.saveToEntity(huwknd);
+            inputMetadataChecker.saveToEntity(huwknd, inputMetadata);
             huwknd = huwkndRepository.save(huwknd);
             huwelijksAkteFlow.setHuwknd(huwknd);
         }
@@ -392,7 +395,7 @@ public class HuwelijksAkteService extends AkteService {
             curHuwafk.setIdnr(huwttl.getIdnr());
             curHuwafk.setHuw(huwttl.getHuw());
 
-            inputMetadata.saveToEntity(curHuwafk);
+            inputMetadataChecker.saveToEntity(curHuwafk, inputMetadata);
             curHuwafk = huwafkRepository.save(curHuwafk);
             huwafk.set(i, curHuwafk);
         }
@@ -469,7 +472,7 @@ public class HuwelijksAkteService extends AkteService {
         curHuweer.setIdnr(huwelijksAkteFlow.getHuwknd().getIdnr());
         curHuweer.setHuw(huwelijksAkteFlow.getHuwknd().getHuw());
 
-        inputMetadata.saveToEntity(curHuweer);
+        inputMetadataChecker.saveToEntity(curHuweer, inputMetadata);
         curHuweer = huweerRepository.save(curHuweer);
 
         if (curHuweer.getHuwer().equals("m")) {
@@ -498,7 +501,7 @@ public class HuwelijksAkteService extends AkteService {
             huwknd.setErken("n");
         }
 
-        inputMetadata.saveToEntity(huwknd);
+        inputMetadataChecker.saveToEntity(huwknd, inputMetadata);
         huwknd = huwkndRepository.save(huwknd);
         huwelijksAkteFlow.setHuwknd(huwknd);
     }
@@ -520,7 +523,7 @@ public class HuwelijksAkteService extends AkteService {
             huwknd.setErken("j");
         }
 
-        inputMetadata.saveToEntity(huwknd);
+        inputMetadataChecker.saveToEntity(huwknd, inputMetadata);
         huwknd = huwkndRepository.save(huwknd);
         huwelijksAkteFlow.setHuwknd(huwknd);
     }
@@ -547,7 +550,7 @@ public class HuwelijksAkteService extends AkteService {
             curHuwvrknd.setVekplvk(curHuwvrknd.getMekplvk());
         }
 
-        inputMetadata.saveToEntity(curHuwvrknd);
+        inputMetadataChecker.saveToEntity(curHuwvrknd, inputMetadata);
         curHuwvrknd = huwvrkndRepository.save(curHuwvrknd);
 
         // If this is the first one entered, then we also now know how many we can expect
@@ -627,7 +630,7 @@ public class HuwelijksAkteService extends AkteService {
         curHuwgtg.setIdnr(huwttl.getIdnr());
         curHuwgtg.setHuw(huwttl.getHuw());
 
-        inputMetadata.saveToEntity(curHuwgtg);
+        inputMetadataChecker.saveToEntity(curHuwgtg, inputMetadata);
         curHuwgtg = huwgtgRepository.save(curHuwgtg);
 
         huwgtg[huwelijksAkteFlow.getCurHuwgtgIndex()] = curHuwgtg;
@@ -655,7 +658,7 @@ public class HuwelijksAkteService extends AkteService {
             huwknd.setToestvgd("n");
         }
 
-        inputMetadata.saveToEntity(huwknd);
+        inputMetadataChecker.saveToEntity(huwknd, inputMetadata);
         huwknd = huwkndRepository.save(huwknd);
         huwelijksAkteFlow.setHuwknd(huwknd);
     }
@@ -704,7 +707,7 @@ public class HuwelijksAkteService extends AkteService {
         huwbyz.setIdnr(huwelijksAkteFlow.getHuwknd().getIdnr());
         huwbyz.setHuw(huwelijksAkteFlow.getHuwknd().getHuw());
 
-        inputMetadata.saveToEntity(huwbyz);
+        inputMetadataChecker.saveToEntity(huwbyz, inputMetadata);
         huwbyz = huwbyzRepository.save(huwbyz);
         huwelijksAkteFlow.addToHuwbyz(huwbyz);
     }
@@ -750,7 +753,7 @@ public class HuwelijksAkteService extends AkteService {
      */
     private void saveHuwknd(HuwelijksAkteFlowState huwelijksAkteFlow) {
         Huwknd huwknd = huwelijksAkteFlow.getHuwknd();
-        inputMetadata.saveToEntity(huwknd);
+        inputMetadataChecker.saveToEntity(huwknd, inputMetadata);
         huwknd = huwkndRepository.save(huwknd);
         huwelijksAkteFlow.setHuwknd(huwknd);
     }

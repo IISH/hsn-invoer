@@ -10,6 +10,7 @@ import org.iish.hsn.invoer.repository.invoer.geb.*;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.util.Cohort;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.InputMetadataChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,11 @@ import java.util.Set;
  */
 @Service
 public class GeboorteAkteService extends AkteService {
-    @Autowired private InputMetadata      inputMetadata;
-    @Autowired private GeboorteStart      geboorteStart;
-    @Autowired private GeboorteAkteHelper geboorteAkteHelper;
-    @Autowired private LookupService      lookupService;
+    @Autowired private InputMetadata        inputMetadata;
+    @Autowired private InputMetadataChecker inputMetadataChecker;
+    @Autowired private GeboorteStart        geboorteStart;
+    @Autowired private GeboorteAkteHelper   geboorteAkteHelper;
+    @Autowired private LookupService        lookupService;
 
     @Autowired private GebakteRepository  gebakteRepository;
     @Autowired private GebkndRepository   gebkndRepository;
@@ -79,7 +81,7 @@ public class GeboorteAkteService extends AkteService {
                 gebakteRepository.delete(oldGebakte);
             }
             if (newGebakte.getGebkode() != 1) {
-                inputMetadata.saveToEntity(newGebakte);
+                inputMetadataChecker.saveToEntity(newGebakte, inputMetadata);
                 newGebakte = gebakteRepository.save(newGebakte);
             }
             if ((oldGebakte != null) && (newGebakte.getGebkode() == 1)) {
@@ -122,7 +124,7 @@ public class GeboorteAkteService extends AkteService {
                 gebknd.setAktemnd(maand);
                 gebknd.setAkteuur(uur);
 
-                inputMetadata.saveToEntity(gebknd);
+                inputMetadataChecker.saveToEntity(gebknd, inputMetadata);
                 gebknd = gebkndRepository.save(gebknd);
                 geboorteAkteFlow.setGebknd(gebknd);
             }
@@ -199,7 +201,7 @@ public class GeboorteAkteService extends AkteService {
 
         // The user can still stop the flow, so only save during correction
         if (geboorteAkteFlow.isCorrection()) {
-            inputMetadata.saveToEntity(gebknd);
+            inputMetadataChecker.saveToEntity(gebknd, inputMetadata);
             gebknd = gebkndRepository.save(gebknd);
             geboorteAkteFlow.setGebknd(gebknd);
         }
@@ -276,7 +278,7 @@ public class GeboorteAkteService extends AkteService {
         }
 
         gebvdr.setIdnr(geboorteAkteFlow.getGebknd().getIdnr());
-        inputMetadata.saveToEntity(gebvdr);
+        inputMetadataChecker.saveToEntity(gebvdr, inputMetadata);
         gebvdr = gebvdrRepository.save(gebvdr);
         geboorteAkteFlow.setGebvdr(gebvdr);
     }
@@ -294,7 +296,7 @@ public class GeboorteAkteService extends AkteService {
             gebgtgCur.setLftgt(-1);
         }
 
-        inputMetadata.saveToEntity(gebgtgCur);
+        inputMetadataChecker.saveToEntity(gebgtgCur, inputMetadata);
         gebgtgCur = gebgtgRepository.save(gebgtgCur);
 
         Gebgtg[] gebgtg = geboorteAkteFlow.getGebgtg();
@@ -311,7 +313,7 @@ public class GeboorteAkteService extends AkteService {
         Gebkant gebkant = geboorteAkteFlow.getGebkant();
         gebkant.setIdnr(geboorteAkteFlow.getGebknd().getIdnr());
 
-        inputMetadata.saveToEntity(gebkant);
+        inputMetadataChecker.saveToEntity(gebkant, inputMetadata);
         gebkant = gebkantRepository.save(gebkant);
         geboorteAkteFlow.setGebkant(gebkant);
     }
@@ -424,7 +426,7 @@ public class GeboorteAkteService extends AkteService {
             gebkant.setKantjr(0);
         }
 
-        inputMetadata.saveToEntity(gebkant);
+        inputMetadataChecker.saveToEntity(gebkant, inputMetadata);
         gebkant = gebkantRepository.save(gebkant);
         geboorteAkteFlow.setGebkant(gebkant);
     }
@@ -467,7 +469,7 @@ public class GeboorteAkteService extends AkteService {
         Gebbyz gebbyz = (Gebbyz) byz;
 
         gebbyz.setIdnr(geboorteAkteFlowState.getStpb().getIdnr());
-        inputMetadata.saveToEntity(gebbyz);
+        inputMetadataChecker.saveToEntity(gebbyz, inputMetadata);
         gebbyz = gebbyzRepository.save(gebbyz);
 
         geboorteAkteFlowState.addToGebbyz(gebbyz);
@@ -506,7 +508,7 @@ public class GeboorteAkteService extends AkteService {
      */
     private void saveGebknd(GeboorteAkteFlowState geboorteAkteFlow) {
         Gebknd gebknd = geboorteAkteFlow.getGebknd();
-        inputMetadata.saveToEntity(gebknd);
+        inputMetadataChecker.saveToEntity(gebknd, inputMetadata);
         gebknd = gebkndRepository.save(gebknd);
         geboorteAkteFlow.setGebknd(gebknd);
     }

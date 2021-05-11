@@ -2,6 +2,7 @@ package org.iish.hsn.invoer.config;
 
 import org.iish.hsn.invoer.flow.AkteFlowExecutionListener;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.InputMetadataChecker;
 import org.iish.hsn.invoer.util.InputMetadataInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -30,6 +31,9 @@ public class WebFlowConfiguration extends AbstractFlowConfiguration {
     private InputMetadata inputMetadata;
 
     @Autowired
+    private InputMetadataChecker inputMetadataChecker;
+
+    @Autowired
     private ConversionService mvcConversionService;
 
     @Autowired
@@ -40,7 +44,7 @@ public class WebFlowConfiguration extends AbstractFlowConfiguration {
         FlowHandlerMapping handlerMapping = new FlowHandlerMapping();
         handlerMapping.setOrder(-1);
         handlerMapping.setFlowRegistry(flowRegistry());
-        handlerMapping.setInterceptors(new InputMetadataInterceptor(this.inputMetadata));
+        handlerMapping.setInterceptors(new InputMetadataInterceptor(this.inputMetadata, this.inputMetadataChecker));
         return handlerMapping;
     }
 

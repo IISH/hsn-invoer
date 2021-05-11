@@ -1,6 +1,7 @@
 package org.iish.hsn.invoer.web;
 
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.InputMetadataChecker;
 import org.iish.hsn.invoer.util.NoInputMetadataCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MainController {
     @Autowired private Environment   env;
     @Autowired private InputMetadata inputMetadata;
+    @Autowired private InputMetadataChecker inputMetadataChecker;
 
     @NoInputMetadataCheck
     @RequestMapping(value = "/check", method = RequestMethod.GET)
@@ -30,7 +32,7 @@ public class MainController {
         inputMetadata.setOndrzk(ondrzk.trim().toUpperCase());
         inputMetadata.setOpdrnr(opdrnr.trim().toUpperCase());
 
-        if (!inputMetadata.isValid())
+        if (!inputMetadataChecker.isValid(inputMetadata))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -55,7 +57,7 @@ public class MainController {
         inputMetadata.setOndrzk(ondrzk.trim().toUpperCase());
         inputMetadata.setOpdrnr(opdrnr.trim().toUpperCase());
 
-        if (inputMetadata.isValid()) {
+        if (inputMetadataChecker.isValid(inputMetadata)) {
             return "redirect:/hoofdmenu";
         }
         return "redirect:/";
@@ -104,7 +106,7 @@ public class MainController {
             case "6":
                 return "redirect:/militie";
             case "a":
-                if (inputMetadata.isAdmin())
+                if (inputMetadataChecker.isAdmin())
                     return "redirect:/admin";
             case "s":
                 return "redirect:/?exit=true";

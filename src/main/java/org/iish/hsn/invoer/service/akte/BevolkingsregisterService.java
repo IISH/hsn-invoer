@@ -16,6 +16,7 @@ import org.iish.hsn.invoer.repository.invoer.bev.RegistrationAddressRepository;
 import org.iish.hsn.invoer.repository.invoer.bev.RegistrationRepository;
 import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.InputMetadataChecker;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import java.util.*;
 @Service
 public class BevolkingsregisterService {
     @Autowired private InputMetadata                 inputMetadata;
+    @Autowired private InputMetadataChecker          inputMetadataChecker;
     @Autowired private LookupService                 lookupService;
     @Autowired private RegistrationRepository        registrationRepository;
     @Autowired private PersonRepository              personRepository;
@@ -982,7 +984,7 @@ public class BevolkingsregisterService {
      */
     public void registerAndSaveRegistration(BevolkingsregisterFlowState bevolkingsregisterFlow) {
         Registration b4 = bevolkingsregisterFlow.getB4();
-        inputMetadata.saveToEntity(b4);
+        inputMetadataChecker.saveToEntity(b4, inputMetadata);
         b4 = registrationRepository.save(b4);
         bevolkingsregisterFlow.setB4(b4);
         bevolkingsregisterLast.setLastRegistration(b4);
@@ -997,7 +999,7 @@ public class BevolkingsregisterService {
         Person person = bevolkingsregisterFlow.getCurB2();
         registerPerson(bevolkingsregisterFlow, person);
 
-        inputMetadata.saveToEntity(person);
+        inputMetadataChecker.saveToEntity(person, inputMetadata);
         person = personRepository.save(person);
         bevolkingsregisterFlow.getB2().set(person.getRp() - 1, person);
 
@@ -1006,7 +1008,7 @@ public class BevolkingsregisterService {
             Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
             List<PersonDynamic> b3Person = b3.get(person.getRp());
             for (PersonDynamic personDynamic : b3Person) {
-                inputMetadata.saveToEntity(personDynamic);
+                inputMetadataChecker.saveToEntity(personDynamic, inputMetadata);
             }
             b3Person = personDynamicRepository.saveAll(b3Person);
             b3.put(person.getRp(), b3Person);
@@ -1023,14 +1025,14 @@ public class BevolkingsregisterService {
         List<Person> persons = new ArrayList<>(bevolkingsregisterFlow.getB2());
         for (Person person : persons) {
             registerPerson(bevolkingsregisterFlow, person);
-            inputMetadata.saveToEntity(person);
+            inputMetadataChecker.saveToEntity(person, inputMetadata);
         }
         personRepository.saveAll(persons);
 
         // Next store input metadata and save all person dynamics (Register already happened when person was registered)
         List<PersonDynamic> personDynamics = new ArrayList<>(bevolkingsregisterFlow.getAllB3());
         for (PersonDynamic personDynamic : personDynamics) {
-            inputMetadata.saveToEntity(personDynamic);
+            inputMetadataChecker.saveToEntity(personDynamic, inputMetadata);
         }
         personDynamicRepository.saveAll(personDynamics);
     }
@@ -1045,7 +1047,7 @@ public class BevolkingsregisterService {
         List<RegistrationAddress> b6 = bevolkingsregisterFlow.getB6();
 
         for (RegistrationAddress registrationAddress : b6) {
-            inputMetadata.saveToEntity(registrationAddress);
+            inputMetadataChecker.saveToEntity(registrationAddress, inputMetadata);
         }
 
         b6 = registrationAddressRepository.saveAll(b6);

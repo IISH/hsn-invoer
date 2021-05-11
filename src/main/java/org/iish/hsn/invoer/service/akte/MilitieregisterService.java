@@ -14,6 +14,7 @@ import org.iish.hsn.invoer.service.LookupService;
 import org.iish.hsn.invoer.service.scan.MilitionScan;
 import org.iish.hsn.invoer.service.scan.ScansService;
 import org.iish.hsn.invoer.util.InputMetadata;
+import org.iish.hsn.invoer.util.InputMetadataChecker;
 import org.iish.hsn.invoer.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import java.util.Map;
 @Service
 public class MilitieregisterService {
     @Autowired private InputMetadata inputMetadata;
+    @Autowired private InputMetadataChecker inputMetadataChecker;
     @Autowired private LookupService lookupService;
     @Autowired private MilitionRepository militionRepository;
     @Autowired private VerdictRepository verdictRepository;
@@ -192,7 +194,7 @@ public class MilitieregisterService {
      */
     public void saveMil(MilitieregisterFlowState militieregisterFlow) {
         Milition mil = militieregisterFlow.getMil();
-        inputMetadata.saveToEntity(mil);
+        inputMetadataChecker.saveToEntity(mil, inputMetadata);
         mil = militionRepository.save(mil);
         militieregisterFlow.setMil(mil);
     }
@@ -212,7 +214,7 @@ public class MilitieregisterService {
                 verdict.setIdnr(militieregisterFlow.getMil().getIdnr());
                 verdict.setSeq(militieregisterFlow.getMil().getSeq());
 
-                inputMetadata.saveToEntity(verdict);
+                inputMetadataChecker.saveToEntity(verdict, inputMetadata);
                 verdict = verdictRepository.save(verdict);
                 militieregisterFlow.getVerdict().put(Verdict.Type.getType(verdict.getType()), verdict);
             }
@@ -271,7 +273,7 @@ public class MilitieregisterService {
             Career career = careerHistory.get(i);
             career.setIdnr(mil.getIdnr());
             career.setSeq(mil.getSeq());
-            inputMetadata.saveToEntity(career);
+            inputMetadataChecker.saveToEntity(career, inputMetadata);
             career = careerRepository.save(career);
             careerHistory.set(i, career);
         }
