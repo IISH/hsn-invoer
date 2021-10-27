@@ -1,9 +1,9 @@
-FROM openjdk:11-jdk-slim AS build
+FROM maven:3-openjdk-11-slim AS build
 
 COPY . /app
 WORKDIR /app
 
-RUN ./mvnw install -P jar -DskipTests
+RUN mvn install -P jar -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM openjdk:11-jdk-slim

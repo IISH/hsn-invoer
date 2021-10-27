@@ -84,7 +84,6 @@ public class BevolkingsregisterRenumbering {
                 renumberRegistrationAddresses(keyOriginal, keyNew, true);
             }
             else {
-
                 renumbered.getB2().set(keyNew - 1, newPerson);
                 missingKeys.remove((Integer) keyNew); // Casting to make sure the right method is called
 

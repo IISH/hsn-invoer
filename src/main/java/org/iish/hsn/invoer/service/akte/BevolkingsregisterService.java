@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.DataBinder;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Deals with the preparation and storage of various elements of the 'bevolkingsregister'.
@@ -144,20 +145,27 @@ public class BevolkingsregisterService {
                 // First initialize the default person dynamics
                 createNewPersonDynamics(bevolkingsregisterFlow, person, false);
 
-                // Then obtain the stored person dynamics and replace the default initialized ones by these
+                // Then obtain the stored person dynamics
                 List<PersonDynamic> personDynamics = personDynamicRepository
                         .findAllPersonDynamicForPerson(registrationId, person.getRp(), inputMetadata.getWorkOrder());
-                for (PersonDynamic personDynamic : personDynamics) {
-                    Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow
-                            .getB3ForType(PersonDynamic.Type.getType(personDynamic.getDynamicDataType()));
-                    List<PersonDynamic> b3ForPerson = b3.get(person.getRp());
 
-                    // This is the first of the persons dynamic type,
-                    // so remove the default initialized which is not necessary anymore
-                    if (personDynamic.getDynamicDataSequenceNumber() == 1) {
+                for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
+                    List<PersonDynamic> b3ForPerson = bevolkingsregisterFlow.getB3ForType(type).get(person.getRp());
+                    List<PersonDynamic> personDynamicsForPerson = personDynamics.stream()
+                            .filter(personDynamic -> personDynamic.getDynamicDataType() == type.getType())
+                            .collect(Collectors.toList());
+
+                    // Remove the default initialized person dynamics if there is a stored person dynamic
+                    // and replace the default initialized one's by these
+                    if (!personDynamicsForPerson.isEmpty()) {
                         b3ForPerson.clear();
+                        personDynamicsForPerson.forEach(personDynamic -> {
+                            if (b3ForPerson.size() < personDynamic.getDynamicDataSequenceNumber() - 1) {
+                                personDynamic.setDynamicDataSequenceNumber(b3ForPerson.size() + 1);
+                            }
+                            b3ForPerson.add(personDynamic.getDynamicDataSequenceNumber() - 1, personDynamic);
+                        });
                     }
-                    b3ForPerson.add(personDynamic.getDynamicDataSequenceNumber() - 1, personDynamic);
                 }
 
                 updateFirstHerkomst(bevolkingsregisterFlow, person);
@@ -282,9 +290,8 @@ public class BevolkingsregisterService {
             for (PersonDynamic relatedPersonDynamic : relatedPersonDynamics) {
                 int type = relatedPersonDynamic.getContentOfDynamicData();
                 Person relatedPerson = b2.get(relatedPersonDynamic.getKeyToRegistrationPersons() - 1);
-                PersonDynamic personDynamic =
-                        bevolkingsregisterFlow.getB3ForType(PersonDynamic.Type.BURGELIJKE_STAND).get(person.getRp())
-                                              .get(0);
+                PersonDynamic personDynamic = bevolkingsregisterFlow
+                        .getB3ForType(PersonDynamic.Type.BURGELIJKE_STAND).get(person.getRp()).get(0);
 
                 // Related person is a widow, so this person must have been married to the related person and died
                 if (type == 2) {
@@ -385,7 +392,9 @@ public class BevolkingsregisterService {
                     if (!b3ForPerson.isEmpty() || (type != PersonDynamic.Type.HERKOMST && type != PersonDynamic.Type.VERTREK)) {
                         PersonDynamic lastPersonDynamic = prevPersonDynamics.get(prevPersonDynamics.size() - 1);
                         newPersonDynamic = b3ForPerson.get(0);
-                        BeanUtils.copyProperties(lastPersonDynamic, newPersonDynamic, "registrationId", "id");
+                        BeanUtils.copyProperties(lastPersonDynamic, newPersonDynamic,
+                                "dynamicDataSequenceNumber", "registrationId", "id");
+                        newPersonDynamic.setDynamicDataSequenceNumber(1);
                         newPersonDynamic.setRegistrationId(curRegistrationId);
                         b3ForPerson.set(0, newPersonDynamic);
                     }
@@ -536,8 +545,8 @@ public class BevolkingsregisterService {
                     person.setNatureOfPerson(Person.NatureOfPerson.FIRST_RP.getNatureOfPerson());
                 }
                 else if ((person.getDayOfBirth() == newOp.getDayOfBirth()) &&
-                         (person.getMonthOfBirth() == newOp.getMonthOfBirth()) &&
-                         (person.getYearOfBirth() == newOp.getYearOfBirth())) {
+                        (person.getMonthOfBirth() == newOp.getMonthOfBirth()) &&
+                        (person.getYearOfBirth() == newOp.getYearOfBirth())) {
                     person.setNatureOfPerson(Person.NatureOfPerson.NEXT_RP.getNatureOfPerson());
                 }
                 else {
@@ -924,7 +933,7 @@ public class BevolkingsregisterService {
                         PersonDynamic personDynamicTo = b3To.get(0);
                         PersonDynamic personDynamicFrom = b3From.get(0);
                         BeanUtils.copyProperties(personDynamicFrom, personDynamicTo, "id",
-                                                 "keyToRegistrationPersons");
+                                "keyToRegistrationPersons");
                     }
             }
         }
@@ -1076,7 +1085,7 @@ public class BevolkingsregisterService {
 
         BevolkingsregisterFlowState bevolkingsregisterFlowState =
                 new BevolkingsregisterFlowState(b4, b2, b6, b3Rel, b3Brg, b3Kg, b3Brp, b3Her, b3Ver, firstB3Her,
-                                                firstB3Ver);
+                        firstB3Ver);
 
         bevolkingsregisterFlowState.setRefAinb(new Ref_AINB());
         bevolkingsregisterFlowState.setRefRp(new Ref_RP());
@@ -1271,7 +1280,7 @@ public class BevolkingsregisterService {
      */
     private void updateFirstHerkomst(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
         updateFirstHerkomstVertrek(bevolkingsregisterFlow, person, PersonDynamic.Type.HERKOMST,
-                                   bevolkingsregisterFlow.getB3Her(), bevolkingsregisterFlow.getFirstB3Her());
+                bevolkingsregisterFlow.getB3Her(), bevolkingsregisterFlow.getFirstB3Her());
     }
 
     /**
@@ -1285,7 +1294,7 @@ public class BevolkingsregisterService {
      */
     private void updateFirstVertrek(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
         updateFirstHerkomstVertrek(bevolkingsregisterFlow, person, PersonDynamic.Type.VERTREK,
-                                   bevolkingsregisterFlow.getB3Ver(), bevolkingsregisterFlow.getFirstB3Ver());
+                bevolkingsregisterFlow.getB3Ver(), bevolkingsregisterFlow.getFirstB3Ver());
     }
 
     /**

@@ -46,9 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .headers()
                         .frameOptions().disable();
         }
-
         // If an auth profile has been chosen, close all other requests: the user needs to be authenticated first
-        if (this.env.acceptsProfiles(Profiles.of("ldapAuth", "dbAuth"))) {
+        else if (this.env.acceptsProfiles(Profiles.of("ldapAuth", "dbAuth"))) {
             httpSecurity
                     // What is the login page
                     .formLogin()
@@ -66,6 +65,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .antMatchers("/css/**", "/fonts/**", "/js/**", "/favicon.ico").permitAll()
                         .anyRequest().authenticated();
         }
+        // Otherwise just accept any request
+        else
+            httpSecurity.authorizeRequests().anyRequest().permitAll();
     }
 
     @Autowired
