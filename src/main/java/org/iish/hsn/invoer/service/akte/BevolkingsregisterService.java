@@ -572,7 +572,9 @@ public class BevolkingsregisterService {
      */
     public void registerPerson(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
         String typeRegister = bevolkingsregisterFlow.getRefAinb().getTypeRegister();
-        if (typeRegister.equalsIgnoreCase("C") || typeRegister.equalsIgnoreCase("D")) {
+        int yearEntryHead = bevolkingsregisterFlow.getB4().getRegistrationId().getYearEntryHead();
+        if (typeRegister.equalsIgnoreCase("C") || typeRegister.equalsIgnoreCase("D")
+                || yearEntryHead < 1863) {
             person.setDayOfRegistration(-3);
             person.setMonthOfRegistration(-3);
             person.setYearOfRegistration(-3);

@@ -30,10 +30,10 @@
       <div class="col-xs-1">
         <input type="text" class="form-control form-control-digit required has-inschrijving" data-valid-chars="j;n"
                name="datum-inschrijving" id="datum-inschrijving" maxlength="1"
-               th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister) == false}"
+               th:if="${@bevolkingsregisterHelper.isInschrijfDatumAllowed(akte)}"
                th:value="${@bevolkingsregisterHelper.hasInschrijfDatum(akte.curB2)}"/>
 
-        <p class="form-control-static" th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister)}">
+        <p class="form-control-static" th:if="${@bevolkingsregisterHelper.isInschrijfDatumAllowed(akte) == false}">
           n
         </p>
       </div>

@@ -83,11 +83,11 @@
   <!-- Ins Dat -->
   <div class="sub-form-group">
     <input type="text" class="form-control form-control-digit has-inschrijving required" maxlength="1"
-           data-valid-chars="j;n" th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister) == false}"
+           data-valid-chars="j;n" th:if="${@bevolkingsregisterHelper.isInschrijfDatumAllowed(akte)}"
            th:value="${@bevolkingsregisterHelper.hasInschrijfDatum(persons[__${stat.index}__])}"
            th:id="${'ins-datum-' + rp}"/>
 
-    <p class="form-control-static" th:if="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister)}">
+    <p class="form-control-static" th:if="${@bevolkingsregisterHelper.isInschrijfDatumAllowed(akte) == false}">
       n
     </p>
   </div>
