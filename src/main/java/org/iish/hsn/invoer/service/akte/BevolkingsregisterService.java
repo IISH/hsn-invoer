@@ -1120,7 +1120,7 @@ public class BevolkingsregisterService {
                 }
                 // No relation allowed if type is 'C'
                 if (refAinb.getTypeRegister().equals("C")) {
-                    personDynamic.setContentOfDynamicData(-1);
+                    personDynamic.setContentOfDynamicData(-3);
                 }
                 // First one is usually the head
                 if (person.getKeyToRegistrationPersons() == 1) {
