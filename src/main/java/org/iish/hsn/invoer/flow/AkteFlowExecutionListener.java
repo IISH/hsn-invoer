@@ -6,13 +6,13 @@ import org.springframework.webflow.core.collection.AttributeMap;
 import org.springframework.webflow.definition.StateDefinition;
 import org.springframework.webflow.definition.TransitionDefinition;
 import org.springframework.webflow.engine.ViewState;
-import org.springframework.webflow.execution.FlowExecutionListenerAdapter;
+import org.springframework.webflow.execution.FlowExecutionListener;
 import org.springframework.webflow.execution.RequestContext;
 
 /**
  * Execution listener for all of the 'akte' flows.
  */
-public class AkteFlowExecutionListener extends FlowExecutionListenerAdapter {
+public class AkteFlowExecutionListener implements FlowExecutionListener {
 
     /**
      * Updates the view state history.

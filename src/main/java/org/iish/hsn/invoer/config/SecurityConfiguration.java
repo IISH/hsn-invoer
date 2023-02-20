@@ -5,19 +5,20 @@ import org.iish.hsn.invoer.service.security.HsnUserDetailsService;
 import org.iish.hsn.invoer.service.security.LdapAuthoritiesPopulator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
     @Autowired private Environment           env;
     @Autowired private UserRepository        userRepository;
     @Autowired private HsnUserDetailsService userDetailsService;
@@ -28,8 +29,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${ldap.search.base:ou=}") private           String ldapSearchBase;
     @Value("${ldap.search.filter:cn=}") private         String ldapSearchFilter;
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests().and()
                 // Disable Cross-Site Request Forgery token
@@ -68,6 +69,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // Otherwise just accept any request
         else
             httpSecurity.authorizeRequests().anyRequest().permitAll();
+
+        return httpSecurity.build();
     }
 
     @Autowired

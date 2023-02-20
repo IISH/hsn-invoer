@@ -476,7 +476,7 @@ public class BevolkingsregisterService {
                     bevolkingsregisterFlow.setVolgnrOP(person.getRp());
                 }
             }
-            else if (!bevolkingsregisterFlow.isCorrection()) {
+            else {
                 if (bevolkingsregisterFlow.getVolgnrOP() == person.getRp()) {
                     person.setNatureOfPerson(Person.NatureOfPerson.FIRST_RP.getNatureOfPerson());
                 }

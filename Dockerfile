@@ -1,4 +1,4 @@
-FROM maven:3-openjdk-11-slim AS build
+FROM maven:3-openjdk-17-slim AS build
 
 COPY . /app
 WORKDIR /app
@@ -6,7 +6,7 @@ WORKDIR /app
 RUN mvn install -P jar -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM openjdk:11-jdk-slim
+FROM openjdk:17-jdk-slim
 
 RUN apt-get update -y && apt-get install -y libturbojpeg-dev
 

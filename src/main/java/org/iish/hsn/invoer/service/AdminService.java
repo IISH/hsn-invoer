@@ -50,7 +50,7 @@ public class AdminService {
 
     public void uploadMilitionDb(MultipartFile dbFile) {
         try {
-            Path filePath = Paths.get(System.getProperty("java.io.tmpdir"), UUID.randomUUID().toString() + ".mv.db");
+            Path filePath = Paths.get(System.getProperty("java.io.tmpdir"), UUID.randomUUID() + ".mv.db");
             dbFile.transferTo(filePath.toFile());
 
             String path = filePath.toString();
