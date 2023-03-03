@@ -26,10 +26,8 @@ public class InputMetadataInterceptor implements HandlerInterceptor {
         boolean methodAllowsCheckAndRedirect = true;
 
         // Check for methods with a NoInputMetadataCheck annotation
-        if (handler instanceof HandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
+        if (handler instanceof HandlerMethod handlerMethod)
             methodAllowsCheckAndRedirect = (handlerMethod.getMethodAnnotation(NoInputMetadataCheck.class) == null);
-        }
 
         // Static resources should never redirect
         if (handler instanceof ResourceHttpRequestHandler)

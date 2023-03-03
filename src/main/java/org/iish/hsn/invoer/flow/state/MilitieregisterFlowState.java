@@ -70,23 +70,16 @@ public class MilitieregisterFlowState extends AkteFlowState implements Serializa
     }
 
     public List<Career> getCareerForType(Career.Type type) {
-        switch (type) {
-            case BEROEP:
-                return this.professions;
-            case ONDERWIJS:
-                return this.educations;
-        }
-        return null;
+        return switch (type) {
+            case BEROEP -> this.professions;
+            case ONDERWIJS -> this.educations;
+        };
     }
 
     public void setCareerForType(Career.Type type, List<Career> careerHistory) {
         switch (type) {
-            case BEROEP:
-                this.professions = careerHistory;
-                break;
-            case ONDERWIJS:
-                this.educations = careerHistory;
-                break;
+            case BEROEP -> this.professions = careerHistory;
+            case ONDERWIJS -> this.educations = careerHistory;
         }
     }
 

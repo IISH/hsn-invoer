@@ -25,14 +25,11 @@ public class AdminController {
 
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.POST)
     public String redirectToModule(@RequestParam("keuze") String module) {
-        switch (module) {
-            case "1":
-                return "redirect:/admin/import";
-            case "s":
-                return "redirect:/hoofdmenu";
-            default:
-                return "redirect:/admin/hoofdmenu";
-        }
+        return switch (module) {
+            case "1" -> "redirect:/admin/import";
+            case "s" -> "redirect:/hoofdmenu";
+            default -> "redirect:/admin/hoofdmenu";
+        };
     }
 
     @RequestMapping(value = "/import", method = RequestMethod.GET)

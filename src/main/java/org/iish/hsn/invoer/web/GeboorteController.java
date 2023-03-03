@@ -45,20 +45,14 @@ public class GeboorteController {
 
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.POST)
     public String redirectToModule(@RequestParam("keuze") String module) {
-        switch (module) {
-            case "1":
-                return "redirect:/geboorte/invoer";
-            case "2":
-                return "redirect:/geboorte/overzicht/menu";
-            case "3":
-                return "redirect:/geboorte/correctie";
-            case "4":
-                return "redirect:/geboorte/verwijderen";
-            case "s":
-                return "redirect:/hoofdmenu";
-            default:
-                return "redirect:/geboorte/hoofdmenu";
-        }
+        return switch (module) {
+            case "1" -> "redirect:/geboorte/invoer";
+            case "2" -> "redirect:/geboorte/overzicht/menu";
+            case "3" -> "redirect:/geboorte/correctie";
+            case "4" -> "redirect:/geboorte/verwijderen";
+            case "s" -> "redirect:/hoofdmenu";
+            default -> "redirect:/geboorte/hoofdmenu";
+        };
     }
 
     @RequestMapping(value = "/overzicht/menu", method = RequestMethod.GET)

@@ -53,14 +53,6 @@ public class HuwelijksAkteFlowState extends ByzAkteFlowState implements Serializ
         this.curHuwvrknd = this.huwvrknd[this.curHuwvrkndIndex];
     }
 
-    /*public Ref_GBH getRefGbh() {
-        return refGbh;
-    }
-
-    public void setRefGbh(Ref_GBH refGbh) {
-        this.refGbh = refGbh;
-    }*/
-
     public Ref_RP getRefRp() {
         return refRp;
     }

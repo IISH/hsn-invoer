@@ -50,14 +50,6 @@ public class PersoonskaartFlowState extends ByzAkteFlowState implements Serializ
         this.pkbyz = pkbyz;
     }
 
-    /*public Ref_GBH getRefGbh() {
-        return refGbh;
-    }
-
-    public void setRefGbh(Ref_GBH refGbh) {
-        this.refGbh = refGbh;
-    }*/
-
     public Ref_RP getRefRp() {
         return refRp;
     }

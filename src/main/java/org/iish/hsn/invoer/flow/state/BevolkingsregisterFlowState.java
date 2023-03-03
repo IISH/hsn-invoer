@@ -61,21 +61,14 @@ public class BevolkingsregisterFlowState extends AkteFlowState implements Serial
     }
 
     public Map<Integer, List<PersonDynamic>> getB3ForType(PersonDynamic.Type type) {
-        switch (type) {
-            case RELATIE_TOV_HOOFD:
-                return this.b3Rel;
-            case BURGELIJKE_STAND:
-                return this.b3Brg;
-            case KERKGENOOTSCHAP:
-                return this.b3Kg;
-            case BEROEP:
-                return this.b3Brp;
-            case HERKOMST:
-                return this.b3Her;
-            case VERTREK:
-                return this.b3Ver;
-        }
-        return null;
+        return switch (type) {
+            case RELATIE_TOV_HOOFD -> this.b3Rel;
+            case BURGELIJKE_STAND -> this.b3Brg;
+            case KERKGENOOTSCHAP -> this.b3Kg;
+            case BEROEP -> this.b3Brp;
+            case HERKOMST -> this.b3Her;
+            case VERTREK -> this.b3Ver;
+        };
     }
 
     public List<PersonDynamic> getB3ForPerson(int person) {

@@ -9,26 +9,17 @@ import org.springframework.stereotype.Component;
 public class MilitieregisterHelper {
     public String getTypeRegister(String type) {
         type = type.toUpperCase();
-        switch (type) {
-            case "A":
-                return "Alfabetische naamlijst";
-            case "I":
-                return "Inschrijvingsregister";
-            case "K":
-                return "Keuringsregister";
-            case "L":
-                return "Lotingsregister";
-            case "F":
-                return "Filmrollen";
-            case "M":
-                return "Microfiches (stalen kast)";
-            case "D":
-                return "Microfiches (dozen)";
-            case "B":
-                return "Microfiches (bakjes)";
-            default:
-                return "Niet bekend";
-        }
+        return switch (type) {
+            case "A" -> "Alfabetische naamlijst";
+            case "I" -> "Inschrijvingsregister";
+            case "K" -> "Keuringsregister";
+            case "L" -> "Lotingsregister";
+            case "F" -> "Filmrollen";
+            case "M" -> "Microfiches (stalen kast)";
+            case "D" -> "Microfiches (dozen)";
+            case "B" -> "Microfiches (bakjes)";
+            default -> "Niet bekend";
+        };
     }
 
     public String hasDataOnVoogd(Milition mil, boolean isCorrection) {

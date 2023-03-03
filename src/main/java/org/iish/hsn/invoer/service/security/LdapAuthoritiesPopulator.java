@@ -47,7 +47,7 @@ public class LdapAuthoritiesPopulator extends DefaultLdapAuthoritiesPopulator {
         Set<GrantedAuthority> authorities = new HashSet<>();
         User userEntity = userRepository.findByInlognaam(username);
         if (userEntity != null) {
-            authorities.addAll(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
         return authorities;
     }

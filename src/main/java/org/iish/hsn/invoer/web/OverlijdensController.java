@@ -40,20 +40,14 @@ public class OverlijdensController {
 
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.POST)
     public String redirectToModule(@RequestParam("keuze") String module) {
-        switch (module) {
-            case "1":
-                return "redirect:/overlijden/invoer";
-            case "2":
-                return "redirect:/overlijden/overzicht/menu";
-            case "3":
-                return "redirect:/overlijden/correctie";
-            case "4":
-                return "redirect:/overlijden/verwijderen";
-            case "s":
-                return "redirect:/hoofdmenu";
-            default:
-                return "redirect:/overlijden/hoofdmenu";
-        }
+        return switch (module) {
+            case "1" -> "redirect:/overlijden/invoer";
+            case "2" -> "redirect:/overlijden/overzicht/menu";
+            case "3" -> "redirect:/overlijden/correctie";
+            case "4" -> "redirect:/overlijden/verwijderen";
+            case "s" -> "redirect:/hoofdmenu";
+            default -> "redirect:/overlijden/hoofdmenu";
+        };
     }
 
     @RequestMapping(value = "/overzicht/menu", method = RequestMethod.GET)

@@ -98,24 +98,16 @@ public class Ref_AINB implements Serializable {
     }
 
     public String getBron() {
-        switch (getTypeRegister().toUpperCase()) {
-            case "A":
-                return "Alleenstaande register 1840-1940";
-            case "B":
-                return "Bevolkingsregister 1860-1940";
-            case "C":
-                return "Bevolkingsregister 1850-1865";
-            case "D":
-                return "Bevolkingsregister 1812-1850";
-            case "G":
-                return "Gezinskaarten-systeem 1880-1940";
-            case "I":
-                return "Individueel kaartsysteem 1880-1940";
-            case "V":
-                return "Volkstellingsregisters 1812-1850";
-            case "X":
-                return "Register niet aanwezig/verloren 1850-1940";
-        }
-        return "";
+        return switch (getTypeRegister().toUpperCase()) {
+            case "A" -> "Alleenstaande register 1840-1940";
+            case "B" -> "Bevolkingsregister 1860-1940";
+            case "C" -> "Bevolkingsregister 1850-1865";
+            case "D" -> "Bevolkingsregister 1812-1850";
+            case "G" -> "Gezinskaarten-systeem 1880-1940";
+            case "I" -> "Individueel kaartsysteem 1880-1940";
+            case "V" -> "Volkstellingsregisters 1812-1850";
+            case "X" -> "Register niet aanwezig/verloren 1850-1940";
+            default -> "";
+        };
     }
 }

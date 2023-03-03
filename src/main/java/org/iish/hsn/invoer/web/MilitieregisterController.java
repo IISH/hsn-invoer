@@ -61,20 +61,14 @@ public class MilitieregisterController {
 
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.POST)
     public String redirectToModule(@RequestParam("keuze") String module) {
-        switch (module) {
-            case "1":
-                return "redirect:/militie/invoer";
-            case "2":
-                return "redirect:/militie/overzicht/menu";
-            case "3":
-                return "redirect:/militie/correctie";
-            case "4":
-                return "redirect:/militie/verwijderen";
-            case "s":
-                return "redirect:/hoofdmenu";
-            default:
-                return "redirect:/militie/hoofdmenu";
-        }
+        return switch (module) {
+            case "1" -> "redirect:/militie/invoer";
+            case "2" -> "redirect:/militie/overzicht/menu";
+            case "3" -> "redirect:/militie/correctie";
+            case "4" -> "redirect:/militie/verwijderen";
+            case "s" -> "redirect:/hoofdmenu";
+            default -> "redirect:/militie/hoofdmenu";
+        };
     }
 
     @RequestMapping(value = "/overzicht/menu", method = RequestMethod.GET)

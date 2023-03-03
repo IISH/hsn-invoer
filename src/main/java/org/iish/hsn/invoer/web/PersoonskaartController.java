@@ -30,20 +30,14 @@ public class PersoonskaartController {
 
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.POST)
     public String redirectToModule(@RequestParam("keuze") String module) {
-        switch (module) {
-            case "1":
-                return "redirect:/persoonskaart/invoer";
-            case "2":
-                return "redirect:/persoonskaart/overzicht/menu";
-            case "3":
-                return "redirect:/persoonskaart/correctie";
-            case "4":
-                return "redirect:/persoonskaart/verwijderen";
-            case "s":
-                return "redirect:/hoofdmenu";
-            default:
-                return "redirect:/persoonskaart/hoofdmenu";
-        }
+        return switch (module) {
+            case "1" -> "redirect:/persoonskaart/invoer";
+            case "2" -> "redirect:/persoonskaart/overzicht/menu";
+            case "3" -> "redirect:/persoonskaart/correctie";
+            case "4" -> "redirect:/persoonskaart/verwijderen";
+            case "s" -> "redirect:/hoofdmenu";
+            default -> "redirect:/persoonskaart/hoofdmenu";
+        };
     }
 
     @RequestMapping(value = "/overzicht/menu", method = RequestMethod.GET)

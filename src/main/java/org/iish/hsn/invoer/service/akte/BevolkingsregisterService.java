@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.DataBinder;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Deals with the preparation and storage of various elements of the 'bevolkingsregister'.
@@ -153,7 +152,7 @@ public class BevolkingsregisterService {
                     List<PersonDynamic> b3ForPerson = bevolkingsregisterFlow.getB3ForType(type).get(person.getRp());
                     List<PersonDynamic> personDynamicsForPerson = personDynamics.stream()
                             .filter(personDynamic -> personDynamic.getDynamicDataType() == type.getType())
-                            .collect(Collectors.toList());
+                            .toList();
 
                     // Remove the default initialized person dynamics if there is a stored person dynamic
                     // and replace the default initialized one's by these
@@ -511,7 +510,7 @@ public class BevolkingsregisterService {
 
                 // Make sure the person key is a valid integer and is a known person in this registration
                 if (personKey.matches("^\\d+$")) {
-                    Integer person = Integer.parseInt(personKey);
+                    int person = Integer.parseInt(personKey);
                     if (person <= b2.size()) {
                         correctionPersons.add(person);
                     }
@@ -922,9 +921,7 @@ public class BevolkingsregisterService {
 
         for (PersonDynamic.Type type : PersonDynamic.Type.values()) {
             switch (type) {
-                case BEROEP:
-                case KERKGENOOTSCHAP:
-                case BURGELIJKE_STAND:
+                case BEROEP, KERKGENOOTSCHAP, BURGELIJKE_STAND -> {
                     Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
                     List<PersonDynamic> b3To = b3.get(person);
                     List<PersonDynamic> b3From = b3.get(lineToCopy);
@@ -937,6 +934,7 @@ public class BevolkingsregisterService {
                         BeanUtils.copyProperties(personDynamicFrom, personDynamicTo, "id",
                                 "keyToRegistrationPersons");
                     }
+                }
             }
         }
     }
@@ -1111,7 +1109,7 @@ public class BevolkingsregisterService {
 
         // First set type specific default values
         switch (type) {
-            case RELATIE_TOV_HOOFD:
+            case RELATIE_TOV_HOOFD -> {
                 // First one is without a date
                 if (sequenceNumber == 1) {
                     personDynamic.setDayOfMutation(-3);
@@ -1120,20 +1118,20 @@ public class BevolkingsregisterService {
                 }
                 // No relation allowed if type is 'C'
                 if (refAinb.getTypeRegister().equals("C")) {
-                    personDynamic.setContentOfDynamicData(-3);
+                    personDynamic.setContentOfDynamicData(-1);
+                    // TODO: personDynamic.setContentOfDynamicData(-3);
                 }
                 // First one is usually the head
                 if (person.getKeyToRegistrationPersons() == 1) {
                     personDynamic.setContentOfDynamicData(1);
                 }
-                break;
-            case KERKGENOOTSCHAP:
-            case BEROEP:
+            }
+            case KERKGENOOTSCHAP, BEROEP -> {
                 // These types have no date
                 personDynamic.setDayOfMutation(-3);
                 personDynamic.setMonthOfMutation(-3);
                 personDynamic.setYearOfMutation(-3);
-                break;
+            }
         }
 
         personDynamic.setRegistrationId(person.getRegistrationId());
@@ -1156,23 +1154,19 @@ public class BevolkingsregisterService {
             Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
 
             switch (type) {
-                case RELATIE_TOV_HOOFD:
+                case RELATIE_TOV_HOOFD -> {
                     if (!renumberedRemainsHead && b3.containsKey(keyToPerson)) {
                         b3.get(keyToPerson).clear();
                     }
-                    break;
-                case HERKOMST:
-                    updateFirstHerkomst(bevolkingsregisterFlow, person);
-                    break;
-                case VERTREK:
-                    updateFirstVertrek(bevolkingsregisterFlow, person);
-                    break;
+                }
+                case HERKOMST -> updateFirstHerkomst(bevolkingsregisterFlow, person);
+                case VERTREK -> updateFirstVertrek(bevolkingsregisterFlow, person);
             }
 
             if ((type != PersonDynamic.Type.HERKOMST) && (type != PersonDynamic.Type.VERTREK)
                     && (!b3.containsKey(keyToPerson) || b3.get(keyToPerson).isEmpty())) {
                 PersonDynamic personDynamic = createPersonDynamic(bevolkingsregisterFlow, person, type, 1);
-                b3.put(keyToPerson, new ArrayList<>(Arrays.asList(personDynamic)));
+                b3.put(keyToPerson, new ArrayList<>(List.of(personDynamic)));
             }
         }
     }

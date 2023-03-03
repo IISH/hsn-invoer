@@ -8,15 +8,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 
-public class HsnUserDetails implements UserDetails, Serializable {
-    private final String username;
-    private final String password;
-
-    public HsnUserDetails(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
+record HsnUserDetails(String username, String password) implements UserDetails, Serializable {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));

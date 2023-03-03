@@ -60,30 +60,19 @@ public class BevolkingsregisterController {
 
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.POST)
     public String redirectToModule(@RequestParam("keuze") String module) {
-        switch (module) {
-            case "1":
-                return "redirect:/bevolkingsregister/invoer/alle-regels";
-            case "2":
-                return "redirect:/bevolkingsregister/invoer/per-regel";
-            case "3":
-                return "redirect:/bevolkingsregister/overzicht";
-            case "4":
-                return "redirect:/bevolkingsregister/verwijderen";
-            case "5":
-                return "redirect:/bevolkingsregister/correctie/personen";
-            case "6":
-                return "redirect:/bevolkingsregister/correctie/samenstelling";
-            case "7":
-                return "redirect:/bevolkingsregister/correctie/adressen";
-            case "8":
-                return "redirect:/bevolkingsregister/correctie/bijzonderheden";
-            case "9":
-                return "redirect:/bevolkingsregister/correctie/identificatie";
-            case "s":
-                return "redirect:/hoofdmenu";
-            default:
-                return "redirect:/bevolkingsregister/hoofdmenu";
-        }
+        return switch (module) {
+            case "1" -> "redirect:/bevolkingsregister/invoer/alle-regels";
+            case "2" -> "redirect:/bevolkingsregister/invoer/per-regel";
+            case "3" -> "redirect:/bevolkingsregister/overzicht";
+            case "4" -> "redirect:/bevolkingsregister/verwijderen";
+            case "5" -> "redirect:/bevolkingsregister/correctie/personen";
+            case "6" -> "redirect:/bevolkingsregister/correctie/samenstelling";
+            case "7" -> "redirect:/bevolkingsregister/correctie/adressen";
+            case "8" -> "redirect:/bevolkingsregister/correctie/bijzonderheden";
+            case "9" -> "redirect:/bevolkingsregister/correctie/identificatie";
+            case "s" -> "redirect:/hoofdmenu";
+            default -> "redirect:/bevolkingsregister/hoofdmenu";
+        };
     }
 
     @RequestMapping(value = "/overzicht/modal", method = RequestMethod.GET)

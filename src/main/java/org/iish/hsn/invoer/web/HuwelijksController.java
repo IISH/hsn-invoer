@@ -30,20 +30,14 @@ public class HuwelijksController {
 
     @RequestMapping(value = "/hoofdmenu", method = RequestMethod.POST)
     public String redirectToModule(@RequestParam("keuze") String module) {
-        switch (module) {
-            case "1":
-                return "redirect:/huwelijk/invoer";
-            case "2":
-                return "redirect:/huwelijk/overzicht/menu";
-            case "3":
-                return "redirect:/huwelijk/correctie";
-            case "4":
-                return "redirect:/huwelijk/verwijderen";
-            case "s":
-                return "redirect:/hoofdmenu";
-            default:
-                return "redirect:/huwelijk/hoofdmenu";
-        }
+        return switch (module) {
+            case "1" -> "redirect:/huwelijk/invoer";
+            case "2" -> "redirect:/huwelijk/overzicht/menu";
+            case "3" -> "redirect:/huwelijk/correctie";
+            case "4" -> "redirect:/huwelijk/verwijderen";
+            case "s" -> "redirect:/hoofdmenu";
+            default -> "redirect:/huwelijk/hoofdmenu";
+        };
     }
 
     @RequestMapping(value = "/overzicht/menu", method = RequestMethod.GET)

@@ -118,16 +118,12 @@ public class BevolkingsregisterHelper {
 
     public String getPositieFromCode(PersonDynamic b3) {
         int code = b3.getContentOfDynamicData();
-        switch (code) {
-            case 1:
-                return "h";
-            case 2:
-                return "o";
-            case 3:
-                return "n";
-            default:
-                return "";
-        }
+        return switch (code) {
+            case 1 -> "h";
+            case 2 -> "o";
+            case 3 -> "n";
+            default -> "";
+        };
     }
 
     public int getDayFromDateExplicietHoofd(PersonDynamic b3) {
