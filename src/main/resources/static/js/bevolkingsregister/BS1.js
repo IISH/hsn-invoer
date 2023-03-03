@@ -119,9 +119,10 @@
     // Hides the popover and performs the related checks and procedures
     function hidePopover(container, popover, checkError) {
         determinePrevNext = false;
+        var hasError = popover.find('.has-an-error').length >= 1;
 
         // Check for errors first, if necessary
-        if (!checkError || (popover.find('.has-an-error').length === 0)) {
+        if (!checkError || !hasError) {
             var focusOnRelatieElem = false; // In some cases, the focus has to go back to the relatie elem
 
             // In case of an 'expliciet hoofd', we have to safely store and transform the date before closing
@@ -153,6 +154,12 @@
             }
 
             var relatie = container.find('.relatie');
+
+            if (hasError) {
+                focusOnRelatieElem = true;
+                relatie.val('');
+            }
+
             (focusOnRelatieElem) ? relatie.focus() : (determinePrevNext = true);
 
             if (popover.length > 0) {
@@ -874,6 +881,9 @@
         var isCopyLineModal = (isModalVisible && (modal.hasClass('copyLineModal')));
         var isNextLineModal = (isModalVisible && (modal.hasClass('nextLineModal')));
 
+        var popover = $('.popover');
+        var isPopoverVisible = popover.hasClass('in');
+
         var target = $(e.target);
         if (target.hasClass('relatie') || target.hasClass('f9-input')) {
             relatieOnF9(target, e);
@@ -891,6 +901,10 @@
                 }
                 if (isNextLineModal) {
                     nextLine(false);
+                    e.preventDefault();
+                }
+                if (isPopoverVisible) {
+                    hidePopover(popover.data('bs.popover').$element.getPersonContainer(), popover, false);
                     e.preventDefault();
                 }
                 break;
