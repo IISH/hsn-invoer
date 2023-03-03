@@ -116,7 +116,7 @@ public class BevolkingsregisterRenumbering {
         int relatedPerson = newPersonDynamic.getValueOfRelatedPerson();
         if (relatedPerson > 0) {
             // Set the new key of the related person, if the person is now deleted, initialize the value back to -1
-            int newKeyRelatedPerson = original.getB2().get(relatedPerson - 1).getRp();
+            int newKeyRelatedPerson = original.getB2().get(relatedPerson - 1).getNewRp();
             if ((newKeyRelatedPerson == 0) || (newKeyRelatedPerson > renumbered.getB2().size())) {
                 newPersonDynamic.setValueOfRelatedPerson(-1);
             }
