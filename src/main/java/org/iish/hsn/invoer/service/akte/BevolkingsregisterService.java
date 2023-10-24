@@ -269,10 +269,20 @@ public class BevolkingsregisterService {
                 }
             }
 
-            // Set some default values
-            person.setDayOfRegistration(-1);
-            person.setMonthOfRegistration(-1);
-            person.setYearOfRegistration(-1);
+            String typeRegister = bevolkingsregisterFlow.getRefAinb().getTypeRegister();
+            int yearEntryHead = bevolkingsregisterFlow.getB4().getRegistrationId().getYearEntryHead();
+            if (typeRegister.equalsIgnoreCase("C") || typeRegister.equalsIgnoreCase("D")
+                    || yearEntryHead < 1863) {
+                person.setDayOfRegistration(-3);
+                person.setMonthOfRegistration(-3);
+                person.setYearOfRegistration(-3);
+            }
+            else {
+                // Set some default values
+                person.setDayOfRegistration(-1);
+                person.setMonthOfRegistration(-1);
+                person.setYearOfRegistration(-1);
+            }
 
             // Create initial dynamic values for this person
             createNewPersonDynamics(bevolkingsregisterFlow, person, false);
@@ -570,15 +580,6 @@ public class BevolkingsregisterService {
      * @param person                 The person to register.
      */
     public void registerPerson(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
-        String typeRegister = bevolkingsregisterFlow.getRefAinb().getTypeRegister();
-        int yearEntryHead = bevolkingsregisterFlow.getB4().getRegistrationId().getYearEntryHead();
-        if (typeRegister.equalsIgnoreCase("C") || typeRegister.equalsIgnoreCase("D")
-                || yearEntryHead < 1863) {
-            person.setDayOfRegistration(-3);
-            person.setMonthOfRegistration(-3);
-            person.setYearOfRegistration(-3);
-        }
-
         // In case this is a 'fake' RP
         if ((person.getFamilyName() != null) && person.getFamilyName().trim().equalsIgnoreCase("GEEN OP")) {
             person.setFirstName("");

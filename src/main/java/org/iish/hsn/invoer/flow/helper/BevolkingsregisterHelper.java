@@ -155,14 +155,6 @@ public class BevolkingsregisterHelper {
         return "j";
     }
 
-    public boolean isInschrijfDatumAllowed(BevolkingsregisterFlowState bevolkingsregisterFlow) {
-        String typeRegister = bevolkingsregisterFlow.getRefAinb().getTypeRegister();
-        int yearEntryHead = bevolkingsregisterFlow.getB4().getRegistrationId().getYearEntryHead();
-        return !typeRegister.equalsIgnoreCase("C") &&
-                !typeRegister.equalsIgnoreCase("D") &&
-                yearEntryHead >= 1863;
-    }
-
     public String hasHerkomstData(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
         int personKey = person.getKeyToRegistrationPersons();
         List<PersonDynamic> b3Her = bevolkingsregisterFlow.getB3Her().get(personKey);

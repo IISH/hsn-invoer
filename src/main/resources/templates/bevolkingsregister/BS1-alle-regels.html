@@ -83,17 +83,11 @@
   <!-- Ins Dat -->
   <div class="sub-form-group">
     <input type="text" class="form-control form-control-digit has-inschrijving required" maxlength="1"
-           data-valid-chars="j;n" th:if="${@bevolkingsregisterHelper.isInschrijfDatumAllowed(akte)}"
-           th:value="${@bevolkingsregisterHelper.hasInschrijfDatum(persons[__${stat.index}__])}"
+           data-valid-chars="j;n" th:value="${@bevolkingsregisterHelper.hasInschrijfDatum(persons[__${stat.index}__])}"
            th:id="${'ins-datum-' + rp}"/>
-
-    <p class="form-control-static" th:if="${@bevolkingsregisterHelper.isInschrijfDatumAllowed(akte) == false}">
-      n
-    </p>
   </div>
 
   <div class="sub-form-group datum-inschrijving spacing checkDateBevReg fullCheck"
-       th:style="${#arrays.contains({'C', 'D'}, akte.refAinb.typeRegister) or (@bevolkingsregisterHelper.hasInschrijfDatum(persons[__${stat.index}__]) == 'n')} ? 'display:none;'"
        th:include="fragments/fields :: datum ('b2[__${rp-1}__].dayOfRegistration', 'b2[__${rp-1}__].monthOfRegistration', 'b2[__${rp-1}__].yearOfRegistration')">
   </div>
 </td>
