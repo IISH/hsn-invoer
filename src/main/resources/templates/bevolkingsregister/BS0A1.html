@@ -8,6 +8,10 @@
 
 <fieldset>
   <th:block layout:fragment="table">
+    <div class="alert alert-warning" role="alert" th:if="${akte.isCorrection()}">
+      Let op: geef de personen die u wilt behouden een nummer. Als u dat niet doet, dan worden deze verwijderd!
+    </div>
+
     <div class="fixed-left-column">
       <div class="fixed">
         <table class="table table-condensed table-form">

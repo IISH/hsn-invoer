@@ -980,10 +980,12 @@ public class BevolkingsregisterService {
         WorkOrder workOrder = inputMetadata.getWorkOrder();
         RegistrationId registrationId = b4.getRegistrationId();
 
-        registrationRepository.delete(b4);
-        personRepository.delete(registrationId, workOrder);
-        personDynamicRepository.delete(registrationId, workOrder);
-        registrationAddressRepository.delete(registrationId, workOrder);
+        if (b4.getId() != null) {
+            registrationRepository.delete(b4);
+            personRepository.delete(registrationId, workOrder);
+            personDynamicRepository.delete(registrationId, workOrder);
+            registrationAddressRepository.delete(registrationId, workOrder);
+        }
     }
 
     /**
