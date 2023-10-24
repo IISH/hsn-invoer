@@ -91,7 +91,7 @@ public class BevolkingsregisterController {
         Registration registration = null;
         List<Person> persons = null;
 
-        if (registrations.size() > 0) {
+        if (!registrations.isEmpty()) {
             registration = registrations.get(0);
             persons =
                     overviewService.getPopulationRegisterRegistrationPersonsOverview(registration.getRegistrationId());

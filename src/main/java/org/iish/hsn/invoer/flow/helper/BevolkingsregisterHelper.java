@@ -24,7 +24,7 @@ public class BevolkingsregisterHelper {
             int curPerson = bevolkingsregisterFlow.getCurPersonKey();
             int correctionPersonKeyIdx = correctionPersons.indexOf(curPerson);
 
-            if (correctionPersons.size() > 0) {
+            if (!correctionPersons.isEmpty()) {
                 // If we have correction persons, and no current person, then yes, we still have correction persons
                 if (curPerson == 0) {
                     return true;
@@ -158,7 +158,7 @@ public class BevolkingsregisterHelper {
     public String hasHerkomstData(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
         int personKey = person.getKeyToRegistrationPersons();
         List<PersonDynamic> b3Her = bevolkingsregisterFlow.getB3Her().get(personKey);
-        if ((b3Her != null) && (b3Her.size() > 0)) {
+        if ((b3Her != null) && (!b3Her.isEmpty())) {
             return "j";
         }
         return "n";
@@ -167,7 +167,7 @@ public class BevolkingsregisterHelper {
     public String hasVertrekData(BevolkingsregisterFlowState bevolkingsregisterFlow, Person person) {
         int personKey = person.getKeyToRegistrationPersons();
         List<PersonDynamic> b3Ver = bevolkingsregisterFlow.getB3Ver().get(personKey);
-        if ((b3Ver != null) && (b3Ver.size() > 0)) {
+        if ((b3Ver != null) && (!b3Ver.isEmpty())) {
             return "j";
         }
         return "n";

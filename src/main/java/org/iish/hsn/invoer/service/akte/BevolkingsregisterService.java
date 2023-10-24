@@ -926,7 +926,7 @@ public class BevolkingsregisterService {
                     Map<Integer, List<PersonDynamic>> b3 = bevolkingsregisterFlow.getB3ForType(type);
                     List<PersonDynamic> b3To = b3.get(person);
                     List<PersonDynamic> b3From = b3.get(lineToCopy);
-                    if (b3To.size() > 0) {
+                    if (!b3To.isEmpty()) {
                         if (b3From.isEmpty()) {
                             b3From.add(createPersonDynamic(bevolkingsregisterFlow, to, type, 1));
                         }
@@ -1311,7 +1311,7 @@ public class BevolkingsregisterService {
             personDynamicRepository.deleteAll(personDynamics);
             b3.put(person.getKeyToRegistrationPersons(), new ArrayList<>());
         }
-        else if (personDynamics.size() > 0) {
+        else if (!personDynamics.isEmpty()) {
             personDynamics.set(0, personDynamic);
         }
         else {
@@ -1340,7 +1340,7 @@ public class BevolkingsregisterService {
         }
 
         PersonDynamic personDynamic = createPersonDynamic(bevolkingsregisterFlow, person, type, 1);
-        if (b3.get(personKey).size() > 0) {
+        if (!b3.get(personKey).isEmpty()) {
             personDynamic = b3.get(personKey).get(0);
         }
 
