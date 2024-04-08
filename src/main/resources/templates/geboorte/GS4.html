@@ -8,16 +8,16 @@
 
 <fieldset>
   <th:block layout:fragment="fields">
-    <legend th:if="${#arrays.contains({2,3}, new Integer(akte.gebknd.brgstmr))} == false">VADER</legend>
-    <legend th:if="${#arrays.contains({2,3}, new Integer(akte.gebknd.brgstmr))}">VROEGERE ECHTGENOOT</legend>
+    <legend th:if="${#arrays.contains({'2','3'}, akte.gebknd.brgstmr)} == false">VADER</legend>
+    <legend th:if="${#arrays.contains({'2','3'}, akte.gebknd.brgstmr)}">VROEGERE ECHTGENOOT</legend>
 
     <div class="form-group">
       <label class="col-xs-8 control-label"
-             th:if="${#arrays.contains({2,3}, new Integer(akte.gebknd.brgstmr))} == false">
+             th:if="${#arrays.contains({'2','3'}, akte.gebknd.brgstmr)} == false">
         Gegevens vader ook in de akte opgenomen? j / n
       </label>
 
-      <label class="col-xs-8 control-label" th:if="${#arrays.contains({2,3}, new Integer(akte.gebknd.brgstmr))}">
+      <label class="col-xs-8 control-label" th:if="${#arrays.contains({'2','3'}, akte.gebknd.brgstmr)}">
         Gegevens vroegere echtgenoot ook in de akte opgenomen? j / n
       </label>
 
@@ -37,21 +37,21 @@
 
       <div class="form-group" th:replace="fragments/complete-fields :: adres ('gebvdr.adrvr')"></div>
 
-      <div class="form-group extra-top-margin checkDateDefault" th:if="${new Integer(akte.gebknd.brgstmr)} == 2">
+      <div class="form-group extra-top-margin checkDateDefault" th:if="${akte.gebknd.brgstmr} == '2'">
         <label class="col-xs-3 control-label">Datum overlijden:</label>
 
         <div th:replace="fragments/fields :: datum ('gebvdr.g5vood', 'gebvdr.g5voom', 'gebvdr.g5vooj')"></div>
       </div>
 
-      <div class="form-group extra-top-margin checkDateDefault" th:if="${new Integer(akte.gebknd.brgstmr)} == 3">
+      <div class="form-group extra-top-margin checkDateDefault" th:if="${akte.gebknd.brgstmr} == '3'">
         <label class="col-xs-3 control-label">Datum scheiding:</label>
 
         <div th:replace="fragments/fields :: datum ('gebvdr.g5oosd', 'gebvdr.g5oosm', 'gebvdr.g5oosj')"></div>
       </div>
 
-      <div class="form-group" th:if="${new Integer(akte.gebknd.brgstmr)} == 2"
+      <div class="form-group" th:if="${akte.gebknd.brgstmr} == '2'"
            th:include="fragments/complete-fields :: plaats ('gebvdr.g5vogo', 'Plaats overlijden:')"></div>
-      <div class="form-group" th:if="${new Integer(akte.gebknd.brgstmr)} == 3"
+      <div class="form-group" th:if="${akte.gebknd.brgstmr} == '3'"
            th:include="fragments/complete-fields :: plaats ('gebvdr.g5oogs', 'Plaats scheiding:')"></div>
     </div>
   </th:block>
