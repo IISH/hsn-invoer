@@ -704,8 +704,8 @@ public class HuwelijksAkteService extends AkteService {
         HuwelijksAkteFlowState huwelijksAkteFlow = (HuwelijksAkteFlowState) byzAkteFlowState;
         Huwbyz huwbyz = (Huwbyz) byz;
 
-        huwbyz.setIdnr(huwelijksAkteFlow.getHuwknd().getIdnr());
-        huwbyz.setHuw(huwelijksAkteFlow.getHuwknd().getHuw());
+        huwbyz.setIdnr(huwelijksAkteFlow.getHuwttl().getIdnr());
+        huwbyz.setHuw(huwelijksAkteFlow.getHuwttl().getHuw());
 
         inputMetadataChecker.saveToEntity(huwbyz, inputMetadata);
         huwbyz = huwbyzRepository.save(huwbyz);
